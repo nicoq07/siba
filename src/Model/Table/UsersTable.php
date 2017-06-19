@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $Profesores
  * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
  * @property \App\Model\Table\PagosAlumnosTable|\Cake\ORM\Association\HasMany $PagosAlumnos
  *
@@ -41,6 +42,9 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->belongsTo('Profesores', [
+            'foreignKey' => 'profesor_id'
+        ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'rol_id'
         ]);
@@ -98,6 +102,7 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['profesor_id'], 'Profesores'));
         $rules->add($rules->existsIn(['rol_id'], 'Roles'));
 
         return $rules;

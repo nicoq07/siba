@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $dni
+ * @property int $profesor_id
  * @property string $nombre
  * @property string $apellido
  * @property string $nombre_usuario

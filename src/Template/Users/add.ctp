@@ -19,6 +19,7 @@
         <legend><?= __('Add User') ?></legend>
         <?php
             echo $this->Form->control('dni');
+            echo $this->Form->control('profesor_id');
             echo $this->Form->control('nombre');
             echo $this->Form->control('apellido');
             echo $this->Form->control('nombre_usuario');

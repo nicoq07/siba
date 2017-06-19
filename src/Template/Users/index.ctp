@@ -21,6 +21,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('dni') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('profesor_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('nombre') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('apellido') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('nombre_usuario') ?></th>
@@ -37,6 +38,7 @@
             <tr>
                 <td><?= $this->Number->format($user->id) ?></td>
                 <td><?= h($user->dni) ?></td>
+                <td><?= $this->Number->format($user->profesor_id) ?></td>
                 <td><?= h($user->nombre) ?></td>
                 <td><?= h($user->apellido) ?></td>
                 <td><?= h($user->nombre_usuario) ?></td>

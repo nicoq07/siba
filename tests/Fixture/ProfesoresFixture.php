@@ -69,8 +69,8 @@ class ProfesoresFixture extends TestFixture
             'celular_contacto' => 'Lorem ipsum dolor ',
             'titulo' => 'Lorem ipsum dolor sit amet',
             'observacion' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'created' => '2017-06-18 23:05:22',
-            'modified' => '2017-06-18 23:05:22',
+            'created' => '2017-06-18 22:51:53',
+            'modified' => '2017-06-18 22:51:53',
             'active' => 1
         ],
     ];

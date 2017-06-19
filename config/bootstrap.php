@@ -99,7 +99,8 @@ if (Configure::read('debug')) {
  * Set server timezone to UTC. You can change it to another timezone of your
  * choice but using UTC makes time calculations / conversions easier.
  */
-date_default_timezone_set('UTC');
+// date_default_timezone_set('UTC');
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 /*
  * Configure the mbstring extension to use the correct encoding.
@@ -220,3 +221,12 @@ Type::build('timestamp')
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
+Plugin::loadAll();
+
+error_reporting(0);
+//CONSTANTES DE ROLES
+define('ADMINISTRADOR', 1);
+define('PROFESOR', 2);
+// define('CLIENTE', 3);
+// define('BLOQUEADO', 4);
+//FIN CONSTANTES DE ROLES
