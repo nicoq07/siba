@@ -95,11 +95,12 @@ class ProfesoresTable extends Table
             ->notEmpty('nombre_contacto');
 
         $validator
-            ->allowEmpty('celular_contacto');
+	        ->requirePresence('celular_contacto', 'create')
+	        ->notEmpty('celular_contacto');
+            
 
         $validator
-            ->requirePresence('titulo', 'create')
-            ->notEmpty('titulo');
+            ->allowEmpty('titulo');
 
         $validator
             ->allowEmpty('observacion');

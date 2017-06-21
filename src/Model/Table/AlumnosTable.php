@@ -117,12 +117,10 @@ class AlumnosTable extends Table
             ->allowEmpty('colegio');
 
         $validator
-            ->requirePresence('nombre_madre', 'create')
-            ->notEmpty('nombre_madre');
+            ->allowEmpty('nombre_madre');
 
         $validator
-            ->requirePresence('nombre_padre', 'create')
-            ->notEmpty('nombre_padre');
+            ->allowEmpty('nombre_padre');
 
         $validator
             ->allowEmpty('email_padre');

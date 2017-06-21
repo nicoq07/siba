@@ -20,7 +20,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('alumnno_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('alumno_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('clase_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
@@ -32,7 +32,7 @@
             <?php foreach ($clasesAlumnos as $clasesAlumno): ?>
             <tr>
                 <td><?= $this->Number->format($clasesAlumno->id) ?></td>
-                <td><?= $clasesAlumno->has('alumno') ? $this->Html->link($clasesAlumno->alumno->id, ['controller' => 'Alumnos', 'action' => 'view', $clasesAlumno->alumno->id]) : '' ?></td>
+                <td><?= $this->Number->format($clasesAlumno->alumno_id) ?></td>
                 <td><?= $clasesAlumno->has('clase') ? $this->Html->link($clasesAlumno->clase->id, ['controller' => 'Clases', 'action' => 'view', $clasesAlumno->clase->id]) : '' ?></td>
                 <td><?= h($clasesAlumno->created) ?></td>
                 <td><?= h($clasesAlumno->modified) ?></td>

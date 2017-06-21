@@ -24,7 +24,7 @@
     <fieldset>
         <legend><?= __('Edit Clases Alumno') ?></legend>
         <?php
-            echo $this->Form->control('alumnno_id', ['options' => $alumnos]);
+            echo $this->Form->control('alumno_id');
             echo $this->Form->control('clase_id', ['options' => $clases]);
             echo $this->Form->control('active');
         ?>

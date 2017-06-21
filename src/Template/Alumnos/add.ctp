@@ -1,52 +1,147 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Alumnos'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Fotos Alumnos'), ['controller' => 'FotosAlumnos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Fotos Alumno'), ['controller' => 'FotosAlumnos', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Pagos Alumnos'), ['controller' => 'PagosAlumnos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Pagos Alumno'), ['controller' => 'PagosAlumnos', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Clases'), ['controller' => 'Clases', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Clase'), ['controller' => 'Clases', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="alumnos form large-9 medium-8 columns content">
-    <?= $this->Form->create($alumno) ?>
-    <fieldset>
-        <legend><?= __('Add Alumno') ?></legend>
-        <?php
-            echo $this->Form->control('legajo_numero');
-            echo $this->Form->control('nombre');
-            echo $this->Form->control('apellido');
-            echo $this->Form->control('fecha_nacimiento', ['empty' => true]);
-            echo $this->Form->control('direccion');
-            echo $this->Form->control('ciudad');
-            echo $this->Form->control('codigo_postal');
-            echo $this->Form->control('telefono');
-            echo $this->Form->control('celular');
-            echo $this->Form->control('nro_documento');
-            echo $this->Form->control('email');
-            echo $this->Form->control('observacion');
-            echo $this->Form->control('programa_adolecencia');
-            echo $this->Form->control('colegio');
-            echo $this->Form->control('nombre_madre');
-            echo $this->Form->control('nombre_padre');
-            echo $this->Form->control('email_padre');
-            echo $this->Form->control('email_madre');
-            echo $this->Form->control('celular_padre');
-            echo $this->Form->control('celular_madre');
-            echo $this->Form->control('monto_arancel');
-            echo $this->Form->control('monto_materiales');
-            echo $this->Form->control('futuro_alumno');
-            echo $this->Form->control('active');
-            echo $this->Form->control('clases._ids', ['options' => $clases]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+<div class="col-log-10">
+	   <?= $this->Form->create($alumno) ?>
+	    <fieldset>
+	        <legend><?= __('Nuevo alumno') ?></legend>
+	      
+	        <div class="col-lg-5">
+	        <?php
+	       	 	echo $this->Form->control('legajo_numero',['label' => 'Legajo sistema anterior']);
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         	echo $this->Form->control('nro_documento',['label' => 'DNI']);
+			 ?>
+	         </div>
+	       
+	        <div class="col-lg-5">
+	        <?php
+	        	echo $this->Form->control('nombre');
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         	echo $this->Form->control('apellido');
+			 ?>
+	         </div>
+	         <div class="col-lg-10">
+	        <?php
+	        echo $this->Form->control('fecha_nacimiento', ['label' => 'Fecha de nacimiento', 'empty' => false ]);
+	        ?>
+	        </div>
+	       
+	         <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('telefono',['label' => 'Tel. Fijo']);
+			 ?>
+	         </div>
+	        <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('celular');
+			 ?>
+	         </div>
+	          <div class="col-lg-4"> 
+	         	<?php
+	         	echo $this->Form->control('email');
+			 	?>
+			 </div>
+	         <div class="col-lg-10">
+	        <?php
+	        echo $this->Form->control('direccion',['label' => 'Domicilio']);
+	        ?>
+	        </div>
+	         <div class="col-lg-7">
+	        <?php
+	        echo $this->Form->control('ciudad');
+	        ?>
+	        </div>
+	        <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('codigo_postal',['label' => 'CP']);
+			 ?>
+	         </div>
+	        
+	        
+	        
+<!------------------------ SECCION PADRES -->
+	         <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('nombre_madre',['label' => 'Nombre de madre o tutor']);
+			 ?>
+	         </div>
+	        <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('celular_madre',['label' => 'Celular de madre o tutor']);
+			 ?>
+	         </div>
+	         <div class="col-lg-4"> 
+	         <?php
+	         echo $this->Form->control('email_madre',['label' => 'Email de madre o tutor']);
+			 ?>
+	         </div>
+	         <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('nombre_padre',['label' => 'Nombre de padre o tutor']);
+			 ?>
+	         </div>
+	        <div class="col-lg-3"> 
+	         <?php
+	         echo $this->Form->control('celular_padre',['label' => 'Celular de padre o tutor']);
+			 ?>
+	         </div>
+	         <div class="col-lg-4"> 
+	         <?php
+	         echo $this->Form->control('email_padre',['label' => 'Email de padre o tutor']);
+			 ?>
+	         </div>
+ <!------------------------ FIN SECCION PADRES -->
+	         <div class="col-lg-8"> 
+	         <?php
+	         echo $this->Form->control('colegio');
+			 ?>
+	         </div> 
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('monto_arancel');
+			 ?>
+	         </div> 
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('monto_materiales');
+			 ?>
+	         </div>  
+	         <div class="col-lg-10"> 
+	         <?php
+	         echo $this->Form->control('clases._ids', ['options' => $clases]);
+			 ?>
+	         </div>  
+	    	 <div class="col-lg-10"> 
+	         <?php
+	         echo $this->Form->control('observacion',['label' => 'Obesrvación']);
+			 ?>
+			 </div>
+			  <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('futuro_alumno');
+			 ?>
+	         </div>  
+	         
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('programa_adolecencia');
+			 ?>
+	         </div> 
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('active',['label' => 'Activo']);
+			 ?>
+	         </div> 
+	    	<div class="col-lg-10"> 
+	         <?=
+ 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-info']) 
+ 			 ?>
+	         </div>
+	          
+	         </fieldset>
+	    <?= $this->Form->end() ?>
+</div> 

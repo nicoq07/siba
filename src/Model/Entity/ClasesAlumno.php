@@ -7,14 +7,14 @@ use Cake\ORM\Entity;
  * ClasesAlumno Entity
  *
  * @property int $id
- * @property int $alumnno_id
+ * @property int $alumno_id
  * @property int $clase_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property bool $active
  *
- * @property \App\Model\Entity\Clase $clase
  * @property \App\Model\Entity\Alumno $alumno
+ * @property \App\Model\Entity\Clase $clase
  */
 class ClasesAlumno extends Entity
 {

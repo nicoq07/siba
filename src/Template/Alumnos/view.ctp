@@ -1,169 +1,69 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Alumno $alumno
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Alumno'), ['action' => 'edit', $alumno->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Alumno'), ['action' => 'delete', $alumno->id], ['confirm' => __('Are you sure you want to delete # {0}?', $alumno->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Alumnos'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Alumno'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Fotos Alumnos'), ['controller' => 'FotosAlumnos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Fotos Alumno'), ['controller' => 'FotosAlumnos', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Pagos Alumnos'), ['controller' => 'PagosAlumnos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Pagos Alumno'), ['controller' => 'PagosAlumnos', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Clases'), ['controller' => 'Clases', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Clase'), ['controller' => 'Clases', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="alumnos view large-9 medium-8 columns content">
-    <h3><?= h($alumno->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Nombre') ?></th>
-            <td><?= h($alumno->nombre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Apellido') ?></th>
-            <td><?= h($alumno->apellido) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Direccion') ?></th>
-            <td><?= h($alumno->direccion) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Ciudad') ?></th>
-            <td><?= h($alumno->ciudad) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Codigo Postal') ?></th>
-            <td><?= h($alumno->codigo_postal) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Telefono') ?></th>
-            <td><?= h($alumno->telefono) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Celular') ?></th>
-            <td><?= h($alumno->celular) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Nro Documento') ?></th>
-            <td><?= h($alumno->nro_documento) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Email') ?></th>
-            <td><?= h($alumno->email) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Colegio') ?></th>
-            <td><?= h($alumno->colegio) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Nombre Madre') ?></th>
-            <td><?= h($alumno->nombre_madre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Nombre Padre') ?></th>
-            <td><?= h($alumno->nombre_padre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Email Padre') ?></th>
-            <td><?= h($alumno->email_padre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Email Madre') ?></th>
-            <td><?= h($alumno->email_madre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Celular Padre') ?></th>
-            <td><?= h($alumno->celular_padre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Celular Madre') ?></th>
-            <td><?= h($alumno->celular_madre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($alumno->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Legajo Numero') ?></th>
-            <td><?= $this->Number->format($alumno->legajo_numero) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Monto Arancel') ?></th>
-            <td><?= $this->Number->format($alumno->monto_arancel) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Monto Materiales') ?></th>
-            <td><?= $this->Number->format($alumno->monto_materiales) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Fecha Nacimiento') ?></th>
-            <td><?= h($alumno->fecha_nacimiento) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($alumno->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($alumno->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Programa Adolecencia') ?></th>
-            <td><?= $alumno->programa_adolecencia ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Futuro Alumno') ?></th>
-            <td><?= $alumno->futuro_alumno ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Active') ?></th>
-            <td><?= $alumno->active ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
+<div class="col-lg-8">
+   <div  style="margin-top:10px" class="row">
+	     <div class="col-lg-5">
+	     <h1 style="margin-top:10px"><?= h($alumno->presentacion) ?></h1>
+	      </div>
+	    <div class="col-lg-7">
+	     <?php  echo $this->Html->image('alumnos/test1.jpg', ['alt' => $alumno->presentacion , 'class' => 'pull-right' , 'height' => "150" , 'width' => "150"]); ?>
+	    </div>
+	</div>
+	<div class="separador"></div>
+	
+	<div class="col-lg-2 view-div borde"><?= __('DNI') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->nro_documento) ?></div>
+	<div class="col-lg-2 view-div borde"><?= __('Direccion') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->direccion) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Código Postal') ?></div>
+	<div class="col-lg-4 borde "><?= h($alumno->codigo_postal) ?></div>
+	<div class="col-lg-2 borde view-div"><?= __('Ciudad') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->ciudad) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Celular') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->celular) ?></div>
+	<div class="col-lg-2 borde view-div"><?= __('Télefono') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->telefono) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Email') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->email) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('F Nac') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
+	<div class="col-lg-2 borde view-div"><?= __('Tutor') ?></div>
+	<div class="col-lg-2 borde"><?= $alumno->nombre_madre ? h($alumno->nombre_madre) : "-" ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Celular tutor') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->celular_madre ? h($alumno->celular_madre) : "-"?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Email tutor') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->email_madre ? h($alumno->email_madre) : "-" ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Tutor 2') ?></div>
+	<div class="col-lg-2 borde"><?= $alumno->nombre_padre ? h($alumno->nombre_padre) : "-" ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Celular tutor 2') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->celular_padre ? h($alumno->celular_padre) : "-"?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Email tutor 2') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->email_padre ? h($alumno->email_padre) : "-" ?> </div>
+		<div class="col-lg-2 borde view-div"><?= __('Legajo') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->id) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Legajo anterior') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->legajo_numero) ?></div>
+	<div class="col-lg-2 borde view-div"><?= __('Arancel') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->monto_arancel) ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Materiales') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->monto_materiales) ?> </div>
+			<div class="col-lg-2 borde view-div"><?= __('Colegio') ?></div>
+	<div class="col-lg-10 borde"><?= h($alumno->colegio) ?> </div>
+			<div class="col-lg-2 borde view-div"><?= __('Alta en sistema') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->created->format('d/m/Y')) ?> </div>
+			<div class="col-lg-2 borde view-div"><?= __('Modificado') ?></div>
+	<div class="col-lg-4 borde"><?= h($alumno->modified->format('d/m/Y')) ?> </div>
+		<div class="col-lg-2 borde view-div"><?= __('Adolecencia') ?></div>
+	<div class="col-lg-2 borde"><?= $alumno->programa_adolecencia ? __('Sí') : __('No'); ?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Futuro Alumno') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->futuro_alumno ? __('Sí') : __('No');?> </div>
+	<div class="col-lg-2 borde view-div"><?= __('Activo') ?></div>
+	<div class="col-lg-2 borde"><?=$alumno->active ? __('Sí') : __('No');?> </div>
     <div class="row">
-        <h4><?= __('Observacion') ?></h4>
+        <h4><?= __('Observación') ?></h4>
         <?= $this->Text->autoParagraph(h($alumno->observacion)); ?>
     </div>
+    
     <div class="related">
-        <h4><?= __('Related Fotos Alumnos') ?></h4>
-        <?php if (!empty($alumno->fotos_alumnos)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Alumno Id') ?></th>
-                <th scope="col"><?= __('Referencia') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col"><?= __('Active') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($alumno->fotos_alumnos as $fotosAlumnos): ?>
-            <tr>
-                <td><?= h($fotosAlumnos->id) ?></td>
-                <td><?= h($fotosAlumnos->alumno_id) ?></td>
-                <td><?= h($fotosAlumnos->referencia) ?></td>
-                <td><?= h($fotosAlumnos->created) ?></td>
-                <td><?= h($fotosAlumnos->modified) ?></td>
-                <td><?= h($fotosAlumnos->active) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'FotosAlumnos', 'action' => 'view', $fotosAlumnos->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'FotosAlumnos', 'action' => 'edit', $fotosAlumnos->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'FotosAlumnos', 'action' => 'delete', $fotosAlumnos->id], ['confirm' => __('Are you sure you want to delete # {0}?', $fotosAlumnos->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Pagos Alumnos') ?></h4>
+        <h4><?= __('Pagos correspondientes') ?></h4>
         <?php if (!empty($alumno->pagos_alumnos)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
@@ -196,7 +96,7 @@
         <?php endif; ?>
     </div>
     <div class="related">
-        <h4><?= __('Related Clases') ?></h4>
+        <h4><?= __('Clases inscriptas' ) ?></h4>
         <?php if (!empty($alumno->clases)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>

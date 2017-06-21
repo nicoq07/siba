@@ -42,7 +42,7 @@ class ClasesAlumnosTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Alumnos', [
-            'foreignKey' => 'alumnno_id',
+            'foreignKey' => 'alumno_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Clases', [
@@ -80,7 +80,7 @@ class ClasesAlumnosTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['alumnno_id'], 'Alumnos'));
+        $rules->add($rules->existsIn(['alumno_id'], 'Alumnos'));
         $rules->add($rules->existsIn(['clase_id'], 'Clases'));
 
         return $rules;

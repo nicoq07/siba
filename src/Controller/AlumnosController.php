@@ -20,6 +20,38 @@ class AlumnosController extends AppController
      */
     public function index()
     {
+    	$where1 = null;
+    	$where2 = null;
+    	$where3 = null;
+    	$where4 = null;
+    	
+	    if ($this->request->is('post'))
+	    {
+	    	
+	     		$esActive = $this->request->getData()['activos'];
+	     		$where1= ['alumnos.active' => $esActive];
+	     	
+	     		$esAdolecencia =$this->request->getData()['adolecencia'];
+	     		$where2= ['alumnos.programa_adolecencia' => $esAdolecencia];
+	     	
+	     		$esFuturo = $this->request->getData()['futuro'];
+	     		$where3= ['alumnos.futuro_alumno' => $esFuturo];
+	     	
+	     	if (!(empty($this->request->getData()['palabra_clave'])))
+	     	{
+	     		$palabra = $this->request->getData()['palabra_clave'];
+	     		$where4= ["alumnos.nombre LIKE '%$palabra%' OR alumnos.apellido LIKE '%$palabra%' OR alumnos.nro_documento LIKE '%$palabra%'"];
+	     	}
+	    }
+	    else 
+	    {
+	    	$where1 =['alumnos.active' => true];
+	    }
+    	
+     	$this->paginate = [
+     			'conditions' => [$where1,$where2,$where3,$where4]
+     	];
+     
         $alumnos = $this->paginate($this->Alumnos);
 
         $this->set(compact('alumnos'));
@@ -38,7 +70,7 @@ class AlumnosController extends AppController
         $alumno = $this->Alumnos->get($id, [
             'contain' => ['Clases', 'FotosAlumnos', 'PagosAlumnos']
         ]);
-
+       
         $this->set('alumno', $alumno);
         $this->set('_serialize', ['alumno']);
     }

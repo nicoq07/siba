@@ -21,16 +21,16 @@
     <h3><?= h($clasesAlumno->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Alumno') ?></th>
-            <td><?= $clasesAlumno->has('alumno') ? $this->Html->link($clasesAlumno->alumno->id, ['controller' => 'Alumnos', 'action' => 'view', $clasesAlumno->alumno->id]) : '' ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Clase') ?></th>
             <td><?= $clasesAlumno->has('clase') ? $this->Html->link($clasesAlumno->clase->id, ['controller' => 'Clases', 'action' => 'view', $clasesAlumno->clase->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($clasesAlumno->id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Alumno Id') ?></th>
+            <td><?= $this->Number->format($clasesAlumno->alumno_id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>

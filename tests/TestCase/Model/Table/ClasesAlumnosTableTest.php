@@ -28,9 +28,12 @@ class ClasesAlumnosTableTest extends TestCase
         'app.alumnos',
         'app.fotos_alumnos',
         'app.pagos_alumnos',
-        'app.clases',
+        'app.users',
         'app.profesores',
+        'app.roles',
+        'app.clases',
         'app.horarios',
+        'app.ciclolectivo',
         'app.disciplinas'
     ];
 

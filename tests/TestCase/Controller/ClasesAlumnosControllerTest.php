@@ -21,9 +21,9 @@ class ClasesAlumnosControllerTest extends IntegrationTestCase
         'app.fotos_alumnos',
         'app.pagos_alumnos',
         'app.users',
+        'app.profesores',
         'app.roles',
         'app.clases',
-        'app.profesores',
         'app.horarios',
         'app.ciclolectivo',
         'app.disciplinas'
