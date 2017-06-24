@@ -25,6 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property bool $active
+ * @property \Cake\I18n\FrozenTime $fecha_nacimiento
  */
 class Profesore extends Entity
 {
@@ -42,10 +43,4 @@ class Profesore extends Entity
         '*' => true,
         'id' => false
     ];
-    
-    public function _getPresentacion()
-    {
-    	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
-    	return $nomyape;
-    }
 }
