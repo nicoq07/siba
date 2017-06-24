@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use PhpParser\Node\Expr\Array_;
 
 /**
  * Horarios Controller
@@ -63,8 +64,10 @@ class HorariosController extends AppController
             }
             $this->Flash->error(__('The horario could not be saved. Please, try again.'));
         }
+        $dia = array("Lunes","Martes","Miercoles","Jueves","Viernes");
+        $dias = array_combine($dia, $dia);
         $ciclolectivo = $this->Horarios->Ciclolectivo->find('list', ['limit' => 200]);
-        $this->set(compact('horario', 'ciclolectivo'));
+        $this->set(compact('horario', 'ciclolectivo','dias'));
         $this->set('_serialize', ['horario']);
     }
 

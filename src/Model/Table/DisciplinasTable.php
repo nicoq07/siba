@@ -35,7 +35,7 @@ class DisciplinasTable extends Table
         parent::initialize($config);
 
         $this->setTable('disciplinas');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

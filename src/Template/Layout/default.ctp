@@ -49,8 +49,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </nav>
     <?= $this->Flash->render() ?>
     <div class ="flex-container" >
-     	<?= $this->element('menuadmin') ?>
-        <?= $this->fetch('content') ?>
+     	<div class="col-lg-12">
+            <?= $this->element('menuadmin') ?>
+            <?= $this->fetch('content') ?>
+        </div>
     </div>
     <footer>
     

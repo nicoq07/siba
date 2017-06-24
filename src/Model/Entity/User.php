@@ -46,4 +46,10 @@ class User extends Entity
     protected $_hidden = [
         'password'
     ];
+    
+    public function _getPresentacion()
+    {
+    	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
+    	return $nomyape;
+    }
 }

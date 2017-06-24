@@ -1,43 +1,106 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $profesore->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $profesore->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Profesores'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
-<div class="profesores form large-9 medium-8 columns content">
-    <?= $this->Form->create($profesore) ?>
-    <fieldset>
-        <legend><?= __('Edit Profesore') ?></legend>
-        <?php
-            echo $this->Form->control('legajo_numero');
-            echo $this->Form->control('apellido');
-            echo $this->Form->control('nombre');
-            echo $this->Form->control('nro_documento');
-            echo $this->Form->control('direccion');
-            echo $this->Form->control('ciudad');
-            echo $this->Form->control('codigo_postal');
-            echo $this->Form->control('email');
-            echo $this->Form->control('cuit');
-            echo $this->Form->control('telefono');
-            echo $this->Form->control('celular');
-            echo $this->Form->control('nombre_contacto');
-            echo $this->Form->control('celular_contacto');
-            echo $this->Form->control('titulo');
-            echo $this->Form->control('observacion');
-            echo $this->Form->control('active');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+	<div class="col-log-10">
+	    <?= $this->Form->create($profesore) ?>
+	    <fieldset>
+	        <legend><?= __('Modificar Profesor') ?></legend>
+	      
+	        <div class="col-lg-5">
+	        <?php
+	       	 	echo $this->Form->control('legajo_numero',['label' => 'Legajo sistema anterior']);
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         	echo $this->Form->control('nro_documento',['label' => 'DNI']);
+			 ?>
+	         </div>
+	       
+	        <div class="col-lg-5">
+	        <?php
+	        	echo $this->Form->control('nombre');
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         	echo $this->Form->control('apellido');
+			 ?>
+	         </div>
+	         <div class="col-lg-5">
+	        <?php
+	        echo $this->Form->control('titulo');
+	        ?>
+	        </div>
+	         
+	       <div class="col-lg-5">
+	        <?php
+	        echo $this->Form->control('cuit',['label' => 'CUIT']);
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('email');
+			 ?>
+	         </div>
+	        <div class="col-lg-5">
+	        <?php
+	        echo $this->Form->control('direccion',['label' => 'Dirección']);
+	        ?>
+	        </div>
+	         <div class="col-lg-8">
+	        <?php
+	        echo $this->Form->control('direccion',['label' => 'Dirección']);
+	        ?>
+	        </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('codigo_postal',['label' => 'CP']);
+			 ?>
+	         </div>
+	         <div class="col-lg-5">
+	        <?php
+	        echo $this->Form->control('ciudad');
+	        ?>
+	        </div>
+	        
+	        <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('telefono',['label' => 'Tel. Fijo']);
+			 ?>
+	         </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('celular');
+			 ?>
+	         </div>
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('nombre_contacto',['label' => 'Contacto alternativo']);
+			 ?>
+	         </div>
+	        <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('celular_contacto');
+			 ?>
+	         </div>
+	         <div class="col-lg-10"> 
+	         <?php
+	         echo $this->Form->control('observacion',['label' => 'Obesrvación']);
+			 ?>
+	         </div>  
+	         <div class="col-lg-5"> 
+	         <?php
+	         echo $this->Form->control('active',['label' => 'Activo']);
+			 ?>
+	         </div>  
+	            
+
+	        
+	    
+	    	<div class="col-lg-10"> 
+	         <?=
+ 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-info']) 
+ 			 ?>
+	         </div>  
+	         </fieldset>
+	    <?= $this->Form->end() ?>
+	</div>
+

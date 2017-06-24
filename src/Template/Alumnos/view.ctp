@@ -1,4 +1,5 @@
-<div class="col-lg-8">
+
+<div class="col-lg-9">
    <div  style="margin-top:10px" class="row">
 	     <div class="col-lg-5">
 	     <h1 style="margin-top:10px"><?= h($alumno->presentacion) ?></h1>
@@ -12,17 +13,17 @@
 	<div class="col-lg-2 view-div borde"><?= __('DNI') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->nro_documento) ?></div>
 	<div class="col-lg-2 view-div borde"><?= __('Direccion') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->direccion) ?> </div>
+	<div class="col-lg-4 borde"><?= $alumno->direccion ? h($alumno->direccion) : "-" ?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Código Postal') ?></div>
-	<div class="col-lg-4 borde "><?= h($alumno->codigo_postal) ?></div>
+	<div class="col-lg-4 borde "><?=$alumno->codigo_postal ?  h($alumno->codigo_postal) : "-" ?></div>
 	<div class="col-lg-2 borde view-div"><?= __('Ciudad') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->ciudad) ?> </div>
+	<div class="col-lg-4 borde"><?= $alumno->ciudad ? h($alumno->ciudad) : "-"?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Celular') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->celular) ?></div>
+	<div class="col-lg-4 borde"><?= $alumno->celular ? h($alumno->celular) : "-"?></div>
 	<div class="col-lg-2 borde view-div"><?= __('Télefono') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->telefono) ?> </div>
+	<div class="col-lg-4 borde"><?= $alumno->telefono ? h($alumno->telefono) : "-"?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Email') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->email) ?> </div>
+	<div class="col-lg-4 borde"><?= $alumno->email ? h($alumno->email) : "-"?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('F Nac') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
 	<div class="col-lg-2 borde view-div"><?= __('Tutor') ?></div>
@@ -37,16 +38,16 @@
 	<div class="col-lg-2 borde"><?=$alumno->celular_padre ? h($alumno->celular_padre) : "-"?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Email tutor 2') ?></div>
 	<div class="col-lg-2 borde"><?=$alumno->email_padre ? h($alumno->email_padre) : "-" ?> </div>
-		<div class="col-lg-2 borde view-div"><?= __('Legajo') ?></div>
+	<div class="col-lg-2 borde view-div"><?= __('Legajo') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->id) ?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Legajo anterior') ?></div>
-	<div class="col-lg-4 borde"><?= h($alumno->legajo_numero) ?></div>
+	<div class="col-lg-4 borde"><?= $alumno->legajo_numero ? h($alumno->legajo_numero) : "-"?></div>
 	<div class="col-lg-2 borde view-div"><?= __('Arancel') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->monto_arancel) ?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Materiales') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->monto_materiales) ?> </div>
 			<div class="col-lg-2 borde view-div"><?= __('Colegio') ?></div>
-	<div class="col-lg-10 borde"><?= h($alumno->colegio) ?> </div>
+	<div class="col-lg-10 borde"><?= $alumno->colegio ? h($alumno->colegio) : "-"?> </div>
 			<div class="col-lg-2 borde view-div"><?= __('Alta en sistema') ?></div>
 	<div class="col-lg-4 borde"><?= h($alumno->created->format('d/m/Y')) ?> </div>
 			<div class="col-lg-2 borde view-div"><?= __('Modificado') ?></div>
@@ -128,4 +129,7 @@
         </table>
         <?php endif; ?>
     </div>
+</div>
+<div class="col-lg-1">
+	     <?php  echo $this->Html->link('test', ['action' => 'edit', $alumno->id],['class' => 'btn-sm btn-info']); ?>
 </div>

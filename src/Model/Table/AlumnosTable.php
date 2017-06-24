@@ -37,7 +37,7 @@ class AlumnosTable extends Table
         parent::initialize($config);
 
         $this->setTable('alumnos');
-        $this->setDisplayField('id');
+        $this->setDisplayField('presentacion');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -165,6 +165,7 @@ class AlumnosTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
+		$rules->add($rules->isUnique(['nro_documento']));
 
         return $rules;
     }

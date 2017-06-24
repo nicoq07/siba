@@ -33,4 +33,11 @@ class Horario extends Entity
         '*' => true,
         'id' => false
     ];
+    
+    public function _getPresentacion()
+    {
+    	$hora = date("H:i", strtotime($this->_properties['hora']));
+    	$nomyape = $this->_properties['nombre_dia'] . ' ' .$hora;
+    	return $nomyape;
+    }
 }

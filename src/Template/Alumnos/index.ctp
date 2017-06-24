@@ -31,12 +31,11 @@
 		 </div>
 	 </div>
 	   <?php echo $this->Form->end(); ?>
-    <table>
+    <table class= "table table-striped">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('nombre') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('fecha_nacimiento') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('direccion') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('telefono') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('celular') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('nro_documento',['label'  => 'DNI']) ?></th>
@@ -52,7 +51,6 @@
             <tr>
                 <td><?= h($alumno->presentacion) ?></td>
                 <td><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></td>
-                <td><?= h($alumno->direccion) ?></td>
                 <td><?= h($alumno->telefono) ?></td>
                 <td><?= h($alumno->celular) ?></td>
                 <td><?= h($alumno->nro_documento) ?></td>

@@ -111,6 +111,7 @@ class AlumnosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+            debug($alumno);
             if ($this->Alumnos->save($alumno)) {
                 $this->Flash->success(__('The alumno has been saved.'));
 

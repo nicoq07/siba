@@ -1,29 +1,20 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Horarios'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Ciclolectivo'), ['controller' => 'Ciclolectivo', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ciclolectivo'), ['controller' => 'Ciclolectivo', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Clases'), ['controller' => 'Clases', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Clase'), ['controller' => 'Clases', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="horarios form large-9 medium-8 columns content">
+<div class="col-lg-10">
     <?= $this->Form->create($horario) ?>
     <fieldset>
-        <legend><?= __('Add Horario') ?></legend>
-        <?php
-            echo $this->Form->control('ciclolectivo_id', ['options' => $ciclolectivo]);
-            echo $this->Form->control('nombre_dia');
-            echo $this->Form->control('hora');
-            echo $this->Form->control('active');
-        ?>
+       
+        <div class="col-lg-6 col-lg-offset-3">
+         <h3><?= __('Nuevo horario') ?></h3>
+	        <?php
+	            echo $this->Form->control('ciclolectivo_id', ['label' => 'Ciclo lectivo',  'options' => $ciclolectivo]);
+	            echo $this->Form->control('nombre_dia',['label' => 'Día','options' => $dias, 'value' => $dias ,'empty' => false]);
+	            echo $this->Form->control('hora',[ 'interval' => 15]);
+	            echo $this->Form->control('active',['label' => 'Activo']);
+	        ?>
+	         <?= $this->Form->button(__('Guardar'),['class' => 'btn-lg btn-success']) ?>
+        </div>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+   
+    
+   
     <?= $this->Form->end() ?>
 </div>
