@@ -33,6 +33,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  * @property bool $futuro_alumno
  * @property bool $active
+ * @property string $referencia_foto
  *
  * @property \App\Model\Entity\FotosAlumno[] $fotos_alumnos
  * @property \App\Model\Entity\PagosAlumno[] $pagos_alumnos

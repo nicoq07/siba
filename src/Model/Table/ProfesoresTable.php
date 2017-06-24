@@ -95,9 +95,7 @@ class ProfesoresTable extends Table
             ->notEmpty('nombre_contacto');
 
         $validator
-	        ->requirePresence('celular_contacto', 'create')
-	        ->notEmpty('celular_contacto');
-            
+            ->allowEmpty('celular_contacto');
 
         $validator
             ->allowEmpty('titulo');
@@ -109,6 +107,10 @@ class ProfesoresTable extends Table
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');
+
+        $validator
+            ->dateTime('fecha_nacimiento')
+            ->allowEmpty('fecha_nacimiento');
 
         return $validator;
     }

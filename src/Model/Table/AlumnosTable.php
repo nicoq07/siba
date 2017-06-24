@@ -9,7 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Alumnos Model
  *
- * @property \App\Model\Table\FotosAlumnosTable|\Cake\ORM\Association\HasMany $FotosAlumnos
  * @property \App\Model\Table\PagosAlumnosTable|\Cake\ORM\Association\HasMany $PagosAlumnos
  * @property \App\Model\Table\ClasesTable|\Cake\ORM\Association\BelongsToMany $Clases
  *
@@ -42,9 +41,6 @@ class AlumnosTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('FotosAlumnos', [
-            'foreignKey' => 'alumno_id'
-        ]);
         $this->hasMany('PagosAlumnos', [
             'foreignKey' => 'alumno_id'
         ]);
@@ -151,6 +147,9 @@ class AlumnosTable extends Table
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');
+        
+        $validator
+        	->allowEmpty('referencia_foto');
 
         return $validator;
     }
