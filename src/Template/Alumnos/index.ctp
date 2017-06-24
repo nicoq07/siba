@@ -25,8 +25,8 @@
 		 </div>
 		<div class ="col-lg-3">
 		 <?php
-            echo $this->Form->label('Palabra clave: ');
-            echo $this->Form->control('palabra_clave', ['label' => false, 'onchange'=>'document.getElementById("frmIndex").submit()']);
+			echo $this->Form->label('Búsqueda :');
+            echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Nombre, Apellido ó DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
 	 </div>

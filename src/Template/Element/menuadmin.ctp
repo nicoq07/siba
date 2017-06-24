@@ -36,8 +36,17 @@
 	      <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cursos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
-	             <li><?= $this->Html->link(h('Nuevo'), ['controller' =>'clases', 'action' => 'add']) ?></li>
-	             <li><?= $this->Html->link(h('Ver'), ['controller' =>'clases', 'action' => 'index']) ?></li>
+	             <li><?= $this->Html->link(h('Nueva clase'), ['controller' =>'clases', 'action' => 'add']) ?></li>
+	             <li><?= $this->Html->link(h('Ver clases'), ['controller' =>'clases', 'action' => 'index']) ?></li>
+	           	 <li class="divider"></li>
+	           	<li><?= $this->Html->link(h('Nueva disciplina'), ['controller' =>'disciplinas', 'action' => 'add']) ?></li>
+	             <li><?= $this->Html->link(h('Ver disciplinas'), ['controller' =>'disciplinas', 'action' => 'index']) ?></li>
+	           	 <li class="divider"></li>
+	           	 <li><?= $this->Html->link(h('Nuevo horario'), ['controller' =>'horarios', 'action' => 'add']) ?></li>
+	           	 <li><?= $this->Html->link(h('Ver horarios'), ['controller' =>'horarios', 'action' => 'index']) ?></li>
+	           	 <li class="divider"></li>
+	           	 <li><?= $this->Html->link(h('Nuevo cliclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'add']) ?></li>
+	           	 <li><?= $this->Html->link(h('Ver cliclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'index']) ?></li>
 	           
 	          </ul>
 	        </li>
