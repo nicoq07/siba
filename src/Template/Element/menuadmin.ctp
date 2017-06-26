@@ -45,8 +45,8 @@
 	           	 <li><?= $this->Html->link(h('Nuevo horario'), ['controller' =>'horarios', 'action' => 'add']) ?></li>
 	           	 <li><?= $this->Html->link(h('Ver horarios'), ['controller' =>'horarios', 'action' => 'index']) ?></li>
 	           	 <li class="divider"></li>
-	           	 <li><?= $this->Html->link(h('Nuevo cliclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'add']) ?></li>
-	           	 <li><?= $this->Html->link(h('Ver cliclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'index']) ?></li>
+	           	 <li><?= $this->Html->link(h('Nuevo cíclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'add']) ?></li>
+	           	 <li><?= $this->Html->link(h('Ver cíclo lectivo'), ['controller' =>'Ciclolectivo', 'action' => 'index']) ?></li>
 	           
 	          </ul>
 	        </li>

@@ -38,7 +38,7 @@ class ClasesTable extends Table
         parent::initialize($config);
 
         $this->setTable('clases');
-        $this->setDisplayField('id');
+        $this->setDisplayField('presentacion');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

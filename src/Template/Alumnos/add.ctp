@@ -1,5 +1,5 @@
 <div class="col-log-10">
-	   <?= $this->Form->create($alumno) ?>
+	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
 	        <legend><?= __('Nuevo alumno') ?></legend>
 	      
@@ -121,6 +121,7 @@
 			 ?>
 			 </div>
 			  <div class="col-lg-5"> 
+			 
 	         <?php
 	         echo $this->Form->control('futuro_alumno');
 			 ?>
@@ -128,7 +129,7 @@
 	         
 	         <div class="col-lg-5"> 
 	         <?php
-	         echo $this->Form->control('programa_adolecencia');
+	         echo $this->Form->control('programa_adolecencia',['label' => 'Adolescencia']);
 			 ?>
 	         </div> 
 	         <div class="col-lg-5"> 
@@ -136,9 +137,15 @@
 	         echo $this->Form->control('active',['label' => 'Activo']);
 			 ?>
 	         </div> 
+	         <div class="col-lg-8"> 
+	          <label for="foto"> Foto</label>
+	         <?=
+ 			 $this->Form->file('foto',['label' => 'Foto']) 
+ 			 ?>
+	         </div>
 	    	<div class="col-lg-10"> 
 	         <?=
- 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-info']) 
+ 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-success']) 
  			 ?>
 	         </div>
 	          

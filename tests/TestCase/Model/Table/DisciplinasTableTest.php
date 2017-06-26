@@ -28,9 +28,11 @@ class DisciplinasTableTest extends TestCase
         'app.clases',
         'app.profesores',
         'app.horarios',
+        'app.ciclolectivo',
         'app.alumnos',
-        'app.fotos_alumnos',
         'app.pagos_alumnos',
+        'app.users',
+        'app.roles',
         'app.clases_alumnos'
     ];
 

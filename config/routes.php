@@ -55,6 +55,12 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    
+        Router::scope('/alumnos', function ($routes) {
+        	$routes->extensions('pdf');
+        	$routes->connect('/view/*', ['controller' => 'Alumnos', 'action' => 'view']);
+        	$routes->fallbacks('InflectedRoute');
+        });
 
     /**
      * Connect catchall routes for all controllers.
@@ -74,6 +80,13 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->fallbacks(DashedRoute::class);
 });
+
+	//     Router::scope('/alumnos', function ($routes) {
+	//     	$routes->extensions('pdf');
+	//     	$routes->connect('/view/*', ['controller' => 'Alumnos', 'action' => 'view']);
+	//     	$routes->fallbacks('InflectedRoute');
+	//     });
+// 	Router::extensions(['pdf']);
 
 /**
  * Load all plugin routes. See the Plugin documentation on

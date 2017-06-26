@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Clase Entity
@@ -35,4 +36,19 @@ class Clase extends Entity
         '*' => true,
         'id' => false
     ];
+    public function _getPresentacion()
+    {
+    	$disciplinas = TableRegistry::get('Disciplinas');
+    	$disciplina = $disciplinas->get($this->disciplina_id);
+    	
+    	$profesores = TableRegistry::get('Profesores');
+    	$profe = $profesores->get($this->profesor_id);
+    	
+    	$horarios = TableRegistry::get('Horarios');
+    	$horario = $horarios->get($this->horario_id);
+    	
+    	$cadena = strtoupper($disciplina->descripcion) . ", " . $horario->presentacion. " con " . $profe->presentacion;
+    	
+    	return $cadena;
+    }
 }

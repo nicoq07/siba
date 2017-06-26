@@ -204,6 +204,19 @@ Type::build('timestamp')
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
 
+    Configure::write('CakePdf', [
+    		'engine' => [
+    				'className' => 'CakePdf.WkHtmlToPdf',
+    				'binary' => '/usr/local/bin/wkhtmltopdf', // Si estas en Mac OS X / Linux
+//     				'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+    				'options' => [
+    						'print-media-type' => false,
+    						'outline' => true,
+    						'dpi' => 96
+    				],
+    		],
+    		'download' => true
+    ]);
 /*
  * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
  * Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
@@ -221,12 +234,15 @@ Type::build('timestamp')
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
+Plugin::load('CakePdf', ['bootstrap' => true]);	
 Plugin::loadAll();
 
-error_reporting(0);
+// error_reporting(0);
 //CONSTANTES DE ROLES
 define('ADMINISTRADOR', 1);
 define('PROFESOR', 2);
 // define('CLIENTE', 3);
 // define('BLOQUEADO', 4);
 //FIN CONSTANTES DE ROLES
+
+

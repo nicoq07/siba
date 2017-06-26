@@ -43,4 +43,10 @@ class Profesore extends Entity
         '*' => true,
         'id' => false
     ];
+    
+    public function _getPresentacion()
+    {
+    	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
+    	return $nomyape;
+    }
 }

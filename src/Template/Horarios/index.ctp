@@ -1,6 +1,6 @@
 <div class="col-lg-10">
     <h3><?= __('Horarios') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('ciclolectivo_id',['label' => 'Ciclo Lectivo']) ?></th>

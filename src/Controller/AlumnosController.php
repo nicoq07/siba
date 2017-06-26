@@ -12,6 +12,10 @@ use App\Controller\AppController;
  */
 class AlumnosController extends AppController
 {
+	public function initialize()
+	{
+		parent::initialize();
+	}
 
     /**
      * Index method
@@ -68,7 +72,7 @@ class AlumnosController extends AppController
     public function view($id = null)
     {
         $alumno = $this->Alumnos->get($id, [
-            'contain' => ['Clases', 'FotosAlumnos', 'PagosAlumnos']
+            'contain' => ['Clases', 'PagosAlumnos']
         ]);
        
         $this->set('alumno', $alumno);
@@ -83,10 +87,20 @@ class AlumnosController extends AppController
     public function add()
     {
         $alumno = $this->Alumnos->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+        {
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+            if ($ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion))
+            {
+            	$alumno->referencia_foto = $ref;
+            }
+            else
+            {
+            	$this->Flash->error(__('Problema al guardar la foto del alumno.'));
+            }
             if ($this->Alumnos->save($alumno)) {
-                $this->Flash->success(__('The alumno has been saved.'));
+            	
+                $this->Flash->success(__('Alumno guardado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -111,9 +125,9 @@ class AlumnosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
-            debug($alumno);
+            
             if ($this->Alumnos->save($alumno)) {
-                $this->Flash->success(__('The alumno has been saved.'));
+                $this->Flash->success(__('Alumno actualizado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -142,5 +156,76 @@ class AlumnosController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function baja($id = null)
+    {
+    	$this->request->allowMethod(['post', 'delete']);
+    	$alumno = $this->Alumnos->get($id);
+    	$alumno->active = false;
+    	
+    	if ($this->Alumnos->save($alumno))
+    	{
+    		$alumno->clases->active = false;
+    		$this->Flash->success(__('Alumno dado de baja.'));
+    	}
+    	$this->Flash->error(__('Error al dar de baja, reintente!'));
+    	
+    	return $this->redirect(['action' => 'index']);
+    }
+    
+   
+    
+    public function fichaInterna($id)
+    {
+    	$alumno = $this->Alumnos->get($id, [
+    			'contain' => ['Clases', 'PagosAlumnos']
+    	]);
+		$this->prepararPDF($alumno,"interna","A6","landscape");
+    	
+    	$this->set(compact('alumno'));
+    	
+    }
+    
+    public function fichaExterna($id)
+    {
+    	$alumno = $this->Alumnos->get($id, [
+    			'contain' => ['Clases', 'PagosAlumnos']
+    	]);
+    	$this->prepararPDF($alumno);
+    	
+    	$this->set(compact('alumno'));
+    	
+    }
+    
+    
+    private function guardarImg($data,$alu)
+    {
+    	$uploadFile = WWW_ROOT  . 'img' . DS. 'alumnos' . DS;
+    	// debug($data); exit;
+    	if(!empty($data) && !empty($data['tmp_name']) && !$data['error'])
+    	{
+    		$referencia = $uploadFile .$alu. "-"  .$data['name'];
+    		
+    		if(!move_uploaded_file($data['tmp_name'],$referencia))
+    		{
+    			$this->Flash->error("Tenemos un problema para cargar la foto");
+    			return false;
+    		}
+    		return $alu. "-"  .$data['name'];
+    	}
+    	$this->Flash->error("Tenemos un problema para cargar la foto");
+    	return false;
+    }
+    
+    private function prepararPDF($alumno,string $tipo,string $tipoHoja, string $orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'pageSize' => $tipoHoja,
+    					'orientation' => $orientacion,
+    					'filename' => "Ficha $tipo de :" . $alumno->get('presentacion').'-'.$alumno->nro_documento. '.pdf'
+    			]
+    	]);
     }
 }

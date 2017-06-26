@@ -58,7 +58,6 @@ class DisciplinasTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('descripcion')
             ->requirePresence('descripcion', 'create')
             ->notEmpty('descripcion');
 

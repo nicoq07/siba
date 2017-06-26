@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * Disciplina Entity
  *
  * @property int $id
- * @property int $descripcion
+ * @property string $descripcion
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property bool $active

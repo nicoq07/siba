@@ -1,9 +1,7 @@
-<div class="col-lg-10">
+<div class="col-lg-6 col-lg-offset-1">
     <?= $this->Form->create($horario) ?>
     <fieldset>
-       
-        <div class="col-lg-6 col-lg-offset-3">
-         <h3><?= __('Nuevo horario') ?></h3>
+         <legend><?= __('Nueva horario') ?></legend>
 	        <?php
 	            echo $this->Form->control('ciclolectivo_id', ['label' => 'Ciclo lectivo',  'options' => $ciclolectivo]);
 	            echo $this->Form->control('nombre_dia',['label' => 'Día','options' => $dias, 'value' => $dias ,'empty' => false]);
@@ -11,7 +9,6 @@
 	            echo $this->Form->control('active',['label' => 'Activo']);
 	        ?>
 	         <?= $this->Form->button(__('Guardar'),['class' => 'btn-lg btn-success']) ?>
-        </div>
     </fieldset>
    
     

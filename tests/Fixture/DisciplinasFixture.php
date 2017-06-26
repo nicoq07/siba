@@ -18,7 +18,7 @@ class DisciplinasFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'descripcion' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'descripcion' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null, 'collate' => 'latin1_spanish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
@@ -40,9 +40,9 @@ class DisciplinasFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'descripcion' => 1,
-            'created' => '2017-06-18 23:05:21',
-            'modified' => '2017-06-18 23:05:21',
+            'descripcion' => 'Lorem ipsum dolor sit amet',
+            'created' => '2017-06-24 22:49:26',
+            'modified' => '2017-06-24 22:49:26',
             'active' => 1
         ],
     ];
