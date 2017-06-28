@@ -178,11 +178,8 @@ class AlumnosController extends AppController
     
     public function fichaInterna($id)
     {
-    	$alumno = $this->Alumnos->get($id, [
-    			'contain' => ['Clases', 'PagosAlumnos']
-    	]);
+    	$alumno = $this->Alumnos->get($id);
 		$this->prepararPDF($alumno,"interna","A6","landscape");
-    	
     	$this->set(compact('alumno'));
     	
     }
@@ -190,9 +187,9 @@ class AlumnosController extends AppController
     public function fichaExterna($id)
     {
     	$alumno = $this->Alumnos->get($id, [
-    			'contain' => ['Clases', 'PagosAlumnos']
+    			'contain' => ['Clases']
     	]);
-    	$this->prepararPDF($alumno);
+    	$this->prepararPDF($alumno,"externa","A5","portrait");
     	
     	$this->set(compact('alumno'));
     	
@@ -222,6 +219,10 @@ class AlumnosController extends AppController
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
     					'filename' => "Ficha $tipo de :" . $alumno->get('presentacion').'-'.$alumno->nro_documento. '.pdf'

@@ -1,7 +1,7 @@
 <div class="col-lg-8" style="padding: 0;">
    <div  style="margin-top:10px" class="row">
 	     <div class="col-lg-5">
-	     <h1 style="margin-top:10px"><?= h($alumno->presentacion) ?></h1>
+	     	<span style="font-size:5.50rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
 	      </div>
 	    <div class="col-lg-7">
 	     <?php  echo $this->Html->image('alumnos'.DS.$alumno->referencia_foto, ['alt' => $alumno->presentacion , 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); ?>
@@ -94,7 +94,7 @@
         <table class="table table-striped">
             <tr>
               
-                <th scope="col"><?= __('Detalle') ?></th>
+                <th width="60%" scope="col"><?= __('Detalle') ?></th>
                 <th scope="col"><?= __('Activa') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
