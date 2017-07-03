@@ -1,22 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 18-06-2017 a las 23:22:00
--- Versión del servidor: 5.7.14
--- Versión de PHP: 5.6.25
+-- Servidor: localhost:3306
+-- Tiempo de generación: 03-07-2017 a las 14:42:08
+-- Versión del servidor: 5.6.34
+-- Versión de PHP: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `sibadb`
@@ -46,8 +40,8 @@ CREATE TABLE `alumnos` (
   `observacion` text COLLATE latin1_spanish_ci,
   `programa_adolecencia` tinyint(1) NOT NULL DEFAULT '0',
   `colegio` varchar(255) COLLATE latin1_spanish_ci DEFAULT NULL,
-  `nombre_madre` varchar(128) COLLATE latin1_spanish_ci NOT NULL,
-  `nombre_padre` varchar(128) COLLATE latin1_spanish_ci NOT NULL,
+  `nombre_madre` varchar(128) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `nombre_padre` varchar(128) COLLATE latin1_spanish_ci DEFAULT NULL,
   `email_padre` varchar(128) COLLATE latin1_spanish_ci DEFAULT NULL,
   `email_madre` varchar(128) COLLATE latin1_spanish_ci DEFAULT NULL,
   `celular_padre` varchar(20) COLLATE latin1_spanish_ci DEFAULT NULL,
@@ -57,7 +51,8 @@ CREATE TABLE `alumnos` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `futuro_alumno` tinyint(1) NOT NULL DEFAULT '0',
-  `active` tinyint(1) NOT NULL DEFAULT '1'
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `referencia_foto` varchar(255) COLLATE latin1_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
@@ -115,7 +110,7 @@ CREATE TABLE `clases` (
 
 CREATE TABLE `clases_alumnos` (
   `id` int(11) NOT NULL,
-  `alumnno_id` int(11) NOT NULL,
+  `alumno_id` int(11) NOT NULL,
   `clase_id` int(11) NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
@@ -130,7 +125,7 @@ CREATE TABLE `clases_alumnos` (
 
 CREATE TABLE `disciplinas` (
   `id` int(11) NOT NULL,
-  `descripcion` int(11) NOT NULL,
+  `descripcion` varchar(100) COLLATE latin1_spanish_ci NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
@@ -149,36 +144,6 @@ CREATE TABLE `examenes` (
   `aprobado` tinyint(4) NOT NULL DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `fotos_alumnos`
---
-
-CREATE TABLE `fotos_alumnos` (
-  `id` int(11) NOT NULL,
-  `alumno_id` int(11) NOT NULL,
-  `referencia` varchar(50) COLLATE latin1_spanish_ci NOT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `fotos_profesores`
---
-
-CREATE TABLE `fotos_profesores` (
-  `id` int(11) NOT NULL,
-  `profesor_id` int(11) NOT NULL,
-  `referencia` varchar(50) COLLATE latin1_spanish_ci NOT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
@@ -235,11 +200,12 @@ CREATE TABLE `notificaciones` (
 CREATE TABLE `pagos_alumnos` (
   `id` int(11) NOT NULL,
   `alumno_id` int(11) NOT NULL,
+  `mes` varchar(2) COLLATE latin1_spanish_ci DEFAULT NULL COMMENT 'mes correspondiente al pago',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `monto` decimal(30,2) DEFAULT NULL,
   `pagado` tinyint(1) NOT NULL DEFAULT '0',
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
@@ -279,11 +245,12 @@ CREATE TABLE `profesores` (
   `celular` varchar(20) COLLATE latin1_spanish_ci DEFAULT NULL,
   `nombre_contacto` varchar(128) COLLATE latin1_spanish_ci NOT NULL,
   `celular_contacto` varchar(20) COLLATE latin1_spanish_ci DEFAULT NULL,
-  `titulo` varchar(128) COLLATE latin1_spanish_ci NOT NULL,
+  `titulo` varchar(128) COLLATE latin1_spanish_ci DEFAULT NULL,
   `observacion` text COLLATE latin1_spanish_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1'
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `fecha_nacimiento` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
@@ -342,6 +309,7 @@ CREATE TABLE `seguimientos_clases` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `dni` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
+  `profesor_id` int(11) DEFAULT NULL,
   `nombre` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
   `apellido` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
   `nombre_usuario` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
@@ -388,7 +356,7 @@ ALTER TABLE `clases`
 --
 ALTER TABLE `clases_alumnos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_AlumnoClase_idx` (`alumnno_id`),
+  ADD KEY `FK_AlumnoClase_idx` (`alumno_id`),
   ADD KEY `FK_ClaseClase_idx` (`clase_id`);
 
 --
@@ -403,20 +371,6 @@ ALTER TABLE `disciplinas`
 ALTER TABLE `examenes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_ClaseAlumnoExamen_idx` (`clase_alumno_id`);
-
---
--- Indices de la tabla `fotos_alumnos`
---
-ALTER TABLE `fotos_alumnos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_AlumnoFoto_idx` (`alumno_id`);
-
---
--- Indices de la tabla `fotos_profesores`
---
-ALTER TABLE `fotos_profesores`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ProfesorFoto_idx` (`profesor_id`);
 
 --
 -- Indices de la tabla `horarios`
@@ -487,7 +441,8 @@ ALTER TABLE `seguimientos_clases`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_RolUser_idx` (`rol_id`);
+  ADD KEY `FK_RolUser_idx` (`rol_id`),
+  ADD KEY `FK_ProfesorUser` (`profesor_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -497,7 +452,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `alumnos`
 --
 ALTER TABLE `alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT de la tabla `calificaciones`
 --
@@ -507,42 +462,32 @@ ALTER TABLE `calificaciones`
 -- AUTO_INCREMENT de la tabla `ciclolectivo`
 --
 ALTER TABLE `ciclolectivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `clases`
 --
 ALTER TABLE `clases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `clases_alumnos`
 --
 ALTER TABLE `clases_alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `disciplinas`
 --
 ALTER TABLE `disciplinas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `examenes`
 --
 ALTER TABLE `examenes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `fotos_alumnos`
---
-ALTER TABLE `fotos_alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `fotos_profesores`
---
-ALTER TABLE `fotos_profesores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `notas`
 --
@@ -557,17 +502,17 @@ ALTER TABLE `notificaciones`
 -- AUTO_INCREMENT de la tabla `pagos_alumnos`
 --
 ALTER TABLE `pagos_alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `pagos_conceptos`
 --
 ALTER TABLE `pagos_conceptos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `profesores`
 --
 ALTER TABLE `profesores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `puntos_examen`
 --
@@ -604,26 +549,14 @@ ALTER TABLE `clases`
 -- Filtros para la tabla `clases_alumnos`
 --
 ALTER TABLE `clases_alumnos`
-  ADD CONSTRAINT `FK_AlumnoClase` FOREIGN KEY (`alumnno_id`) REFERENCES `alumnos` (`id`),
-  ADD CONSTRAINT `FK_ClaseClase` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`);
+  ADD CONSTRAINT `FK_AlumnoClaseAlumno` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`),
+  ADD CONSTRAINT `FK_ClaseClaseAlumno` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`);
 
 --
 -- Filtros para la tabla `examenes`
 --
 ALTER TABLE `examenes`
   ADD CONSTRAINT `FK_ClaseAlumnoExamen` FOREIGN KEY (`clase_alumno_id`) REFERENCES `clases_alumnos` (`id`);
-
---
--- Filtros para la tabla `fotos_alumnos`
---
-ALTER TABLE `fotos_alumnos`
-  ADD CONSTRAINT `FK_AlumnoFoto` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`);
-
---
--- Filtros para la tabla `fotos_profesores`
---
-ALTER TABLE `fotos_profesores`
-  ADD CONSTRAINT `FK_ProfesorFoto` FOREIGN KEY (`profesor_id`) REFERENCES `profesores` (`id`);
 
 --
 -- Filtros para la tabla `horarios`
@@ -669,9 +602,6 @@ ALTER TABLE `seguimientos_clases`
 -- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
+  ADD CONSTRAINT `FK_ProfesorUser` FOREIGN KEY (`profesor_id`) REFERENCES `profesores` (`id`),
   ADD CONSTRAINT `FK_RolUser` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
