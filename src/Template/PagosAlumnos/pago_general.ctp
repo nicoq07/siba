@@ -16,7 +16,7 @@
      		 echo $this->Form->month('mes',['type' => 'mob', 'empty' => false]);
       ?> 
         <div class="col-lg-12" id="campos_dinamicos" >
-       		<div class="col-lg-10" id="div-concepto" >   <?php  echo $this->Form->control('concepto[]',['label' => 'Concepto']); ?> </div>
+       		<div class="col-lg-10" id="div-concepto" >   <?php  echo $this->Form->control('concepto',['label' => 'Concepto']); ?> </div>
          </div>
           
         <?= $this->Form->button(__('Generar e Imprimir'),['class' => 'btn-md btn-success']) ?>
