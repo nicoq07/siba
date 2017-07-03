@@ -197,17 +197,20 @@ CREATE TABLE `notificaciones` (
 -- Estructura de tabla para la tabla `pagos_alumnos`
 --
 
-CREATE TABLE `pagos_alumnos` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `pagos_alumnos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `alumno_id` int(11) NOT NULL,
   `mes` varchar(2) COLLATE latin1_spanish_ci DEFAULT NULL COMMENT 'mes correspondiente al pago',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `monto` decimal(30,2) DEFAULT NULL,
   `pagado` tinyint(1) NOT NULL DEFAULT '0',
-  `user_id` int(11) DEFAULT NULL
+  `fecha_pagado` datetime DEFAULT NULL COMMENT 'fecha cuando se paga ',
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_AlumnoPago_idx` (`alumno_id`),
+  KEY `FK_UserPago_idx` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
-
 -- --------------------------------------------------------
 
 --

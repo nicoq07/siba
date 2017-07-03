@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\I18n\Time;
 /**
  * PagosAlumnos Controller
  *
@@ -110,10 +111,7 @@ class PagosAlumnosController extends AppController
 	    				$pagosConceptos->save($pc);
 	    			}
 	    			
-	    			
-	    			$this->Flash->success(__('Pago generado!'));
-	    			
-	    			return $this->redirect($this->referer());
+	    			return $this->redirect(['action' => 'pago_manual_pdf', $pagosAlumno->id ,'_ext' => 'pdf']);
 	    		}
 	    		$this->Flash->error(__('El pago no pudo ser generado. Avise al administrador'));
 	    	}
@@ -122,26 +120,35 @@ class PagosAlumnosController extends AppController
 	    	$this->set(compact('pagosAlumno', 'alumnos', 'users','alumno'));
 	    	$this->set('_serialize', ['pagosAlumno']);
 	 }
+	 
+	 public function pagoManualPdf($idPago)
+	 {
+	 	$pagoAlumno = $this->PagosAlumnos->get($idPago, [ 
+	 			'contain' => ['Alumnos','PagosConceptos']
+	 	]);
+	 	
+	 	$this->prepararPDF($pagoAlumno->mes, $pagoAlumno->alumno->nro_documento, "A5", "portrait");
+	 	$this->set(compact('pagoAlumno'));
+	 	
+	 }
+	 
 	 public function pagoGeneral()
 	 {
 	    	//Guarda base y genera pdf de todos los alumnos
-	    	$pagosAlumno = $this->PagosAlumnos->newEntity();
-	    	if ($this->request->is('post')) {
-	    		$pagosAlumno = $this->PagosAlumnos->patchEntity($pagosAlumno, $this->request->getData());
-	    		if ($this->PagosAlumnos->save($pagosAlumno)) {
-	    			$this->Flash->success(__('The pagos alumno has been saved.'));
-	    			
-	    			return $this->redirect(['action' => 'index']);
-	    		}
-	    		$this->Flash->error(__('The pagos alumno could not be saved. Please, try again.'));
-	    	}
-	    	$alumnos = $this->PagosAlumnos->Alumnos->find('list', ['limit' => 200]);
-	    	$users = $this->PagosAlumnos->Users->find('list', ['limit' => 200]);
-	    	$this->set(compact('pagosAlumno', 'alumnos', 'users'));
-	    	$this->set('_serialize', ['pagosAlumno']);
-	    	
+	 	//return $this->redirect(['action' => 'pago_general_pdf', $pagosAlumnos,'_ext' => 'pdf']);
+	 	if ($this->request->is(['patch', 'post', 'put'])) {
+	 		debug($this->request->getData());
+	 	}
+	 	$this->paginate = [];
+	 	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
+	 	
+	 	$this->set(compact('pagosAlumnos'));
 	}
     
+	public function pagoGeneralPdf($pagosAlumos)
+	{
+		
+	}
     /**
      * Edit method
      *
@@ -194,6 +201,7 @@ class PagosAlumnosController extends AppController
     	if ($this->request->is(['patch', 'post', 'put'])) 
     	{
     		$pagosAlumno->pagado = true;
+    		$pagosAlumno->fecha_pagado = new Time();
     		if ($this->PagosAlumnos->save($pagosAlumno)) 
     		{
     			$this->Flash->success(__('Pago registrado.'));
@@ -206,5 +214,20 @@ class PagosAlumnosController extends AppController
     	}
     	return $this->redirect($this->referer());
     	
+    }
+    
+    private function prepararPDF($mes,$dniAlumno,$tipoHoja,$orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
+    					'pageSize' => $tipoHoja,
+    					'orientation' => $orientacion,
+    					'filename' => "Pago de " .$mes.' de '.$dniAlumno. '.pdf'
+    			]
+    	]);
     }
 }

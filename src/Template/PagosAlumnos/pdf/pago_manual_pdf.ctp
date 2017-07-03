@@ -1,0 +1,1 @@
+<div> <?= debug( $pagoAlumno->pagos_conceptos) ?> </div>
