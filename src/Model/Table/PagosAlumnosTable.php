@@ -46,8 +46,11 @@ class PagosAlumnosTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'user_id'
+        ]);
+        
+        $this->hasMany('PagosConceptos', [
+        		'foreignKey' => 'pago_alumno_id'
         ]);
     }
 
@@ -62,6 +65,9 @@ class PagosAlumnosTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->allowEmpty('mes');
 
         $validator
             ->decimal('monto')

@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$description = 'Iba Escuela ' .date("Y");
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>:
+        <?= $description ?>:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>

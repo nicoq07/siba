@@ -42,7 +42,7 @@ use Cake\Routing\Route\DashedRoute;
  *
  */
 Router::defaultRouteClass(DashedRoute::class);
-
+Router::extensions(['pdf']);
 Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -56,11 +56,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
     
-        Router::scope('/alumnos', function ($routes) {
-        	$routes->extensions('pdf');
-        	$routes->connect('/view/*', ['controller' => 'Alumnos', 'action' => 'view']);
-        	$routes->fallbacks('InflectedRoute');
-        });
+    
+   
 
     /**
      * Connect catchall routes for all controllers.
@@ -80,14 +77,18 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->fallbacks(DashedRoute::class);
 });
-
+	
 	//     Router::scope('/alumnos', function ($routes) {
 	//     	$routes->extensions('pdf');
 	//     	$routes->connect('/view/*', ['controller' => 'Alumnos', 'action' => 'view']);
 	//     	$routes->fallbacks('InflectedRoute');
 	//     });
 // 	Router::extensions(['pdf']);
-
+// 	Router::scope('/alumnos', function ($routes) {
+// 		$routes->extensions('pdf');
+// 		$routes->connect('/view/*', ['controller' => 'Alumnos', 'action' => 'view']);
+// 		$routes->fallbacks('InflectedRoute');
+// 	});
 /**
  * Load all plugin routes. See the Plugin documentation on
  * how to customize the loading of plugin routes.

@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $alumno_id
+ * @property string $mes
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property float $monto

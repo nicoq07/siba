@@ -51,7 +51,16 @@
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION CLASES-->
-	          
+	              <!--          SECCION PROFESORES-->
+	      <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pagos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+	          <ul class="dropdown-menu forAnimate" role="menu">
+	            <li><?= $this->Html->link(h('Nuevo'), ['controller' =>'PagosAlumnos', 'action' => 'add']) ?></li>
+	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'PagosAlumnos', 'action' => 'index']) ?></li>
+	           
+	          </ul>
+	        </li>
+	           <!--  FIN SECCION PROFESORES-->
 	        
 	      </ul>
 	    </div>

@@ -26,14 +26,14 @@ class PagosAlumnosTableTest extends TestCase
     public $fixtures = [
         'app.pagos_alumnos',
         'app.alumnos',
-        'app.fotos_alumnos',
         'app.clases',
         'app.profesores',
         'app.horarios',
         'app.ciclolectivo',
         'app.disciplinas',
         'app.clases_alumnos',
-        'app.users'
+        'app.users',
+        'app.roles'
     ];
 
     /**
