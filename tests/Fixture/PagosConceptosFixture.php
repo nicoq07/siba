@@ -50,8 +50,8 @@ class PagosConceptosFixture extends TestFixture
             'cantidad' => 1,
             'monto' => 1.5,
             'detalle' => 'Lorem ipsum dolor sit amet',
-            'created' => '2017-06-18 23:05:22',
-            'modified' => '2017-06-18 23:05:22'
+            'created' => '2017-07-02 19:04:41',
+            'modified' => '2017-07-02 19:04:41'
         ],
     ];
 }

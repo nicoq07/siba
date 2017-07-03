@@ -67,21 +67,28 @@
         <?php if (!empty($alumno->pagos_alumnos)): ?>
         <table class="table table-striped">
             <tr>
-                <th scope="col"><?= __('Código') ?></th>
-                <th scope="col"><?= __('Fecha registro') ?></th>
+                <th width = "10%" scope="col"><?= __('Código') ?></th>
+                <th scope="col"><?= __('Fecha generado') ?></th>
+                <th scope="col"><?= __('Ult. modificación') ?></th>
+                <th scope="col"><?= __('Mes') ?></th>
                 <th scope="col"><?= __('Monto') ?></th>
                 <th scope="col"><?= __('Recibió el pago:') ?></th>
-                <th scope="col" class="actions"><?= __('Acciones') ?></th>
+                <th scope="col"><?= __('Pagado') ?></th>
+                <th  width = "20%" scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
             <?php foreach ($alumno->pagos_alumnos as $pagosAlumnos): ?>
             <tr>
                 <td><?= h($pagosAlumnos->id) ?></td>
-                <td><?= h($pagosAlumnos->created) ?></td>
-                <td><?= h($pagosAlumnos->monto) ?></td>
+                <td><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
+                <td><?= h($pagosAlumnos->modified->format('d/m/Y')) ?></td>
+                 <td><?= h(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
+                <td title="Detalles:&#10;<?php foreach ($pagosAlumno->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= h($pagosAlumnos->monto) ?></td>
                 <td><?= h($pagosAlumnos->user_id) ?></td>
+                <td><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['controller' => 'PagosAlumnos', 'action' => 'view', $pagosAlumnos->id],  ['class' => 'btn-sm btn-info']) ?>
                     <?= $this->Html->link(__('Editar'), ['controller' => 'PagosAlumnos', 'action' => 'edit', $pagosAlumnos->id],  ['class' => 'btn-sm btn-warning']) ?>
+              		<?= $pagosAlumnos->pagado ? h("")  : $this->Form->postLink(__('Pagar'), ['controller' => 'PagosAlumnos', 'action' => 'pagar', $pagosAlumnos->id], ['class' => 'btn-sm btn-success','confirm' => __('Marcar como pago?', $pagosAlumnos->id)])?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -27,14 +27,14 @@ class PagosConceptosTableTest extends TestCase
         'app.pagos_conceptos',
         'app.pagos_alumnos',
         'app.alumnos',
-        'app.fotos_alumnos',
         'app.clases',
         'app.profesores',
         'app.horarios',
         'app.ciclolectivo',
         'app.disciplinas',
         'app.clases_alumnos',
-        'app.users'
+        'app.users',
+        'app.roles'
     ];
 
     /**

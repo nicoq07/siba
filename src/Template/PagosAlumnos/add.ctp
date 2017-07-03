@@ -1,29 +1,11 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Pagos Alumnos'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Alumnos'), ['controller' => 'Alumnos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Alumno'), ['controller' => 'Alumnos', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="pagosAlumnos form large-9 medium-8 columns content">
-    <?= $this->Form->create($pagosAlumno) ?>
+<div class="col-lg-3 col-lg-offset-3">
+	<fieldset>
+  		<legend><?= h("¿Qué pago vas a generar?") ?></legend>
+   </fieldset>
+ </div>
+<div class="col-lg-3 col-lg-offset-3">
     <fieldset>
-        <legend><?= __('Add Pagos Alumno') ?></legend>
-        <?php
-            echo $this->Form->control('alumno_id', ['options' => $alumnos]);
-            echo $this->Form->control('monto');
-            echo $this->Form->control('pagado');
-            echo $this->Form->control('user_id', ['options' => $users]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+          <?= $this->Html->link('General',['action' => 'pagoGeneral' ],['class' => 'btn-lg btn-success pull-left']) ?>
+         <?= $this->Html->link('Manual',['action' => 'pagoManual' ],['class' => 'btn-lg btn-info pull-right']) ?>
+     </fieldset>
 </div>

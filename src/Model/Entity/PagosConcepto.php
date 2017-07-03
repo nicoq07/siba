@@ -32,4 +32,10 @@ class PagosConcepto extends Entity
         '*' => true,
         'id' => false
     ];
+    
+    public function _getDetalles()
+    {
+    	$detalles = $this->_properties['detalle'] . ' ' . $this->_properties['monto'];
+    	return $detalles;
+    }
 }
