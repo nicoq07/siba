@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Alumno Entity
@@ -60,5 +61,27 @@ class Alumno extends Entity
     {
     	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
     	return $nomyape;
+    }
+    
+    public function pagoElMes(string $mes)
+    {
+    	/*
+    	 * select * from alumnos WHERE alumnos.id in (select pa.alumno_id from pagos_alumnos as pa
+            where pa.alumno_id = 10 AND
+            pa.mes = 04 AND
+            YEAR(pa.created) = 2017)
+    	 */
+    	$connection = ConnectionManager::get('default');
+    	$result = $connection->execute("SELECT 1 FROM alumnos WHERE alumnos.id in 
+			(select pa.alumno_id from pagos_alumnos as pa
+            where pa.alumno_id = ".$this->_properties['id']." AND
+            pa.mes = $mes AND
+            YEAR(pa.created) = ".date('Y').")");
+    	
+    	if($result->fetch())
+    	{
+    		return true;
+    	}
+    	return false;
     }
 }

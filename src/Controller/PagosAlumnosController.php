@@ -97,7 +97,8 @@ class PagosAlumnosController extends AppController
 	    		$pagosAlumno->monto = $total;
 	    		$pagosAlumno->pagado = false;
 	    		$pagosAlumno->user_id = null;
-	    		if ($idPago = $this->PagosAlumnos->save($pagosAlumno)) {
+	    		if ($idPago = $this->PagosAlumnos->save($pagosAlumno)) 
+	    		{
 	    			
 	    			$pagosConceptos = TableRegistry::get('PagosConceptos');
 	    			
@@ -134,12 +135,54 @@ class PagosAlumnosController extends AppController
 	 
 	 public function pagoGeneral()
 	 {
+	 	//activos = 0
+	 	//sin pago del mes = 1
+	 	
 	    	//Guarda base y genera pdf de todos los alumnos
 	 	//return $this->redirect(['action' => 'pago_general_pdf', $pagosAlumnos,'_ext' => 'pdf']);
-	 	if ($this->request->is(['patch', 'post', 'put'])) {
-	 		debug($this->request->getData());
-	 	}
-	 	$this->paginate = [];
+	 	if ($this->request->is(['patch', 'post', 'put'])) 
+	 	{
+	 		$mes = $this->request->getData('mes')['month'];
+	 		$concepto = $this->request->getData('concepto');
+	 		$noCobroAQuienPago = $this->request->getData('tienepago');
+	 		
+	 		$alumnosTable = TableRegistry::get('Alumnos');
+	 		$alumnos = $alumnosTable->find()->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false]);
+	 		foreach ($alumnos as $alumno)
+	 		{
+	 			debug($alumno->pagoElMes($mes));
+	 			debug($noCobroAQuienPago);
+	 			//si pago y no quieren que vuelva a generar un pago
+	 			if ($alumno->pagoElMes($mes) && $noCobroAQuienPago)
+	 			{
+	 				//si pago y no quieren que le vuelva cobrar sigo al siguente alumno
+	 				continue;
+	 			}
+	 			else 
+	 			{
+	 				$pagosAlumno = $this->PagosAlumnos->newEntity();
+	 				$pagosAlumno->mes = $mes;
+	 				$pagosAlumno->monto = $alumno->monto_arancel;
+	 				$pagosAlumno->pagado = false;
+	 				$pagosAlumno->user_id = null;
+	 				$pagosAlumno->alumno_id = $alumno->id;
+	 				if ($idPago = $this->PagosAlumnos->save($pagosAlumno))
+	 				{
+	 					$pagosConceptos = TableRegistry::get('PagosConceptos');
+	 						$pc = $pagosConceptos->newEntity();
+	 						$pc->pago_alumno_id = $idPago->id;
+	 						$pc->monto = $alumno->monto_arancel;
+	 						$pc->detalle = $concepto;
+	 						$pc->cantidad = 1;
+	 						$pagosConceptos->save($pc);
+	 					
+	 					//return $this->redirect(['action' => 'pago_manual_pdf', $pagosAlumno->id ,'_ext' => 'pdf']);
+	 				}
+	 				
+	 			}// fin else si no pago
+	 		}// fin foreach
+	 	} //fin post
+	 	
 	 	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
 	 	
 	 	$this->set(compact('pagosAlumnos'));

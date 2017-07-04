@@ -3,7 +3,8 @@
     <fieldset>
         <legend><?= __('Nuevo pago general') ?></legend>
         <?php
-        echo $this->Form->radio('quienes', ['Activos','Sin pagos en el mes','Todos']);
+        echo $this->Form->label('tienepago', ['label' => 'Sin pagos en el mes']);
+        echo $this->Form->checkbox('tienepago');
       
         ?>
         <div class="col-lg-12 separador">
