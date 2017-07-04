@@ -128,7 +128,7 @@ class PagosAlumnosController extends AppController
 	 			'contain' => ['Alumnos','PagosConceptos']
 	 	]);
 	 	
-	 	$this->prepararPDF($pagoAlumno->mes, $pagoAlumno->alumno->nro_documento, "A5", "portrait");
+	 	$this->prepararPDFManual($pagoAlumno->mes, $pagoAlumno->alumno->nro_documento, "A5", "portrait");
 	 	$this->set(compact('pagoAlumno'));
 	 	
 	 }
@@ -150,8 +150,6 @@ class PagosAlumnosController extends AppController
 	 		$alumnos = $alumnosTable->find()->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false]);
 	 		foreach ($alumnos as $alumno)
 	 		{
-	 			debug($alumno->pagoElMes($mes));
-	 			debug($noCobroAQuienPago);
 	 			//si pago y no quieren que vuelva a generar un pago
 	 			if ($alumno->pagoElMes($mes) && $noCobroAQuienPago)
 	 			{
@@ -181,6 +179,7 @@ class PagosAlumnosController extends AppController
 	 				
 	 			}// fin else si no pago
 	 		}// fin foreach
+	 		return $this->redirect(['action' => 'pago_general_pdf', $mes ,'_ext' => 'pdf']);
 	 	} //fin post
 	 	
 	 	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
@@ -188,9 +187,14 @@ class PagosAlumnosController extends AppController
 	 	$this->set(compact('pagosAlumnos'));
 	}
     
-	public function pagoGeneralPdf($pagosAlumos)
+	public function pagoGeneralPdf($mes)
 	{
-		
+		$pagosAlumnos = $this->PagosAlumnos->find()
+		->contain( ['Alumnos','PagosConceptos']) 
+		->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y')]);
+				
+		$this->prepararPDFGeneral($mes, "A5", "portrait");
+		$this->set(compact('pagosAlumnos'));
 	}
     /**
      * Edit method
@@ -259,7 +263,7 @@ class PagosAlumnosController extends AppController
     	
     }
     
-    private function prepararPDF($mes,$dniAlumno,$tipoHoja,$orientacion)
+    private function prepararPDFManual($mes,$dniAlumno,$tipoHoja,$orientacion)
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
@@ -269,7 +273,22 @@ class PagosAlumnosController extends AppController
     					'margin-top' => 0,
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
-    					'filename' => "Pago de " .$mes.' de '.$dniAlumno. '.pdf'
+    					'filename' => "Pago del mes " .$mes.' de '.$dniAlumno. '.pdf'
+    			]
+    	]);
+    }
+    
+    private function prepararPDFGeneral($mes,$tipoHoja,$orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
+    					'pageSize' => $tipoHoja,
+    					'orientation' => $orientacion,
+    					'filename' => "Pagos del mes " .$mes. '.pdf'
     			]
     	]);
     }

@@ -1,3 +1,5 @@
+ <?= 
+$this->assign('title', 'Pagos de alumnos');?>
 <div class="pagosAlumnos index large-9 medium-8 columns content">
     <h3><?= __('Pagos Alumnos') ?></h3>
     <div class = "col-lg-3 separador">
