@@ -96,3 +96,11 @@ span.title
 	dislplay:block;
 	margin: 20px 0px 0px 5px;
 }
+.tabla-borde-solid
+{
+  border-top-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+	
+}

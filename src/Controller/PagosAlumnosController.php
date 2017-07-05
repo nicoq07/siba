@@ -190,9 +190,10 @@ class PagosAlumnosController extends AppController
 	public function pagoGeneralPdf($mes)
 	{
 		$pagosAlumnos = $this->PagosAlumnos->find()
-		->contain( ['Alumnos','PagosConceptos']) 
+		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
+				,'PagosConceptos']) 
 		->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y')]);
-				
+		debug($pagosAlumnos->first()->alumno->clases[0]->disciplina); exit();
 		$this->prepararPDFGeneral($mes, "A5", "landscape");
 		$this->set(compact('pagosAlumnos'));
 	}
