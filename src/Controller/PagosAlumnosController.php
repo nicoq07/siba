@@ -193,7 +193,6 @@ class PagosAlumnosController extends AppController
 		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 				,'PagosConceptos']) 
 		->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y')]);
-		debug($pagosAlumnos->first()->alumno->clases[0]->disciplina); exit();
 		$this->prepararPDFGeneral($mes, "A5", "landscape");
 		$this->set(compact('pagosAlumnos'));
 	}
@@ -292,5 +291,6 @@ class PagosAlumnosController extends AppController
     					'filename' => "Pagos del mes " .$mes. '.pdf'
     			]
     	]);
+    	
     }
 }

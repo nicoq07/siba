@@ -1,5 +1,5 @@
 <div class="col-lg-8">
-    <h3><?= h("Pago de ". h(date('F', strtotime(date('Y')."-".$pagosAlumno->mes."-01"))) ." de : " . $pagosAlumno->alumno->presentacion) ?></h3>
+    <h3><?= h("Pago de ". __(h(date('F', strtotime(date('Y')."-".$pagosAlumno->mes."-01")))) ." de : " . $pagosAlumno->alumno->presentacion) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Recibido por :') ?></th>

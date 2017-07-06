@@ -13,7 +13,8 @@
         "friendsofcake/bootstrap-ui": "^0.6.1",
         "fzaninotto/faker": "^1.6",
         "phpoffice/phpexcel": "^1.8",
-        "friendsofcake/CakePdf": "^3.2"
+        "friendsofcake/CakePdf": "^3.2",
+        "cakephp/localized": "^3.3"
     },
     "require-dev": {
         "psy/psysh": "@stable",

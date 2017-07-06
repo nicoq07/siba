@@ -66,4 +66,7 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+    public function initialize() {
+    	I18n::locale('es');
+    }
 }

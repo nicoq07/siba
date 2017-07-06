@@ -4,7 +4,7 @@
 	  <tbody>
 	    <tr>
 	      <td height="100%" rowspan="5" width="15%" style="padding: 0; margin:0; border:0.5px solid black;">
-	      	<table height="100%">
+	      	<table style="height:100%;"  >
 	      		<tr>
 	      			<td class="td-troquel" ><div class="div-troquel"> <?= h($pagoalumno->created->format('d/m/y'))?> </div></td>
 	      		</tr>
@@ -15,7 +15,7 @@
 	      			<td class="td-troquel" ><div class="div-troquel" ><?= h($pagoalumno->alumno->nombre) ;?></div><div class="div-troquel" > <?=  h($pagoalumno->alumno->apellido)?></div></td>
 	      		</tr>
 	      		<tr>
-	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Mes :")?></div> <div class="div-troquel" ><?php echo date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01"))?></div></td>
+	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Mes :")?></div> <div class="div-troquel" ><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?></div></td>
 	      		</tr>
 	      		<tr>
 	      			<td class="td-troquel" >
@@ -28,7 +28,7 @@
 	      	</table>
 		  </td>
 	      <td height="45%" width="85%" style="padding: 0;">
-	      	<table height="100%" width="100%" style="padding: 0; margin:0; border:1px solid black;">
+	      	<table  style="height:100%; width:100%; padding: 0; margin:0; border:1px solid black;">
 			  <tbody >   
 				<tr>
 				  <td align="center"  height="30%" width="80%" style="border: 1px solid;"> 
@@ -56,7 +56,7 @@
 				 			$clases .= $clase->disciplina->descripcion. " ";
 				 		 endforeach;?>
 				 		 <p style="padding:0; margin:0; display:block; text-align:left; font-size: 1rem; font-style:bold;">  <?= h($clases) ?> </p>
-				</td>
+					</td>
 				</tr>
 			  </tbody>
 			</table>
@@ -67,13 +67,18 @@
                 <table  style="height:100%; width:75%; border:1px solid black;" align="left">
                   <tbody>
                     <tr  height="15%">
-                      <td style="border: 1px solid;" bgcolor="" width="75%" ></td>
+                      <td style="border: 1px solid;" bgcolor="" width="75%" ><p style="text-align:left; font-size: 1rem; margin:0; padding:0;">Conceptos</p></td>
                     </tr>
                     <tr  height="85%">
-                      <td style="border: 1px solid;" bgcolor="" width="75%"></td>
+                      <td style="border: 1px solid;" bgcolor="" width="75%">
+                        <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
+                            <p style="text-align:left; font-size: 0.9rem;"> <?= h($concepto->detalle) ?></p>
+                        <?php endforeach;    ?>
+                        </td>
                     </tr>
                   </tbody>
                 </table>
+               
                 <table style="height:100%; width:25%; border:1px solid black;" align="right">
                   <tbody>
                     <tr height="15%">
@@ -81,19 +86,32 @@
                       <td style="border: 1px solid;" bgcolor="" width="25%" ></td>
                     </tr>
                     <tr height="70%">
-                      <td style="border: 1px solid;" bgcolor="" width="25%"></td>
-                      <td style="border: 1px solid;" bgcolor="" width="25%"></td>
+                      <td style="border: 1px solid;" bgcolor="" width="25%"> <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
+                            <p style="text-align:center; font-size: 0.9rem;"> <?= $this->Number->format($concepto->monto,[
+                                  'before' => '$',
+                                  'locale' => 'es_Ar'
+                                  ])?></p>
+                        <?php endforeach;    ?></td>
+                      <td style="border: 1px solid;" bgcolor="" width="25%"> <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
+                            <p style="text-align:center; font-size: 0.9rem;"> <?=  $this->Number->format($concepto->monto,[
+                                  'before' => '$',
+                                  'locale' => 'es_Ar'
+                                  ])?></p>
+                        <?php endforeach;    ?></td>
                     </tr>
                     <tr height="15%">
-                      <td style="border: 1px solid;"  bgcolor="" width="25%"></td>
-                      <td style="border: 1px solid;" bgcolor="" width="25%"></td>
+                      <td style="border: 1px solid;"  bgcolor="" width="25%"><p style="text-align:left; font-size: 0.7rem;"> A pagar por pronto pago </p></td>
+                      <td style="border: 1px solid;" bgcolor="" width="25%"> <p style="text-align:center; font-size: 0.9rem;"> <?= $this->Number->format($pagoalumno->monto,[
+                                  'before' => 'Total $',
+                                  'locale' => 'es_Ar'
+                                  ])?></p></td>
                     </tr>
                   </tbody>
                 </table>
             </td>
 	    </tr>
 	    <tr>
-	      <td style="border: 1px solid;" height="10% " width="90%">
+	      <td style="border: 3px solid;" height="10% " width="90%">
             
           </td>
 	    </tr>
