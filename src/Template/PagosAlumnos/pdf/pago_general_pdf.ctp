@@ -1,11 +1,10 @@
 <?php foreach ($pagosAlumnos as $pagoalumno) : ?>
 <div>
-	<table style="width:2600px; height: 1630px" class="table tabla-borde-solid" border="1">
-	
+	<table style="width:970px; height: 648px; border:3px solid black;" class="table">
 	  <tbody>
 	    <tr>
-	      <td height="1630px" rowspan="5" width="300px" >
-	      	<table class="table" border="1">
+	      <td height="100%" rowspan="5" width="15%" >
+	      	<table height="100%" class="table" border="0">
 	      		<tr>
 	      			<td class="td-troquel" ><div class="div-troquel"> <?= h($pagoalumno->created->format('d/m/y'))?> </div></td>
 	      		</tr>
@@ -19,76 +18,84 @@
 	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Mes :")?></div> <div class="div-troquel" ><?php echo date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01"))?></div></td>
 	      		</tr>
 	      		<tr>
-	      			<td class="td-troquel" ></td>
-	      		</tr>
-	      		<tr>
-	      			<td class="td-troquel" ></td>
-	      		</tr>
-	      		<tr>
 	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Total :")?></div> <div class="div-troquel" ><?php echo $this->Number->format($pagoalumno->monto,[
                                   'before' => '$',
                                   'locale' => 'es_Ar'
                                   ])?></div></td>
 	      		</tr>
-	      	
 	      	</table>
 		  </td>
-	      	<td width="2300px" height="630px">
-	      	<table style="width:2300px; height: 830px; padding: 0;" border="1">
+	      <td height="45%" width="85%" style="padding: 0;">
+	      	<table height="100%" width="100%" style="padding: 0; border:1px solid black;">
 			  <tbody >
 				<tr>
-				  <td align="center"  height="300px" width="1950">
-					<p style="padding:0; margin:0; text-align:center; font-size: 7rem; font-style:bold;">  <?= h("I.B.A Lugano") ?> </p>
+				  <td align="center"  height="30%" width="80%" style="border-style:solid;"> 
+					<p style="padding:0; margin:0; text-align:center; font-size: 2rem; font-style:bold;  border:1px solid black;">  <?= h("I.B.A Lugano") ?> </p>
 				 </td>
-				  <td align="center"  height="500px" width="350" rowspan="2" >
-					<?php  echo $this->Html->image('logoIba.png', ['height' => "350" , 'width' => "350",'fullBase' => true]); ?>
-					<p style="padding:0; margin-top:50px; display:block; text-align:center; font-size: 2.5rem; font-style:bold; border-style:solid">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
+				  <td style="border-style:solid;" align="center"  height="55%" width="20%" rowspan="2" >
+					<?php  echo $this->Html->image('logoIba.png', ['height' => '120px', 'width' => '120px', 'fullBase' => true]); ?>
+					<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 0.8rem; font-style:bold; border-style:solid">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
 				</td>
 				</tr>
 				<tr>
-				  <td align="center" height="200px;" width="1950">
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 3rem; font-style:bold;">  <?= h("Instituto Buenos Aires") ?> </p>
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 3rem; font-style:bold;">  <?= h("Dir. Profesor Hugo Castro") ?> </p>
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 2rem; font-style:bold;">  <?= h("José León Suarez 5246 CP(1439) - Tel: 4638-5062") ?> </p>
+				  <td style="border-style:solid;" align="center" height="25%" width="80%">
+						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("Instituto Buenos Aires") ?> </p>
+						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("Dir. Profesor Hugo Castro") ?> </p>
+						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("José León Suarez 5246 CP(1439) - Tel: 4638-5062") ?> </p>
 				  </td>
 				</tr>
 				<tr>
-				  <td colspan="2" height="330px;" width="2300px">
-				  		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 2.5rem; font-style:bold;">  <?= h("Alumno: ") ?> </p>
-				 		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 3rem; font-style:bold;">  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?> </p>
-				 		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 2.5rem; font-style:bold;">  <?= h("Cursos: ") ?> </p>
-				 		<?php foreach ($pagoalumno->alumno->clases as $clase):
-				 			$clases = $clase->descripcion . " " . $clases;
+				  <td colspan="2" height="45%;" width="100%">
+				  		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 0.7rem;  font-style:bold;">  <?= h("Alumno: ") ?> </p>
+				 		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 0.9rem; font-style:bold;">  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?> </p>
+				 		<?php
+				 		$clases = "Cursos: ";
+				 			foreach ($pagoalumno->alumno->clases as $clase):
+				 			$clases .= $clase->disciplina->descripcion. " ";
 				 		 endforeach;?>
-				  </td>
+				 		 <p style="padding:0; margin:0; display:block; text-align:left; font-size: 0.8rem; font-style:bold;">  <?= h($clases) ?> </p>
+				</td>
 				</tr>
 			  </tbody>
 			</table>
 	       </td>
 	    </tr>
 	    <tr>
-	      <td width="2300" height="800px">
-	        <table align="right" style=" height:800px;  width:350px;" border="1">
-	          <tbody>
-	            <tr height="50px">
-	              <td width="175px" align="center" bgcolor="#E3CCCE"> </td>
-	              <td width="175px" >&nbsp;</td>
-	            </tr>
-	            <tr>
-	              <td height="600px">&nbsp;</td>
-	              <td height="600px">&nbsp;</td>
-	            </tr>
-	            <tr height="50px">
-	              <td>&nbsp;</td>
-	              <td>&nbsp;</td>
-	            </tr>
-	          </tbody>
-	        </table>
-	
-	      </td>
+	       <td height="45%" width="85%" style="padding: 0;">
+                <table  style="height:100%; width:75%; border:1px solid black;" align="left">
+                  <tbody>
+                    <tr height="15%">
+                      <td bgcolor="" width="75%" ></td>
+                    </tr>
+                    <tr height="85%">
+                      <td bgcolor="" width="75%"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table style="height:100%; width:25%; border:1px solid black;" align="right">
+                  <tbody>
+                    <tr height="15%">
+                      <td bgcolor="" width="25%"> </td>
+                      <td bgcolor="" width="25%" ></td>
+                    </tr>
+                    <tr height="70%">
+                      <td bgcolor="" width="25%"></td>
+                      <td bgcolor="" width="25%"></td>
+                    </tr>
+                    <tr height="15%">
+                      <td bgcolor="" width="25%"></td>
+                      <td bgcolor="" width="25%"></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </td>
 	    </tr>
 	    <tr>
-	      <td bgcolor="#4F224B" height="100px" width="2300">&nbsp;</td>
+	      <td height="10% " width="90%">
+            <div style="height:100%; width:100%; border:1px solid black;">
+                a
+              </div>
+            </td>
 	    </tr>
 	  </tbody>
 	</table>
