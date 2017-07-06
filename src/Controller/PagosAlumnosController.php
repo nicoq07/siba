@@ -124,12 +124,12 @@ class PagosAlumnosController extends AppController
 	 
 	 public function pagoManualPdf($idPago)
 	 {
-	 	$pagoAlumno = $this->PagosAlumnos->get($idPago, [ 
-	 			'contain' => ['Alumnos','PagosConceptos']
+	 	$pagoalumno = $this->PagosAlumnos->get($idPago, [ 
+	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
+	 					,'PagosConceptos']
 	 	]);
-	 	
-	 	$this->prepararPDFManual($pagoAlumno->mes, $pagoAlumno->alumno->nro_documento, "A5", "portrait");
-	 	$this->set(compact('pagoAlumno'));
+	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A5", "portrait");
+	 	$this->set(compact('pagoalumno'));
 	 	
 	 }
 	 
