@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
+use Cake\I18n\Time;
 
 /**
  * Alumnos Controller
@@ -89,22 +91,34 @@ class AlumnosController extends AppController
         $alumno = $this->Alumnos->newEntity();
         if ($this->request->is('post')) 
         {
+        	$this->insertarSeguimiento(13,array(7,8)); exit;
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
-            if ($ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion))
-            {
-            	$alumno->referencia_foto = $ref;
-            }
-            else
-            {
-            	$this->Flash->error(__('Problema al guardar la foto del alumno.'));
-            }
-            if ($this->Alumnos->save($alumno)) {
-            	
-                $this->Flash->success(__('Alumno guardado.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The alumno could not be saved. Please, try again.'));
+            
+	            if ($ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion))
+	            {
+	            	$alumno->referencia_foto = $ref;
+	            	if ($this->Alumnos->save($alumno)) 
+	            	{
+	            		
+	            		if (!empty($this->request->getData("clases")))
+	            		{
+	            			if (!$this->insertarSeguimiento($alumno->id, $this->request->getData("clases")['_ids']))
+	            			{
+	            				$this->Alumnos->delete($alumno);
+	            				$this->Flash->error(__('Problema al crear los seguimientos. Alumno no guardado'));
+	            			}
+	            		}
+	            		
+	            		$this->Flash->success(__('Alumno guardado.'));
+	            		return $this->redirect(['action' => 'index']);
+	            	}
+	            }
+	            else
+	            {
+	            	$this->Flash->error(__('Problema al guardar la foto. Alumno no guardado'));
+	            }
+            
+      	  	
         }
         $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
         $this->set(compact('alumno', 'clases'));
@@ -229,4 +243,41 @@ class AlumnosController extends AppController
     			]
     	]);
     }
+
+    private function insertarSeguimiento($idAlumno, $idsClases)
+    {
+    	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
+    	$Seguimientos = TableRegistry::get('SeguimientosClases');
+    	foreach ($idsClases as  $pos => $idClase)
+    	{
+    		$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+    		$idClaseAlumno = $ClasesAlumno->find('all')
+    		->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
+    		$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id,
+    				['contain' => ['Clases' => ['Horarios' => 'Ciclolectivo'] ] ]) ;
+    		debug($claseAlumno);
+    		$fechaInicio = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+    		$fechaFin = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
+    		for($i=$fechaInicio; $i<=$fechaFin; $i+=86400)
+    		{
+    			$dia = date('N', $i);
+    			if($dia == $days[$claseAlumno->clase->horario->nombre_dia])
+    			{
+//     				echo $clase->horario->nombre_dia. " ". date ("Y-m-d", $i)."<br>";
+    				$seguimiento = $Seguimientos->newEntity();
+    				$seguimiento->clase_alumno_id  = $claseAlumno->id;
+    				$seguimiento->observacion = "SIN DATOS";
+    				$seguimiento->presente = false;
+    				$seguimiento->fecha = date ("Y-m-d H:i:s", $i);
+    				if (!$Seguimientos->save($seguimiento))
+    				{
+    					$this->Flash->error("Seguimiento de fecha " .$seguimiento->fecha . " no creado");
+    				}
+    				
+    			}
+    		}
+    	}
+    	return true;
+    }
+    
 }

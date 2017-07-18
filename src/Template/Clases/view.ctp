@@ -1,8 +1,10 @@
 <div class="col-lg-10">
+	&nbsp;
     <h3><?= h($clase->presentacion) ?></h3>
+    &nbsp;
     <div class="related">
     	<div class="row">
-       		<div class="col-lg-6"> <h4><?= __('Alumnos en esta clase') ?></h4> </div>
+       		<div class="col-lg-6"> <h4><?= __('Alumnos en esta clase:') ?></h4> </div>
        		<div class="col-lg-3 pull-right">  <?= $this->Html->link(__('Editar clase'), ['action' => 'edit', $clase->id],['class' => 'btn btn-warning']) ?></div>
         </div>
         <?php if (!empty($clase->alumnos)): ?>
@@ -12,7 +14,7 @@
                 <th scope="col"><?= __('Programa Adolecencia') ?></th>
                 <th scope="col"><?= __('Futuro Alumno') ?></th>
                 <th scope="col"><?= __('Activo') ?></th>
-                <th scope="col" class="actions"><?= __('Acciones') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones sobre alumnos') ?></th>
             </tr>
             <?php foreach ($clase->alumnos as $alumnos): ?>
             <tr>

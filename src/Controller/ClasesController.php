@@ -21,7 +21,10 @@ class ClasesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Profesores', 'Horarios', 'Disciplinas']
+            'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
+        	'order' => [
+        				'Horarios.nombre_dia' => 'desc'
+        		]
         ];
         $clases = $this->paginate($this->Clases);
 

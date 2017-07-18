@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
 /**
  * Horario Entity
@@ -36,8 +37,9 @@ class Horario extends Entity
     
     public function _getPresentacion()
     {
-    	$hora = date("H:i", strtotime($this->_properties['hora']));
-    	$nomyape = $this->_properties['nombre_dia'] . ' ' .$hora;
+    	
+    	$hora = new Time($this->_properties['hora']);
+    	$nomyape = __($this->_properties['nombre_dia']) . ' ' .$hora->format('H:i');
     	return $nomyape;
     }
 }

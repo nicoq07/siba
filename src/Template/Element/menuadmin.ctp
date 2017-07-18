@@ -51,7 +51,7 @@
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION CLASES-->
-	              <!--          SECCION PROFESORES-->
+	              <!--          SECCION PAGOS-->
 	      <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pagos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
@@ -60,8 +60,16 @@
 	           
 	          </ul>
 	        </li>
-	           <!--  FIN SECCION PROFESORES-->
-	        
+	           <!--  FIN SECCION PAGOS-->
+	             <!--          SECCION SEGUIMIENTOS-->
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seguimientos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+	          <ul class="dropdown-menu forAnimate" role="menu">
+	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosClases', 'action' => 'index']) ?></li>
+	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'SeguimientosClases', 'action' => 'index']) ?></li>
+	          </ul>
+	        </li>
+	         <!--  FIN SECCION SEGUIMIENTOS-->
 	      </ul>
 	    </div>
 	  </div>

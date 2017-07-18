@@ -14,7 +14,7 @@
             <?php foreach ($horarios as $horario): ?>
             <tr>
                 <td><?= $horario->has('ciclolectivo') ? $this->Html->link($horario->ciclolectivo->descripcion, ['controller' => 'Ciclolectivo', 'action' => 'view', $horario->ciclolectivo->id]) : '' ?></td>
-                <td><?= h($horario->nombre_dia) ?></td>
+                <td><?=__($horario->nombre_dia)?></td>
                 <td><?= h($horario->hora->format('H:i')) ?></td>
                 <td><?= $horario->active ? h("Sí") : h("No") ?></td>
                 <td class="actions">

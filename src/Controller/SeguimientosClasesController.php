@@ -55,6 +55,7 @@ class SeguimientosClasesController extends AppController
     {
         $seguimientosClase = $this->SeguimientosClases->newEntity();
         if ($this->request->is('post')) {
+        	debug($this->request->getData()); exit;
             $seguimientosClase = $this->SeguimientosClases->patchEntity($seguimientosClase, $this->request->getData());
             if ($this->SeguimientosClases->save($seguimientosClase)) {
                 $this->Flash->success(__('The seguimientos clase has been saved.'));
