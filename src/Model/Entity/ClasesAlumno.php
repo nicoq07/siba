@@ -2,7 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-
+use Cake\ORM\TableRegistry;
 /**
  * ClasesAlumno Entity
  *
@@ -32,4 +32,17 @@ class ClasesAlumno extends Entity
         '*' => true,
         'id' => false
     ];
+    
+    
+    public function existeSeguimiento()
+    {
+    	$Seguimientos = TableRegistry::get("SeguimientosClases");
+    	
+    	if($Seguimientos->exists(["clase_alumno_id" => $this->id]))
+    	{
+    		return true;
+    	}
+    	
+    	return false;
+    }
 }

@@ -80,8 +80,8 @@
             <tr>
                 <td><?= h($pagosAlumnos->id) ?></td>
                 <td><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
-                 <td><?= h(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
-                <td title="Detalles:&#10;<?php foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
+                 <td><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
+                <td title="Detalles:&#10;<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
                 <td><?= h($pagosAlumnos->user_id) ?></td>
                  <td><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
                 <td><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
