@@ -25,16 +25,6 @@ class SeguimientosClasesTableTest extends TestCase
      */
     public $fixtures = [
         'app.seguimientos_clases',
-        'app.clases_alumnos',
-        'app.alumnos',
-        'app.fotos_alumnos',
-        'app.pagos_alumnos',
-        'app.users',
-        'app.clases',
-        'app.profesores',
-        'app.horarios',
-        'app.ciclolectivo',
-        'app.disciplinas',
         'app.calificaciones'
     ];
 

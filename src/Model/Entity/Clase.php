@@ -51,4 +51,16 @@ class Clase extends Entity
     	
     	return $cadena;
     }
+    
+    public function existeSeguimiento($idAlumno)
+    {
+    	$Seguimientos = TableRegistry::get("SeguimientosClases");
+    	
+    	if($Seguimientos->exists(["clase_id" => $this->id, "alumno_id" => $idAlumno]))
+    	{
+    		return true;
+    	}
+    	
+    	return false;
+    }
 }

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Clases Controller
@@ -42,10 +43,13 @@ class ClasesController extends AppController
     public function view($id = null)
     {
         $clase = $this->Clases->get($id, [
-            'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos']
+        		'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos']
         ]);
-
-        $this->set('clase', $clase);
+		
+        $clasesAlumnosTable = TableRegistry::get('ClasesAlumnos');
+        $clasesAlumnos = $clasesAlumnosTable->find('all')
+        ->where(['ClasesAlumnos.clase_id' => $id , 'ClasesAlumnos.active' => true]);
+        $this->set(['clase','clasesAlumnos'], [$clase,$clasesAlumnos]);
         $this->set('_serialize', ['clase']);
     }
 
@@ -88,12 +92,24 @@ class ClasesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
+            
+            if (!empty($this->request->getData("alumnos")['_ids']))
+            {
+	            if ($clase->isDirty("alumnos"))
+	            {
+	            	if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
+	            	{
+	            		$this->Flash->error(__('Problema creando los seguimientos.'));
+	            	}
+	            	
+	            }
+            }
             if ($this->Clases->save($clase)) {
-                $this->Flash->success(__('The clase has been saved.'));
+                $this->Flash->success(__('Clase guardada'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The clase could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error guardando la clase'));
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200]);
@@ -122,4 +138,85 @@ class ClasesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function desactivarClaseAlumno($alumnoId,$claseId)
+    {
+    	$this->request->allowMethod(['post', 'delete']);
+    	
+    	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+    	$id = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])->where(['ClasesAlumnos.alumno_id' => $alumnoId, 'ClasesAlumnos.clase_id' => $claseId])->first();
+    	$claseAlumno = $ClasesAlumno->get($id['id']);
+    	
+    	if ($ClasesAlumno->delete($claseAlumno))
+    	{
+    		$this->Flash->success(__('Alumno quitado de la clase.'));
+    	}
+    	else 
+    	{
+    		$this->Flash->error(__('Error quitando al alumno de la clase.'));
+    	}
+    	
+    	return $this->redirect($this->referer());
+    	
+    }
+    
+    private function insertarSeguimiento($idClase,$idsAlumnos)
+    {
+    	//creo un array con los dias con clave y valor para despues poder compararlo con la funcion DATE
+    	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
+    	
+    	//me traigo la tabla de seguimientos
+    	$Seguimientos = TableRegistry::get('SeguimientosClases');
+    	$AlumnosTable= TableRegistry::get('Alumnos');
+    	$clase = $this->Clases->get($idClase,['contain' => ['Horarios'  => ['Ciclolectivo']]]);
+    	
+    	//Recorro los ids de clases que voy a necesitar para crear los seguimientos
+    	foreach ($idsAlumnos as $pos => $idAlumno)
+    	{
+    		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
+    		//$alumno = $AlumnosTable->get($idAlumno);
+    		
+    		if(!$clase->existeSeguimiento($idAlumno))
+    		{
+    			//Creo las fechas de incio y fin para  recorrerlas
+    			$fechaInicio = strtotime($clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+    			$fechaFin = strtotime($clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
+    			
+    			//recorro por dia hasta la fecha fin
+    			for($i=$fechaInicio; $i<=$fechaFin; $i+=86400)
+    			{
+    				//me traigo el nombre del dia
+    				$dia = date('N', $i);
+    				
+    				//si el dia es el mismo que que el dia de la clase, tengo que crear un seguimiento para ese dia
+    				if($dia == $days[$clase->horario->nombre_dia])
+    				{
+    					//     				echo $clase->horario->nombre_dia. " ". date ("Y-m-d", $i)."<br>";
+    					$seguimiento = $Seguimientos->newEntity(
+    							[
+    									'clase_id' => $clase->id,
+    									'alumno_id' => $idAlumno,
+    									'observacion' => "SIN DATOS",
+    									'presente' => false,
+    									'fecha' => new  \DateTime(date('Y-m-d H:i:s', $i)),
+    									'created' => new \DateTime('now'),
+    									'created' => new \DateTime('now')
+    									
+    							]);
+    					//$seguimiento->fecha = date ("Y-m-d H:i:s", $i);
+    					//guardo y valido
+    					if (!$Seguimientos->save($seguimiento))
+    					{
+    						$this->Flash->error("Seguimiento de fecha " .$seguimiento->fecha . " no creado");
+    						return false;
+    					}
+    					
+    				}
+    			}
+    		}
+    	} //fin foreach de IDSclases
+    	return true;
+    }
+    
+    
 }

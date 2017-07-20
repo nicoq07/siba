@@ -9,7 +9,8 @@ use Cake\Validation\Validator;
 /**
  * SeguimientosClases Model
  *
- * @property \App\Model\Table\ClasesAlumnosTable|\Cake\ORM\Association\BelongsTo $ClasesAlumnos
+ * @property |\Cake\ORM\Association\BelongsTo $Clases
+ * @property |\Cake\ORM\Association\BelongsTo $Alumnos
  * @property \App\Model\Table\CalificacionesTable|\Cake\ORM\Association\BelongsTo $Calificaciones
  *
  * @method \App\Model\Entity\SeguimientosClase get($primaryKey, $options = [])
@@ -41,8 +42,11 @@ class SeguimientosClasesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('ClasesAlumnos', [
-            'foreignKey' => 'clase_alumno_id',
+        $this->belongsTo('Clases', [
+            'foreignKey' => 'clase_id'
+        ]);
+        $this->belongsTo('Alumnos', [
+            'foreignKey' => 'alumno_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Calificaciones', [
@@ -86,7 +90,8 @@ class SeguimientosClasesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['clase_alumno_id'], 'ClasesAlumnos'));
+        $rules->add($rules->existsIn(['clase_id'], 'Clases'));
+        $rules->add($rules->existsIn(['alumno_id'], 'Alumnos'));
         $rules->add($rules->existsIn(['calificacion_id'], 'Calificaciones'));
 
         return $rules;

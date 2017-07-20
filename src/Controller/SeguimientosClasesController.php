@@ -20,12 +20,47 @@ class SeguimientosClasesController extends AppController
      */
     public function index()
     {
+    	
+    	$where1 = null;
+    	$where2 = null;
+    	$where3 = null;
+    	$where4 = null;
+    	
+    	if ($this->request->is('post'))
+    	{
+    		
+    		$esActive = $this->request->getData()['activos'];
+    		$where1= ['Alumnos.active' => $esActive];
+    		
+    		$esAdolecencia =$this->request->getData()['adolecencia'];
+    		$where2= ['Alumnos.programa_adolecencia' => $esAdolecencia];
+    		
+    		if (!(empty($this->request->getData()['clase'])))
+    		{
+    			$idClase = $this->request->getData()['clase'];
+    			$where3= ["Clases.id = $idClase"];
+    		}
+    		
+    		if (!(empty($this->request->getData()['palabra_clave_alumno'])))
+    		{
+    			$palabra = $this->request->getData()['palabra_clave_alumno'];
+    			$where4= ["Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%'"];
+    		}
+    	}
+    	else
+    	{
+    		$where1 =['alumnos.active' => true];
+    	}
+    	
+    	///
         $this->paginate = [
-            'contain' => ['ClasesAlumnos', 'Calificaciones']
+            'contain' => ['Clases', 'Alumnos', 'Calificaciones'],
+        	'conditions' => [$where1,$where2,$where3,$where4]
         ];
+        debug( $this->paginate);
         $seguimientosClases = $this->paginate($this->SeguimientosClases);
-
-        $this->set(compact('seguimientosClases'));
+		$clases = $this->SeguimientosClases->Clases->find('list')->where(['Clases.active' => true])->toArray();
+        $this->set(compact('seguimientosClases','clases'));
         $this->set('_serialize', ['seguimientosClases']);
     }
 
@@ -39,7 +74,7 @@ class SeguimientosClasesController extends AppController
     public function view($id = null)
     {
         $seguimientosClase = $this->SeguimientosClases->get($id, [
-            'contain' => ['ClasesAlumnos', 'Calificaciones']
+            'contain' => ['Clases' => ['Horarios'], 'Alumnos', 'Calificaciones']
         ]);
 
         $this->set('seguimientosClase', $seguimientosClase);
@@ -55,7 +90,6 @@ class SeguimientosClasesController extends AppController
     {
         $seguimientosClase = $this->SeguimientosClases->newEntity();
         if ($this->request->is('post')) {
-        	debug($this->request->getData()); exit;
             $seguimientosClase = $this->SeguimientosClases->patchEntity($seguimientosClase, $this->request->getData());
             if ($this->SeguimientosClases->save($seguimientosClase)) {
                 $this->Flash->success(__('The seguimientos clase has been saved.'));
@@ -64,9 +98,10 @@ class SeguimientosClasesController extends AppController
             }
             $this->Flash->error(__('The seguimientos clase could not be saved. Please, try again.'));
         }
-        $clasesAlumnos = $this->SeguimientosClases->ClasesAlumnos->find('list', ['limit' => 200]);
+        $clases = $this->SeguimientosClases->Clases->find('list', ['limit' => 200]);
+        $alumnos = $this->SeguimientosClases->Alumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClases->Calificaciones->find('list', ['limit' => 200]);
-        $this->set(compact('seguimientosClase', 'clasesAlumnos', 'calificaciones'));
+        $this->set(compact('seguimientosClase', 'clases', 'alumnos', 'calificaciones'));
         $this->set('_serialize', ['seguimientosClase']);
     }
 
@@ -91,9 +126,10 @@ class SeguimientosClasesController extends AppController
             }
             $this->Flash->error(__('The seguimientos clase could not be saved. Please, try again.'));
         }
-        $clasesAlumnos = $this->SeguimientosClases->ClasesAlumnos->find('list', ['limit' => 200]);
+        $clases = $this->SeguimientosClases->Clases->find('list', ['limit' => 200]);
+        $alumnos = $this->SeguimientosClases->Alumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClases->Calificaciones->find('list', ['limit' => 200]);
-        $this->set(compact('seguimientosClase', 'clasesAlumnos', 'calificaciones'));
+        $this->set(compact('seguimientosClase', 'clases', 'alumnos', 'calificaciones'));
         $this->set('_serialize', ['seguimientosClase']);
     }
 

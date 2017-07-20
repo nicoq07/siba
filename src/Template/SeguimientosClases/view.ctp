@@ -1,48 +1,28 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\SeguimientosClase $seguimientosClase
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Seguimientos Clase'), ['action' => 'edit', $seguimientosClase->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Seguimientos Clase'), ['action' => 'delete', $seguimientosClase->id], ['confirm' => __('Are you sure you want to delete # {0}?', $seguimientosClase->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Seguimientos Clases'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Seguimientos Clase'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Clases Alumnos'), ['controller' => 'ClasesAlumnos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Clases Alumno'), ['controller' => 'ClasesAlumnos', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Calificaciones'), ['controller' => 'Calificaciones', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Calificacione'), ['controller' => 'Calificaciones', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
 <div class="seguimientosClases view large-9 medium-8 columns content">
-    <h3><?= h($seguimientosClase->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Clases Alumno') ?></th>
-            <td><?= $seguimientosClase->has('clases_alumno') ? $this->Html->link($seguimientosClase->clases_alumno->id, ['controller' => 'ClasesAlumnos', 'action' => 'view', $seguimientosClase->clases_alumno->id]) : '' ?></td>
+            <th scope="row"><?= __('Clase') ?></th>
+            <td><?= $seguimientosClase->has('clase') ? $this->Html->link($seguimientosClase->clase->presentacion, ['controller' => 'Clases', 'action' => 'view', $seguimientosClase->clase->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Calificacione') ?></th>
+            <th scope="row"><?= __('Alumno') ?></th>
+            <td><?= $seguimientosClase->has('alumno') ? $this->Html->link($seguimientosClase->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'view', $seguimientosClase->alumno->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Calificación') ?></th>
             <td><?= $seguimientosClase->has('calificacione') ? $this->Html->link($seguimientosClase->calificacione->id, ['controller' => 'Calificaciones', 'action' => 'view', $seguimientosClase->calificacione->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($seguimientosClase->id) ?></td>
+            <th scope="row"><?= __('Fecha de clase') ?></th>
+            <td><?= __(date("l",strtotime($seguimientosClase->fecha->format('d-m-Y')))) . " " .h($seguimientosClase->fecha->format('d-m-Y')) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Fecha') ?></th>
-            <td><?= h($seguimientosClase->fecha) ?></td>
+            <th scope="row"><?= __('Fecha de creación de seguimiento') ?></th>
+            <td><?= h($seguimientosClase->created->format('d-m-Y')) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($seguimientosClase->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($seguimientosClase->modified) ?></td>
+            <th scope="row"><?= __('Fecha de modificación de seguimiento') ?></th>
+            <td><?= h($seguimientosClase->modified->format('d-m-Y')) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Presente') ?></th>

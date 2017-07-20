@@ -44,6 +44,9 @@ class AlumnosTable extends Table
         $this->hasMany('PagosAlumnos', [
             'foreignKey' => 'alumno_id'
         ]);
+//         $this->hasMany('ClasesAlumnos', [
+//         		'foreignKey' => 'alumno_id'
+//         ]);
         $this->belongsToMany('Clases', [
             'foreignKey' => 'alumno_id',
             'targetForeignKey' => 'clase_id',

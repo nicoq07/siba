@@ -26,4 +26,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+     <?= $this->element('footer') ?>
 </div>

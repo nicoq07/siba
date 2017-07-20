@@ -24,8 +24,7 @@
                 <td><?= $alumnos->active ? h("Sí") : h("No")?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['controller' => 'Alumnos', 'action' => 'view', $alumnos->id],['class' => 'btn-sm btn-info']) ?>
-                    <?= $this->Html->link(__('Editar'), ['controller' => 'Alumnos', 'action' => 'edit', $alumnos->id],['class' => 'btn-sm btn-warning']) ?>
-                    <?= $this->Form->postLink(__('Borrar'),['controller' => 'Alumnos', 'action' => 'delete', $alumnos->id],['class' => 'btn-sm btn-danger','confirm' => __('Dar de baja a {0}?', $alumnos->presentacion)]) ?>
+                    <?= $this->Form->postLink(__('Quitar de la clase'),['action' => 'desactivarClaseAlumno', $alumnos->id,$clase->id],['class' => 'btn-sm btn-danger','confirm' => __('Quitar de la clase a {0}?', $alumnos->presentacion)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

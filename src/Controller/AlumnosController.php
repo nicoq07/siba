@@ -72,11 +72,34 @@ class AlumnosController extends AppController
      */
     public function view($id = null)
     {
-        $alumno = $this->Alumnos->get($id, [
-            'contain' => ['Clases', 'PagosAlumnos']
-        ]);
        
-        $this->set('alumno', $alumno);
+    	$ids = null;
+    	
+        $clasesTable= TableRegistry::get('Clases');
+        $clases = $clasesTable->find()
+        ->select('Clases.id')
+        ->matching('Alumnos', function ($q) use ($id) {
+        	return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
+        })
+        ->toArray();
+        foreach ($clases as $c)
+        {
+        	$ids[] = $c['id'];
+        }
+        if (empty($ids))
+        {
+        	$where = ['Clases.id IN ' => -1];
+        }
+        else
+        {
+        	$where = ['Clases.id IN ' => $ids];
+        }
+        
+        $alumno = $this->Alumnos->get($id, [
+        		'contain' => ['PagosAlumnos','Clases' => ['conditions' => $where]]
+        ]);
+        
+        $this->set(['alumno','clases'],[$alumno,$clases]);
         $this->set('_serialize', ['alumno']);
     }
 
@@ -90,7 +113,6 @@ class AlumnosController extends AppController
         $alumno = $this->Alumnos->newEntity();
         if ($this->request->is('post')) 
         {
-        	$this->insertarSeguimiento(13,array(7,8)); exit;
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
             
 	            if ($ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion))
@@ -142,10 +164,14 @@ class AlumnosController extends AppController
             
 			if ($alumno->isDirty("clases"))
 			{
-				if (!$this->insertarSeguimiento($alumno->id, $this->request->getData("clases")['_ids']))
+				if (!empty($this->request->getData("clases")['_ids']))
 				{
-					$this->Flash->error(__('Problema al crear los seguimientos.'));
+					if (!$this->insertarSeguimiento($alumno->id, $this->request->getData("clases")['_ids']))
+					{
+						$this->Flash->error(__('Problema creando los seguimientos.'));
+					}
 				}
+				
 			}
 			
             if ($this->Alumnos->save($alumno)) 
@@ -196,8 +222,6 @@ class AlumnosController extends AppController
     	
     	return $this->redirect(['action' => 'index']);
     }
-    
-   
     
     public function fichaInterna($id)
     {
@@ -260,30 +284,19 @@ class AlumnosController extends AppController
     	
     	//me traigo la tabla de seguimientos 
     	$Seguimientos = TableRegistry::get('SeguimientosClases');
+    	$ClasesTables = TableRegistry::get('Clases');
     	
     	//Recorro los ids de clases que voy a necesitar para crear los seguimientos
     	foreach ($idsClases as  $pos => $idClase)
     	{
-    		//Me traigo la tabla de ClasesAlumnos
-    		$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
-    		//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
-    		$idClaseAlumno = $ClasesAlumno->find('all')
-    		->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
-    		
-    		//valido que venga ID
-    		if(empty($idClaseAlumno->first()->id))
-    		{
-    			$this->Flash->error("El alumno no está inscripto en la clase ID: ".$idClase);
-    			return false;
-    		}
     		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
-    		$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id,['contain' => ['Clases' => ['Horarios' => 'Ciclolectivo'] ] ]);
-
-    		if(!$claseAlumno->existeSeguimiento())
+    		$clase = $ClasesTables->get($idClase,['contain' => ['Horarios'  => ['Ciclolectivo']]]);
+    		
+    		if(!$clase->existeSeguimiento($idAlumno))
     		{	
 	    		//Creo las fechas de incio y fin para  recorrerlas
-	    		$fechaInicio = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
-	    		$fechaFin = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
+	    		$fechaInicio = strtotime($clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+	    		$fechaFin = strtotime($clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
 	    		
 	    		//recorro por dia hasta la fecha fin
 	    		for($i=$fechaInicio; $i<=$fechaFin; $i+=86400)
@@ -292,12 +305,13 @@ class AlumnosController extends AppController
 	    			$dia = date('N', $i);
 	    			
 	    			//si el dia es el mismo que que el dia de la clase, tengo que crear un seguimiento para ese dia
-	    			if($dia == $days[$claseAlumno->clase->horario->nombre_dia])
+	    			if($dia == $days[$clase->horario->nombre_dia])
 	    			{
 	//     				echo $clase->horario->nombre_dia. " ". date ("Y-m-d", $i)."<br>";
 	    				$seguimiento = $Seguimientos->newEntity(
 	    						[
-	    								'clase_alumno_id' => $claseAlumno->id,
+	    								'clase_id' => $clase->id,
+	    								'alumno_id' => $idAlumno,
 	    								'observacion' => "SIN DATOS",
 	    								'presente' => false,
 	    								'fecha' => new  \DateTime(date('Y-m-d H:i:s', $i)),
@@ -319,5 +333,44 @@ class AlumnosController extends AppController
     	} //fin foreach de IDSclases 
     	return true;
     }
+    
+    /*
+     * @param int @idAlumno id del alumno
+     * @param   array $idClases clases en las que deberia seguir estando
+     */
+//     public function desactivarClaseAlumno($idAlumno,$idsClases)
+//     {
+    	
+//     	if (!is_array($idsClases))
+//     	{
+//     		$idsClases = array($idsClases);
+//     	}
+//     	$cont = 0;
+//     	//Me traigo la tabla de ClasesAlumnos
+//     	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+//     	$idsClaseAlumno = $ClasesAlumno->find('all')
+//     	->select(['ClasesAlumnos.id'])
+//     	->where(['ClasesAlumnos.active' => true ,'ClasesAlumnos.alumno_id' => $idAlumno, ['ClasesAlumnos.clase_id NOT IN' => $idsClases]])
+//     	->toList();
+    	
+//     	foreach ($idsClaseAlumno as $claseAlu)
+//     	{
+//     		$claseAlumno = $ClasesAlumno->get($claseAlu['id']);
+//     		$claseAlumno->set("active",false);
+//     		if ($ClasesAlumno->save($claseAlumno))
+//     		{
+//     			$cont++;
+//     		}
+    		
+//     	}
+//     	if (sizeof($idsClaseAlumno) == $cont)
+//     	{
+//     		return true;
+//     	}
+//     	else 
+//     	{
+//     		return false;
+//     	}
+//     }
     
 }

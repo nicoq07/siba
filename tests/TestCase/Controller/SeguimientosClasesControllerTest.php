@@ -17,17 +17,17 @@ class SeguimientosClasesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.seguimientos_clases',
-        'app.clases_alumnos',
-        'app.alumnos',
-        'app.fotos_alumnos',
-        'app.pagos_alumnos',
-        'app.users',
-        'app.roles',
         'app.clases',
         'app.profesores',
         'app.horarios',
         'app.ciclolectivo',
         'app.disciplinas',
+        'app.alumnos',
+        'app.pagos_alumnos',
+        'app.users',
+        'app.roles',
+        'app.pagos_conceptos',
+        'app.clases_alumnos',
         'app.calificaciones'
     ];
 

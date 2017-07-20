@@ -97,7 +97,7 @@
     </div>
     <div class="related">
         <h4><?= __('Clases inscriptas' ) ?></h4>
-        <?php if (!empty($alumno->clases)): ?>
+        <?php if (!empty($alumno->clases)){ ?>
         <table class="table table-striped">
             <tr>
                 <th width="60%" scope="col"><?= __('Detalle') ?></th>
@@ -116,7 +116,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
-        <?php endif; ?>
+        <?php  }  else { echo h("NO TIENE CLASES ACTIVAS"); }?>
     </div>
 </div>
 <div style="margin-top: 10px;" class="col-lg-2 col-md-2">

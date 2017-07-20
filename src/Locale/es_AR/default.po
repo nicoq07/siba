@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-06-26 21:34+0000\n"
-"PO-Revision-Date: 2017-07-18 14:18-0300\n"
+"PO-Revision-Date: 2017-07-20 13:49-0300\n"
 "Last-Translator: Raúl Arellano <raul338@elhacker.net>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -294,3 +294,12 @@ msgstr "Jueves"
 
 msgid "Friday"
 msgstr "Viernes"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Delete"
+msgstr "Borrar"
