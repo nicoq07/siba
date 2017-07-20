@@ -13,6 +13,46 @@ use App\Controller\AppController;
 class SeguimientosClasesController extends AppController
 {
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * CREATE TABLE IF NOT EXISTS `seguimientos_clases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `clase_id` int(11) DEFAULT NULL,
+  `alumno_id` int(11) NOT NULL,
+  `observacion` text COLLATE latin1_spanish_ci,
+  `presente` tinyint(1) NOT NULL DEFAULT '1',
+  `calificacion_id` int(11) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_ClaseAlumnoSeguimiento_idx` (`clase_id`),
+  KEY `FK_CalificacionSeguimiento_idx` (`calificacion_id`),
+  KEY `alumno_id` (`alumno_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci ROW_FORMAT=COMPACT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `seguimientos_clases`
+--
+ALTER TABLE `seguimientos_clases`
+  ADD CONSTRAINT `FK_CalificacionSeguimiento` FOREIGN KEY (`calificacion_id`) REFERENCES `calificaciones` (`id`);
+	 */
+	
+	
     /**
      * Index method
      *
