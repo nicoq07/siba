@@ -14,18 +14,27 @@
             echo $this->Form->checkbox('adolecencia', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
         </div>
-		<div class ="col-lg-3">
+        <div class ="col-lg-3">
+		 <?php
+			echo $this->Form->label('Búsqueda de Clase :');
+            echo $this->Form->control('clase', ['label' => false,'options' => $clases,'empty' => true ,'onchange'=>'document.getElementById("frmIndex").submit()']);
+          ?>
+		 </div>
+		 <?php //if ($comboClases) { ?>
+<!-- 		<div class ="col-lg-3"> -->
+		 <?php
+// 			echo $this->Form->label('Búsqueda de Alumno :');
+// 			echo $this->Form->control('palabra_clave_alumno', ['label' => false,'options' => $alumnos,'empty' => true, 'onchange'=>'document.getElementById("frmIndex").submit()']);
+//           ?>
+<!-- 		 </div> -->
+		 <?php// } else { ?>
+		 <div class ="col-lg-3">
 		 <?php
 			echo $this->Form->label('Búsqueda de Alumno :');
             echo $this->Form->control('palabra_clave_alumno', ['label' => false,'placeholder' => 'Nombre, Apellido ó DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
-		 <div class ="col-lg-3">
-		 <?php
-			echo $this->Form->label('Búsqueda de Clase :');
-            echo $this->Form->control('clase', ['label' => false,'options' => $clases, 'onchange'=>'document.getElementById("frmIndex").submit()']);
-          ?>
-		 </div>
+		 <?php// } ?>
 	 </div>
 	   <?php echo $this->Form->end(); ?>
     <table cellpadding="0" cellspacing="0">

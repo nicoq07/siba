@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Network\Session;
 
 /**
  * SeguimientosClases Controller
@@ -13,17 +14,6 @@ use App\Controller\AppController;
 class SeguimientosClasesController extends AppController
 {
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/*
 	 * CREATE TABLE IF NOT EXISTS `seguimientos_clases` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -65,10 +55,11 @@ ALTER TABLE `seguimientos_clases`
     	$where2 = null;
     	$where3 = null;
     	$where4 = null;
+    	//$comboClases = false;
     	
     	if ($this->request->is('post'))
     	{
-    		
+    		$this->request->session()->delete('where');
     		$esActive = $this->request->getData()['activos'];
     		$where1= ['Alumnos.active' => $esActive];
     		
@@ -79,17 +70,39 @@ ALTER TABLE `seguimientos_clases`
     		{
     			$idClase = $this->request->getData()['clase'];
     			$where3= ["Clases.id = $idClase"];
+    		///	$comboClases = true;
     		}
     		
     		if (!(empty($this->request->getData()['palabra_clave_alumno'])))
     		{
     			$palabra = $this->request->getData()['palabra_clave_alumno'];
-    			$where4= ["Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%'"];
+    			/*if ($comboClases)
+    			{
+    				$where4= ["Alumnos.id = $palabra"];
+    			}
+    			else 
+    			{*/
+    				$where4= ["Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%'"];
+    			//}
+    			
     		}
+    		$this->request->session()->write('where',[$where1,$where2,$where3,$where4]);
     	}
     	else
     	{
-    		$where1 =['alumnos.active' => true];
+    		if ($this->request->session()->check('where'))
+    		{
+    			$where1 = $this->request->session()->read('where')[0];
+    			$where2= $this->request->session()->read('where')[1];
+    			$where3= $this->request->session()->read('where')[2];
+    			$where4= $this->request->session()->read('where')[3];
+    		}
+    		else 
+    		{
+    			$where1 =['alumnos.active' => true];
+    		}
+    		
+    		
     	}
     	
     	///
@@ -97,10 +110,17 @@ ALTER TABLE `seguimientos_clases`
             'contain' => ['Clases', 'Alumnos', 'Calificaciones'],
         	'conditions' => [$where1,$where2,$where3,$where4]
         ];
-        debug( $this->paginate);
         $seguimientosClases = $this->paginate($this->SeguimientosClases);
-		$clases = $this->SeguimientosClases->Clases->find('list')->where(['Clases.active' => true])->toArray();
-        $this->set(compact('seguimientosClases','clases'));
+		$clases = $this->SeguimientosClases->Clases->find('list')
+		->select(['Clases.id','Clases.disciplina_id','Clases.profesor_id','Clases.horario_id'])
+		->matching('SeguimientosClases')
+		->where(['Clases.active' => true]);
+		/*$alumnos = $this->SeguimientosClases->Alumnos->find('list')
+		->select(['Alumnos.id','Alumnos.apellido','Alumnos.nombre'])
+		->matching('Clases')
+		->where(['Clases.active' => true]);*/
+		
+        $this->set(compact('seguimientosClases','clases',/*'comboClases',*/'alumnos'));
         $this->set('_serialize', ['seguimientosClases']);
     }
 
