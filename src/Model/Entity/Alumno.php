@@ -63,7 +63,7 @@ class Alumno extends Entity
     	return $nomyape;
     }
     
-    public function pagoElMes(string $mes)
+    public function pagoElMes($mes)
     {
     	/*
     	 * select * from alumnos WHERE alumnos.id in (select pa.alumno_id from pagos_alumnos as pa

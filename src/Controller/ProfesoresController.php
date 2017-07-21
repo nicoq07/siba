@@ -108,4 +108,10 @@ class ProfesoresController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function planillas()
+    {
+    	
+    }
+    
 }

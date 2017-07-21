@@ -115,13 +115,14 @@ ALTER TABLE `seguimientos_clases`
 		->select(['Clases.id','Clases.disciplina_id','Clases.profesor_id','Clases.horario_id'])
 		->matching('SeguimientosClases')
 		->where(['Clases.active' => true]);
+		
+		
 		/*$alumnos = $this->SeguimientosClases->Alumnos->find('list')
 		->select(['Alumnos.id','Alumnos.apellido','Alumnos.nombre'])
 		->matching('Clases')
 		->where(['Clases.active' => true]);*/
 		
         $this->set(compact('seguimientosClases','clases',/*'comboClases',*/'alumnos'));
-        $this->set('_serialize', ['seguimientosClases']);
     }
 
     /**
@@ -138,7 +139,6 @@ ALTER TABLE `seguimientos_clases`
         ]);
 
         $this->set('seguimientosClase', $seguimientosClase);
-        $this->set('_serialize', ['seguimientosClase']);
     }
 
     /**
@@ -162,7 +162,6 @@ ALTER TABLE `seguimientos_clases`
         $alumnos = $this->SeguimientosClases->Alumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClases->Calificaciones->find('list', ['limit' => 200]);
         $this->set(compact('seguimientosClase', 'clases', 'alumnos', 'calificaciones'));
-        $this->set('_serialize', ['seguimientosClase']);
     }
 
     /**
@@ -190,7 +189,6 @@ ALTER TABLE `seguimientos_clases`
         $alumnos = $this->SeguimientosClases->Alumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClases->Calificaciones->find('list', ['limit' => 200]);
         $this->set(compact('seguimientosClase', 'clases', 'alumnos', 'calificaciones'));
-        $this->set('_serialize', ['seguimientosClase']);
     }
 
     /**

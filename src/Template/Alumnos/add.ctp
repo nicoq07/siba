@@ -140,7 +140,7 @@
 	         <div class="col-lg-8"> 
 	          <label for="foto"> Foto</label>
 	         <?=
- 			 $this->Form->file('foto',['label' => 'Foto']) 
+ 			 $this->Form->file('foto',['label' => 'Foto','required' => true]) 
  			 ?>
 	         </div>
 	    	<div class="col-lg-10"> 
