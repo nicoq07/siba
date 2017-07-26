@@ -49,6 +49,10 @@ class ClasesAlumnosTable extends Table
             'foreignKey' => 'clase_id',
             'joinType' => 'INNER'
         ]);
+        
+        $this->hasMany('SeguimientosClasesAlumnos', [
+        		'foreignKey' => 'clase_alumno_id'
+        ]);
     }
 
     /**
@@ -85,4 +89,6 @@ class ClasesAlumnosTable extends Table
 
         return $rules;
     }
+    
+    
 }

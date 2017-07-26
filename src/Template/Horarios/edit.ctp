@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-6 col-lg-offset-1">
     <?= $this->Form->create($horario) ?>
     <fieldset>
        
@@ -13,8 +13,5 @@
 	         <?= $this->Form->button(__('Guardar'),['class' => 'btn-lg btn-success']) ?>
         </div>
     </fieldset>
-   
-    
-   
     <?= $this->Form->end() ?>
 </div>

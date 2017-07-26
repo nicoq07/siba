@@ -101,7 +101,6 @@ class ClasesController extends AppController
 	            	{
 	            		$this->Flash->error(__('Problema creando los seguimientos.'));
 	            	}
-	            	
 	            }
             }
             if ($this->Clases->save($clase)) {
@@ -143,19 +142,26 @@ class ClasesController extends AppController
     {
     	$this->request->allowMethod(['post', 'delete']);
     	
+    	$clase = TableRegistry::get('ClasesAlumnos')->get($claseId);
+    	
     	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
     	$id = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])->where(['ClasesAlumnos.alumno_id' => $alumnoId, 'ClasesAlumnos.clase_id' => $claseId])->first();
+    	
     	$claseAlumno = $ClasesAlumno->get($id['id']);
     	
-    	if ($ClasesAlumno->delete($claseAlumno))
-    	{
-    		$this->Flash->success(__('Alumno quitado de la clase.'));
-    	}
-    	else 
-    	{
-    		$this->Flash->error(__('Error quitando al alumno de la clase.'));
-    	}
+    	$rows = $clase->eliminarSeguimientos($alumnoId);
     	
+    	if ($rows > 1)
+    	{
+	    	if ($ClasesAlumno->delete($claseAlumno))
+	    	{
+	    		$this->Flash->success(__('Alumno quitado de la clase.'));
+	    	}
+	    	else 
+	    	{
+	    		$this->Flash->error(__('Error quitando al alumno de la clase.'));
+	    	}
+    	}
     	return $this->redirect($this->referer());
     	
     }
@@ -166,9 +172,17 @@ class ClasesController extends AppController
     	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
     	
     	//me traigo la tabla de seguimientos
-    	$Seguimientos = TableRegistry::get('SeguimientosClases');
+    	$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
     	$AlumnosTable= TableRegistry::get('Alumnos');
+    	
     	$clase = $this->Clases->get($idClase,['contain' => ['Horarios'  => ['Ciclolectivo']]]);
+    	
+    	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+    	//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
+    	$idClaseAlumno = $ClasesAlumno->find('all')
+    	->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
+    	$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id);
+    	
     	
     	//Recorro los ids de clases que voy a necesitar para crear los seguimientos
     	foreach ($idsAlumnos as $pos => $idAlumno)
@@ -176,10 +190,12 @@ class ClasesController extends AppController
     		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
     		//$alumno = $AlumnosTable->get($idAlumno);
     		
-    		if(!$clase->existeSeguimiento($idAlumno))
+    		if(!$claseAlumno->existeSeguimiento($idAlumno))
     		{
+    			$alu = $AlumnosTable->get($idAlumno);
+    			
     			//Creo las fechas de incio y fin para  recorrerlas
-    			$fechaInicio = strtotime($clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+    			$fechaInicio = strtotime($alu->created->format('Y-m-d'));
     			$fechaFin = strtotime($clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
     			
     			//recorro por dia hasta la fecha fin
@@ -194,14 +210,12 @@ class ClasesController extends AppController
     					//     				echo $clase->horario->nombre_dia. " ". date ("Y-m-d", $i)."<br>";
     					$seguimiento = $Seguimientos->newEntity(
     							[
-    									'clase_id' => $clase->id,
-    									'alumno_id' => $idAlumno,
+    									'clase_alumno_id' => $claseAlumno->id,
     									'observacion' => "SIN DATOS",
     									'presente' => false,
     									'fecha' => new  \DateTime(date('Y-m-d H:i:s', $i)),
     									'created' => new \DateTime('now'),
     									'created' => new \DateTime('now')
-    									
     							]);
     					//$seguimiento->fecha = date ("Y-m-d H:i:s", $i);
     					//guardo y valido
@@ -210,13 +224,13 @@ class ClasesController extends AppController
     						$this->Flash->error("Seguimiento de fecha " .$seguimiento->fecha . " no creado");
     						return false;
     					}
-    					
     				}
     			}
     		}
     	} //fin foreach de IDSclases
     	return true;
     }
+    
     
     
 }

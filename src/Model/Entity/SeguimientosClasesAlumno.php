@@ -4,11 +4,10 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * SeguimientosClase Entity
+ * SeguimientosClasesAlumno Entity
  *
  * @property int $id
- * @property int $clase_id
- * @property int $alumno_id
+ * @property int $clase_alumno_id
  * @property string $observacion
  * @property bool $presente
  * @property int $calificacion_id
@@ -16,9 +15,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
+ * @property \App\Model\Entity\ClaseAlumno $clase_alumno
  * @property \App\Model\Entity\Calificacione $calificacione
  */
-class SeguimientosClase extends Entity
+class SeguimientosClasesAlumno extends Entity
 {
 
     /**

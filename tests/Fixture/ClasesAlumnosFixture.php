@@ -49,8 +49,8 @@ class ClasesAlumnosFixture extends TestFixture
             'id' => 1,
             'alumno_id' => 1,
             'clase_id' => 1,
-            'created' => '2017-06-20 21:53:00',
-            'modified' => '2017-06-20 21:53:00',
+            'created' => '2017-07-24 12:09:28',
+            'modified' => '2017-07-24 12:09:28',
             'active' => 1
         ],
     ];

@@ -52,15 +52,27 @@ class Clase extends Entity
     	return $cadena;
     }
     
-    public function existeSeguimiento($idAlumno)
-    {
-    	$Seguimientos = TableRegistry::get("SeguimientosClases");
+//     public function existeSeguimiento($idAlumno)
+//     {
+//     	$Seguimientos = TableRegistry::get("SeguimientosClases");
     	
-    	if($Seguimientos->exists(["clase_id" => $this->id, "alumno_id" => $idAlumno]))
-    	{
-    		return true;
-    	}
+//     	if($Seguimientos->exists(["clase_id" => $this->id, "alumno_id" => $idAlumno]))
+//     	{
+//     		return true;
+//     	}
     	
-    	return false;
-    }
+//     	return false;
+//     }
+    
+//     public function eliminarSeguimientos($idAlumno)
+//     {
+//     	$Seguimientos = TableRegistry::get("SeguimientosClases");
+    	
+//     	if ($this->existeSeguimiento($idAlumno))
+//     	{
+//     		$rows = $Seguimientos->deleteAll(["clase_id" => $this->id, "alumno_id" => $idAlumno]);
+//     		return $rows;
+//     	}
+//     	return false;
+//     }
 }

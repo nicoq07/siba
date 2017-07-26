@@ -117,7 +117,7 @@
 	         </div>  
 	    	 <div class="col-lg-10"> 
 	         <?php
-	         echo $this->Form->control('observacion',['label' => 'Obesrvación']);
+	         echo $this->Form->control('observacion',['label' => 'Observación']);
 			 ?>
 			 </div>
 			  <div class="col-lg-5"> 
@@ -140,7 +140,7 @@
 	         <div class="col-lg-8"> 
 	          <label for="foto"> Foto</label>
 	         <?=
- 			 $this->Form->file('foto',['label' => 'Foto','required' => true]) 
+ 			 $this->Form->file('foto',['label' => 'Foto']) 
  			 ?>
 	         </div>
 	    	<div class="col-lg-10"> 

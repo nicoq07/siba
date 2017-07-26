@@ -35,7 +35,6 @@
         <thead>
             <tr>
                 <th scope="row"><?= $this->Paginator->sort('nombre') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('fecha_nacimiento') ?></th>
                 <th scope="row"><?= $this->Paginator->sort('telefono') ?></th>
                 <th scope="row"><?= $this->Paginator->sort('celular') ?></th>
                 <th scope="row"><?= $this->Paginator->sort('nro_documento',['label'  => 'DNI']) ?></th>
@@ -50,7 +49,6 @@
             <?php foreach ($alumnos as $alumno): ?>
             <tr>
                 <td><?= $this->Html->link($alumno->presentacion, [ 'action' => 'view', $alumno->id]) ?></td>
-                <td><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></td>
                 <td><?= h($alumno->telefono) ?></td>
                 <td><?= h($alumno->celular) ?></td>
                 <td><?= h($alumno->nro_documento) ?></td>
