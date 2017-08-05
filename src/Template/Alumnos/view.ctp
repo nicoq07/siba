@@ -42,9 +42,9 @@
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Legajo anterior') ?></div>
 	<div class="col-lg-4 col-md-4  borde"><?= $alumno->legajo_numero ? h($alumno->legajo_numero) : "-"?></div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Arancel') ?></div>
-	<div class="col-lg-4 col-md-4  borde"><?= h($alumno->monto_arancel) ?> </div>
+	<div class="col-lg-4 col-md-4  borde"><?= $alumno->monto_arancel ? $alumno->monto_arancel :"-"?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Materiales') ?></div>
-	<div class="col-lg-4 col-md-4  borde"><?= h($alumno->monto_materiales) ?> </div>
+	<div class="col-lg-4 col-md-4  borde"><?= $alumno->monto_materiales ? $alumno->monto_materiales:"-"?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Colegio') ?></div>
 	<div class="col-lg-10 borde"><?= $alumno->colegio ? h($alumno->colegio) : "-"?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Alta') ?></div>
@@ -117,6 +117,31 @@
             <?php endforeach; ?>
         </table>
         <?php  }  else { echo h("NO TIENE CLASES ACTIVAS"); }?>
+    </div>
+     <div class="related">
+        <h4><?= __('Seguimientos de Clases' ) ?></h4>
+        <?php if (!empty($seguimientos)){ ?>
+        <table class="table table-striped">
+            <tr>
+                <th width="55%" scope="col"><?= __('Observación') ?></th>
+                <th width="10%" scope="col"><?= __('Presente') ?></th>
+                 <th width="20%" scope="col"><?= __('Fecha') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($seguimientos as $seguimiento): ?>
+            <tr>
+               
+                <td><?= h($seguimiento->observacion) ?></td>
+                <td><?= $seguimiento->presente ? h("Sí") : h("No") ?></td>
+                <td><?= __($seguimiento->fecha->format('l')) .' '. $seguimiento->fecha->format('d-m-Y') ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('Ver'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'view', $seguimiento->id],  ['class' => 'btn-sm btn-info']) ?>
+                    <?= $this->Html->link(__('Editar'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'edit', $seguimiento->id],  ['class' => 'btn-sm btn-warning']) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php  }  else { echo h("NO TIENE SEGUIMIENTOS ACTIVOS??"); }?>
     </div>
 </div>
 <div style="margin-top: 10px;" class="col-lg-2 col-md-2">

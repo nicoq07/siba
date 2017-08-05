@@ -82,6 +82,7 @@ class AlumnosController extends AppController
         	return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
         })
         ->toArray();
+        
         foreach ($clases as $c)
         {
         	$ids[] = $c['id'];
@@ -95,11 +96,21 @@ class AlumnosController extends AppController
         	$where = ['Clases.id IN ' => $ids];
         }
         
-        $alumno = $this->Alumnos->get($id, [
-        		'contain' => ['PagosAlumnos','Clases' => ['conditions' => $where]]
-        ]);
+        $segTable= TableRegistry::get('SeguimientosClasesAlumnos');
+        $seguimientos = $segTable->find()
+        ->limit(10)
+        ->orderDesc('fecha')
+        ->where(['fecha <='=>  date('Y-m-d h:m',time())])
+        ->matching('ClasesAlumnos', function ($q) use ($ids) {
+        	return $q->where(['ClasesAlumnos.clase_id IN' => $ids]);
+        })
+        ->toArray();
         
-        $this->set(['alumno','clases'],[$alumno,$clases]);
+        
+        $alumno = $this->Alumnos->get($id, [
+        		'contain' => ['PagosAlumnos','Clases' => [ 'conditions' => $where]  ]  ]);
+        
+        $this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
         $this->set('_serialize', ['alumno']);
     }
 

@@ -27,3 +27,4 @@
         </tbody>
     </table>
 </div>
+<?=  $this->element('footer')?>
