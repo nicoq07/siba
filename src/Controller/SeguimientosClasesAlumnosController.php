@@ -2,7 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use Cake\ORM\TableRegistry;
+use App\Model\Entity\SeguimientosClasesAlumno;
 /**
  * SeguimientosClasesAlumnos Controller
  *
@@ -20,13 +21,66 @@ class SeguimientosClasesAlumnosController extends AppController
      */
     public function index()
     {
+    	$where = null;
+    	$session = $this->request->session();
+    
+    	if ($this->request->is('post'))
+    	{
+    		$session->delete('where');
+    		$where1 = null;
+    		$where2 = null;
+    		$where3 = null;
+    		if (!(empty($this->request->getData()['palabra_clave'])))
+    		{ 
+    			$palabra = $this->request->getData()['palabra_clave'];
+    			$where1= ["(alumnos.nombre LIKE '%$palabra%' OR alumnos.apellido LIKE '%$palabra%' OR alumnos.nro_documento LIKE '%$palabra%')"];
+    		}
+    		if (!(empty($this->request->getData()['clases'])))
+    		{
+    			$clase = $this->request->getData()['clases'];
+    			$where2= ["clases.id = $clase"];
+    		}
+    		
+    			$mes= $this->request->getData()['mob']['month'];
+    			 $year= $this->request->getData()['year']['year'];
+    			if ($year && $mes)
+    			{
+    				$fecha =date('Y-m-d h:i:s',strtotime("$year-$mes-01"));
+    				$where3 = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
+    			}
+    			elseif ($year)
+    			{
+    				$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
+    				$where3 = ["YEAR(fecha) = YEAR('$fecha')"];
+    			}
+    			elseif ($mes)
+    			{
+    				$fecha =date('Y-m-d h:i:s',strtotime("2000-$mes-01"));
+    				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
+    			}
+    			$session->write('where',[$where1,$where2,$where3]);
+    			
+    	}
+    	
+    	if ($session->check('where'))
+    	{
+    		$where = $session->read('where');
+    	}
+    	else 
+    	{
+    		$where = null;
+    	}
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list');
+    	
         $this->paginate = [
-            'contain' => ['ClasesAlumnos', 'Calificaciones']
+        		'conditions' => $where,
+        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
         ];
         $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
 
-        $this->set(compact('seguimientosClasesAlumnos'));
-        $this->set('_serialize', ['seguimientosClasesAlumnos']);
+        
+        
+        $this->set(compact('seguimientosClasesAlumnos','clases'));
     }
 
     /**

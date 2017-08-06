@@ -60,7 +60,6 @@ class AlumnosController extends AppController
         $alumnos = $this->paginate($this->Alumnos);
 
         $this->set(compact('alumnos'));
-        $this->set('_serialize', ['alumnos']);
     }
 
     /**
