@@ -18,10 +18,6 @@
             <th scope="row"><?= __('Generado') ?></th>
             <td><?= h($pagosAlumno->created->format('d/m/Y')) ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Última vez modificado') ?></th>
-            <td><?= h($pagosAlumno->modified->format('d/m/Y')) ?></td>
-        </tr>
          <tr>
             <th scope="row"><?= __('Fecha pagado') ?></th>
             <td><?= $pagosAlumno->fecha_pagado ? h($pagosAlumno->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>

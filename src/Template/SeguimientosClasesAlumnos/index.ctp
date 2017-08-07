@@ -12,23 +12,24 @@
   	 
 	  <div class="col-lg-4" >
   		 <?php
-			echo $this->Form->control('clases',['empty' => true])
+  		 echo $this->Form->control('clases',['empty' => true ,  'onchange'=>'document.getElementById("frmIndex").submit()'])
           ?>
          	
 	 </div>
+
 	 <div class="col-lg-5 separador-ligth" style="top:10px ;text-align:center;">
 		 <div class="col-lg-4 "style="top:10px;" > 
 	  		  <?php
-	            echo $this->Form->month('mob',['label' => 'Mes']);
+	            echo $this->Form->month('mob',['empty' => 'Mes']);
 	          ?>
           </div> 	
           <div class="col-lg-4 "style="top:10px;" > 
 	  		  <?php
-	  		  echo $this->Form->year('year',['label' => 'Ano']);
+	  		  echo $this->Form->year('year',['empty' => 'Año']);
 	          ?>
           </div> 	
           
-          <div class="col-lg-4" style="top:10px;">
+          <div class="col-lg-4" style="top:15px;">
           <?= $this->Form->button('Buscar',['class' => 'btn-sm btn-success'])  ?>
           </div>
           
@@ -52,7 +53,7 @@
                 <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->clase->presentacion, ['controller' => 'Clases', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->clase->id])  ?></td>
                 <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->alumno->id])  ?></td>
                 <td><?= $seguimientosClasesAlumno->presente ? h('Sí') : h("No") ?></td>
-                <td><?= $seguimientosClasesAlumno->has('calificacione') ? $this->Html->link($seguimientosClasesAlumno->calificacione->id, ['controller' => 'Calificaciones', 'action' => 'view', $seguimientosClasesAlumno->calificacione->id]) : '' ?></td>
+                <td><?= $seguimientosClasesAlumno->has('calificacione') ? $seguimientosClasesAlumno->calificacione->presentacion : '' ?></td>
                 <td><?= h($seguimientosClasesAlumno->fecha->format('d-m-Y')) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $seguimientosClasesAlumno->id]) ?>

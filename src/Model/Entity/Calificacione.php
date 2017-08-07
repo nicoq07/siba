@@ -29,4 +29,11 @@ class Calificacione extends Entity
         '*' => true,
         'id' => false
     ];
+    
+    public function _getPresentacion()
+    {
+    	return $this->nombre . " ($this->valor)";
+    }
+    
+    
 }
