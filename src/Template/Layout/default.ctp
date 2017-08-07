@@ -49,7 +49,7 @@ $description = 'Iba Escuela ' .date("Y");
     </nav>
     <?= $this->Flash->render() ?>
     <div class ="flex-container" >
-     	<div class="col-lg-12">
+     	<div class="col-lg-12 nopadding">
             <?= $this->element('menuadmin') ?>
             <?= $this->fetch('content') ?>
         </div>

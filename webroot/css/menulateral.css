@@ -16,6 +16,7 @@ body,html{
  @media (min-width: 765px) {
 
     .main{
+     
       position: absolute;
       width: calc(100% - 40px); 
       margin-left: 40px;
@@ -28,12 +29,14 @@ body,html{
 
     nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
       margin-left: 0px;
+      
     }
 
     nav.sidebar .navbar-brand, nav.sidebar .navbar-header{
       text-align: center;
       width: 100%;
       margin-left: 0px;
+  
     }
     
     nav.sidebar a{
@@ -42,10 +45,12 @@ body,html{
 
     nav.sidebar .navbar-nav > li:first-child{
       border-top: 1px #e5e5e5 solid;
+     
     }
 
     nav.sidebar .navbar-nav > li{
-      border-bottom: 1px #e5e5e5 solid;
+      border-bottom: 1px white solid;
+      
     }
 
     nav.sidebar .navbar-nav .open .dropdown-menu {
@@ -53,7 +58,7 @@ body,html{
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: transparent;
+      background-color: #116D76; /*2*/
       border: 0;
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -68,6 +73,8 @@ body,html{
     }
 
     nav.sidebar{
+      background-color:#01545B; /*1*/
+      
       width: 200px;
       height: 100%;
       margin-left: -160px;
@@ -77,10 +84,12 @@ body,html{
 
     nav.sidebar li {
       width: 100%;
+      
     }
 
     nav.sidebar:hover{
       margin-left: 0px;
+      
     }
 
     .forAnimate{
@@ -106,8 +115,8 @@ body,html{
   }
 
   nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover, nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
-    color: #CCC;
-    background-color: transparent;
+    color: white;
+    background-color: #00ACAC;
   }
 
   nav:hover .forAnimate{

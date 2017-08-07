@@ -16,7 +16,7 @@
           ?>
          	
 	 </div>
-	 <div class="col-lg-5" style="border:1px solid; text-align:center;">
+	 <div class="col-lg-5 separador-ligth" style="top:10px ;text-align:center;">
 		 <div class="col-lg-4 "style="top:10px;" > 
 	  		  <?php
 	            echo $this->Form->month('mob',['label' => 'Mes']);

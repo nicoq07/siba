@@ -4,6 +4,13 @@
 	border:3px solid;
 	color:#00747e;
 }
+
+.separador-ligth
+{
+	border:2px solid;
+	color:#00747e;
+}
+
 .view-div
 {
 	border: medium none;
@@ -20,4 +27,9 @@
 	border-width: 0.5px;
 	border-bottom-color: grey;
 	border-bottom-style: solid;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
 }
