@@ -1,7 +1,18 @@
 <div class="col-log-10">
-	   <?= $this->Form->create($alumno) ?>
+	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
 	        <legend><?= __('Modificar alumno') ?></legend>
+	      
+	      <div class="col-lg-12 pull-right nopadding">
+		        <div class="col-lg-7">
+		        <?php 	echo $this->Html->image('alumnos'.DS.$alumno->referencia_foto, ['title' => $alumno->presentacion ,'alt' => $alumno->presentacion, 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); ?>
+		        </div>
+		         <div class="col-lg-6">
+		          <?=  $this->Form->label('foto',['label' => 'Cargar nueva foto']); ?>
+		       <?=  $this->Form->file('foto',['label' => 'Cargar nueva foto']); ?>
+		        </div>
+	        </div>
+	      
 	      
 	        <div class="col-lg-5">
 	        <?php

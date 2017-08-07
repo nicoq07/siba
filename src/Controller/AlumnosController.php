@@ -71,9 +71,6 @@ class AlumnosController extends AppController
      */
     public function view($id = null)
     {
-       
-    	$ids = null;
-    	
         $clasesTable= TableRegistry::get('Clases');
         $clases = $clasesTable->find()
         ->select('Clases.id')
@@ -81,7 +78,8 @@ class AlumnosController extends AppController
         	return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
         })
         ->toArray();
-        
+        $ids = null;
+        (count($clases) > 0) ? $ids = array() : $ids = -1 ;
         foreach ($clases as $c)
         {
         	$ids[] = $c['id'];
@@ -126,7 +124,7 @@ class AlumnosController extends AppController
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
             if ($this->request->getData()['foto']['error'] != 4)
             {
-           		if ($this->request->getData()['foto']['error'] = 0)
+           		if ($this->request->getData()['foto']['error'] == 0)
 	            {
 	            	$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion);
 	            	$alumno->referencia_foto = $ref;
@@ -134,6 +132,7 @@ class AlumnosController extends AppController
 	            else
 	            {
 	            	$this->Flash->error(__('Problema al guardar la foto. Alumno no guardado'));
+	            	return $this->redirect($this->referer());
 	            }
              }
             	if ($this->Alumnos->save($alumno)) 
@@ -144,6 +143,7 @@ class AlumnosController extends AppController
             			{
             				$this->Alumnos->delete($alumno);
             				$this->Flash->error(__('Problema al crear los seguimientos. Alumno no guardado'));
+            				return $this->redirect($this->referer());
             			}
             		}
             		$this->Flash->success(__('Alumno guardado.'));
@@ -170,6 +170,20 @@ class AlumnosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+        	if ($this->request->getData()['foto']['error'] != 4)
+        	{
+        		if ($this->request->getData()['foto']['error'] == 0)
+        		{
+        			
+        			$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion);
+        			$alumno->referencia_foto = $ref;
+        		}
+        		else
+        		{
+        			$this->Flash->error(__('Problema al guardar la foto. Alumno no guardado'));
+        			return $this->redirect($this->referer());
+        		}
+        	}
             if ($this->Alumnos->save($alumno)) 
             {
             	if (!empty($this->request->getData("clases")['_ids']))
@@ -187,7 +201,6 @@ class AlumnosController extends AppController
         }
         $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
         $this->set(compact('alumno', 'clases'));
-        $this->set('_serialize', ['alumno']);
     }
 
     /**
@@ -226,6 +239,37 @@ class AlumnosController extends AppController
     	return $this->redirect(['action' => 'index']);
     }
     
+    public function listadoCumple()
+    {
+    	if ($this->request->is(['post']))
+    	{
+    		
+    		$mes = $this->request->getData('mob')['month'];
+    		if ($mes)
+    		{
+    			return $this->redirect(['action' => 'listado_cumple_pdf', $mes,'_ext' => 'pdf']);
+    			
+    		}
+    	}
+    	$alumno = $this->Alumnos->newEntity();
+    	$this->set('alumno',$alumno);
+    	
+    }
+    
+    public function listadoCumplePdf($mes)
+    {
+    		$alumnos = $this->Alumnos->find('all')
+    		->where([
+    		'active' => true,
+    		'MONTH(fecha_nacimiento)' => "$mes"
+    		])
+    		->select(['nombre','apellido','fecha_nacimiento'])
+    		->orderAsc('fecha_nacimiento')
+    		->toArray();
+    		$this->prepararPDFListado('Listado del mes' . __(date('l',strtotime("d-$mes-Y"))), 'A4', 'portrait');
+    		
+    }
+    
     public function fichaInterna($id)
     {
     	$alumno = $this->Alumnos->get($id);
@@ -262,6 +306,21 @@ class AlumnosController extends AppController
     	}
     	$this->Flash->error("Tenemos un problema para cargar la foto");
     	return false;
+    }
+   
+    private function prepararPDFListado($mes,string $tipoHoja, string $orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
+    					'pageSize' => $tipoHoja,
+    					'orientation' => $orientacion,
+    					'filename' => "Cumpleaños del mes de $mes".'.pdf'
+    			]
+    	]);
     }
     
     private function prepararPDF($alumno,string $tipo,string $tipoHoja, string $orientacion)
