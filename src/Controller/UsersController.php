@@ -13,6 +13,19 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+	public function beforeFilter(\Cake\Event\Event $event)
+	{
+		parent::beforeFilter($event);
+		$this->Auth->allow(['add']);
+	}
+	
+	public function isAuthorized($user)
+	{
+ 		return parent::isAuthorized($user);
+		return true;
+	}
+	
+	
     /**
      * Index method
      *
@@ -63,8 +76,21 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'roles'));
+        $roles = $this->Users->Roles->find('list', ['limit' => 3]);
+        $profesores = $this->Users->Profesores->find('list', ['limit' => 200]);
+        /*
+         * $subquery = $Courses->CoursesMemberships
+    ->find()
+    ->select(['CoursesMemberships.course_id'])
+    ->where(['CoursesMemberships.student_id' => $student_id]);
+
+$query = $Courses
+    ->find()
+    ->where([
+        'Courses.id NOT IN' => $subquery
+    ]);
+         */
+        $this->set(compact('user', 'roles','profesores'));
         $this->set('_serialize', ['user']);
     }
 
@@ -113,4 +139,31 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function login()
+    {
+    	if($this->request->is('post'))
+    	{
+    		$user = $this->Auth->identify();
+    		if($user)
+    		{
+    			$this->Auth->setUser($user);
+    			return $this->redirect($this->Auth->redirectUrl());
+    		}
+    		else
+    		{
+    			$this->Flash->error('Datos invalidos, por favor intente nuevamente', ['key' => 'auth']);
+    		}
+    	}
+    	if ($this->Auth->user())
+    	{
+    		return $this->redirect(['controller' => 'Productos', 'action' => 'home']);
+    	}
+    }
+    
+    public function logout()
+    {
+    	return $this->redirect($this->Auth->logout());
+    }
+    
 }

@@ -28,7 +28,7 @@ $description = 'Iba Escuela ' .date("Y");
 
     <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios']) ?>
     <?= $this->Html->css('cake.css') ?>
-    <?= $this->Html->script(['jquery-3.1.1.min','bootstrap' ]) ?>
+    <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','varios' ]) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -36,6 +36,7 @@ $description = 'Iba Escuela ' .date("Y");
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
+       <?php if (!empty($current_user)) : ?>
         <ul class="title-area col-lg-2">
             <li class="name">
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
@@ -43,14 +44,17 @@ $description = 'Iba Escuela ' .date("Y");
         </ul>
         <div class="top-bar-section">
             <ul class="right">
-                <li><a target="_blank" href="http://book.cakephp.org/3.0/">deberia ir e usuario</a></li>
+                <li><a target="_blank" href="http://book.cakephp.org/3.0/"><?php if (!empty($current_user)) : $current_user->presentacion; endif;?></a></li>
             </ul>
         </div>
+        <?php endif;?>
     </nav>
     <?= $this->Flash->render() ?>
     <div class ="flex-container" >
      	<div class="col-lg-12 nopadding">
+     	<?php if (!empty($current_user)) : ?>
             <?= $this->element('menuadmin') ?>
+         <?php endif; ?>
             <?= $this->fetch('content') ?>
         </div>
     </div>

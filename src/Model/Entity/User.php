@@ -2,7 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-
+use Cake\Auth\DefaultPasswordHasher;
 /**
  * User Entity
  *
@@ -52,4 +52,20 @@ class User extends Entity
     	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
     	return $nomyape;
     }
+    
+    protected function _setPassword($value)
+    {
+    	if (!empty($value))
+    	{
+    		$hasher = new DefaultPasswordHasher();
+    		return $hasher->hash($value);
+    	}
+    	else
+    	{
+    		$id = $this->_properties['id'];
+    		$user = TableRegistry::get('Users')->recoverPassword($id);
+    		return $user;
+    	}
+    }
+    
 }

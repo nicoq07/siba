@@ -33,7 +33,7 @@ class RolesTable extends Table
         parent::initialize($config);
 
         $this->setTable('roles');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
