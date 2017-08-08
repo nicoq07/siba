@@ -239,6 +239,48 @@ class AlumnosController extends AppController
     	return $this->redirect(['action' => 'index']);
     }
     
+    
+    public function pView($id = null)
+    {
+    	$clasesTable= TableRegistry::get('Clases');
+    	$clases = $clasesTable->find()
+    	->select('Clases.id')
+    	->matching('Alumnos', function ($q) use ($id) {
+    		return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
+    	})
+    	->toArray();
+    	$ids = null;
+    	(count($clases) > 0) ? $ids = array() : $ids = -1 ;
+    	foreach ($clases as $c)
+    	{
+    		$ids[] = $c['id'];
+    	}
+    	if (empty($ids))
+    	{
+    		$where = ['Clases.id IN ' => -1];
+    	}
+    	else
+    	{
+    		$where = ['Clases.id IN ' => $ids];
+    	}
+    	
+    	$segTable= TableRegistry::get('SeguimientosClasesAlumnos');
+    	$seguimientos = $segTable->find()
+    	->limit(10)
+    	->orderDesc('fecha')
+    	->where(['fecha <='=>  date('Y-m-d h:m',time())])
+    	->matching('ClasesAlumnos', function ($q) use ($ids) {
+    		return $q->where(['ClasesAlumnos.clase_id IN' => $ids]);
+    	})
+    	->toArray();
+    	
+    	
+    	$alumno = $this->Alumnos->get($id, [
+    			'contain' => ['Clases' => [ 'conditions' => $where]  ]  ]);
+    	
+    	$this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
+    }
+    
     public function listadoCumple()
     {
     	if ($this->request->is(['post']))

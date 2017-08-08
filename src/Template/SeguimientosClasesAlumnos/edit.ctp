@@ -4,7 +4,7 @@
         <legend><?= __('Editar seguimiento') ?></legend>
         <?php
            // echo $this->Form->control('clase_alumno_id');
-            echo $this->Form->control('observacion');
+        echo $this->Form->control('observacion',[ 'onfocus' => "this.select()"]);
             echo $this->Form->control('presente');
             echo $this->Form->control('calificacion_id', ['options' => $calificaciones, 'empty' => true]);
           //  echo $this->Form->control('fecha', ['empty' => true]);

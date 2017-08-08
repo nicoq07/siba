@@ -33,7 +33,7 @@ class CalificacionesTable extends Table
         parent::initialize($config);
 
         $this->setTable('calificaciones');
-        $this->setDisplayField('id');
+        $this->setDisplayField('presentacion');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

@@ -10,18 +10,15 @@
 	      </button>      
 	    </div>
 	    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-	      <ul class="nav navbar-nav">
-	        
-	    <!--          SECCION CLASES-->
-	      <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cursos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a>
+	     <ul class="nav navbar-nav">
+         <!--          SECCION SEGUIMIENTOS-->
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seguimientos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
-	            <li><a href="{{URL::to('createusuario')}}">Crear</a></li>
-	            <li><a href="#">Ver todos</a></li>
-	           
+	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'pIndex']) ?></li>
 	          </ul>
 	        </li>
-	           <!--  FIN SECCION CLASES-->
+	         <!--  FIN SECCION SEGUIMIENTOS-->
 	          
 	        
 	      </ul>

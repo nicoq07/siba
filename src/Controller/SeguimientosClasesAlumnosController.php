@@ -224,4 +224,49 @@ class SeguimientosClasesAlumnosController extends AppController
     			]
     	]);
     }
+    
+    public function pIndex()
+    {
+    	$where = null;
+    	$session = $this->request->session();
+    	
+    	if ($this->request->is('post'))
+    	{
+    		$session->delete('where');
+    		$where1 = null;
+    		$where2 = null;
+    		if (!(empty($this->request->getData()['clases'])))
+    		{
+    			$clase = $this->request->getData()['clases'];
+    			$where1= ["clases.id = $clase"];
+    		}
+    		if ($this->request->getData()['nomodificados'])
+    		{
+    			$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+    		}
+    		$session->write('where',[$where1,$where2]);
+    		
+    	}
+    	
+    	if ($session->check('where'))
+    	{
+    		$where = $session->read('where');
+    	}
+    	else
+    	{
+    		$where = null;
+    	}
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')
+    	->where(['Clases.profesor_id' => 3]);
+    	
+    	$this->paginate = [
+    			'conditions' => [$where, 'fecha <= ' => new \DateTime('now')],
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
+    	];
+    	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
+    	
+    	
+    	
+    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    }
 }
