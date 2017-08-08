@@ -4,10 +4,18 @@
 	     	<span style="font-size:5.50rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
 	      </div>
 	    <div class="col-lg-7">
-	    <?php if (!$alumno->referencia_foto) { ?>
+	    <?php 
+	    if (empty($alumno->referencia_foto)) { ?>
 	     <div class="col-lg-5  col-lg-offset-5"><p class="separador-ligth" style="font-size:1.20rem;"> NO TIENE FOTO </p></div>
 	<?php     }
-	    else { echo $this->Html->image('alumnos'.DS.$alumno->referencia_foto, ['title' => $alumno->presentacion ,'alt' => $alumno->presentacion, 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); } ?>
+	
+	else {
+		$ds  = DS;
+		if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		{
+			$ds = DS_WINDOWS_IMG;
+		}
+		echo $this->Html->image('alumnos'. $ds .$alumno->referencia_foto, ['escape' => true ,'title' => $alumno->presentacion ,'alt' => $alumno->presentacion, 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); } ?>
 	    </div>
 	</div>
 	<div class="separador"></div>

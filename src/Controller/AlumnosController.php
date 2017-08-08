@@ -266,7 +266,11 @@ class AlumnosController extends AppController
     		->select(['nombre','apellido','fecha_nacimiento'])
     		->orderAsc('fecha_nacimiento')
     		->toArray();
-    		$this->prepararPDFListado('Listado del mes' . __(date('l',strtotime("d-$mes-Y"))), 'A4', 'portrait');
+    		$month = 'Listado del mes ' . __(date('F',strtotime("01-$mes-2000")));
+    		$hoja = 'A4';
+    		$ori = 'portrait';
+    		$this->prepararPDFListado($month,(string)$hoja,(string)$ori );
+    		$this->set(['alumnos','month'],[$alumnos,__(date('F',strtotime("01-$mes-2000")))]);
     		
     }
     
@@ -283,7 +287,7 @@ class AlumnosController extends AppController
     	$alumno = $this->Alumnos->get($id, [
     			'contain' => ['Clases']
     	]);
-    	$this->prepararPDF($alumno,"externa","A5","portrait");
+    	$this->prepararPDF($alumno,"externa","A5","landscape");
     	
     	$this->set(compact('alumno'));
     	
@@ -295,8 +299,7 @@ class AlumnosController extends AppController
     	// debug($data); exit;
     	if(!empty($data) && !empty($data['tmp_name']) && !$data['error'])
     	{
-    		$referencia = $uploadFile .$alu. "-"  .$data['name'];
-    		
+    		$referencia = $uploadFile .h($alu. "-"  .$data['name']);
     		if(!move_uploaded_file($data['tmp_name'],$referencia))
     		{
     			$this->Flash->error("Tenemos un problema para cargar la foto");
@@ -308,7 +311,7 @@ class AlumnosController extends AppController
     	return false;
     }
    
-    private function prepararPDFListado($mes,string $tipoHoja, string $orientacion)
+    private function prepararPDFListado($nomArchivo, $tipoHoja,  $orientacion)
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
@@ -318,12 +321,12 @@ class AlumnosController extends AppController
     					'margin-top' => 0,
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
-    					'filename' => "Cumpleaños del mes de $mes".'.pdf'
+    					'filename' => $nomArchivo.'.pdf'
     			]
     	]);
     }
     
-    private function prepararPDF($alumno,string $tipo,string $tipoHoja, string $orientacion)
+    private function prepararPDF($alumno, $tipo, $tipoHoja,  $orientacion)
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
