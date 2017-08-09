@@ -41,20 +41,16 @@ $description = 'Iba Escuela ' .date("Y");
             <li class="name">
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
             </li>
-        </ul>
-        <div class="row nav-menu">
-	        <div class="top-bar-section">
-	             <ul class="dropdown-menu">
-	             	<li class="dropdown-submenu">
-	             		<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
-	             		<ul class="dropdown-submenu">
-	             			<li><?= $this->Html->link(h('Perfil'), ['controller' =>'Users', 'action' => 'view']) ?></li>
-						    <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
-	             		</ul>
-	             	</li>
-		         </ul>
-	        </div>
-	    </div>    
+         </ul>
+		<ul class="nav navbar-nav right" style="margin-right: 50px!important;">
+				<li>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
+	                        <ul class="dropdown-menu">
+	                            <li><?= $this->Html->link(h('Perfil'), ['controller' =>'Users', 'action' => 'view']) ?></li>
+	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
+							</ul>
+				</li>
+		</ul>
         <?php endif;?>
     </nav>
     <?= $this->Flash->render() ?>
