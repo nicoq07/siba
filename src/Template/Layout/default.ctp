@@ -42,18 +42,28 @@ $description = 'Iba Escuela ' .date("Y");
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
             </li>
         </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="http://book.cakephp.org/3.0/"><?php if (!empty($current_user)) : $current_user->presentacion; endif;?></a></li>
-            </ul>
-        </div>
+        <div class="row nav-menu">
+	        <div class="top-bar-section">
+	             <ul class="dropdown-menu">
+	             	<li class="dropdown-submenu">
+	             		<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
+	             		<ul class="dropdown-submenu">
+	             			<li><?= $this->Html->link(h('Perfil'), ['controller' =>'Users', 'action' => 'view']) ?></li>
+						    <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
+	             		</ul>
+	             	</li>
+		         </ul>
+	        </div>
+	    </div>    
         <?php endif;?>
     </nav>
     <?= $this->Flash->render() ?>
     <div class ="flex-container" >
      	<div class="col-lg-12 nopadding">
-     	<?php if (!empty($current_user)) : ?>
-            <?= $this->element('menuadmin') ?>
+     	<?php if (!empty($current_user) && $current_user['rol_id'] === ADMINISTRADOR) : ?>
+          	<?= $this->element('menuadmin') ?>
+         <?php elseif (!empty($current_user) && $current_user['rol_id'] === PROFESOR) : ?>
+         	<?= $this->element('menuprofesor') ?>
          <?php endif; ?>
             <?= $this->fetch('content') ?>
         </div>

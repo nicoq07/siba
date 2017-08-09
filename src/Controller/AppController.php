@@ -62,7 +62,7 @@ class AppController extends Controller
         		
         		'loginRedirect' => [
         				'controller' => 'Users',
-        				'action' => 'home'
+        				'action' => 'view'
         		],
         		'logoutRedirect' => [
         				'controller' => 'Users',
@@ -97,12 +97,12 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
     	$this->set('current_user', $this->Auth->user());
-    	// $this->set('refer', $this->referer);
     	
     }
+    
     public function isAuthorized($user)
     {
-    	if(isset($user['role_id']) and $user['role_id'] === ADMINISTRADOR)
+    	if(isset($user['rol_id']) and $user['rol_id'] === ADMINISTRADOR)
     	{
     		return true;
     	}

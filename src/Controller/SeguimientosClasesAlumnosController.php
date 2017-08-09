@@ -13,6 +13,23 @@ use App\Model\Entity\SeguimientosClasesAlumno;
  */
 class SeguimientosClasesAlumnosController extends AppController
 {
+	
+	
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
+		{
+			if(in_array($this->request->action, ['p_index']))
+			{
+				return true;
+			}
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
+	
 
     /**
      * Index method

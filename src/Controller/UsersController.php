@@ -21,9 +21,18 @@ class UsersController extends AppController
 	
 	public function isAuthorized($user)
 	{
- 		return parent::isAuthorized($user);
+		if(isset($user['rol_id']) &&  $user['rol_id'] == CLIENTE)
+		{
+			if(in_array($this->request->action, ['index','view','logout','home']))
+			{
+				return true;
+			}
+		}
+		return parent::isAuthorized($user);
+		
 		return true;
 	}
+	
 	
 	
     /**
@@ -67,29 +76,38 @@ class UsersController extends AppController
     public function add()
     {
         $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
+        
+        if ($this->request->is('post'))
+        {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            $profe =  $this->Users->Profesores->get($user->profesor_id);
+            //set(['name' => 'andrew', 'id' => 1]); 
+            $user->set(['nombre' => $profe->nombre, 'apellido' => $profe->apellido,'dni' => $profe->cuit]);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('Usuario creado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error creando el usuario, reintente.'));
         }
+        
+        
+        
+        
+        
+        
         $roles = $this->Users->Roles->find('list', ['limit' => 3]);
-        $profesores = $this->Users->Profesores->find('list', ['limit' => 200]);
-        /*
-         * $subquery = $Courses->CoursesMemberships
-    ->find()
-    ->select(['CoursesMemberships.course_id'])
-    ->where(['CoursesMemberships.student_id' => $student_id]);
+        
+        $subquery = $this->Users
+	    ->find('list')
+	    ->where(['Users.profesor_id = Profesores.id']);
 
-$query = $Courses
-    ->find()
-    ->where([
-        'Courses.id NOT IN' => $subquery
-    ]);
-         */
+	    $profesores= $this->Users->Profesores
+		    ->find('list')
+		    ->where([
+		        'NOT EXISTS'  => $subquery
+		    ]);
+		    
         $this->set(compact('user', 'roles','profesores'));
         $this->set('_serialize', ['user']);
     }
@@ -157,7 +175,7 @@ $query = $Courses
     	}
     	if ($this->Auth->user())
     	{
-    		return $this->redirect(['controller' => 'Productos', 'action' => 'home']);
+    		return $this->redirect(['controller' => 'Alumnos', 'action' => 'index']);
     	}
     }
     

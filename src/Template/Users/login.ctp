@@ -2,6 +2,7 @@
     <div class="container">
     	<div class="row">
     	    <div class="col-xs-12">
+    	     <?= $this->Flash->render('auth') ?>
         	    <div class="form-wrap">
                 <h1>Ingreso a SIBA </h1>
                     <?= $this->Form->create('login-form') ?>
@@ -14,7 +15,7 @@
                         <div class="form-group">
 <!--                             <label for="key" class="sr-only">Password</label> -->
 <!--                             <input type="password" name="key" id="key" class="form-control" placeholder="Password"> -->
-                                <?= $this->Form->input('password',['name' => "key" , 'class' => 'form-control', 'placeholder' => 'Password',
+                                <?= $this->Form->input('password',['name' => "password" , 'class' => 'form-control', 'placeholder' => 'Password',
                          'label' => false , 'require'])?>
                         </div>
                         <div class="checkbox">

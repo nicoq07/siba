@@ -18,6 +18,24 @@ class AlumnosController extends AppController
 		parent::initialize();
 	}
 
+	
+	
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
+		{
+			if(in_array($this->request->action, ['p_view']))
+			{
+				return true;
+			}
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
+	
+	
     /**
      * Index method
      *

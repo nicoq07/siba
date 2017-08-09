@@ -108,6 +108,13 @@ class UsersTable extends Table
         return $rules;
     }
     
+    
+    public function recoverPassword($id)
+    {
+    	$user = $this->get($id);
+    	return $user->password;
+    }
+    
     public function findAuth(\Cake\ORM\Query $query, array $options)
     {
     	$query
