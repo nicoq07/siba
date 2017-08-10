@@ -54,17 +54,17 @@ class AppController extends Controller
         						'finder' => 'auth'
         				]
         		],
-        		'loginAction' => [
+        		'loginAction' => [ // donde esta el login
         				'controller' => 'Users',
         				'action' => 'login'
         		],
         		'authError' => 'Ups, no tenés permisos para entrar ahí',
         		
-        		'loginRedirect' => [
+        		'loginRedirect' => [ //que pasa despues del login
         				'controller' => 'Users',
-        				'action' => 'view'
+        				'action' => 'perfil'
         		],
-        		'logoutRedirect' => [
+        		'logoutRedirect' => [ //que pasa despues del logout
         				'controller' => 'Users',
         				'action' => 'login'
         		],
