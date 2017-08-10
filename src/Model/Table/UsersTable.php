@@ -118,7 +118,7 @@ class UsersTable extends Table
     public function findAuth(\Cake\ORM\Query $query, array $options)
     {
     	$query
-    	->select(['id','nombre','apellido', 'nombre_usuario', 'password', 'rol_id'])
+    	->select(['id','nombre','apellido', 'nombre_usuario', 'password', 'rol_id','profesor_id'])
     	->where(['Users.active' => 1]);
     	return $query;
     }
