@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\AppController;
-
 /**
  * Users Controller
  *
@@ -21,20 +19,16 @@ class UsersController extends AppController
 	
 	public function isAuthorized($user)
 	{
-		if(isset($user['rol_id']) &&  $user['rol_id'] == CLIENTE)
+		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['index','view','logout','home']))
+			if(in_array($this->request->action, ['index','view','logout','home','perfil']))
 			{
 				return true;
 			}
 		}
 		return parent::isAuthorized($user);
-		
 		return true;
 	}
-	
-	
-	
     /**
      * Index method
      *
@@ -90,12 +84,6 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Error creando el usuario, reintente.'));
         }
-        
-        
-        
-        
-        
-        
         $roles = $this->Users->Roles->find('list', ['limit' => 3]);
         
         $subquery = $this->Users
@@ -182,6 +170,16 @@ class UsersController extends AppController
     public function logout()
     {
     	return $this->redirect($this->Auth->logout());
+    }
+    
+    public function perfil()
+    {
+    	$user = $this->Users->get($this->Auth->user('id'), [
+    			'contain' => ['Roles']
+    	]);
+    	
+    	$this->set('user', $user);
+    	$this->set('_serialize', ['user']);
     }
     
 }

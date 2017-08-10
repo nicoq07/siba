@@ -1,3 +1,4 @@
+<?= $this->assign('title', 'Ingreso'); ?>
 <section id="login">
     <div class="container">
     	<div class="row">
