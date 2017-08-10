@@ -168,6 +168,8 @@ class ClasesController extends AppController
     
     private function insertarSeguimiento($idClase,$idsAlumnos)
     {
+    	
+    	
     	//creo un array con los dias con clave y valor para despues poder compararlo con la funcion DATE
     	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
     	
@@ -178,20 +180,25 @@ class ClasesController extends AppController
     	$clase = $this->Clases->get($idClase,['contain' => ['Horarios'  => ['Ciclolectivo']]]);
     	
     	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
-    	//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
-    	$idClaseAlumno = $ClasesAlumno->find('all')
-    	->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
-    	$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id);
+    	
     	
     	
     	//Recorro los ids de clases que voy a necesitar para crear los seguimientos
     	foreach ($idsAlumnos as $pos => $idAlumno)
     	{
+    		
+    		
+    		//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
+    		$idClaseAlumno = $ClasesAlumno->find('all')
+    		->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
+    		$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id);
+    		
+    		
     		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
     		//$alumno = $AlumnosTable->get($idAlumno);
-    		
     		if(!$claseAlumno->existeSeguimiento($idAlumno))
     		{
+    			
     			$alu = $AlumnosTable->get($idAlumno);
     			
     			//Creo las fechas de incio y fin para  recorrerlas

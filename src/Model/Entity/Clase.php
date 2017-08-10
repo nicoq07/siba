@@ -52,6 +52,19 @@ class Clase extends Entity
     	return $cadena;
     }
     
+    public function _getPresentacionCorta()
+    {
+    	$disciplinas = TableRegistry::get('Disciplinas');
+    	$disciplina = $disciplinas->get($this->disciplina_id);
+    	
+    	$horarios = TableRegistry::get('Horarios');
+    	$horario = $horarios->get($this->horario_id);
+    	
+    	$cadena = strtoupper($disciplina->descripcion) . ", " . $horario->presentacion;
+    	
+    	return $cadena;
+    }
+    
 //     public function existeSeguimiento($idAlumno)
 //     {
 //     	$Seguimientos = TableRegistry::get("SeguimientosClases");
