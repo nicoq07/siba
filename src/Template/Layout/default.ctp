@@ -36,22 +36,29 @@ $description = 'Iba Escuela ' .date("Y");
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
-       <?php if (!empty($current_user)) : ?>
-        <ul class="title-area col-lg-2">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-         </ul>
-		<ul class="nav navbar-nav right" style="margin-right: 50px!important;">
-				<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
-	                        <ul class="dropdown-menu">
+     
+     	<div class="col-lg-2 nopadding title-area">
+	        <ul class="">
+	            <li class="name">
+	                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
+	            </li>
+	         </ul>
+         </div>
+         <div  class="col-lg-2 col-lg-offset-8" >
+         <?php if (!empty($current_user)) : ?>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a style="color: white; background-color:#01545B;" href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
+	                        <ul class="dropdown-menu forAnimate">
 	                            <li><?= $this->Html->link(h('Perfil'), ['controller' =>'Users', 'action' => 'view']) ?></li>
 	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
 							</ul>
-				</li>
-		</ul>
+					</li>
+			</ul>
         <?php endif;?>
+        </div>
+         
+         
     </nav>
     <?= $this->Flash->render() ?>
     <div class ="flex-container" >
