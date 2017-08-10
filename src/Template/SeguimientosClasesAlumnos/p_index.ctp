@@ -1,3 +1,4 @@
+<?= $this->assign('title', 'Mis Seguimientos'); ?>
 <div class="seguimientosClasesAlumnos index col-lg-10">
 	<h3><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
@@ -11,7 +12,7 @@
 	 </div>
 	<div class ="col-lg-3">
 		 <?php
-            echo $this->Form->label('nomodificados','Ver seguimientos sin editar');
+            echo $this->Form->label('nomodificados','Ver sólo seguimientos sin editar');
             echo $this->Form->checkbox('nomodificados', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
@@ -31,7 +32,7 @@
         <tbody>
             <?php foreach ($seguimientosClasesAlumnos as $seguimientosClasesAlumno): ?>
             <tr>
-                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->clase->presentacion, ['controller' => 'Clases', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->clase->id])  ?></td>
+                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->clase->presentacionCorta, ['controller' => 'Clases', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->clase->id])  ?></td>
                 <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->alumno->id])  ?></td>
                 <td><?= $seguimientosClasesAlumno->presente ? h('Sí') : h("No") ?></td>
                 <td><?= $seguimientosClasesAlumno->has('calificacione') ? $seguimientosClasesAlumno->calificacione->presentacion : '' ?></td>

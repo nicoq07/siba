@@ -19,7 +19,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['p_index']))
+			if(in_array($this->request->action, ['pIndex','edit','view']))
 			{
 				return true;
 			}
@@ -155,8 +155,13 @@ class SeguimientosClasesAlumnosController extends AppController
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
                 $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				
+                $url = ['action' => 'index'];
+                if($this->Auth->user('rol_id') === PROFESOR)
+                {
+                	$url = ['action' => 'pIndex'];
+                }
+                return $this->redirect($url);
             }
             $this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
         }
@@ -246,10 +251,10 @@ class SeguimientosClasesAlumnosController extends AppController
     {
     	$where = null;
     	$session = $this->request->session();
-    	
+    	$session->delete('where');
     	if ($this->request->is('post'))
     	{
-    		$session->delete('where');
+    		
     		$where1 = null;
     		$where2 = null;
     		if (!(empty($this->request->getData()['clases'])))
@@ -274,10 +279,10 @@ class SeguimientosClasesAlumnosController extends AppController
     		$where = null;
     	}
     	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')
-    	->where(['Clases.profesor_id' => 3]);
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
     	
     	$this->paginate = [
-    			'conditions' => [$where, 'fecha <= ' => new \DateTime('now')],
+    			'conditions' => [$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
     	];
     	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
