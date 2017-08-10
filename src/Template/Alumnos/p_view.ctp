@@ -24,8 +24,9 @@
 	<div class="col-lg-3 col-md-3 borde"><?= $alumno->programa_adolecencia ? __('Sí') : __('No'); ?> </div>
 	<div class="col-lg-3 col-md-3 borde view-div"><?= __('Activo') ?></div>
 	<div class="col-lg-3 col-md-3 borde"><?=$alumno->active ? __('Sí') : __('No');?> </div>
-    <div class="related">
-        <h4><?= __('Clases inscriptas' ) ?></h4>
+	
+    <div class="related separador-ligth">
+        <h4> <?= __('Clases inscriptas' ) ?></h4>
         <?php if (!empty($alumno->clases)){ ?>
         <table class="table table-striped">
             <tr>
@@ -42,7 +43,7 @@
         </table>
         <?php  }  else { echo h("NO TIENE CLASES ACTIVAS"); }?>
     </div>
-     <div class="related">
+     <div class="related separador-ligth">
         <h4><?= __('Seguimientos de Clases' ) ?></h4>
         <?php if (!empty($seguimientos)){ ?>
         <table class="table table-striped">

@@ -24,7 +24,7 @@ class AlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['p_view']))
+			if(in_array($this->request->action, ['pView','pIndex']))
 			{
 				return true;
 			}
@@ -80,6 +80,8 @@ class AlumnosController extends AppController
         $this->set(compact('alumnos'));
     }
 
+    
+    
     /**
      * View method
      *
@@ -257,6 +259,18 @@ class AlumnosController extends AppController
     	return $this->redirect(['action' => 'index']);
     }
     
+    public function pIndex()
+    {
+    	$alumnos = $this->Alumnos->find('all')
+    	->matching('Clases', function ($q)  {
+    		return $q->where(['ClasesAlumnos.active' => true, 'Clases.profesor_id' =>  $this->Auth->user('profesor_id')]);
+    	})
+    	->toArray()
+    	;
+    	
+    	
+    	$this->set(compact('alumnos'));
+    }
     
     public function pView($id = null)
     {
@@ -409,11 +423,13 @@ class AlumnosController extends AppController
 		//me traigo la tabla de seguimientos
 		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
 		
+		//Me traigo la tabla de ClasesAlumnos
+		$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+		
 		//Recorro los ids de clases que voy a necesitar para crear los seguimientos
 		foreach ($idsClases as  $pos => $idClase)
 		{
-			//Me traigo la tabla de ClasesAlumnos
-			$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+			
 			//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
 			$idClaseAlumno = $ClasesAlumno->find('all')
 			->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
