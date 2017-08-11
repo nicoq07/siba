@@ -5,6 +5,7 @@
 
 composer.lock
 config/bootstrap.php
-src/Controller/PagosAlumnosController.php
+
 composer.lock
 config/bootstrap.php
+/tmp/
