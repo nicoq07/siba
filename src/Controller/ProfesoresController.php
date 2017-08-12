@@ -12,7 +12,20 @@ use App\Controller\AppController;
  */
 class ProfesoresController extends AppController
 {
-
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
+		{
+			if(in_array($this->request->action, ['pView']))
+			{
+				return true;
+			}
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
     /**
      * Index method
      *
@@ -42,7 +55,17 @@ class ProfesoresController extends AppController
         $this->set('profesore', $profesore);
         $this->set('_serialize', ['profesore']);
     }
-
+    public function pView($id = null)
+    {
+    	$profesore = $this->Profesores->get($id, [
+    			'contain' => []
+    	]);
+    	
+    	$this->set('profesore', $profesore);
+    	$this->set('_serialize', ['profesore']);
+    }
+    
+    
     /**
      * Add method
      *

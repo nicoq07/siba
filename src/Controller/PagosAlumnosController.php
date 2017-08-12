@@ -13,7 +13,17 @@ use Cake\I18n\Time;
  */
 class PagosAlumnosController extends AppController
 {
-
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
+		{
+			return false;
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
     /**
      * Index method
      *

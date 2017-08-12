@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use PhpParser\Node\Expr\Array_;
 
 /**
  * Horarios Controller
@@ -13,7 +12,18 @@ use PhpParser\Node\Expr\Array_;
  */
 class HorariosController extends AppController
 {
-
+	
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
+		{
+			return false;
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
     /**
      * Index method
      *

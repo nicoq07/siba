@@ -12,7 +12,19 @@ use App\Controller\AppController;
  */
 class ClasesAlumnosController extends AppController
 {
-
+	
+	public function isAuthorized($user)
+	{
+		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
+		{
+			return false;
+		}
+		
+		return parent::isAuthorized($user);
+		
+		return true;
+	}
+	
     /**
      * Index method
      *
