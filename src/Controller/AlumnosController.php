@@ -242,19 +242,30 @@ class AlumnosController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-    
+    /*
+     * Desactiva al alumno
+     * Desactiva la clase_alumno
+     * 
+     */
     public function baja($id = null)
     {
+    	//desac
     	$this->request->allowMethod(['post', 'delete']);
     	$alumno = $this->Alumnos->get($id);
-    	$alumno->active = false;
     	
-    	if ($this->Alumnos->save($alumno))
+    	if ($alumno->desactivarme())
     	{
-    		$alumno->clases->active = false;
-    		$this->Flash->success(__('Alumno dado de baja.'));
+    		if($this->Alumnos->save($alumno))
+    		{
+    			$this->Flash->success(__('Alumno dado de baja. Clases y seguimientos borrados'));
+    		}
+    		
     	}
-    	$this->Flash->error(__('Error al dar de baja, reintente!'));
+    	else 
+    	{
+    		$this->Flash->error(__('Error al dar de baja, reintente!'));
+    	}
+    	
     	
     	return $this->redirect(['action' => 'index']);
     }

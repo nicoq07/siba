@@ -12,7 +12,11 @@ use App\Controller\AppController;
  */
 class RolesController extends AppController
 {
-
+	public function beforeFilter(\Cake\Event\Event $event)
+	{
+		parent::beforeFilter($event);
+		$this->Auth->allow(['add','index']);
+	}
     /**
      * Index method
      *

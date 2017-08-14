@@ -58,7 +58,7 @@
                 <td><?= $alumno->active ? h("Sí") : h("No") ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $alumno->id],['class' => 'btn-sm btn-warning']) ?>
-                    <?= $this->Form->postLink(__('Baja'), ['action' => 'delete', $alumno->id],['class' => 'btn-sm btn-danger','confirm' => __('Vas a dar de baja a {0}?', $alumno->presentacion)]) ?>
+                    <?= $this->Form->postLink(__('Baja'), ['action' => 'baja', $alumno->id],['class' => 'btn-sm btn-danger','confirm' => __('Vas a dar de baja a {0}?', $alumno->presentacion)]) ?>
                
                 </td>
             </tr>

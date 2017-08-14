@@ -3,6 +3,9 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
+use Cake\ORM\Table;
+use App\Model\Table\AlumnosTable;
 
 /**
  * Alumno Entity
@@ -36,7 +39,6 @@ use Cake\Datasource\ConnectionManager;
  * @property bool $active
  * @property string $referencia_foto
  *
- * @property \App\Model\Entity\FotosAlumno[] $fotos_alumnos
  * @property \App\Model\Entity\PagosAlumno[] $pagos_alumnos
  * @property \App\Model\Entity\Clase[] $clases
  */
@@ -84,4 +86,20 @@ class Alumno extends Entity
     	}
     	return false;
     }
+    
+    public function desactivarme()
+    {
+    	$this->set('active', false);
+    	$cantClases = TableRegistry::get('ClasesAlumnos')->find('list')->where(['ClasesAlumnos.alumno_id' => $this->id])
+    	->count();
+    	$cantBorradas= TableRegistry::get('ClasesAlumnos')->deleteAll(['ClasesAlumnos.alumno_id' => $this->id]);
+    	if ($cantClases === $cantBorradas)
+    	{
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    
 }

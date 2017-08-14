@@ -3,6 +3,6 @@
 		echo $this->Form->label('mob', ['label' => 'Mes']);
 		echo $this->Form->month('mob', ['empty' => true]);
 	  ?>
-	  <?= $this->Form->button(__('Submit')) ?>
+	  <?= $this->Form->button(__('Descargar')) ?>
     <?= $this->Form->end() ?>
 </div>
