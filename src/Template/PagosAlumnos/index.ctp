@@ -17,6 +17,7 @@ $this->assign('title', 'Pagos de alumnos');?>
             <tr>
                 <th width="18%" scope="col"><?= $this->Paginator->sort('alumno_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created',['label' => 'Generado']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('mes',['label' => 'Corresponde a ']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('fecha_pagado',['label' => 'Fecha pagado']) ?></th>
                 <th  width="10%" scope="col"><?= $this->Paginator->sort('monto') ?></th>
                 <th width="10%" scope="col"><?= $this->Paginator->sort('pagado') ?></th>
@@ -29,6 +30,7 @@ $this->assign('title', 'Pagos de alumnos');?>
             <tr >
                 <td><?= $pagosAlumno->has('alumno') ? $this->Html->link($pagosAlumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'view', $pagosAlumno->alumno->id]) : '' ?></td>
                 <td><?= h($pagosAlumno->created->format('d-m-Y')) ?></td>
+                 <td><?= h(__(date('F',strtotime("01-".$pagosAlumno->mes."-2000")))); ?></td>
                 <td><?= $pagosAlumno->fecha_pagado ? h($pagosAlumno->fecha_pagado->format('d-m-Y')) : h("Sin datos")?></td>
                 <td title="Detalles:&#10;<?php foreach ($pagosAlumno->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= $this->Number->format($pagosAlumno->monto) ?></td>
                 <td><?= $pagosAlumno->pagado ? h("Sí") : h("No") ?></td>
