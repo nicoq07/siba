@@ -13,8 +13,6 @@ use App\Model\Entity\SeguimientosClasesAlumno;
  */
 class SeguimientosClasesAlumnosController extends AppController
 {
-	
-	
 	public function isAuthorized($user)
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
@@ -29,7 +27,6 @@ class SeguimientosClasesAlumnosController extends AppController
 		
 		return true;
 	}
-	
 
     /**
      * Index method
@@ -94,9 +91,6 @@ class SeguimientosClasesAlumnosController extends AppController
         		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
         ];
         $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
-
-        
-        
         $this->set(compact('seguimientosClasesAlumnos','clases'));
     }
 
@@ -194,22 +188,41 @@ class SeguimientosClasesAlumnosController extends AppController
     
     public  function informe()
     {
-    	if ($this->request->is('post') && $this->request->getData('alumnos') && $this->request->getData('clases')) {
-    	
-    		$idAlumno = $this->request->getData('alumnos');
-    		$idClase = $this->request->getData('clases');
+    	$where = null;
+    	$arrayAlumnos = array(null);
+    	if ($this->request->is('post')) 
+    	{
+    		$alumno;
+    		$clase;
+    		if($this->request->getData('clases'))
+    		{
+    			$idClase = $this->request->getData('clases');
+    			$clase = TableRegistry::get('Clases')->get($idClase,['contain' => ['Disciplinas']]);
+    			$where = ['clase_id' => $idClase];
+    		}
+    		if($this->request->getData('alumnos'))
+    		{
+    			$idAlumno = $this->request->getData('alumnos');
+    			$alumno = TableRegistry::get('Alumnos')->get($idAlumno);
+    			$this->prepararListadoSeguimiento($clase->disciplina->descripcion, $alumno->presentacion, 'A4', 'portrait');
+    			return  $this->redirect(['action' => 'listado_pdf',$idAlumno,$idClase,'_ext' => 'pdf']);
+    		}
     		
-    		$alumno = TableRegistry::get('Alumnos')->get($idAlumno);
-    		$clase = TableRegistry::get('Clases')->get($idClase,['contain' => ['Disciplinas']]);
-
-    		$this->prepararListadoSeguimiento($clase->disciplina->descripcion, $alumno->presentacion, 'A4', 'portrait');
-    		
-    		return  $this->redirect(['action' => 'listado_pdf',$idAlumno,$idClase,'_ext' => 'pdf']);
     	}
     	
     	$seg = $this->SeguimientosClasesAlumnos->newEntity();
     	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->where(['clases.active' => true]) ;
-    	$alumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Alumnos->find('list')->where(['alumnos.active' => true,'alumnos.futuro_alumno' => false]);
+    	if (!empty($where))
+    	{
+	    	$clasesAlu = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('all')->where($where)->select(['alumno_id']);
+	    	foreach ($clasesAlu as $alu)
+	    	{
+	    		array_push($arrayAlumnos, $alu['alumno_id']) ;
+	    	}
+	    	
+    	}
+    	$alumnos = TableRegistry::get('Alumnos')->find('list')
+    	->where(['alumnos.active' => true,'alumnos.futuro_alumno' => false,'alumnos.id IN' =>$arrayAlumnos])->toArray();
     	$this->set(compact('seg','clases', 'alumnos'));
     }
     
