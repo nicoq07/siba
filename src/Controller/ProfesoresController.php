@@ -49,7 +49,7 @@ class ProfesoresController extends AppController
     public function view($id = null)
     {
         $profesore = $this->Profesores->get($id, [
-            'contain' => []
+            'contain' => ['Clases'=>['Horarios','Disciplinas']]
         ]);
 
         $this->set('profesore', $profesore);
@@ -58,7 +58,7 @@ class ProfesoresController extends AppController
     public function pView($id = null)
     {
     	$profesore = $this->Profesores->get($id, [
-    			'contain' => []
+    			'contain' =>  ['Clases'=>['Horarios','Disciplinas']]
     	]);
     	
     	$this->set('profesore', $profesore);

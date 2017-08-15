@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -37,6 +36,10 @@ class ProfesoresTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        
+        $this->hasMany('Clases', [
+        		'foreignKey' => 'profesor_id'
+        ]);
     }
 
     /**
