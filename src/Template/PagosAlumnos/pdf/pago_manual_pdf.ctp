@@ -1,6 +1,5 @@
-
-<div>
-	<table style="width:990px; height: 670px; border:3px solid black;">
+<div width="3508px" height="2480px">
+	<table width="3508px" height="2480px" style="border:3px solid black;">
 	  <tbody>
 	    <tr>
 	      <td height="100%" rowspan="5" width="15%" style="padding: 0; margin:0; border:0.5px solid black;">

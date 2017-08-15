@@ -3,13 +3,13 @@
     <fieldset>
         <legend><?= __('Nuevo pago general') ?></legend>
         <?php
-        echo $this->Form->label('tienepago', ['label' => 'Sin pagos en el mes']);
+        echo $this->Form->label('tienepago', ['label' => 'No volver a cobrar']);
         echo $this->Form->checkbox('tienepago');
       
         ?>
         <div class="col-lg-12 separador">
            <span>
-        	  	<?php echo h("Sí el alumno tiene generado un pago en el mes y no quiere volver a genera otro,   marque 'Sin pago en el mes' ")?>
+        	  	<?php echo h("Sí el alumno tiene generado un pago en el mes y no quiere volver a genera otro,   marque 'No volver a cobrar' ")?>
            </span>
         </div>
        <?php

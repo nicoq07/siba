@@ -1,6 +1,6 @@
 <?php foreach ($pagosAlumnos as $pagoalumno) : ?>
 <div>
-	<table style="width:990px; height: 670px; border:3px solid black;">
+	<table style="border:3px solid black;">
 	  <tbody>
 	    <tr>
 	      <td height="100%" rowspan="5" width="15%" style="padding: 0; margin:0; border:0.5px solid black;">

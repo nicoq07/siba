@@ -138,7 +138,7 @@ class PagosAlumnosController extends AppController
 	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 	 					,'PagosConceptos']
 	 	]);
-	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A5", "portrait");
+	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A4", "landscape");
 	 	$this->set(compact('pagoalumno'));
 	 	
 	 }
@@ -157,7 +157,7 @@ class PagosAlumnosController extends AppController
 	 		$noCobroAQuienPago = $this->request->getData('tienepago');
 	 		
 	 		$alumnosTable = TableRegistry::get('Alumnos');
-	 		$alumnos = $alumnosTable->find()->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false]);
+	 		$alumnos = $alumnosTable->find()->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false,'alumnos.futuro_alumno' => false]);
 	 		foreach ($alumnos as $alumno)
 	 		{
 	 			//si pago y no quieren que vuelva a generar un pago
@@ -203,7 +203,7 @@ class PagosAlumnosController extends AppController
 		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 				,'PagosConceptos']) 
 		->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y')]);
-		$this->prepararPDFGeneral($mes, "A5", "landscape");
+		$this->prepararPDFGeneral($mes, "A4", "landscape");
 		$this->set(compact('pagosAlumnos'));
 	}
     /**
