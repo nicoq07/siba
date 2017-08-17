@@ -1,98 +1,247 @@
-.td-interna-general
+.general
 {
-	font-size: 2.5rem;
-	font-style: bold;
-	padding:0px;
+	border : 3px;
+	border-style: solid;
+	width: 1500px;
+	height: 1000px;
+    margin: 50px 0px 50px 0px;
+	 
 }
-.td-externa-general
+.troquel
 {
-	font-size: 3rem;
-	font-style: bold;
-	margin:10px;
-}
-.td-interna-title
-{
-	text-align:center;
-	margin:auto;
-	display:block;
-	font-size: 110px;
-	height:180px;
-	width:1200px;
-}
-.parrafo
-{
-	font-size: 30px;
-}
-.tabla-cuerpo-ficha-interna
-{
-	width:1900px;
-	height:950px; 
-	border-spacing:0px;
-	cellspacing:0!important;
-	cellpadding:0!important;
-}
-.tabla-header-ficha-interna
-{
-	text-algin: center;
-	vertical-align: middle;
-	width:1900px;
-	height:180px; 
-	border:0;
-	
-}
-.A6
-{
-	padding:0;
-	margin:0;
-}
-span.title
-{
-   display:block;
-   margin-top: 50px;
+	float:left;
+	display:inline-table;
+	border : 2px;
+	border-right-style: dotted;
+	width: 15%;
+	height: 1000px;
 }
 
-.tabla-cuerpo-ficha-externa
+.fila-troquel
 {
-	width:2400px;
-	height:1000px; 
-	border-spacing:0px;
-	cellspacing:0!important;
-	cellpadding:0!important;
-}
-.logo-externa
-{
-	width:200px;
-	height:200px; 
-}
-.presentacion-externa
-{
-	text-align:center;
-	height:180px;
-	width:2000;
-	font-size: 4.5rem;
-}
-.encabezado-externa
-{
-	text-align:center;
-	/*margin:auto;
-	display:block;*/
-	font-size: 90px;
-	height:180px;
-	width:2400;
+	display: table; 
+	border : 0.5px;
+	border-bottom-style: solid;
+	width: 100%;
+	height: 20%;
 }
 
-.td-troquel
+.fila-troquel-ultima
+{
+	display: table; 
+	width: 100%;
+	height: 102px;
+}
+.texto-troquel-fecha
+{
+	text-align:center; 
+    vertical-align: middle;
+    display: table-cell;  
+	font-size: 1.5rem;
+	
+}
+.texto-troquel-codigo
+{
+	text-align:center; 
+	font-size: 1.3rem;	
+}
+
+.texto-troquel-nomyape
+{
+	text-align:center; 
+	font-size: 1.3rem;	
+}
+
+
+.factura
 {
 	
-	align: center;
-	font-size: 1rem;
-	font-style: bold;
-	border-bottom: 1px solid;
+	float:left;
+	display:inline-table;
+	width: 84.8%;
+	height: 273px;
+}
+	
+.container-titulo
+{
+	margin: 0;
+	float: left;
+	border : 0.5px;
+	border-style:solid;
+	width:79%;
+	height: 265px;
+	border :1px;
+	border-bottom-style: solid;
 	
 }
 
-.div-troquel
+.titulo
 {
-	dislplay:block;
-	margin: 5px 0px 0px 5px;
+	height: 102px;
+	border : 1px;
+	border-bottom-style: solid;
+}
+
+.texto-titulo
+{
+	margin: 0;
+	text-align:center; 
+	font-size: 4rem;	
+	
+}
+
+.logo
+{	
+	
+	width: 20.649%;
+	height: 265px;
+	right: 0px;
+    top: 0px;
+	float: left;
+	margin: 0;
+	border :1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	
+}
+
+
+.descripcionIba
+{
+	border :0px;
+	border-bottom-style: solid;
+}
+
+.texto-descripcionIba
+{
+	margin: 0;
+	text-align:center; 
+	font-size: 2rem;	
+}
+.descripcion-alumno-curso
+{
+	margin: 0;
+	float: left;
+	border : 1px;
+	border-style:solid;
+	border-top-style: solid;
+	 border-right-style: none;
+	width:100%;
+	height: 130px;	
+}
+
+.alumno
+{
+	margin: 0;
+	border : 1px;
+	border-bottom-style: solid;
+	border-left-style: none;
+   border-right-style: none;
+	height: 50%;
+	
+}
+
+.texto-alumno
+{
+	margin: 0 0 0 5px;
+	text-align:left; 
+	font-size: 1.2rem;	
+}
+
+.curso
+{
+	margin: 0;
+	height: 50%;
+	border: 1px;
+  border: 1px;
+	border-left-style: none;
+ 	border-right-style: none;
+}
+.container-conceptos
+{
+	float: left;
+	margin: 0;
+	width:100%;
+	height: 602px;
+	border :0px;
+	border-style: solid;
+	border-bottom-style: solid;
+}
+
+.titulo-conceptos
+{
+	float: left;
+	margin: 0;
+	width: 100%;
+	height: 61px;
+	border : 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+}
+.conceptos
+{
+	position: relative;
+	float: left;
+	margin: 0;
+	width: 85%;
+	height: 602px;
+	border :0px;
+	border-bottom-style: solid;
+	
+	
+}
+
+.concepto
+{
+	float: left;
+	margin: 0;
+	width: 100%;
+	height: 61px;
+	border : 1px;
+	border-bottom-style: solid;
+	border-left-style: none;
+	border-right-style: none;
+}
+
+.texto-concepto
+{
+	margin: 0 0 0 5px;
+	text-align:left; 
+	font-size: 2rem;	
+}
+
+.montos
+{
+	margin : 0;
+	border: 1px;
+	border-bottom-style: none;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: solid;
+	float: left;
+	margin: 0;
+	width: 14.9%;
+	height: 602px;
+}
+
+.descripcion-total
+{
+	border : 1px;
+	border-left-style: none;
+	border-bottom-style: solid;
+	height: 61px;
+}
+
+.inforamcion
+{
+		border: 1px;
+	border-top-style: solid;
+
+	float: left;
+	margin: 0;
+	width: 100%;
+	height: 81px;
+	position: absolute;
+	bottom: 0;
+    left: 0;
 }

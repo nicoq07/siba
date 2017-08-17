@@ -1,121 +1,118 @@
 <?php foreach ($pagosAlumnos as $pagoalumno) : ?>
-<div>
-	<table style="border:3px solid black;">
-	  <tbody>
-	    <tr>
-	      <td height="100%" rowspan="5" width="15%" style="padding: 0; margin:0; border:0.5px solid black;">
-	      	<table style="height:100%;"  >
-	      		<tr>
-	      			<td class="td-troquel" ><div class="div-troquel"> <?= h($pagoalumno->created->format('d/m/y'))?> </div></td>
-	      		</tr>
-	      		<tr>
-	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Código : ")?></div><div class="div-troquel"><?= h($pagoalumno->id)?></div> </td>
-	      		</tr>
-	      		<tr>
-	      			<td class="td-troquel" ><div class="div-troquel" ><?= h($pagoalumno->alumno->nombre) ;?></div><div class="div-troquel" > <?=  h($pagoalumno->alumno->apellido)?></div></td>
-	      		</tr>
-	      		<tr>
-	      			<td class="td-troquel" ><div class="div-troquel" ><?= h("Mes :")?></div> <div class="div-troquel" ><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?></div></td>
-	      		</tr>
-	      		<tr>
-	      			<td class="td-troquel" >
-                        <div class="div-troquel" ><?= h("Total :")?></div> <div class="div-troquel" ><?php echo $this->Number->format($pagoalumno->monto,[
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Aviso de pago</title>
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--div general  --> 
+<div class = "general">
+	<div class= "troquel">
+		<div class= "fila-troquel">
+			<p class="texto-troquel-fecha"> <?= h($pagoalumno->created->format('d/m/y'))?> </p>
+		</div>
+		<div class= "fila-troquel">
+			<p class="texto-troquel-codigo"><?= h("Código : ")?> </p>
+			<p class="texto-troquel-codigo"><?= h($pagoalumno->id)?> </p> 
+		</div>
+		<div class= "fila-troquel">
+			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
+			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </p>
+		</div>
+		<div class= "fila-troquel">
+			<p class="texto-troquel-fecha"><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?> </p>
+		</div>
+		<div class= "fila-troquel-ultima">
+			<p class="texto-troquel-nomyape">Total: </p>
+			<p class="texto-troquel-nomyape"> <?php echo $this->Number->format($pagoalumno->monto,[
                                   'before' => '$',
                                   'locale' => 'es_Ar'
-                                  ])?></div>
-                    </td>
-	      		</tr>
-	      	</table>
-		  </td>
-	      <td height="45%" width="85%" style="padding: 0;">
-	      	<table  style="height:100%; width:100%; padding: 0; margin:0; border:1px solid black;">
-			  <tbody >   
-				<tr>
-				  <td align="center"  height="30%" width="80%" style="border: 1px solid;"> 
-					<p style="padding:0; margin:0; text-align:center; font-size: 2rem; font-style:bold;">  <?= h("I.B.A Lugano") ?> </p>
-				 </td>
-				  <td style="border: 1px solid;" align="center"  height="55%" width="20%" rowspan="2" >
-					<?php  echo $this->Html->image('logoIba.png', ['height' => '120px', 'width' => '120px', 'fullBase' => true]); ?>
-					<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 1rem; font-style:bold; border-style:solid">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
-				</td>
-				</tr>
-				<tr>
-				  <td style="border: 1px solid;" align="center" height="25%" width="80%">
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("Instituto Buenos Aires") ?> </p>
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("Dir. Profesor Hugo Castro") ?> </p>
-						<p style="padding:0; margin:0; display:block; text-align:center; font-size: 1rem; font-style:bold;">  <?= h("José León Suarez 5246 CP(1439) - Tel: 4638-5062") ?> </p>
-				  </td>
-				</tr>
-				<tr>
-				  <td style="border: 1px solid;" colspan="2" height="45%;" width="100%">
-				  		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 1rem;  font-style:bold;">  <?= h("Alumno: ") ?> </p>
-				 		<p style="padding:0; margin:0; display:block; text-align:left; font-size: 1.2rem; font-style:bold;">  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?> </p>
-				 		<?php
-				 		$clases = "Cursos: ";
+                                  ])?> </p>
+		</div>
+	
+	</div>
+	<!-- FIN DE DIV DE TROQUEL  -->
+	<!-- DIV FACTURA -->
+	<div class = "factura">
+		<div class="container-titulo">
+			<div class="titulo">
+				<p class="texto-titulo"> I.B.A Lugano</p>
+			</div>
+			
+			<div class="descripcionIba">
+				<p class="texto-descripcionIba"> Instituto Buenos Aires</p>
+				<p class="texto-descripcionIba"> Dir. Profesor Hugo Castro</p>
+				<p class="texto-descripcionIba"> José León Suarez 5246 CP(1439) - Tel: 4638-5062</p>
+			</div>
+			
+		</div>
+		
+		<div class="logo">
+			<?php  echo $this->Html->image('logoIba.png', ['height' => '120px', 'width' => '120px', 'fullBase' => true]); ?>
+			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 1rem; font-style:bold; border-style:solid">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
+		</div>
+		
+		<div class="descripcion-alumno-curso">
+		
+			<div class="alumno">
+				<p class="texto-alumno"> Alumno:</p>
+				<p class="texto-alumno"> <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
+		    </div>
+				<?php
+				 		$clases = " ";
 				 			foreach ($pagoalumno->alumno->clases as $clase):
 				 			$clases .= $clase->disciplina->descripcion. " ";
 				 		 endforeach;?>
-				 		 <p style="padding:0; margin:0; display:block; text-align:left; font-size: 1rem; font-style:bold;">  <?= h($clases) ?> </p>
-					</td>
-				</tr>
-			  </tbody>
-			</table>
-	       </td>
-	    </tr>
-	    <tr>
-	       <td height="45%" width="85%" style="padding: 0;">
-                <table  style="height:100%; width:75%; border:1px solid black;" align="left">
-                  <tbody>
-                    <tr  height="15%">
-                      <td style="border: 1px solid;" bgcolor="" width="75%" ><p style="text-align:left; font-size: 1rem; margin:0; padding:0;">Conceptos</p></td>
-                    </tr>
-                    <tr  height="85%">
-                      <td style="border: 1px solid;" bgcolor="" width="75%">
-                        <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
-                            <p style="text-align:left; font-size: 0.9rem;"> <?= h($concepto->detalle) ?></p>
-                        <?php endforeach;    ?>
-                        </td>
-                    </tr>
-                  </tbody>
-                </table>
-               
-                <table style="height:100%; width:25%; border:1px solid black;" align="right">
-                  <tbody>
-                    <tr height="15%">
-                      <td style="border: 1px solid;" bgcolor="" width="25%"> </td>
-                      <td style="border: 1px solid;" bgcolor="" width="25%" ></td>
-                    </tr>
-                    <tr height="70%">
-                      <td style="border: 1px solid;" bgcolor="" width="25%"> <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
-                            <p style="text-align:center; font-size: 0.9rem;"> <?= $this->Number->format($concepto->monto,[
-                                  'before' => '$',
-                                  'locale' => 'es_Ar'
-                                  ])?></p>
-                        <?php endforeach;    ?></td>
-                      <td style="border: 1px solid;" bgcolor="" width="25%"> <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
-                            <p style="text-align:center; font-size: 0.9rem;"> <?=  $this->Number->format($concepto->monto,[
-                                  'before' => '$',
-                                  'locale' => 'es_Ar'
-                                  ])?></p>
-                        <?php endforeach;    ?></td>
-                    </tr>
-                    <tr height="15%">
-                      <td style="border: 1px solid;"  bgcolor="" width="25%"><p style="text-align:left; font-size: 0.7rem;"> A pagar por pronto pago </p></td>
-                      <td style="border: 1px solid;" bgcolor="" width="25%"> <p style="text-align:center; font-size: 0.9rem;"> <?= $this->Number->format($pagoalumno->monto,[
-                                  'before' => 'Total $',
-                                  'locale' => 'es_Ar'
-                                  ])?></p></td>
-                    </tr>
-                  </tbody>
-                </table>
-            </td>
-	    </tr>
-	    <tr>
-	      <td style="border: 3px solid;" height="10% " width="90%">
-            
-          </td>
-	    </tr>
-	  </tbody>
-	</table>
+			<div class="curso">
+				<p class="texto-alumno"> Cursos:</p>
+				<p class="texto-alumno"> <?= h($clases); ?> </p>
+			</div>
+			
+		
+		</div>
+		
+		<div class="container-conceptos">
+		
+			
+		  <div class="conceptos"> 
+		    <div class="titulo-conceptos">
+				<p class="texto-descripcionIba"> Detalles</p>
+		    </div>
+		     <?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
+				<div class = "concepto"> <p class="texto-concepto"><?= h($concepto->detalle) ?></p> </div>
+			 <?php endforeach;    ?>
+		
+			<div class="inforamcion">
+				<p class="texto-alumno"> NOTA :  </p>
+			</div>	
+				
+		  </div>
+				
+			<div class= "montos">
+				<div class="descripcion-total"><p class="texto-descripcionIba">TOTAL </p>  </div>
+				<?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
+					<div class="concepto"><p class="texto-concepto"><?= $this->Number->format($concepto->monto,[
+	                                  'before' => '$',
+	                                  'locale' => 'es_Ar'
+	                                  ])?> </p> 
+	               </div>
+	           <?php endforeach;   ?>
+			</div>
+				
+		
+		</div>
+		
+		
+	</div>
+
+	<!-- FIN DIV FACTURA -->
 </div>
-<?php endforeach;?>
+
+
+
+</body>
+</html>
+<?php endforeach; ?>
