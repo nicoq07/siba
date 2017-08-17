@@ -11,10 +11,10 @@
 {
 	float:left;
 	display:inline-table;
-	border : 2px;
+	border : 3px;
 	border-right-style: dotted;
 	width: 15%;
-	height: 1000px;
+	height: 997px;
 }
 
 .fila-troquel
@@ -37,19 +37,19 @@
 	text-align:center; 
     vertical-align: middle;
     display: table-cell;  
-	font-size: 1.5rem;
+	font-size: 2rem;
 	
 }
 .texto-troquel-codigo
 {
 	text-align:center; 
-	font-size: 1.3rem;	
+	font-size: 1.5rem;	
 }
 
 .texto-troquel-nomyape
 {
 	text-align:center; 
-	font-size: 1.3rem;	
+	font-size: 2rem;	
 }
 
 
@@ -60,6 +60,7 @@
 	display:inline-table;
 	width: 84.8%;
 	height: 273px;
+	 border-left-style: solid;
 }
 	
 .container-titulo
@@ -72,7 +73,6 @@
 	height: 265px;
 	border :1px;
 	border-bottom-style: solid;
-	
 }
 
 .titulo
@@ -124,8 +124,9 @@
 	float: left;
 	border : 1px;
 	border-style:solid;
-	border-top-style: solid;
+	border-top-style: none;
 	 border-right-style: none;
+	  border-left-style: none;
 	width:100%;
 	height: 130px;	
 }
@@ -165,6 +166,7 @@
 	height: 602px;
 	border :0px;
 	border-style: solid;
+	border-left-style: none;
 	border-bottom-style: solid;
 }
 
@@ -176,7 +178,7 @@
 	height: 61px;
 	border : 1px;
 	border-bottom-style: solid;
-	border-left-style: solid;
+	border-left-style: none;
 }
 .conceptos
 {
@@ -184,7 +186,7 @@
 	float: left;
 	margin: 0;
 	width: 85%;
-	height: 602px;
+	height: 582px;
 	border :0px;
 	border-bottom-style: solid;
 	
@@ -221,7 +223,8 @@
 	float: left;
 	margin: 0;
 	width: 14.9%;
-	height: 602px;
+	height: 582px;
+	position: relative;
 }
 
 .descripcion-total
@@ -234,13 +237,12 @@
 
 .inforamcion
 {
-		border: 1px;
+	border: 1px;
 	border-top-style: solid;
-
 	float: left;
 	margin: 0;
 	width: 100%;
-	height: 81px;
+	height: 111px;
 	position: absolute;
 	bottom: 0;
     left: 0;

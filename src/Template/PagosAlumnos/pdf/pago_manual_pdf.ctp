@@ -49,9 +49,9 @@
 			
 		</div>
 		
-		<div class="logo">
-			<?php  echo $this->Html->image('logoIba.png', ['height' => '120px', 'width' => '120px', 'fullBase' => true]); ?>
-			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 1rem; font-style:bold; border-style:solid">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
+		<div class="logo" style="margin: auto; text-align:center">
+			<?php  echo $this->Html->image('logoIba.png', ['height' => '200px', 'width' => '200px', 'fullBase' => true]); ?>
+			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 2rem; font-style:bold;">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
 		</div>
 		
 		<div class="descripcion-alumno-curso">
@@ -85,7 +85,9 @@
 			 <?php endforeach;    ?>
 		
 			<div class="inforamcion">
-				<p class="texto-alumno"> NOTA :  </p>
+				<p class="texto-alumno"> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
+				considerado 4(cuatro) semanas. Recibo a su dispoción una vez abonado.  <br>
+				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO  </p>
 			</div>	
 				
 		  </div>
@@ -93,12 +95,19 @@
 			<div class= "montos">
 				<div class="descripcion-total"><p class="texto-descripcionIba">TOTAL </p>  </div>
 				<?php foreach ($pagoalumno->pagos_conceptos as $concepto): ?>
-					<div class="concepto"><p class="texto-concepto"><?= $this->Number->format($concepto->monto,[
+					<div class="concepto" ><div class="texto-concepto" style="text-align: center"><?= $this->Number->format($concepto->monto,[
 	                                  'before' => '$',
 	                                  'locale' => 'es_Ar'
-	                                  ])?> </p> 
+	                                  ])?> </div> 
 	               </div>
 	           <?php endforeach;   ?>
+	         <div class="inforamcion">
+				<p class="texto-descripcionIba"> <?= h($this->Number->format($pagoalumno->monto,[
+	                                  'before' => '$',
+	                                  'locale' => 'es_Ar'
+	                                  ]))?>  </p>
+			</div>  
+	           
 			</div>
 				
 		
