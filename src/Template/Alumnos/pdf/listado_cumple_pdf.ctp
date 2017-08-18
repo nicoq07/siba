@@ -1,29 +1,28 @@
  <style>
  	.tamano-titulo
  	{
- 	font-size: 4rem;
+ 	font-size: 3rem;
  	}
  	
  	.tamano-encabezado
  	{
- 	font-size: 2.5rem;
+ 	font-size: 1.8rem;
  	}
  	
  	.tamano-tabla
  	{
- 	font-size: 2rem;
+ 	font-size: 1.5rem;
  	}
  	
  
  </style> 
-   <div class= "col-lg-12"><p class ="tamano-titulo"><?= h("Cumpleaños del mes de $month")?></p> </div>
+<?= $this->assign('title', "Cumpleaños del mes de $month");?> 
+   <div class= "col-lg-12"><p class ="legend tamano-titulo"><?= h("Cumpleaños del mes de $month")?></p> </div>
     <table class= "table table-striped">
-        <thead>
             <tr>
-                <th scope="row" class = "tamano-encabezado"><?= h("Nombre") ?></th>
+                <th width = "80%" scope="row" class = "tamano-encabezado"><?= h("Nombre") ?></th>
                 <th scope="row"  class = "tamano-encabezado" ><?= h("Dia") ?></th>
             </tr>
-        </thead>
         <tbody>
             <?php foreach ($alumnos as $alumno): ?>
             <tr>

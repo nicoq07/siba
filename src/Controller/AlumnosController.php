@@ -375,7 +375,7 @@ class AlumnosController extends AppController
     public function fichaInterna($id)
     {
     	$alumno = $this->Alumnos->get($id);
-		$this->prepararPDF($alumno,"interna","A6","landscape");
+		$this->prepararPDF($alumno,"interna","A4","landscape");
     	$this->set(compact('alumno'));
     	
     }
@@ -385,7 +385,7 @@ class AlumnosController extends AppController
     	$alumno = $this->Alumnos->get($id, [
     			'contain' => ['Clases']
     	]);
-    	$this->prepararPDF($alumno,"externa","A5","landscape");
+    	$this->prepararPDF($alumno,"externa","A4","landscape");
     	
     	$this->set(compact('alumno'));
     	

@@ -17,7 +17,7 @@
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	             <li><?= $this->Html->link(h('Alta'), ['controller' =>'alumnos', 'action' => 'add']) ?></li>
 	             <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'alumnos', 'action' => 'index']) ?></li>
-	          	 <li><?= $this->Html->link(h('Cumpleños'), ['controller' =>'alumnos', 'action' => 'listadoCumple']) ?></li>
+	          	 <li><?= $this->Html->link(h('Cumpleños'), ['controller' =>'alumnos', 'action' => 'listadoCumple'],['target' => '_blank' ]) ?></li>
 	          
 	          </ul>
 	        </li>    
@@ -66,7 +66,7 @@
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seguimientos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-sort"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'index']) ?></li>
-	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'informe']) ?></li>
+	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'informe'],['target' => '_blank' ]) ?></li>
 	         	<li class="divider"></li>
 	           	 <li><?= $this->Html->link(h('Nueva calificación'), ['controller' =>'calificaciones', 'action' => 'add']) ?></li>
 	           	 <li><?= $this->Html->link(h('Ver calificaciones'), ['controller' =>'calificaciones', 'action' => 'index']) ?></li>
