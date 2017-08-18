@@ -79,7 +79,6 @@ class Alumno extends Entity
             where pa.alumno_id = ".$this->_properties['id']." AND
             pa.mes = $mes AND
             YEAR(pa.created) = ".date('Y').")");
-    	
     	if($result->fetch())
     	{
     		return true;

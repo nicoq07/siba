@@ -329,10 +329,11 @@ class AlumnosController extends AppController
     	if ($this->request->is(['post']))
     	{
     		
+    		$activos = $this->request->getData('activos');
     		$mes = $this->request->getData('mob')['month'];
     		if ($mes)
     		{
-    			return $this->redirect(['action' => 'listado_cumple_pdf', $mes,'_ext' => 'pdf']);
+    			return $this->redirect(['action' => 'listado_cumple_pdf', $mes,$activos,'_ext' => 'pdf']);
     			
     		}
     	}
@@ -341,21 +342,33 @@ class AlumnosController extends AppController
     	
     }
     
-    public function listadoCumplePdf($mes)
+    public function listadoCumplePdf($mes,$activos)
     {
+    	$where = null;
+    	if($activos)
+    	{
+    		$where=['active' => $activos];
+    	}
+    	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
     		$alumnos = $this->Alumnos->find('all')
     		->where([
-    		'active' => true,
+    				$where,
     		'MONTH(fecha_nacimiento)' => "$mes"
     		])
     		->select(['nombre','apellido','fecha_nacimiento'])
     		->orderAsc('fecha_nacimiento')
     		->toArray();
+    		if(empty($alumnos))
+    		{
+    			$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
+    			return $this->redirect(['action' => 'listado_cumple']);
+    		}
+    		
     		$month = 'Listado del mes ' . __(date('F',strtotime("01-$mes-2000")));
     		$hoja = 'A4';
     		$ori = 'portrait';
     		$this->prepararPDFListado($month,(string)$hoja,(string)$ori );
-    		$this->set(['alumnos','month'],[$alumnos,__(date('F',strtotime("01-$mes-2000")))]);
+    		$this->set(['alumnos','month'],[$alumnos,$nombreMes]);
     		
     }
     

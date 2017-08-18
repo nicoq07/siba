@@ -1,3 +1,4 @@
+<?= $this->assign('title', 'Nuevo alumno');?>
 <div class="col-log-10">
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
