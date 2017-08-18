@@ -14,8 +14,8 @@
 			<p class="texto-troquel-fecha"> <?= h($pagoalumno->created->format('d/m/y'))?> </p>
 		</div>
 		<div class= "fila-troquel">
-			<p class="texto-troquel-codigo"><?= h("Código : ")?> </p>
-			<p class="texto-troquel-codigo"><?= h($pagoalumno->id)?> </p> 
+			<p class="texto-troquel-nomyape"><?= h("Código : ")?> </p>
+			<p class="texto-troquel-nomyape"><?= h($pagoalumno->id)?> </p> 
 		</div>
 		<div class= "fila-troquel">
 			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
@@ -57,8 +57,7 @@
 		<div class="descripcion-alumno-curso">
 		
 			<div class="alumno">
-				<p class="texto-alumno"> Alumno:</p>
-				<p class="texto-alumno"> <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
+				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
 		    </div>
 				<?php
 				 		$clases = " ";
@@ -66,8 +65,7 @@
 				 			$clases .= $clase->disciplina->descripcion. " ";
 				 		 endforeach;?>
 			<div class="curso">
-				<p class="texto-alumno"> Cursos:</p>
-				<p class="texto-alumno"> <?= h($clases); ?> </p>
+				<p class="texto-alumno"> Cursos: <?= h($clases); ?></p>
 			</div>
 			
 		
@@ -84,10 +82,10 @@
 				<div class = "concepto"> <p class="texto-concepto"><?= h($concepto->detalle) ?></p> </div>
 			 <?php endforeach;    ?>
 		
-			<div class="inforamcion">
-				<p class="texto-alumno"> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
-				considerado 4(cuatro) semanas. <br> Recibo a su dispoción una vez abonado.  <br>
-				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO  </p>
+			<div class="informacion">
+			<p class="texto-informacion"><strong> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
+				considerado 4 (cuatro) semanas.  <br> Recibo a su dispoción una vez abonado.  <br>
+				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO </strong> </p> 
 			</div>	
 				
 		  </div>
@@ -101,7 +99,7 @@
 	                                  ])?> </div> 
 	               </div>
 	           <?php endforeach;   ?>
-	         <div class="inforamcion">
+	         <div class="informacion">
 				<p class="texto-descripcionIba"> <?= h($this->Number->format($pagoalumno->monto,[
 	                                  'before' => '$',
 	                                  'locale' => 'es_Ar'

@@ -43,7 +43,7 @@
 .texto-troquel-codigo
 {
 	text-align:center; 
-	font-size: 1.5rem;	
+	font-size: 1.8rem;	
 }
 
 .texto-troquel-nomyape
@@ -146,7 +146,7 @@
 {
 	margin: 0 0 0 5px;
 	text-align:left; 
-	font-size: 1.2rem;	
+	font-size: 1.7rem;	
 }
 
 .curso
@@ -235,7 +235,7 @@
 	height: 61px;
 }
 
-.inforamcion
+.informacion
 {
 	border: 1px;
 	border-top-style: solid;
@@ -246,4 +246,11 @@
 	position: absolute;
 	bottom: 0;
     left: 0;
+}
+
+.texto-informacion
+{
+	margin-left: 3px;
+	text-align:left; 
+	font-size: 1.2rem;
 }

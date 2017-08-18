@@ -15,12 +15,12 @@
 			<p class="texto-troquel-fecha"> <?= h($pagoalumno->created->format('d/m/y'))?> </p>
 		</div>
 		<div class= "fila-troquel">
-			<p class="texto-troquel-codigo"><?= h("Código : ")?> </p>
+			<p class=" "><?= h("Código : ")?> </p>
 			<p class="texto-troquel-codigo"><?= h($pagoalumno->id)?> </p> 
 		</div>
 		<div class= "fila-troquel">
-			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
-			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </p>
+			<span class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></span>
+			<span class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </span>
 		</div>
 		<div class= "fila-troquel">
 			<p class="texto-troquel-fecha"><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?> </p>
@@ -85,10 +85,10 @@
 				<div class = "concepto"> <p class="texto-concepto"><?= h($concepto->detalle) ?></p> </div>
 			 <?php endforeach;    ?>
 		
-			<div class="inforamcion">
-				<p class="texto-alumno"> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
-				considerado 4(cuatro) semanas.  <br> Recibo a su dispoción una vez abonado.  <br>
-				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO  </p>
+			<div class="informacion">
+				<p class="texto-informacion"><strong> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
+				considerado 4 (cuatro) semanas.  <br> Recibo a su dispoción una vez abonado.  <br>
+				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO </strong> </p> 
 			</div>	
 				
 		  </div>
@@ -102,7 +102,7 @@
 	                                  ])?> </div> 
 	               </div>
 	           <?php endforeach;   ?>
-	         <div class="inforamcion">
+	         <div class="informacion">
 				<p class="texto-descripcionIba"> <?= h($this->Number->format($pagoalumno->monto,[
 	                                  'before' => '$',
 	                                  'locale' => 'es_Ar'
