@@ -6,30 +6,30 @@
  	
  	.tamano-encabezado
  	{
- 	font-size: 2.5rem;
+ 	font-size: 1.5rem;
  	}
  	
  	.tamano-tabla
  	{
- 	font-size: 2rem;
+ 	font-size: 1rem;
  	}
  	
  
  </style> 
 <div>
-	<div>
-	<h3><?php h("Seguimiento del alumno")?></h3>
+	<div class="col-lg-12">
+	<h2><strong><?= h("Seguimiento del alumno " . $alumno->presentacion . " en " . $clase->disciplina->descripcion )?></strong></h2>
 	</div>
 	<table class = "table table-striped">
-        <thead>
             <tr>
-                <th class="tamano-encabezado" scope="col"><?= h("Fecha") ?></th>
-                <th class="tamano-encabezado" scope="col"><?= h("Observación")?></th>
-                <th class="tamano-encabezado" scope="col"><?= h("Nota")?></th>
+                <td width="20%" class="tamano-encabezado" scope="col"><?= h("Fecha") ?></td>
+                <td width="60%" class="tamano-encabezado" scope="col"><?= h("Observación")?></td>
+                <td width="20%" class="tamano-encabezado" scope="col"><?= h("Nota")?></td>
             </tr>
-        </thead>
         <tbody>
             <?php foreach ($seguimientos as $seguimiento): ?>
+            <tr>
+            </tr>
             <tr>
                 <td class="tamano-tabla" ><?= h($seguimiento->fecha->format('d-m-Y')) ?></td>
                 <td class="tamano-tabla"><?= h($seguimiento->observacion) ?></td>

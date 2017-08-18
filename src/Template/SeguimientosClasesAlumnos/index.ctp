@@ -1,3 +1,4 @@
+<?= $this->assign('title', 'Seguimientos');?>
 <div class="seguimientosClasesAlumnos index col-lg-10">
 	<h3><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
@@ -64,5 +65,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?=  $this->element('footer')?>
 </div>
-<?=  $this->element('footer')?>

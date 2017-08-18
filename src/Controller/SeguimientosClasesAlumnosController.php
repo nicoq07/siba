@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use App\Model\Entity\SeguimientosClasesAlumno;
+use Migrations\Table;
 /**
  * SeguimientosClasesAlumnos Controller
  *
@@ -229,7 +230,8 @@ class SeguimientosClasesAlumnosController extends AppController
     public function listadoPdf($idAlumno,$idClase)
     {
     	$seguimientos = $this->SeguimientosClasesAlumnos->find('all',[
-    			'contain' => ['ClasesAlumnos','Calificaciones']
+    			'contain' => ['ClasesAlumnos','Calificaciones'],
+    			'order' => ['SeguimientosClasesAlumnos.fecha' => 'ASC']
     			
     	])
     	->matching('ClasesAlumnos.Alumnos', function ($q) use($idAlumno){
@@ -237,15 +239,26 @@ class SeguimientosClasesAlumnosController extends AppController
     	})
     	->matching('ClasesAlumnos.Clases', function ($q) use($idClase){
     		return $q->where(['Clases.id' => $idClase]);
-     	});
+     	})
+    	->where(['SeguimientosClasesAlumnos.fecha <= ' => date('Y-m-d')]) 
+     	->order('SeguimientosClasesAlumnos.fecha')
+     	;
      	
+    	
+    	$alumno = TableRegistry::get('Alumnos')->get($idAlumno);
+    	$clase = TableRegistry::get('Clases')->get($idClase,
+    			[
+    					'contain' => ['Profesores','Disciplinas']
+    			]);
+    	$this->prepararListadoSeguimiento($clase->disciplina->descripcion, $alumno->presentacion, "A4", "portrait");
+    	
 //     	->matching('ClasesAlumnos.Clases.Profesores', function ($q) use($idClase){
 //     		return $q->where(['Clases.id' => $idClase]);
 //     	})->toArray();
-    	$this->set(compact('seguimientos','clase','profesor','disciplina'));
+    	$this->set(compact('seguimientos','clase','alumno'));
     }
     
-    private function prepararListadoSeguimiento($clase,$dniAlumno,$tipoHoja,$orientacion)
+    private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
@@ -255,7 +268,7 @@ class SeguimientosClasesAlumnosController extends AppController
     					'margin-top' => 0,
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
-    					'filename' => "Seguimientos  de ".$dniAlumno.' en '.$clase.'.pdf'
+    					'filename' => "Seguimientos  de ".$alumno.' en '.$clase.'.pdf'
     			]
     	]);
     }
