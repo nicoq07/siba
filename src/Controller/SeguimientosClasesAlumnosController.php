@@ -258,20 +258,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	$this->set(compact('seguimientos','clase','alumno'));
     }
     
-    private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
-    {
-    	$this->viewBuilder()->setOptions([
-    			'pdfConfig' => [
-    					'margin-bottom' => 0,
-    					'margin-right' => 0,
-    					'margin-left' => 0,
-    					'margin-top' => 0,
-    					'pageSize' => $tipoHoja,
-    					'orientation' => $orientacion,
-    					'filename' => "Seguimientos  de ".$alumno.' en '.$clase.'.pdf'
-    			]
-    	]);
-    }
+   
     
     public function pIndex()
     {
@@ -316,5 +303,22 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	
     	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    }
+    
+    
+    
+    private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
+    					'pageSize' => $tipoHoja,
+    					'orientation' => $orientacion,
+    					'filename' => "Seguimientos  de ".$alumno.' en '.$clase.'.pdf'
+    			]
+    	]);
     }
 }
