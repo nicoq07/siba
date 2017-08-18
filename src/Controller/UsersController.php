@@ -74,9 +74,15 @@ class UsersController extends AppController
         if ($this->request->is('post'))
         {
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            $profe =  $this->Users->Profesores->get($user->profesor_id);
-            //set(['name' => 'andrew', 'id' => 1]); 
-            $user->set(['nombre' => $profe->nombre, 'apellido' => $profe->apellido,'dni' => $profe->cuit]);
+            if ($user->profesor_id > 0)
+            {
+	            $profe =  $this->Users->Profesores->get($user->profesor_id);
+	            $user->set(['nombre' => $profe->nombre, 'apellido' => $profe->apellido,'dni' => $profe->cuit]);
+            }
+            else 
+            {
+            	$user->profesor_id = 0;
+            }
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuario creado.'));
 

@@ -73,6 +73,15 @@
 	          </ul>
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
+	             <!--          SECCION USERS-->
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-key"></span></a>
+	          <ul class="dropdown-menu forAnimate" role="menu">
+	            <li><?= $this->Html->link(h('Ver usuarios'), ['controller' =>'Users', 'action' => 'index']) ?></li>
+	            <li><?= $this->Html->link(h('Crear'), ['controller' =>'Users', 'action' => 'add']) ?></li>
+	          </ul>
+	        </li>
+	         <!--  FIN SECCION USERS-->
 	      </ul>
 	    </div>
 	  </div>
