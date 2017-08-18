@@ -32,14 +32,28 @@ class PagosAlumnosController extends AppController
     public function index()
     {
     	$where1 = null;
+    	$where2 = null;
+    	$where3 = null;
     	if ($this->request->is('post'))
     	{
     		$mes = $this->request->getData()['mes']['month'];
     		$where1= ['PagosAlumnos.mes' => $mes];
+    		
+    		$year= $this->request->getData()['year']['year'];
+    		if ($year)
+    		{
+    			$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
+    			$where2 = ["YEAR(PagosAlumnos.created) = YEAR('$fecha')"];
+    		}
+    		if (!(empty($this->request->getData()['palabra_clave'])))
+    		{
+    			$palabra = $this->request->getData()['palabra_clave'];
+    			$where3= ["(Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%')"];
+    		}
     	}
         $this->paginate = [
             'contain' => ['Alumnos', 'Users','PagosConceptos'],
-        		'conditions' => [$where1]
+        		'conditions' => [$where1,$where2,$where3]
         ];
         $pagosAlumnos = $this->paginate($this->PagosAlumnos);
 
@@ -106,7 +120,7 @@ class PagosAlumnosController extends AppController
 	    		$pagosAlumno->mes = $this->request->getData()['mes']['month'];
 	    		$pagosAlumno->monto = $total;
 	    		$pagosAlumno->pagado = false;
-	    		$pagosAlumno->user_id = null;
+	    		$pagosAlumno->user_id = $this->Auth->user('id');
 	    		if ($idPago = $this->PagosAlumnos->save($pagosAlumno)) 
 	    		{
 	    			
@@ -138,6 +152,7 @@ class PagosAlumnosController extends AppController
 	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 	 					,'PagosConceptos']
 	 	]);
+	 	
 	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A4", "landscape");
 	 	$this->set(compact('pagoalumno'));
 	 	
@@ -145,11 +160,13 @@ class PagosAlumnosController extends AppController
 	 
 	 public function pagoGeneral()
 	 {
+	 	
 	 	//activos = 0
 	 	//sin pago del mes = 1
 	 	
 	    	//Guarda base y genera pdf de todos los alumnos
 	 	//return $this->redirect(['action' => 'pago_general_pdf', $pagosAlumnos,'_ext' => 'pdf']);
+	 	$idsAlumnos="-1";
 	 	if ($this->request->is(['patch', 'post', 'put'])) 
 	 	{
 	 		$mes = $this->request->getData('mes')['month'];
@@ -172,7 +189,7 @@ class PagosAlumnosController extends AppController
 	 				$pagosAlumno->mes = $mes;
 	 				$pagosAlumno->monto = $alumno->monto_arancel;
 	 				$pagosAlumno->pagado = false;
-	 				$pagosAlumno->user_id = null;
+	 				$pagosAlumno->user_id = $this->Auth->user('id');
 	 				$pagosAlumno->alumno_id = $alumno->id;
 	 				if ($idPago = $this->PagosAlumnos->save($pagosAlumno))
 	 				{
@@ -188,8 +205,12 @@ class PagosAlumnosController extends AppController
 	 				}
 	 				
 	 			}// fin else si no pago
+	 			$idsAlumnos .= $alumno->id . "-";
+	 			
+	 			
 	 		}// fin foreach
-	 		return $this->redirect(['action' => 'pago_general_pdf', $mes ,'_ext' => 'pdf']);
+	 	
+	 		return $this->redirect(['action' => 'pago_general_pdf', $mes, $idsAlumnos,'_ext' => 'pdf']);
 	 	} //fin post
 	 	
 	 	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
@@ -197,12 +218,18 @@ class PagosAlumnosController extends AppController
 	 	$this->set(compact('pagosAlumnos'));
 	}
     
-	public function pagoGeneralPdf($mes)
+	public function pagoGeneralPdf($mes, $idsAlumnos)
 	{
+		if(empty($idsAlumnos) ||  ($idsAlumnos == -1))
+		{
+			$this->Flash->error("Los pagos ya fueron generados");
+			return $this->redirect(['action' => 'index']);
+		}
+		$aux = explode('-', $idsAlumnos);
 		$pagosAlumnos = $this->PagosAlumnos->find()
 		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 				,'PagosConceptos']) 
-		->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y')]);
+				->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.alumno_id IN ' => $aux]);
 		$this->prepararPDFGeneral($mes, "A4", "landscape");
 		$this->set(compact('pagosAlumnos'));
 	}
@@ -275,21 +302,24 @@ class PagosAlumnosController extends AppController
     
     private function prepararPDFManual($mes,$dniAlumno,$tipoHoja,$orientacion)
     {
+    	$nombreMes = __(date('F'),strtotime('2017-'.$mes.'-01'));
+    
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
+    					'dpi' => 150,
     					'margin-bottom' => 0,
     					'margin-right' => 0,
     					'margin-left' => 0,
     					'margin-top' => 0,
-    					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
-    					'filename' => "Pago del mes " .$mes.' de '.$dniAlumno. '.pdf'
+    					'filename' => "Pago del mes " .$nombreMes.' de '.$dniAlumno. '.pdf'
     			]
     	]);
     }
     
     private function prepararPDFGeneral($mes,$tipoHoja,$orientacion)
     {
+    	$nombreMes = __(date('F'),strtotime('2017-'.$mes.'-01'));
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
     					'margin-bottom' => 0,
@@ -298,7 +328,7 @@ class PagosAlumnosController extends AppController
     					'margin-top' => 0,
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
-    					'filename' => "Pagos del mes " .$mes. '.pdf'
+    					'filename' => "Pagos del mes " .$nombreMes. '.pdf'
     			]
     	]);
     	
