@@ -141,8 +141,8 @@ class ProfesoresController extends AppController
     public function planillaCursos()
     {	
     	$profesores = $this->Profesores->find('list')
-    	->where(['profesores.active ' => true]);
-    	
+    	->where(['profesores.active ' => true])
+    	->matching('Clases');
     	if ($this->request->is(['post'])) 
     	{
     	
@@ -188,6 +188,11 @@ class ProfesoresController extends AppController
     	
     	
     	$dias = $profesor->workingDays($mes);
+    	if(empty($dias))
+    	{
+    		$this->Flash->error("Este mes el profesor no tuvo trabajo");
+    		return $this->redirect($this->referer());
+    	}
     	$mes = __(date("F", strtotime("2017-$mes-01")));
     	
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');

@@ -33,12 +33,12 @@
 			<?php if (!($flag)){?>
 			<!-- DIV ENCABEZADO -->
 			<div  style="margin-top: 10px"  class="div-fila">
-				<div  style="background:red;width: 70%;float: left;">
-					 <p class="p-nom-dia">	<?= h( __($clase->horario->nombre_dia)); ?> </p>
+				<div class="div-texto-cabeza-alumno" style="">
+					 <p class="p-nom-dia">	<?= "<strong>".  h( __($clase->horario->nombre_dia)) . "</strong>"; ?> </p>
 				</div>
 				<?php foreach ($numDia as $nd) {?>
-					<div style="width: <?php print "$tamanio%"?>" class="div-dia">
-					   <p class="p-num-dia">	<?= h($nd)?> </p>
+					<div  style=" width: <?php print "$tamanio%"?>" class="div-dia-cabeza">
+					   <p class="p-num-dia">	<?= "<strong>". h($nd) ."</strong>"?>  </p>
 					</div>
 					<?php }?>
 			</div>
@@ -48,7 +48,7 @@
 	<!-- DIV ALUMNO -->
 	<?php foreach ($clase->alumnos as $alumno) {?>
 	<div  class="div-fila">
-		<div  style="background:green;width: 70%;float: left;">
+		<div class= "div-alumno" style="width: 70%;float: left;">
 			<p class="p-alumno"> <?= h($alumno->presentacion. ' '. $clase->disciplina->descripcion. " " .$clase->horario->hora->format("H:i"))?>  </p>
 		</div>
 		

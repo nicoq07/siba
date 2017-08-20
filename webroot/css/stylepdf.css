@@ -286,9 +286,24 @@
 	width: 100%;
 	float: left;
 }
+.div-texto-cabeza-alumno
+{
+	margin: 0;
+	padding: 0;
+	background:#147984;
+	width: 70%;
+	float: left;
+}
+.div-dia-cabeza
+{
+	border: 1px grey dotted;
+	height:  auto;
+	float: left;
+	background-color: #147984;
+}
 .div-dia
 {
-	border: 1px black solid;
+	border: 1px grey dotted;
 	height:  auto;
 	float: left;
 }
@@ -297,6 +312,7 @@
 	margin:0;
 	padding:0;
 	text-align:center;
+	color: black;
 }
 
 .p-num-dia
@@ -310,5 +326,10 @@
 	margin:0;
 	padding:0;
 	text-align:left;
+	 margin-left: 3px;
 }
-
+.div-alumno
+{
+	
+	
+}
