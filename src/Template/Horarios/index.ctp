@@ -1,10 +1,15 @@
 <div class="col-lg-10">
     <h3><?= __('Horarios') ?></h3>
+    <div class="col-lg-10 ">
+    	<div class="col-lg-3 col-lg-offset-11">
+    	      <?= $this->Html->link(__('Nuevo'), ['action' => 'add'],  ['class' => 'btn btn-success']) ?>
+    	</div>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('ciclolectivo_id',['label' => 'Ciclo Lectivo']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('nombre_dia',['label' => 'Día']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('num_dia',['label' => 'Día']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('hora',['label' => 'Hora']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('active',['label' => 'Activo']) ?></th>
                 <th scope="col" class="actions"><?= __('Acciones') ?></th>

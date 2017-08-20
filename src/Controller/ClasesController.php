@@ -34,9 +34,6 @@ class ClasesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
-        	'order' => [
-        				'Horarios.nombre_dia' => 'desc'
-        		]
         ];
         $clases = $this->paginate($this->Clases);
 
@@ -75,6 +72,13 @@ class ClasesController extends AppController
         if ($this->request->is('post')) {
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
             if ($this->Clases->save($clase)) {
+            	if (!empty($this->request->getData("alumnos")['_ids']))
+            	{
+            			if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
+            			{
+            				$this->Flash->error(__('Problema creando los seguimientos.'));
+            			}
+            	}
                 $this->Flash->success(__('The clase has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -82,9 +86,9 @@ class ClasesController extends AppController
             $this->Flash->error(__('The clase could not be saved. Please, try again.'));
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200]);
-        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200]);
+        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
-        $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200]);
+        $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200])->where(['Alumnos.active' => true]);
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
     }
@@ -98,33 +102,55 @@ class ClasesController extends AppController
      */
     public function edit($id = null)
     {
+    	$cambioDia = false;
         $clase = $this->Clases->get($id, [
             'contain' => ['Alumnos']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
-            
-            if (!empty($this->request->getData("alumnos")['_ids']))
+         
+            if($clase->isDirty('horario_id'))
             {
-	            if ($clase->isDirty("alumnos"))
-	            {
-	            	if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
-	            	{
-	            		$this->Flash->error(__('Problema creando los seguimientos.'));
-	            	}
-	            }
+            	$cambioDia = true;
             }
-            if ($this->Clases->save($clase)) {
-                $this->Flash->success(__('Clase guardada'));
+            
+            if ($this->Clases->save($clase))
+            {
+            	$r = 0;
+            	if ($cambioDia)
+            	{
+            		$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+            		
+            		$clasesAlumnos = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])
+            		->where(['ClasesAlumnos.clase_id' => $clase->id])->toArray();
+            		$ids = array();
+            		foreach ($clasesAlumnos as $ca)
+            		{
+            			array_push($ids, $ca->id);
+            		}
+            		
+            		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+            		$r = $Seguimientos->deleteAll(['clase_alumno_id IN' => $ids]);
+            		
+            	}
+            	if (!empty($this->request->getData("alumnos")['_ids']))
+            	{
+            		if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
+            		{
+            			$this->Flash->error(__('Problema creando los seguimientos.'));
+            		}
+            		
+            	}
+                $this->Flash->success(__("Clase guardada. Se actualizaron $r seguimientos"));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Error guardando la clase'));
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200]);
-        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200]);
+        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
-        $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200]);
+        $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200])->where(['Alumnos.active' => true]);;
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
     }
@@ -153,17 +179,12 @@ class ClasesController extends AppController
     {
     	$this->request->allowMethod(['post', 'delete']);
     	
-    	$clase = TableRegistry::get('ClasesAlumnos')->get($claseId);
     	
     	$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
     	$id = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])->where(['ClasesAlumnos.alumno_id' => $alumnoId, 'ClasesAlumnos.clase_id' => $claseId])->first();
     	
     	$claseAlumno = $ClasesAlumno->get($id['id']);
     	
-    	$rows = $clase->eliminarSeguimientos($alumnoId);
-    	
-    	if ($rows > 1)
-    	{
 	    	if ($ClasesAlumno->delete($claseAlumno))
 	    	{
 	    		$this->Flash->success(__('Alumno quitado de la clase.'));
@@ -172,7 +193,6 @@ class ClasesController extends AppController
 	    	{
 	    		$this->Flash->error(__('Error quitando al alumno de la clase.'));
 	    	}
-    	}
     	return $this->redirect($this->referer());
     	
     }
@@ -204,7 +224,6 @@ class ClasesController extends AppController
     		->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
     		$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id);
     		
-    		
     		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
     		//$alumno = $AlumnosTable->get($idAlumno);
     		if(!$claseAlumno->existeSeguimiento($idAlumno))
@@ -213,7 +232,7 @@ class ClasesController extends AppController
     			$alu = $AlumnosTable->get($idAlumno);
     			
     			//Creo las fechas de incio y fin para  recorrerlas
-    			$fechaInicio = strtotime($alu->created->format('Y-m-d'));
+    			$fechaInicio = strtotime($clase->modified->format('Y-m-d'));
     			$fechaFin = strtotime($clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
     			
     			//recorro por dia hasta la fecha fin

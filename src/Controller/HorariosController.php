@@ -67,6 +67,7 @@ class HorariosController extends AppController
         $horario = $this->Horarios->newEntity();
         if ($this->request->is('post')) {
             $horario = $this->Horarios->patchEntity($horario, $this->request->getData());
+            $horario->num_dia = (date('N',strtotime($horario->nombre_dia)));
             if ($this->Horarios->save($horario)) {
                 $this->Flash->success(__('The horario has been saved.'));
 
@@ -102,6 +103,7 @@ class HorariosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $horario = $this->Horarios->patchEntity($horario, $this->request->getData());
+            $horario->num_dia = (date('N',strtotime($horario->nombre_dia)));
             if ($this->Horarios->save($horario)) {
                 $this->Flash->success(__('The horario has been saved.'));
 

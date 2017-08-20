@@ -1,5 +1,8 @@
 <div class="col-lg-10">
     <h3><?= __('Clases') ?></h3>
+    <div class="col-lg-3 col-lg-offset-9">
+    	  <?= $this->Html->link(__('Nueva'), ['action' => 'add'],['class' => 'btn btn-success']) ?>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
