@@ -2,7 +2,8 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-
+use Cake\Database\Connection;
+use Cake\Datasource\ConnectionManager;
 /**
  * Profesore Entity
  *
@@ -48,5 +49,36 @@ class Profesore extends Entity
     {
     	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
     	return $nomyape;
+    }
+    
+    public function workingDays($mes)
+    {
+    	$id = $this->_properties['id'];
+    	$query = "SELECT DISTINCT DATE_FORMAT(s.fecha, '%d') as fecha, c.id as id
+				FROM
+				seguimientos_clases_alumnos as s,
+				clases_alumnos as ca,
+				clases as c,
+				profesores as p
+				WHERE
+				p.id = $id AND
+				MONTH(s.fecha) = $mes AND
+				s.clase_alumno_id = ca.id AND
+				ca.clase_id = c.id AND
+				c.profesor_id = p.id
+				order by(s.fecha)
+				";
+    	
+    	
+    	$connection = ConnectionManager::get('default');
+    	$dias = $connection->execute($query);
+    	$r = array();
+    	foreach ($dias as $dia)
+    	{
+    		array_push($r, [$dia['id'] => $dia['fecha']]);
+    	}
+    	
+    	
+    	return $r;
     }
 }

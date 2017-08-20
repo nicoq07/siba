@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Psy\Command\WhereamiCommand;
 use Cake\ORM\TableRegistry;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
@@ -164,30 +163,37 @@ class ProfesoresController extends AppController
     
     public function planillaCursosPdf($id, $mes)
     {
-    
-    	$profesor = $this->Profesores->get($id);
+   	
+    	$profesor = $this->Profesores->get($id,['contain' => 'Clases']);
+    	$ids = array();
+		foreach ($profesor->clases as $clase)
+     	{
+    		$auxClase = ($clase->id);	
+    		
+    		array_push($ids, $auxClase);
+     	}
+    	$clases = TableRegistry::get('Clases')->find()
+    	->contain([
+    			'Alumnos',
+    			'Horarios',
+    			'Disciplinas'
+    	])
+    	->where([
+    			'Clases.id IN' =>$ids
+    	])
+    	->orderAsc('Horarios.num_dia')
+    	->toArray();
     	
-    	$connection = ConnectionManager::get('default');
-    	$lista = $connection->execute("SELECT profe.nombre as profesor, a.nombre as alumno  ,d.descripcion, h.nombre_dia, DATE_FORMAT(h.hora, '%H:%i') as hora ,DATE_FORMAT(s.fecha, '%d-%m-%y') as fecha
-    			FROM
-    			profesores as profe, clases as c , clases_alumnos as ca,disciplinas as d,horarios as h,seguimientos_clases_alumnos as s, alumnos as a
-    			WHERE
-    			profe.id = $profesor->id AND
-    			profe.id = c.profesor_id AND
-    			d.id = c.disciplina_id AND
-    			h.id = c.horario_id AND
-    			ca.clase_id = c.id AND
-    			ca.id = s.clase_alumno_id AND
-    			ca.alumno_id = a.id AND
-    			MONTH(s.fecha) = $mes
-    			ORDER BY (s.fecha)")->fetchAll('assoc');
-    	$mes = __(date("F", strtotime("01-$mes-2017")));
+    	
+    	
+    	
+    	$dias = $profesor->workingDays($mes);
+    	$mes = __(date("F", strtotime("2017-$mes-01")));
+    	
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');
-    	$this->set(compact('profesor','lista','mes'));
+    	$this->set(compact('profesor','dias','clases','mes'));
     	
     }
-    
-    
     private function prepararListado($mes,$profesor,$tipoHoja,$orientacion)
     {
     	$this->viewBuilder()->setOptions([
