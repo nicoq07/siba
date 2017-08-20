@@ -127,7 +127,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
-        <?php  }  else { echo h("NO TIENE CLASES ACTIVAS"); }?>
+        <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
     </div>
      <div class="related">
         <h4><?= __('Seguimientos de Clases' ) ?></h4>
@@ -152,7 +152,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
-        <?php  }  else { echo h("NO TIENE SEGUIMIENTOS ACTIVOS??"); }?>
+       <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
     </div>
 </div>
 <div style="margin-top: 10px;" class="col-lg-2 col-md-2">

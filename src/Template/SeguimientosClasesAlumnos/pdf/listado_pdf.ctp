@@ -17,8 +17,11 @@
  
  </style> 
 <div>
+<div class="col-lg-12">
+	<h2><strong><?= h($clase->disciplina->descripcion. " - ". $clase->profesore->presentacion )?></strong></h2>
+	</div>
 	<div class="col-lg-12">
-	<h2><strong><?= h("Seguimiento del alumno " . $alumno->presentacion . " en " . $clase->disciplina->descripcion )?></strong></h2>
+	<h2><strong><?= h("Seguimiento del alumno " . $alumno->presentacion  )?></strong></h2>
 	</div>
 	<table class = "table table-striped">
             <tr>
