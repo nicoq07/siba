@@ -1,7 +1,7 @@
 <?= $this->assign('title', 'Pagos de alumnos');?>
 <div class="col-lg-10 index">
     <h3><?= __('Pagos Alumnos') ?></h3>
-    <div class = "col-lg-8 separador">
+    <div class = "col-lg-10 separador">
     <?php echo $this->Form->create($pagosAlumnos, ['id' => 'frmIndex', 'type' => 'post']); ?>
 	<div class ="col-lg-12">
 	<div class="col-lg-3 "> 
@@ -10,18 +10,29 @@
             echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Nombre o DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 	 </div>
-	<div class="col-lg-4 " > 
+	<div class="col-lg-3 " > 
 		 <?php
             echo $this->Form->label('Período');
             echo $this->Form->month('mes', ['type' => 'mob', 'label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 	</div>
-	<div class="col-lg-4" > 
+	<div class="col-lg-3" > 
 	  		  <?php
 	  		  echo $this->Form->label('Año');
 	  		  echo $this->Form->year('year',['onchange'=>'document.getElementById("frmIndex").submit()']);
 	          ?>
 	  </div>
+	  <div class ="col-lg-3">
+		  <?php
+            echo $this->Form->label('Deudores');
+            $check = null;
+            //             if ($this->request->session()->read('conditions'))
+//             {
+//           	  $check = "checked";
+//             }
+            echo $this->Form->checkbox('deuda', ['label' => false, $check,'onchange'=>'document.getElementById("frmIndex").submit()']);
+          ?>
+        </div>
       </div>	
 	<?php echo $this->Form->end(); ?>
 	</div>

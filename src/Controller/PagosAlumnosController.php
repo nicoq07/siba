@@ -13,6 +13,8 @@ use Cake\I18n\Time;
  */
 class PagosAlumnosController extends AppController
 {
+	private $conditions=null;
+	
 	public function isAuthorized($user)
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
@@ -34,31 +36,67 @@ class PagosAlumnosController extends AppController
     	$where1 = null;
     	$where2 = null;
     	$where3 = null;
+    	$where4 = null;
+    	$cond = null;
+    	$this->conditions = array();
+    	$session = $this->request->session();
     	if ($this->request->is('post'))
     	{
+    		$cond = array();
+    		$session->delete('conditions');
     		$mes = $this->request->getData()['mes']['month'];
-    		$where1= ['PagosAlumnos.mes' => $mes];
     		
+    		if ($mes)
+    		{
+    			$where1= ['PagosAlumnos.mes' => $mes];
+    			array_push($this->conditions,$where1);
+    			array_push($cond,['mes' => $mes]);
+    			
+    		}
     		$year= $this->request->getData()['year']['year'];
     		if ($year)
     		{
     			$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
     			$where2 = ["YEAR(PagosAlumnos.created) = YEAR('$fecha')"];
+    			array_push($this->conditions,$where2);
+    			array_push($cond,['year' => $year]);
     		}
     		if (!(empty($this->request->getData()['palabra_clave'])))
     		{
     			$palabra = $this->request->getData()['palabra_clave'];
     			$where3= ["(Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%')"];
+    			array_push($this->conditions,$where3);
+    			array_push($cond,['palabra' => $palabra]);
     		}
+    		
+    		if (!(empty($this->request->getData()['deuda'])))
+    		{
+    			$where4= ["PagosAlumnos.pagado" => false];
+    			array_push($this->conditions,$where4);
+    			array_push($cond,['deuda' => true]);
+    		}
+    		
+    		$session->write('conditions',$this->conditions);
+    		
     	}
-        $this->paginate = [
-            'contain' => ['Alumnos', 'Users','PagosConceptos'],
-        		'conditions' => [$where1,$where2,$where3]
-        ];
-        $pagosAlumnos = $this->paginate($this->PagosAlumnos);
-
-        $this->set(compact('pagosAlumnos'));
-        $this->set('_serialize', ['pagosAlumnos']);
+    	if ($session->check('conditions'))
+    	{
+    		$this->conditions= $session->read('conditions');
+    	}
+    	else
+    	{
+    		$this->conditions= null;
+    	}
+    	$this->paginate = [
+    			'contain' => ['Alumnos', 'Users','PagosConceptos'],
+    			'conditions' => [$this->conditions],
+    			'limit' => 25
+    	];
+    	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
+    	
+    	$this->set(compact('pagosAlumnos','cond'));
+    	
+        
     }
 
     /**
