@@ -273,9 +273,11 @@ class AlumnosController extends AppController
     public function pIndex()
     {
     	$alumnos = $this->Alumnos->find('all')
+    	
     	->matching('Clases', function ($q)  {
     		return $q->where(['ClasesAlumnos.active' => true, 'Clases.profesor_id' =>  $this->Auth->user('profesor_id')]);
     	})
+    	->distinct(['Alumnos.id'])
     	->toArray()
     	;
     	
