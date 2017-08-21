@@ -92,7 +92,6 @@
 
 .logo
 {	
-	
 	width: 20.649%;
 	height: 265px;
 	right: 0px;
@@ -104,7 +103,6 @@
 	border-left-style: solid;
 	
 }
-
 
 .descripcionIba
 {
@@ -139,7 +137,6 @@
 	border-left-style: none;
    border-right-style: none;
 	height: 50%;
-	
 }
 
 .texto-alumno
@@ -189,8 +186,6 @@
 	height: 582px;
 	border :0px;
 	border-bottom-style: solid;
-	
-	
 }
 
 .concepto
@@ -328,8 +323,52 @@
 	text-align:left;
 	 margin-left: 3px;
 }
-.div-alumno
+/* FICHA INTERNA ALUMNO       */
+.td-interna-title
 {
-	
-	
+	text-align:center;
+}
+.title
+{
+	font-size: 3rem;
+}
+.td-interna-general
+{
+	font-size:1.5rem;
+}
+
+.header-ficha-externa
+{
+	width: 100%;
+	float: left;
+	border: 1px black;
+	border-bottom-style: solid;
+}
+.div-logo-externa
+{
+	float: left;
+	width: 20%;
+}
+.div-alumno-externa
+{
+	float: left;
+	width: 60%;
+	height: 100%;
+	text-align: center;
+}
+.div-iba-ext
+{
+	border: 1px solid;
+	height: auto;
+	float: left;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+.div-footer
+{
+	float:left;
+	position: absolute;
+	bottom: 0;
+    left: 0;
 }

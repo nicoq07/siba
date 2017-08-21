@@ -1,7 +1,7 @@
 <div class="col-lg-8" style="padding: 0;">
    <div  style="margin-top:10px" class="row">
 	     <div class="col-lg-5">
-	     	<span style="font-size:5.50rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
+	     	<span style="font-size:4rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
 	      </div>
 	    <div class="col-lg-7">
 	    <?php 

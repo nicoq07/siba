@@ -118,8 +118,8 @@ class AlumnosController extends AppController
         ->limit(10)
         ->orderDesc('fecha')
         ->where(['fecha <='=>  date('Y-m-d h:m',time())])
-        ->matching('ClasesAlumnos', function ($q) use ($ids) {
-        	return $q->where(['ClasesAlumnos.clase_id IN' => $ids]);
+        ->matching('ClasesAlumnos', function ($q) use ($ids,$id) {
+        	return $q->where(['ClasesAlumnos.clase_id IN' => $ids,'ClasesAlumnos.alumno_id ' => $id]);
         })
         ->toArray();
         
@@ -443,6 +443,8 @@ class AlumnosController extends AppController
 
 	private function insertarSeguimiento($idAlumno, $idsClases)
 	{
+		$alumno = $this->Alumnos->get($idAlumno);
+		
 		//creo un array con los dias con clave y valor para despues poder compararlo con la funcion DATE
 		$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
 		
@@ -471,7 +473,7 @@ class AlumnosController extends AppController
 			if(!$claseAlumno->existeSeguimiento())
 			{
 				//Creo las fechas de incio y fin para  recorrerlas
-				$fechaInicio = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+				$fechaInicio = strtotime($alumno->modified->format('Y-m-d'));
 				$fechaFin = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
 				
 				//recorro por dia hasta la fecha fin

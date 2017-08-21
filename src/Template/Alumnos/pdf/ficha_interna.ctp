@@ -1,4 +1,4 @@
-<div class="A6">
+<div>
 	<table class="tabla-header-ficha-interna">
 		<tr>
 			<td height = "180px" width="300px"><div>

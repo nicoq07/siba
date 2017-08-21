@@ -89,6 +89,7 @@ class Alumno extends Entity
     public function desactivarme()
     {
     	$this->set('active', false);
+    	$this->set('fecha_baja', new \DateTime());
     	$cantClases = TableRegistry::get('ClasesAlumnos')->find('list')->where(['ClasesAlumnos.alumno_id' => $this->id])
     	->count();
     	$cantBorradas= TableRegistry::get('ClasesAlumnos')->deleteAll(['ClasesAlumnos.alumno_id' => $this->id]);
