@@ -1,18 +1,12 @@
 <div class="users index large-9 medium-8 columns content">
-    <h3><?= __('Users') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <h3><?= __('Usuarios') ?></h3>
+    <table>
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('dni') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('profesor_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('nombre') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('apellido') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('nombre_usuario') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('password') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('nombre_usuario',['label' => 'Nombre de usuario']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('rol_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -20,34 +14,19 @@
         <tbody>
             <?php foreach ($users as $user): ?>
             <tr>
-                <td><?= $this->Number->format($user->id) ?></td>
-                <td><?= h($user->dni) ?></td>
-                <td><?= $this->Number->format($user->profesor_id) ?></td>
                 <td><?= h($user->nombre) ?></td>
                 <td><?= h($user->apellido) ?></td>
                 <td><?= h($user->nombre_usuario) ?></td>
-                <td><?= h($user->password) ?></td>
-                <td><?= $user->has('role') ? $this->Html->link($user->role->id, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
-                <td><?= h($user->created) ?></td>
-                <td><?= h($user->modified) ?></td>
-                <td><?= h($user->active) ?></td>
+                <td><?= $user->has('role') ? $this->Html->link($user->role->descripcion, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
+                <td><?= $user->active ? h("Sí") : h("No") ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                    <?= $this->Form->postLink(__('Desactivar'), ['action' => 'desactivar', $user->id], ['confirm' => __('Quitar acceso?', $user->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+	<?= $this->element('footer');?>
 </div>
