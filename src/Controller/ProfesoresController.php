@@ -98,15 +98,31 @@ class ProfesoresController extends AppController
      */
     public function edit($id = null)
     {
+    	$user = false;
         $profesore = $this->Profesores->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $profesore = $this->Profesores->patchEntity($profesore, $this->request->getData());
-            if ($this->Profesores->save($profesore)) {
-                $this->Flash->success(__('The profesore has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            
+            $id = TableRegistry::get('Users')->find()->select('Users.id')->where(['Users.profesor_id' => $profesore->id]);
+            if($id->count() < 1)
+            {
+            	$user = true;
+            }
+            else
+            {
+            	$user = TableRegistry::get('Users')->get($id->first()->id);
+            	$user->set('active',$profesore->active);
+            }
+            
+            if (TableRegistry::get('Users')->save($user) || $user)
+            {
+	            if ($this->Profesores->save($profesore)) {
+	                $this->Flash->success(__('The profesore has been saved.'));
+	
+	                return $this->redirect(['action' => 'index']);
+	            }
             }
             $this->Flash->error(__('The profesore could not be saved. Please, try again.'));
         }
@@ -131,6 +147,39 @@ class ProfesoresController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function baja($id)
+    {
+    	$flag = false;
+    	$this->request->allowMethod(['post', 'delete']);
+    	$profesore = $this->Profesores->get($id);
+    	$profesore->set('active',false);
+    	$id = TableRegistry::get('Users')->find()->select('Users.id')->where(['Users.profesor_id' => $profesore->id]);
+    	if($id->count() < 1)
+    	{
+    		$flag= true;
+    	}
+    	else
+    	{
+    		$user = TableRegistry::get('Users')->get($id->first()->id);
+    		$user->set('active',false);
+    		if(TableRegistry::get('Users')->save($user)) 
+    		{
+    			$flag = true;
+    		}
+    	}
+    	
+    	if ($flag)
+    	{
+	    	if ($this->Profesores->save($profesore))
+	    	{
+	    		$this->Flash->success(__('Profesor dado de baja y usuario desactivado. Nota: Debe reasignar sus clases!'));
+    			return $this->redirect(['action' => 'index']);
+    		}
+    		
+    	}
+    		$this->Flash->error(__('Error dando de baja al profesor y su usuario'));
     }
     
     public function planillas()

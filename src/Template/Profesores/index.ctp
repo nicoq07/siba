@@ -29,7 +29,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['action' => 'view', $profesore->id ],[ 'class' => 'btn-sm btn-info']) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $profesore->id],[ 'class' => 'btn-sm btn-warning']) ?>
-                    <?= $this->Form->postLink(__('Baja'), ['action' => 'delete', $profesore->id], ['class' => 'btn-sm btn-danger', 'confirm' => __('Vas a dar de baja a {0}?', $profesore->nombre)]) ?>
+                    <?= $this->Form->postLink(__('Baja'), ['action' => 'baja', $profesore->id], ['class' => 'btn-sm btn-danger', 'confirm' => __('Vas a dar de baja a {0}?', $profesore->nombre)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -202,4 +202,19 @@ class UsersController extends AppController
     	return $this->redirect(['action' => 'index']);
     	//
     }
+    public function cambiarPassword($id = null)
+    {
+    	
+//     	$this->request->allowMethod(['post', 'delete']);
+//     	$user = $this->Users->get($id);
+//     	$user->set('active',false);
+//     	if ($this->Users->save($user)) {
+//     		$this->Flash->success(__('Usuario desactivado.'));
+//     	} else {
+//     		$this->Flash->error(__('Error, reitente!.'));
+//     	}
+    	
+//     	return $this->redirect(['action' => 'index']);
+    	//
+    }
 }

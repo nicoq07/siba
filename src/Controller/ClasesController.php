@@ -85,7 +85,7 @@ class ClasesController extends AppController
             }
             $this->Flash->error(__('The clase could not be saved. Please, try again.'));
         }
-        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200]);
+        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
         $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200])->where(['Alumnos.active' => true]);
@@ -147,7 +147,7 @@ class ClasesController extends AppController
             }
             $this->Flash->error(__('Error guardando la clase'));
         }
-        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200]);
+        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
         $alumnos = $this->Clases->Alumnos->find('list', ['limit' => 200])->where(['Alumnos.active' => true]);;
