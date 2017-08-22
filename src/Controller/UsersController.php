@@ -81,8 +81,9 @@ class UsersController extends AppController
             }
             else 
             {
-            	$user->profesor_id = 0;
+            	$user->set('profesor_id',null);
             }
+            debug($user);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuario creado.'));
 

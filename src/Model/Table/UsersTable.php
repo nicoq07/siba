@@ -66,10 +66,6 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('dni', 'create')
-            ->notEmpty('dni');
-
-        $validator
             ->requirePresence('nombre', 'create')
             ->notEmpty('nombre');
 
