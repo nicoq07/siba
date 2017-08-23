@@ -324,6 +324,7 @@ class PagosAlumnosController extends AppController
     	{
     		$pagosAlumno->pagado = true;
     		$pagosAlumno->fecha_pagado = new Time();
+    		$pagosAlumno->user_id = $this->Auth->user('id');
     		if ($this->PagosAlumnos->save($pagosAlumno)) 
     		{
     			$this->Flash->success(__('Pago registrado.'));

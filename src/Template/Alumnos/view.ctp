@@ -93,7 +93,7 @@
                 <td><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
                  <td><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
                 <td title="Detalles:&#10;<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
-                <td><?= h($pagosAlumnos->user_id) ?></td>
+                <td><?= $pagosAlumnos->user ? h($pagosAlumnos->user->nombre): h(" ") ?></td>
                  <td><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
                 <td><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
                 <td class="actions">

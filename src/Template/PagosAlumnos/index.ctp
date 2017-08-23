@@ -58,7 +58,7 @@
                 <td><?= $pagosAlumno->fecha_pagado ? h($pagosAlumno->fecha_pagado->format('d-m-Y')) : h("Sin datos")?></td>
                 <td title="Detalles:&#10;<?php foreach ($pagosAlumno->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= $this->Number->format($pagosAlumno->monto) ?></td>
                 <td><?= $pagosAlumno->pagado ? h("Sí") : h("No") ?></td>
-                <td><?= $pagosAlumno->has('user') ? $this->Html->link($pagosAlumno->user->presentacion, ['controller' => 'Users', 'action' => 'view', $pagosAlumno->user->id]) : '' ?></td>
+                <td><?= $pagosAlumno->has('user') ? $this->Html->link($pagosAlumno->user->nombre, ['controller' => 'Users', 'action' => 'view', $pagosAlumno->user->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['action' => 'view', $pagosAlumno->id],['class' => 'btn-sm btn-info']) ?>
                     <?= $pagosAlumno->pagado ? h("")  : $this->Form->postLink(__('Pagar'), ['action' => 'pagar', $pagosAlumno->id], ['class' => 'btn-sm btn-success','confirm' => __('Marcar como pago?', $pagosAlumno->id)])?>
