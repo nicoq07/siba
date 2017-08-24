@@ -193,6 +193,14 @@ class AlumnosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+        	if(!$alumno->active)
+        	{
+        		$alumno->desactivarme();
+        	}
+        	else
+        	{
+        		$alumno->fecha_baja = NULL;
+        	}
         	if ($this->request->getData()['foto']['error'] != 4)
         	{
         		if ($this->request->getData()['foto']['error'] == 0)
