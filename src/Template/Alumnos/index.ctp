@@ -39,7 +39,7 @@
                 <th scope="row"><?= $this->Paginator->sort('celular') ?></th>
                 <th scope="row"><?= $this->Paginator->sort('nro_documento',['label'  => 'DNI']) ?></th>
                 <th scope="row"><?= $this->Paginator->sort('email') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('programa_adolecencia',['label'  => 'Adolecencia']) ?></th>
+                <th scope="row"><?= $this->Paginator->sort('programa_adolecencia',['label'  => 'Adolescencia']) ?></th>
                 <th scope="row"><?= $this->Paginator->sort('futuro_alumno') ?></th>
                 <th scope="row"><?= $this->Paginator->sort('activo') ?></th>
                 <th scope="row" class="actions"><?= __('Acciones') ?></th>
