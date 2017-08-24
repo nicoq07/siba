@@ -9,3 +9,5 @@ config/bootstrap.php
 composer.lock
 config/bootstrap.php
 /tmp/
+
+config/bootstrap.php
