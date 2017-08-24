@@ -158,7 +158,6 @@ class PagosAlumnosController extends AppController
 	    		$pagosAlumno->mes = $this->request->getData()['mes']['month'];
 	    		$pagosAlumno->monto = $total;
 	    		$pagosAlumno->pagado = false;
-	    		$pagosAlumno->user_id = $this->Auth->user('id');
 	    		if ($idPago = $this->PagosAlumnos->save($pagosAlumno)) 
 	    		{
 	    			
