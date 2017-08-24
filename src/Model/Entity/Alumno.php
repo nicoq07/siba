@@ -61,7 +61,7 @@ class Alumno extends Entity
     
     public function _getPresentacion()
     {
-    	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido'];
+    	$nomyape = $this->_properties['apellido'] . ' ' . $this->_properties['nombre'];
     	return $nomyape;
     }
     

@@ -64,7 +64,10 @@ class PagosAlumnosController extends AppController
     		if (!(empty($this->request->getData()['palabra_clave'])))
     		{
     			$palabra = $this->request->getData()['palabra_clave'];
-    			$where3= ["(Alumnos.nombre LIKE '%$palabra%' OR Alumnos.apellido LIKE '%$palabra%' OR Alumnos.nro_documento LIKE '%$palabra%')"];
+    			$where3= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
+    			];
     			array_push($this->conditions,$where3);
     			array_push($cond,['palabra' => $palabra]);
     		}

@@ -63,7 +63,10 @@ class AlumnosController extends AppController
 	     	if (!(empty($this->request->getData()['palabra_clave'])))
 	     	{
 	     		$palabra = $this->request->getData()['palabra_clave'];
-	     		$where4= ["alumnos.nombre LIKE '%$palabra%' OR alumnos.apellido LIKE '%$palabra%' OR alumnos.nro_documento LIKE '%$palabra%'"];
+	     		$where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
+	     		];
 	     	}
 	    }
 	    else 
@@ -358,8 +361,9 @@ class AlumnosController extends AppController
     		'MONTH(fecha_nacimiento)' => "$mes"
     		])
     		->select(['nombre','apellido','fecha_nacimiento'])
-    		->orderAsc('fecha_nacimiento')
+    		->orderAsc('DAY(fecha_nacimiento)')
     		->toArray();
+    		
     		if(empty($alumnos))
     		{
     			$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
@@ -369,7 +373,7 @@ class AlumnosController extends AppController
     		$month = 'Listado del mes ' . __(date('F',strtotime("01-$mes-2000")));
     		$hoja = 'A4';
     		$ori = 'portrait';
-    		$this->prepararPDFListado($month,(string)$hoja,(string)$ori );
+    		$this->prepararPDFListado($month,$hoja,$ori );
     		$this->set(['alumnos','month'],[$alumnos,$nombreMes]);
     		
     }

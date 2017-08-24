@@ -48,7 +48,11 @@ class SeguimientosClasesAlumnosController extends AppController
     		if (!(empty($this->request->getData()['palabra_clave'])))
     		{ 
     			$palabra = $this->request->getData()['palabra_clave'];
-    			$where1= ["(alumnos.nombre LIKE '%$palabra%' OR alumnos.apellido LIKE '%$palabra%' OR alumnos.nro_documento LIKE '%$palabra%')"];
+    			$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
+							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
+    			];
     		}
     		if (!(empty($this->request->getData()['clases'])))
     		{
