@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Seguimientos');?>
-<div class="seguimientosClasesAlumnos index col-lg-10">
+<div class="seguimientosClasesAlumnos index col-lg-10 nopadding">
 	<h3><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
   		<?php echo $this->Form->create($seguimientosClasesAlumnos, ['id' => 'frmIndex', 'type' => 'post']); ?>
@@ -37,15 +37,15 @@
 	 </div>
 	 <?php echo $this->Form->end(); ?>
   	 </div>
-    <table class="table table-striped">
+    <table class="table table-striped nopadding">
         <thead>
             <tr>
                 <th width="30%" scope="col"><?= h('Clase') ?></th>
                  <th width="20%" scope="col"><?=  $this->Paginator->sort('alumno_id') ?></th>
                 <th width="10%" scope="col"><?= $this->Paginator->sort('presente') ?></th>
-                <th width="15%" scope="col"><?= h('Calificación') ?></th>
+                <th width="10%" scope="col"><?= h('Calificación') ?></th>
                 <th width="10%" scope="col"><?= $this->Paginator->sort('fecha') ?></th>
-                <th width="15%" scope="col" class="actions"><?= __('Acciones') ?></th>
+                <th width="20%" scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
