@@ -21,7 +21,7 @@
 	<div class="separador"></div>
 	
 	<div class="col-lg-2 col-md-2 view-div borde"><?= __('DNI') ?></div>
-	<div class="col-lg-4 col-md-4  borde"><?= h($alumno->nro_documento) ?></div>
+	<div class="col-lg-4 col-md-4  borde"><?= $alumno->nro_documento ? h($alumno->nro_documento) : h("-") ?></div>
 	<div class="col-lg-2 col-md-2 view-div borde"><?= __('Direccion') ?></div>
 	<div class="col-lg-4 col-md-4  borde"><?= $alumno->direccion ? h($alumno->direccion) : "-" ?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Código Postal') ?></div>
@@ -57,11 +57,13 @@
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Materiales') ?></div>
 	<div class="col-lg-4 col-md-4  borde"><?= $alumno->monto_materiales ? $alumno->monto_materiales:"-"?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Colegio') ?></div>
-	<div class="col-lg-10 borde"><?= $alumno->colegio ? h($alumno->colegio) : "-"?> </div>
+	<div class="col-lg-6 borde"><?= $alumno->colegio ? h($alumno->colegio) : "-"?> </div>
+	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Fecha Baja') ?></div>
+	<div class="col-lg-2 col-md-2 borde"><?=$alumno->fecha_baja ? h($alumno->fecha_baja->format('d/m/Y')) : "-" ?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Alta') ?></div>
 	<div class="col-lg-4 col-md-4  borde"><?= h($alumno->created->format('d/m/Y')) ?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Modificado') ?></div>
-	<div class="col-lg-4 col-md-4  borde"><?= h($alumno->modified->format('d/m/Y')) ?> </div>
+	<div class="col-lg-4 col-md-4  borde"><?= $alumno->modified ? h($alumno->modified->format('d/m/Y')) :"-"  ?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Adolescencia') ?></div>
 	<div class="col-lg-2 col-md-2 borde"><?= $alumno->programa_adolecencia ? __('Sí') : __('No'); ?> </div>
 	<div class="col-lg-2 col-md-2 borde view-div"><?= __('Futuro Alumno') ?></div>

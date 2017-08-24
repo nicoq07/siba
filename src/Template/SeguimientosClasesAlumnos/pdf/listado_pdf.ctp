@@ -16,13 +16,21 @@
  	
  
  </style> 
-<div>
 <div class="col-lg-12">
-	<h2><strong><?= h($clase->disciplina->descripcion. " - ". $clase->profesore->presentacion )?></strong></h2>
+<div  class="col-lg-12 div-logo-externa">
+				<div>
+	    	 	<?php  echo $this->Html->image('logoIba.png', ['class' => 'pull-right' , 'height' => "150" , 'width' => "150",'fullBase' => true]); ?>
+	    		</div>
 	</div>
-	<div class="col-lg-12">
-	<h2><strong><?= h("Seguimiento del alumno " . $alumno->presentacion  )?></strong></h2>
-	</div>
+	<div  class="col-lg-6"> 	<h2><strong><?= h("Disciplina: " .$clase->disciplina->descripcion)?></strong></h2> </div>
+</div>
+<div class="col-lg-12">
+	<div  class="col-lg-12"> 	<h2><strong><?= h("Profesor: ". $clase->profesore->presentacion )?></strong></h2> </div>
+	<div  class="col-lg-12"> 	<h2><strong><?= h("Seguimiento del alumno : " . $alumno->presentacion  )?></strong></h2> </div>
+	
+</div>
+
+	
 	<table class = "table table-striped">
             <tr>
                 <td width="20%" class="tamano-encabezado" scope="col"><?= h("Fecha") ?></td>
