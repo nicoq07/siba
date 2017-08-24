@@ -178,6 +178,23 @@ class UsersController extends AppController
     	return $this->redirect($this->Auth->logout());
     }
     
+    public function cambiarPassword($id = null)
+    {
+    	$user = $this->Users->get($id);
+    	if ($this->request->is(['patch', 'post', 'put'])) {
+    		$user = $this->Users->patchEntity($user, $this->request->getData());
+    		if ($this->Users->save($user)) {
+    			$this->Flash->success(__('Password cambiada!'));
+    			
+    			return $this->redirect(['action' => 'perfil']);
+    		}
+    		$this->Flash->error(__('Error, reitentá por favor!.'));
+    	}
+
+    	$this->set(compact('user'));
+    }
+    
+    
     public function perfil()
     {
     	$user = $this->Users->get($this->Auth->user('id'), [
@@ -202,19 +219,5 @@ class UsersController extends AppController
     	return $this->redirect(['action' => 'index']);
     	//
     }
-    public function cambiarPassword($id = null)
-    {
-    	
-//     	$this->request->allowMethod(['post', 'delete']);
-//     	$user = $this->Users->get($id);
-//     	$user->set('active',false);
-//     	if ($this->Users->save($user)) {
-//     		$this->Flash->success(__('Usuario desactivado.'));
-//     	} else {
-//     		$this->Flash->error(__('Error, reitente!.'));
-//     	}
-    	
-//     	return $this->redirect(['action' => 'index']);
-    	//
-    }
+    
 }

@@ -51,38 +51,14 @@ $description = 'Iba Escuela ' .date("Y");
 					<li>
 						<a style="color: white; background-color:#01545B;" href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
 	                        <ul class="dropdown-menu forAnimate">
-								<li><a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">Cambiar password</a>
-								</li>							
+								<li><?= $this->Html->link(h('Cambiar password'), ['controller' =>'Users', 'action' => 'cambiarPassword',$current_user['id']]) ?></li>							
 	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
 							</ul>
 					</li>
 			</ul>
+			</div>
         <?php endif;?>
-    <form class="form-horizontal" role="form">
-		   <div class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">
-							<span aria-hidden="true">×</span>
-							<span class="sr-only">Close</span>
-						</button>
-						<h4 class="modal-title">Recuperar contraseña</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tipea tu dni</p>
-						<input type="email" name="recovery-email" id="recovery-email" class="form-control" autocomplete="off">
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-custom">Recuperar</button>
-					</div>
-				</div> <!-- /.modal-content -->
-			</div> <!-- /.modal-dialog -->
-		</div> <!-- /.modal -->
-        </form>
- </div>
-         
+   
          
     </nav>
     <?= $this->Flash->render() ?>

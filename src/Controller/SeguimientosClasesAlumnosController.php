@@ -36,6 +36,7 @@ class SeguimientosClasesAlumnosController extends AppController
      */
     public function index()
     {
+    	$number = null;
     	$where = null;
     	$session = $this->request->session();
     
