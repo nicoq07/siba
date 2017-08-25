@@ -95,6 +95,9 @@ class PagosAlumnosController extends AppController
     			'conditions' => [$this->conditions],
     			'limit' => 25
     	];
+    	
+    	$this->informePagos();
+    	
     	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
     	
     	$this->set(compact('pagosAlumnos','cond'));
@@ -340,6 +343,54 @@ class PagosAlumnosController extends AppController
     	return $this->redirect($this->referer());
     	
     }
+    
+    
+    private function informePagos()
+    {
+    	$mes = date('m');
+    	$year = date('Y');
+    	$pagosAlDiez = $this->PagosAlumnos->find('list')
+    	->select(['CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre)',  'PagosAlumnos.fecha_pagado' ])
+    	->matching('Alumnos')
+     	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => true,"PagosAlumnos.fecha_pagado >= cast('$year-$mes-01' as datetime)",
+     			"PagosAlumnos.fecha_pagado <= cast('$year-$mes-10 23:59:59' as datetime)",
+     	])
+    	;
+    	$pagosDelOnceAFin = $this->PagosAlumnos->find('list')
+    	->select(['CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre)',  'PagosAlumnos.fecha_pagado' ])
+    	->matching('Alumnos')
+    	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => true,"PagosAlumnos.fecha_pagado >= cast('$year-$mes-11' as datetime)",
+    			"PagosAlumnos.fecha_pagado <= LAST_DAY(cast('$year-$mes-01 23:59:59' as datetime))",
+    	])
+    	;
+    	
+    	$cantPagosGenerados   = $this->PagosAlumnos->find('list')
+    	->select(["count(*) as 'cantidadDePagosGenerados'"," sum(pa.monto) as 'MontoTotal'"])
+    	->where(["PagosAlumnos.mes" => $mes]);
+    	
+    	$cantPagosPagados   = $this->PagosAlumnos->find('list')
+    	->select(["count(*) as 'cantidadDePagosPagados'"," sum(pa.monto) as 'cantidadDePagosPagados'"])
+    	->where(["PagosAlumnos.mes" => $mes,"PagosAlumnos.pagado" => true]);
+    	
+    	$cantPagosNoPagados   = $this->PagosAlumnos->find('list')
+    	->select(["count(*) as 'cantidadDePagosPagados'"," sum(pa.monto) as 'cantidadDePagosPagados'"])
+    	->where(["PagosAlumnos.mes" => $mes,"PagosAlumnos.pagado" => false]);
+    	
+    	$alumnosDeudoresDelMes = $this->PagosAlumnos->find('list')
+    	->select(['CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre) ',  "PagosAlumnos.monto as 'monto adeudado'" ])
+    	->matching('Alumnos')
+    	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => false])
+    	;
+
+    	debug($pagosAlDiez->all());
+    	debug($pagosDelOnceAFin->all());
+    	debug($cantPagosGenerados->all());
+    	debug($cantPagosPagados->all());
+    	debug($cantPagosNoPagados->all());
+    	debug($alumnosDeudoresDelMes->all());
+    }
+    
+    
     
     private function prepararPDFManual($mes,$dniAlumno,$tipoHoja,$orientacion)
     {
