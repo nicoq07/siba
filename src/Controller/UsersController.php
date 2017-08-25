@@ -21,7 +21,7 @@ class UsersController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['index','view','logout','home','perfil']))
+			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','perfil']))
 			{
 				return true;
 			}
