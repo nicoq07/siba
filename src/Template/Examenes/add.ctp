@@ -1,30 +1,18 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Examenes'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Clases Alumnos'), ['controller' => 'ClasesAlumnos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Clases Alumno'), ['controller' => 'ClasesAlumnos', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="examenes form large-9 medium-8 columns content">
+<div class="examenes col-lg-5 col-lg-offset-2">
     <?= $this->Form->create($examene) ?>
     <fieldset>
-        <legend><?= __('Add Examene') ?></legend>
+        <legend><?= __('Nuevo Examen') ?></legend>
         <?php
             echo $this->Form->control('clase_alumno_id', ['options' => $clasesAlumnos, 'empty' => true]);
-            echo $this->Form->control('periodo');
-            echo $this->Form->control('aprobado');
-            echo $this->Form->control('calificacion');
-            echo $this->Form->control('audioperceptiva');
-            echo $this->Form->control('practica_ensamble');
-            echo $this->Form->control('trabajos_practicos');
+            echo $this->Form->control('periodo',['label' => 'Período']);
+            echo $this->Form->control('calificacion',['options' => $calificaciones,'value' => $calificaciones,'label' => 'Calificación','empty' => 'No aplica']);
+            echo $this->Form->control('audioperceptiva',['options' => $calificaciones,'label' => 'Audioperceptiva','empty' => 'No aplica']);
+            echo $this->Form->control('practica_ensamble',['options' => $calificaciones,'label' => 'Práctica de Ensamble','empty' => 'No aplica']);
+            echo $this->Form->control('trabajos_practicos',['options' => $calificaciones,'label' => 'Trabajos Prácticos','empty' => 'No aplica']);
+            echo $this->Form->control('aprobado',['label' => 'Aprueba']);
         ?>
+         <?= $this->Form->button(__('Guardar e Imprimir')) ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+   
     <?= $this->Form->end() ?>
 </div>

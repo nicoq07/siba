@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Examenes Controller
@@ -77,8 +78,13 @@ class ExamenesController extends AppController
         		'groupField' => 'clase.disciplina.descripcion'
         		])
         		->contain(['Clases' => ['Disciplinas']]);
-//         debug($clasesAlumnos);exit;
-        $this->set(compact('examene', 'clasesAlumnos'));
+
+        		$calificaciones = TableRegistry::get('Calificaciones')->find('list')
+        		->toArray()
+        		;
+       $calificaciones =  array_combine(array_values($calificaciones), 	array_values($calificaciones));
+        	
+        $this->set(compact('examene', 'clasesAlumnos','calificaciones'));
         $this->set('_serialize', ['examene']);
     }
 
