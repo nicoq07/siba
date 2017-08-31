@@ -3,9 +3,9 @@
     <fieldset>
         <legend><?= __('Nuevo Examen') ?></legend>
         <?php
-            echo $this->Form->control('clase_alumno_id', ['options' => $clasesAlumnos, 'empty' => true]);
+        echo $this->Form->control('clase_alumno_id', ['options' => $clasesAlumnos, 'empty' => true,'label' => 'Clase y alumno']);
             echo $this->Form->control('periodo',['label' => 'Período']);
-            echo $this->Form->control('calificacion',['options' => $calificaciones,'value' => $calificaciones,'label' => 'Calificación','empty' => 'No aplica']);
+            echo $this->Form->control('calificacion',['options' => $calificaciones,'label' => 'Calificación','empty' => 'No aplica']);
             echo $this->Form->control('audioperceptiva',['options' => $calificaciones,'label' => 'Audioperceptiva','empty' => 'No aplica']);
             echo $this->Form->control('practica_ensamble',['options' => $calificaciones,'label' => 'Práctica de Ensamble','empty' => 'No aplica']);
             echo $this->Form->control('trabajos_practicos',['options' => $calificaciones,'label' => 'Trabajos Prácticos','empty' => 'No aplica']);
