@@ -1,10 +1,10 @@
 <div class = "general">
 
 	<div class="titulo">
-				<p class="texto-alumno"><?= h($examen->clases_alumno->alumno->nombre) ?></p>
+				<p class="texto-alumno"><?= $examen->clases_alumno->alumno ?></p>
 	</div>
 	<div class="titulo">
-				<p class="texto-alumno"><?= h($examen->clase->disciplina->descripcion) ?></p>
+				<p class="texto-alumno"><?= h($examen->clases_alumno->clase->disciplina->descripcion) ?></p>
 	</div>
 
 </div>
