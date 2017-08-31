@@ -21,6 +21,10 @@
                 <th scope="col"><?= $this->Paginator->sort('clase_alumno_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('periodo') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('aprobado') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('calificacion') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('audioperceptiva') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('practica_ensamble') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('trabajos_practicos') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -33,6 +37,10 @@
                 <td><?= $examene->has('clases_alumno') ? $this->Html->link($examene->clases_alumno->id, ['controller' => 'ClasesAlumnos', 'action' => 'view', $examene->clases_alumno->id]) : '' ?></td>
                 <td><?= h($examene->periodo) ?></td>
                 <td><?= $this->Number->format($examene->aprobado) ?></td>
+                <td><?= h($examene->calificacion) ?></td>
+                <td><?= h($examene->audioperceptiva) ?></td>
+                <td><?= h($examene->practica_ensamble) ?></td>
+                <td><?= h($examene->trabajos_practicos) ?></td>
                 <td><?= h($examene->created) ?></td>
                 <td><?= h($examene->modified) ?></td>
                 <td class="actions">

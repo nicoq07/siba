@@ -65,6 +65,18 @@ class ExamenesTable extends Table
             ->requirePresence('aprobado', 'create')
             ->notEmpty('aprobado');
 
+        $validator
+            ->allowEmpty('calificacion');
+
+        $validator
+            ->allowEmpty('audioperceptiva');
+
+        $validator
+            ->allowEmpty('practica_ensamble');
+
+        $validator
+            ->allowEmpty('trabajos_practicos');
+
         return $validator;
     }
 

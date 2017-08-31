@@ -19,6 +19,10 @@
             echo $this->Form->control('clase_alumno_id', ['options' => $clasesAlumnos, 'empty' => true]);
             echo $this->Form->control('periodo');
             echo $this->Form->control('aprobado');
+            echo $this->Form->control('calificacion');
+            echo $this->Form->control('audioperceptiva');
+            echo $this->Form->control('practica_ensamble');
+            echo $this->Form->control('trabajos_practicos');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

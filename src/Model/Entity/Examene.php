@@ -10,6 +10,10 @@ use Cake\ORM\Entity;
  * @property int $clase_alumno_id
  * @property string $periodo
  * @property int $aprobado
+ * @property string $calificacion
+ * @property string $audioperceptiva
+ * @property string $practica_ensamble
+ * @property string $trabajos_practicos
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

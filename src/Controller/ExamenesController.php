@@ -12,7 +12,6 @@ use App\Controller\AppController;
  */
 class ExamenesController extends AppController
 {
-	
 	public function isAuthorized($user)
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)

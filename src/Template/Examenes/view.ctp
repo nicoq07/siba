@@ -27,6 +27,22 @@
             <td><?= h($examene->periodo) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Calificacion') ?></th>
+            <td><?= h($examene->calificacion) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Audioperceptiva') ?></th>
+            <td><?= h($examene->audioperceptiva) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Practica Ensamble') ?></th>
+            <td><?= h($examene->practica_ensamble) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Trabajos Practicos') ?></th>
+            <td><?= h($examene->trabajos_practicos) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($examene->id) ?></td>
         </tr>
