@@ -22,7 +22,7 @@ class ExamenesController extends AppController
 		return parent::isAuthorized($user);
 		
 		return true;
-	}
+	}	
     /**
      * Index method
      *
@@ -73,7 +73,11 @@ class ExamenesController extends AppController
             }
             $this->Flash->error(__('The examene could not be saved. Please, try again.'));
         }
-        $clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', ['limit' => 200]);
+        $clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', [
+        		'groupField' => 'clase.disciplina.descripcion'
+        		])
+        		->contain(['Clases' => ['Disciplinas']]);
+//         debug($clasesAlumnos);exit;
         $this->set(compact('examene', 'clasesAlumnos'));
         $this->set('_serialize', ['examene']);
     }
