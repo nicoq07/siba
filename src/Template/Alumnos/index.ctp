@@ -31,18 +31,18 @@
 		 </div>
 	 </div>
 	   <?php echo $this->Form->end(); ?>
-    <table class= "table table-striped">
+    <table class="table table-striped"  cellpadding="0" cellspacing="10">
         <thead>
             <tr>
-                <th scope="row"><?= $this->Paginator->sort('nombre') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('telefono') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('celular') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('nro_documento',['label'  => 'DNI']) ?></th>
-                <th scope="row"><?= $this->Paginator->sort('email') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('programa_adolecencia',['label'  => 'Adolescencia']) ?></th>
-                <th scope="row"><?= $this->Paginator->sort('futuro_alumno') ?></th>
-                <th scope="row"><?= $this->Paginator->sort('activo') ?></th>
-                <th scope="row" class="actions"><?= __('Acciones') ?></th>
+                <th width="15%" scope="row"><?= $this->Paginator->sort('apellido') ?></th>
+                <th width="10%" scope="row"><?= $this->Paginator->sort('telefono') ?></th>
+                <th width="10%" scope="row"><?= $this->Paginator->sort('celular') ?></th>
+                <th width="10%" scope="row"><?= $this->Paginator->sort('nro_documento',['label'  => 'DNI']) ?></th>
+                <th width="15%" scope="row"><?= $this->Paginator->sort('email') ?></th>
+                <th width=" 5%" style="font-size:10px"  scope="row"><?= $this->Paginator->sort('programa_adolecencia',['label'  => 'Adolescencia']) ?></th>
+                <th width="5%" style="font-size:10px" scope="row"><?= $this->Paginator->sort('futuro_alumno') ?></th>
+                <th width="5%" scope="row"><?= $this->Paginator->sort('activo') ?></th>
+                <th width="10%" scope="row" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
                 <td><?= h($alumno->telefono) ?></td>
                 <td><?= h($alumno->celular) ?></td>
                 <td><?= h($alumno->nro_documento) ?></td>
-                <td><?= h($alumno->email) ?></td>
+                <td style="font-size:12px" ><?= h($alumno->email) ?></td>
                 <td><?=$alumno->programa_adolecencia? h("Sí") : h("No") ?></td>
                 <td><?= $alumno->futuro_alumno ? h("Sí") : h("No")?></td>
                 <td><?= $alumno->active ? h("Sí") : h("No") ?></td>
