@@ -68,11 +68,12 @@ class ExamenesController extends AppController
         if ($this->request->is('post')) {
             $examene = $this->Examenes->patchEntity($examene, $this->request->getData());
             if ($this->Examenes->save($examene)) {
-                $this->Flash->success(__('The examene has been saved.'));
+//                 $this->Flash->success(__('The examene has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+//                 return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'examen_pdf', $examene->id ,'_ext' => 'pdf']);
             }
-            $this->Flash->error(__('The examene could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error generando el examen! Reintente.'));
         }
         $clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', [
         		'groupField' => 'clase.disciplina.descripcion'
@@ -133,4 +134,37 @@ class ExamenesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    public function examenPdf($id)
+    {
+    	if(empty($id))
+    	{
+    		$this->Flash->error("Error generando el examen, informe al administrador del sistema.");
+    		return $this->redirect(['action' => 'index']);
+    	}
+    	$examen = $this->Examenes->get($id, [
+    			'contain' => ['ClasesAlumnos' => ['Clases' => ['Disciplinas'] ,'Alumnos']]
+    		]);
+    	$this->prepararExamenPdf("A4", "landscape");
+    	$this->set(compact('examen'));
+    }
+	
+    public function prepararExamenPdf($hoja,$orientacion)
+    {
+    	$this->viewBuilder()->setOptions([
+    			'pdfConfig' => [
+    					'margin-bottom' => 0,
+    					'margin-right' => 0,
+    					'margin-left' => 0,
+    					'margin-top' => 0,
+    					'pageSize' => $hoja,
+    					'orientation' => $orientacion,
+    					'filename' => 'Examen.pdf'
+    			]
+    	]);
+    	
+    }
+
+
 }

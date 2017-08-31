@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Aviso de pago</title>
 
-<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 </head>
 <body>
 <!--div general  --> 
