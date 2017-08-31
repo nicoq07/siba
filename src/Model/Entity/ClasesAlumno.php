@@ -46,18 +46,19 @@ class ClasesAlumno extends Entity
     	return false;
     }
     
-    public function _getClaseAlumno()
+    public function _getAlumno()
     {
 		$alumno = TableRegistry::get("Alumnos")->get($this->alumno_id);
 // 		$clase = TableRegistry::get("Clases")->get($this->clase_id,['contain' => 'Disciplinas',
 // 				'groupField' => 'Disciplinas.descripcion'
 // 		]);
-		$clase = TableRegistry::get("Clases")->find('all')
-		->contain('Disciplinas')->select('Disciplinas.descripcion')
-				->where(['Clases.id' => $this->clase_id])
-		->all();
+// 		$clase = TableRegistry::get("Clases")->find('all')
+// 		->contain('Disciplinas')->select('Disciplinas.descripcion')
+// 				->where(['Clases.id' => $this->clase_id])
+// 		->all();
 		
-		$texto = $alumno->presentacion. " en ". $clase->first()['Disciplinas']->descripcion;
+		$texto = $alumno->presentacion; 
+// 		. " en ". $clase->first()['Disciplinas']->descripcion;
     	return $texto;
     }
     

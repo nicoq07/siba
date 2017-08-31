@@ -36,7 +36,7 @@ class ClasesAlumnosTable extends Table
         parent::initialize($config);
 
         $this->setTable('clases_alumnos');
-        $this->setDisplayField('claseAlumno');
+        $this->setDisplayField('alumno');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
