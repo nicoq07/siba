@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 /**
  * Users Controller
  *
@@ -197,12 +198,18 @@ class UsersController extends AppController
     
     public function perfil()
     {
+    	
+    	$horarios = TableRegistry::get('Horarios')->find('all', [
+    			'contain' => ['Ciclolectivo', 'Clases']
+    	])
+    	->where(['nombre_dia' => date('l')])
+    	->orderAsc("hora");
+    	
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
     	
-    	$this->set('user', $user);
-    	$this->set('_serialize', ['user']);
+    	$this->set(['user','horarios'],[$user,$horarios]);
     }
     public function desactivar($id = null)
     {
