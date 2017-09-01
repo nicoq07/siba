@@ -4,62 +4,62 @@
 			<?= h($profesor->presentacion ." - ". $mes . " de ". date('Y') )?>
 		 </h4>
 	</div>
-	<?php $tamanio =  (20 / (count($dias)));
-	$i = 0;
-	$cnombre = null;
-	$numDia = null;
-	$ulimo = count($clases);
-	$flag = false;
-	foreach ($clases as $clase) {
-		$i++;
-		$tamanio = 0;
-		$cant=0;
-		if (($ulimo==$i) && ($clase->horario->nombre_dia == $cnombre))
-		{
-			$flag = true;
-		}
-		if (($clase->horario->nombre_dia != $cnombre) || ($i == 1) || $flag)	{
-			$numDia = array();
+	<?php $tamanio =  null;
+	$diaActual = null;
+	$flag = true;
+	$numDia = 0;
+// 	debug(count($dias)); exit;
+// 	foreach ($arrayClases as $clases) {
+	while ($clases = current($arrayClases)) {
+		if ($flag || ($diaActual != key($arrayClases)) ) {
+			$numDia = 0;
 			foreach ($dias as $dia)
 			{
-					if (key($dia) == $clase->id) 
-					{
-						array_push($numDia, current($dia));
-						$cant++;
-				    }
+				
+				if (key($arrayClases) == key($dia))
+				{
+					$numDia++;
+				}
 			}
-			$tamanio = (30/$cant);
+			$tamanio = (30/$numDia);
+			$flag = false;
 			?>
-			<?php if (!($flag)){?>
-			<!-- DIV ENCABEZADO -->
 			<div  style="margin-top: 10px"  class="div-fila">
 				<div class="div-texto-cabeza-alumno" style="">
-					 <p class="p-nom-dia">	<?= "<strong>".  h( __($clase->horario->nombre_dia)) . "</strong>"; ?> </p>
+					<p class="p-nom-dia">	<?= "<strong>".  h( __(key($arrayClases))) . "</strong>"; ?> </p>
 				</div>
-				<?php foreach ($numDia as $nd) {?>
-					<div  style=" width: <?php print "$tamanio%"?>" class="div-dia-cabeza">
-					   <p class="p-num-dia">	<?= "<strong>". h($nd) ."</strong>"?>  </p>
-					</div>
-					<?php }?>
+					<?php foreach ($dias as $dia) {
+						if (key($arrayClases) == key($dia)) {
+						?>
+						<div  style=" width: <?php print "$tamanio%"?>" class="div-dia-cabeza">
+								   <p class="p-num-dia">	<?= "<strong>". h($dia[key($arrayClases)]) ."</strong>"?>  </p>
+						</div>
+					<?php } ?>
+				<?php 	}?>
 			</div>
-		<?php } }?>
-	<!-- DIV ENCABEZADO -->
-	
-	<!-- DIV ALUMNO -->
-	<?php foreach ($clase->alumnos as $alumno) {?>
-	<div  class="div-fila">
-		<div class= "div-alumno" style="width: 70%;float: left;">
-			<p class="p-alumno"> <?= h($alumno->presentacion. ' '. $clase->disciplina->descripcion. " " .$clase->horario->hora->format("H:i"))?>  </p>
-		</div>
+		<?php 	}?>
 		
-		<?php foreach ($numDia as $nd) {?>
-		<div style="width: <?php print "$tamanio%"?>" class="div-dia">
-			 <p class="p-num-dia">	&nbsp; </p>
-		</div>
-		<?php }?>
-	</div >
-	<!-- DIV ALUMNO -->
-	<?php }?>
-	<?php $cnombre = $clase->horario->nombre_dia; ?>
-	<?php   }?> <!-- FOR ITEM-->
+				<?php 
+		foreach ($clases as $clase)
+		{
+		?>
+			<!-- DIV ALUMNO -->
+			<div  class="div-fila">
+				<div class= "div-alumno" style="width: 70%;float: left;">
+					<p class="p-alumno"> <?= h($clase['alumno']. ' ')."<strong>".h($clase['disci']) ."</strong>". " " .h(date("H:i",strtotime($clase['hora'])))?>  </p>
+				</div>
+				<?php for($i = 1; $i <= $numDia; $i++ )
+				{?>
+				<div style="width: <?php print "$tamanio%"?>"  class="div-dia">
+					 <p class="p-num-dia">	&nbsp;  </p>
+				</div>
+				<?php }?>
+			</div >
+			<!-- DIV ALUMNO -->
+			<?php   
+		}
+	next($arrayClases);
+	$diaActual != key($arrayClases);
+	}
+	;?> <!-- WHILE ITEM-->
 </div>

@@ -3,8 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
-use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
+use Cake\Database\Connection;
 /**
  * Profesores Controller
  *
@@ -105,26 +105,26 @@ class ProfesoresController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $profesore = $this->Profesores->patchEntity($profesore, $this->request->getData());
             
-            $id = TableRegistry::get('Users')->find()->select('Users.id')->where(['Users.profesor_id' => $profesore->id]);
-            if($id->count() < 1)
-            {
-            	$user = true;
-            }
-            else
-            {
-            	$user = TableRegistry::get('Users')->get($id->first()->id);
-            	$user->set('active',$profesore->active);
-            }
+//             $id = TableRegistry::get('Users')->find()->select('Users.id')->where(['Users.profesor_id' => $profesore->id]);
+//             if($id->count() < 1)
+//             {
+//             	$user = true;
+//             }
+//             else
+//             {
+//             	$user = TableRegistry::get('Users')->get($id->first()->id);
+//             	$user->set('active',$profesore->active);
+//             }
             
-            if (TableRegistry::get('Users')->save($user) || $user)
-            {
+//             if (TableRegistry::get('Users')->save($user) || $user)
+//             {
 	            if ($this->Profesores->save($profesore)) {
-	                $this->Flash->success(__('The profesore has been saved.'));
+	                $this->Flash->success(__('Profesor guardado.'));
 	
 	                return $this->redirect(['action' => 'index']);
 	            }
-            }
-            $this->Flash->error(__('The profesore could not be saved. Please, try again.'));
+//             }
+            $this->Flash->error(__('Error guardando el profesor! Reintete!'));
         }
         $this->set(compact('profesore'));
     }
@@ -213,29 +213,30 @@ class ProfesoresController extends AppController
     public function planillaCursosPdf($id, $mes)
     {
    	
-    	$profesor = $this->Profesores->get($id,['contain' => 'Clases']);
-    	$ids = array();
-		foreach ($profesor->clases as $clase)
-     	{
-    		$auxClase = ($clase->id);	
-    		
-    		array_push($ids, $auxClase);
-     	}
-    	$clases = TableRegistry::get('Clases')->find()
-    	->contain([
-    			'Alumnos',
-    			'Horarios',
-    			'Disciplinas'
-    	])
-    	->where([
-    			'Clases.id IN' =>$ids
-    	])
-    	->orderAsc('Horarios.num_dia')
-    	->toArray();
+    	$profesor = $this->Profesores->get($id);
+  		$idProfesor = $profesor->id;
+
+		$qClases = "select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia,
+					 h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci
+					from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
+					, disciplinas as d
+					WHERE
+					h.id = c.horario_id AND
+					c.id = ca.clase_id AND
+					c.disciplina_id = d.id AND
+					p.id = $idProfesor AND
+					c.profesor_id = p.id AND
+					ca.alumno_id = a.id AND
+					ca.id = s.clase_alumno_id AND
+					MONTH(s.fecha) = $mes
+					GROUP by ca.id, h.nombre_dia , h.hora";
     	
-    	
-    	
-    	
+		
+		$connection = ConnectionManager::get('default');
+		$rClases = $connection->execute($qClases);
+		
+		$arrayClases = $this->groupBy($rClases, 'nom_dia');
+		
     	$dias = $profesor->workingDays($mes);
     	if(empty($dias))
     	{
@@ -244,8 +245,9 @@ class ProfesoresController extends AppController
     	}
     	$mes = __(date("F", strtotime("2017-$mes-01")));
     	
+
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');
-    	$this->set(compact('profesor','dias','clases','mes'));
+    	$this->set(compact('profesor','dias','arrayClases','mes'));
     	
     }
     private function prepararListado($mes,$profesor,$tipoHoja,$orientacion)
@@ -261,6 +263,13 @@ class ProfesoresController extends AppController
     					'filename' => "Listado de".$profesor.' del mes'.$mes.'.pdf'
     			]
     	]);
+    }
+    function groupBy($array, $key) {
+    	$return = array();
+    	foreach($array as $val) {
+    		$return[$val[$key]][] = $val;
+    	}
+    	return $return;
     }
     
 }

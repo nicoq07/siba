@@ -66,9 +66,9 @@ class ProfesoresTable extends Table
             ->requirePresence('nombre', 'create')
             ->notEmpty('nombre');
 
-        $validator
-            ->requirePresence('nro_documento', 'create')
-            ->notEmpty('nro_documento');
+//         $validator
+//             ->requirePresence('nro_documento', 'create')
+//             ->notEmpty('nro_documento');
 
         $validator
             ->allowEmpty('direccion');
@@ -79,13 +79,13 @@ class ProfesoresTable extends Table
         $validator
             ->allowEmpty('codigo_postal');
 
-        $validator
-            ->email('email')
-            ->allowEmpty('email');
+//         $validator
+//             ->email('email')
+//             ->allowEmpty('email');
 
-        $validator
-            ->requirePresence('cuit', 'create')
-            ->notEmpty('cuit');
+//         $validator
+//             ->requirePresence('cuit', 'create')
+//             ->notEmpty('cuit');
 
         $validator
             ->allowEmpty('telefono');
@@ -93,9 +93,9 @@ class ProfesoresTable extends Table
         $validator
             ->allowEmpty('celular');
 
-        $validator
-            ->requirePresence('nombre_contacto', 'create')
-            ->notEmpty('nombre_contacto');
+//         $validator
+//             ->requirePresence('nombre_contacto', 'create')
+//             ->notEmpty('nombre_contacto');
 
         $validator
             ->allowEmpty('celular_contacto');
@@ -125,10 +125,10 @@ class ProfesoresTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['email']));
+//     public function buildRules(RulesChecker $rules)
+//     {
+//         $rules->add($rules->isUnique(['email']));
 
-        return $rules;
-    }
+//         return $rules;
+//     }
 }
