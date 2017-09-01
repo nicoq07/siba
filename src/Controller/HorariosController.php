@@ -32,7 +32,7 @@ class HorariosController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Ciclolectivo']
+        		'contain' => ['Ciclolectivo'],'order' => ['num_dia','hora']
         ];
         $horarios = $this->paginate($this->Horarios);
 
