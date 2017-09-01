@@ -146,7 +146,7 @@ class ExamenesController extends AppController
     	$examen = $this->Examenes->get($id, [
     			'contain' => ['ClasesAlumnos' => ['Clases' => ['Disciplinas'] ,'Alumnos']]
     		]);
-    	$this->prepararExamenPdf("A4", "landscape");
+    	$this->prepararExamenPdf("A5", "landscape");
     	$this->set(compact('examen'));
     }
 	

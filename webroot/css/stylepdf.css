@@ -372,3 +372,96 @@
 	bottom: 0;
     left: 0;
 }
+/* EXAMEN */
+.A5
+{
+	width: 870px;
+	height: 600px;
+	padding: 0;
+	margin: 0;
+	border: 1px black solid;
+}
+
+.div-cabecera-examen
+{
+	width: 100%;
+	height: 300px;
+	padding: 0;
+	margin: 0;
+	float: left;
+	border-bottom: 1px black dotted;
+}
+.div-titulo-examen
+{
+	width: 50%;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+	float: left;
+}
+.div-infoiba-examen
+{
+	width: 100%;
+	height: 260px;
+	padding: 0;
+	margin: 0;
+	float: left;
+	text-align: center;
+}
+.texto-negrita
+{
+	font-size: large;
+	font-weight: bold;
+	margin : 2px;
+	font-size: 1.2rem;
+}
+.texto-infoiba-examen
+{
+	font-size: 1.5rem;
+	margin:0;
+	padding:0
+}
+.div-calificacion-examen
+{
+	width: 100%;
+	height: 220px;
+	padding: 0;
+	margin: 0;
+	float: left;
+	text-align: center;
+}
+.div-pie-examen
+{
+	width: 100%;
+	height: 300px;
+	padding: 0;
+	margin: 0;
+	float: left;
+}
+.div-alumno-examen
+{
+	width: 100%;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+	float: left;
+}
+.div-puntos-examen
+{
+	width: 33%;
+	height: 220px;
+	padding: 0;
+	margin: 0;
+	float: left;
+	position: relative;
+	
+}
+
+.texto-puntos-examen
+{
+	font-family:cursive;
+	font-size: 1.1rem;
+	border-bottom: 1px;
+	border-radius:5px;
+	border-bottom-style: solid;
+}
