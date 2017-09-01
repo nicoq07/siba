@@ -183,7 +183,8 @@ class PagosAlumnosController extends AppController
 	    		}
 	    		$this->Flash->error(__('El pago no pudo ser generado. Avise al administrador'));
 	    	}
-	    	$alumnos = $this->PagosAlumnos->Alumnos->find('list')->where(['Alumnos.programa_adolecencia' => false,'alumnos.futuro_alumno' => false]);
+	    	$alumnos = $this->PagosAlumnos->Alumnos->find('list')->where(['Alumnos.programa_adolecencia' => false,'alumnos.futuro_alumno' => false])
+	    	->orderAsc('apellido');
 	    	$users = $this->PagosAlumnos->Users->find('list', ['limit' => 200]);
 	    	$this->set(compact('pagosAlumno', 'alumnos', 'users','alumno'));
 	    	$this->set('_serialize', ['pagosAlumno']);
