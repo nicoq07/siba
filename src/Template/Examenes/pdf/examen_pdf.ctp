@@ -22,7 +22,7 @@
 			<p class="texto-negrita pull-left"> <?php echo h($examen->periodo)?></p>
 		</div >
 		<div class="div-alumno-examen">
-			<p align="center" class="texto-negrita "> <?php echo h($examen->clases_alumno->alumno . " en ". $examen->clases_alumno->clase->disciplina->descripcion)?></p>
+			<p align="center" class="texto-negrita "> <?php echo h($examen->clases_alumno->alumno->presentacion . " en ". $examen->clases_alumno->clase->disciplina->descripcion)?></p>
 		</div >
 		<div class="div-calificacion-examen">
 			<div class="div-puntos-examen" >
