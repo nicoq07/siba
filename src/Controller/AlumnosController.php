@@ -75,7 +75,8 @@ class AlumnosController extends AppController
 	    }
     	
      	$this->paginate = [
-     			'conditions' => [$where1,$where2,$where3,$where4]
+     			'conditions' => [$where1,$where2,$where3,$where4],
+     			'order' => ['Alumnos.apellido']
      	];
      
         $alumnos = $this->paginate($this->Alumnos);
@@ -246,9 +247,9 @@ class AlumnosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $alumno = $this->Alumnos->get($id);
         if ($this->Alumnos->delete($alumno)) {
-            $this->Flash->success(__('The alumno has been deleted.'));
+            $this->Flash->success(__('Alumno borrado.'));
         } else {
-            $this->Flash->error(__('The alumno could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Error intentando borrar al alumno, reintente!.'));
         }
 
         return $this->redirect(['action' => 'index']);

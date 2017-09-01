@@ -41,7 +41,9 @@ class AlumnosTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany('PagosAlumnos', [
-            'foreignKey' => 'alumno_id'
+            'foreignKey' => 'alumno_id',
+        		'dependent' => true,
+        		'cascadeCallbacks' => true,
         ]);
 //         $this->hasMany('ClasesAlumnos', [
 //         		'foreignKey' => 'alumno_id'
