@@ -46,7 +46,7 @@ class ClasesAlumno extends Entity
     	return false;
     }
     
-    public function _getAlumno()
+    public function _getMostrarAlumno()
     {
 		$alumno = TableRegistry::get("Alumnos")->get($this->alumno_id);
 // 		$clase = TableRegistry::get("Clases")->get($this->clase_id,['contain' => 'Disciplinas',

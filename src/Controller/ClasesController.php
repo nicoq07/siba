@@ -88,7 +88,7 @@ class ClasesController extends AppController
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
-        $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true]);
+        $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true])->orderAsc('apellido');
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
     }
