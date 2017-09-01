@@ -18,6 +18,7 @@
 	             <li><?= $this->Html->link(h('Alta'), ['controller' =>'alumnos', 'action' => 'add']) ?></li>
 	             <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'alumnos', 'action' => 'index']) ?></li>
 	          	 <li><?= $this->Html->link(h('Cumpleños'), ['controller' =>'alumnos', 'action' => 'listadoCumple'],['target' => '_blank' ]) ?></li>
+	          	 <li><?= $this->Html->link(h('Examenes'), ['controller' =>'examenes', 'action' => 'add'],['target' => '_blank' ]) ?></li>
 	          
 	          </ul>
 	        </li>    
