@@ -11,6 +11,10 @@
 // 	debug(count($dias)); exit;
 // 	foreach ($arrayClases as $clases) {
 	while ($clases = current($arrayClases)) {
+		?>
+		
+		
+		 <?php 
 		if ($flag || ($diaActual != key($arrayClases)) ) {
 			$numDia = 0;
 			foreach ($dias as $dia)
@@ -24,6 +28,9 @@
 			$tamanio = (30/$numDia);
 			$flag = false;
 			?>
+			
+			<div class="dia">
+			
 			<div  style="margin-top: 10px"  class="div-fila">
 				<div class="div-texto-cabeza-alumno" style="">
 					<p class="p-nom-dia">	<?= "<strong>".  h( __(key($arrayClases))) . "</strong>"; ?> </p>
@@ -40,13 +47,37 @@
 		<?php 	}?>
 		
 				<?php 
-		foreach ($clases as $clase)
+		//foreach ($clases as $clase)
+		//$primerHora = date("H:i",strtotime($clases[0]['hora']));
+		for ($j =0; $j <count($clases); $j++)
 		{
+			
+			if ($j == 0)
+			{
+				$hora = date("H:i",strtotime($clases[$j]['hora']));
+				?>
+				<div  class="div-fila">
+					<div class= "div-alumno" style="width: 100%;float: left;">
+						<p class="p-nom-dia"> <?= "<strong>".h($hora)."</strong>"?>  </p>
+					</div>
+				</div >
+				<?php 
+			}
+			elseif (($j != 0) && ($hora != date("H:i",strtotime($clases[$j-1]['hora']))))			
+			{
+				?>
+				<div  class="div-fila">
+					<div class= "div-alumno" style="width: 100%;float: left;">
+						<p class="p-nom-dia"> <?= "<strong>".h($hora)."</strong>"?>  </p>
+					</div>
+				</div >
+				<?php 
+			}
 		?>
 			<!-- DIV ALUMNO -->
 			<div  class="div-fila">
 				<div class= "div-alumno" style="width: 70%;float: left;">
-					<p class="p-alumno"> <?= h($clase['alumno']. ' ')."<strong>".h($clase['disci']) ."</strong>". " " .h(date("H:i",strtotime($clase['hora'])))?>  </p>
+					<p class="p-alumno"> <?= h($clases[$j]['alumno']. ' ')."<strong>".h($clases[$j]['disci']) ."</strong>"?>  </p>
 				</div>
 				<?php for($i = 1; $i <= $numDia; $i++ )
 				{?>
@@ -56,10 +87,15 @@
 				<?php }?>
 			</div >
 			<!-- DIV ALUMNO -->
-			<?php   
+			<?php 
+			$sig =next($clases);
+			//debug($sig);
+			$hora = date("H:i",strtotime($sig['hora']));
 		}
 	next($arrayClases);
 	$diaActual != key($arrayClases);
+	?>
+	</div> <?php
 	}
-	;?> <!-- WHILE ITEM-->
+	?> <!-- WHILE ITEM-->
 </div>

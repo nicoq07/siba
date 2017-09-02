@@ -273,6 +273,14 @@
 	float: left;
 	font-size: 40px!important;
 }
+.dia
+{
+	float: left;
+	border-radius: 3px;
+	border: 5px #006f77 solid;
+	margin-top: 1cm;
+}
+
 .text-dia-horaio
 {
 	text-align: center;
@@ -364,13 +372,14 @@
 }
 .div-logo-externa
 {
+	text-align : center;
 	float: left;
-	width: 20%;
+	width: 100%;
 }
 .div-alumno-externa
 {
 	float: left;
-	width: 60%;
+	width: 100%;
 	height: 100%;
 	text-align: center;
 }
@@ -385,11 +394,13 @@
 }
 .div-footer
 {
+	text-align: center;
+	width:100%;
 	float:left;
 	position: absolute;
 	bottom: 0;
-    left: 0;
 }
+
 /* EXAMEN */
 .A5
 {

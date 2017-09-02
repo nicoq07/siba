@@ -228,13 +228,15 @@ class ProfesoresController extends AppController
 					ca.alumno_id = a.id AND
 					ca.id = s.clase_alumno_id AND
 					MONTH(s.fecha) = $mes
-					GROUP by ca.id, h.nombre_dia , h.hora";
+					GROUP by ca.id, h.nombre_dia , h.hora
+					ORDER BY h.num_dia, h.hora";
     	
 		
 		$connection = ConnectionManager::get('default');
 		$rClases = $connection->execute($qClases);
 		
 		$arrayClases = $this->groupBy($rClases, 'nom_dia');
+		
 		
     	$dias = $profesor->workingDays($mes);
     	if(empty($dias))
