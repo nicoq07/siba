@@ -1,3 +1,7 @@
+<style>
+.container-clases { border:2px solid #ccc; width:100%; height: 100px; overflow-y: scroll; }
+
+</style>
 <div class="col-log-10">
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
@@ -123,9 +127,17 @@
 	         </div>  
 	         <div class="col-lg-10"> 
 	         <?php
-	         echo $this->Form->control('clases._ids', ['options' => $clases]);
+	         //echo $this->Form->control('clases._ids', ['options' => $clases]);
 			 ?>
-	         </div>  
+			  <div class="container-clases">
+	         
+	         <?php 
+	         echo $this->Form->select('clases._ids', $clases, [
+	         		'multiple' => 'checkbox'
+	         		
+	         ]);?>
+	         </div> 
+	         </div> 
 	    	 <div class="col-lg-10"> 
 	         <?php
 	         echo $this->Form->control('observacion',['label' => 'Obesrvación']);

@@ -12,16 +12,16 @@ use App\Controller\AppController;
  */
 class HorariosController extends AppController
 {
-	
+
 	public function isAuthorized($user)
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
 		{
 			return false;
 		}
-		
+
 		return parent::isAuthorized($user);
-		
+
 		return true;
 	}
     /**
@@ -75,7 +75,7 @@ class HorariosController extends AppController
             }
             $this->Flash->error(__('The horario could not be saved. Please, try again.'));
         }
-        $dia = array("Lunes","Martes","Miercoles","Jueves","Viernes");
+        $dia = array("Lunes","Martes","Miércoles","Jueves","Viernes");
         $days = array(
         		'Monday',
         		'Tuesday',

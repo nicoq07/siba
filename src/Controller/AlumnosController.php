@@ -146,6 +146,7 @@ class AlumnosController extends AppController
         if ($this->request->is('post')) 
         {
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+            debug($alumno); exit;
             if ($this->request->getData()['foto']['error'] != 4)
             {
            		if ($this->request->getData()['foto']['error'] == 0)
@@ -194,6 +195,7 @@ class AlumnosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
+        	//debug($alumno); exit;
         	if(!$alumno->active)
         	{
         		$alumno->desactivarme();
