@@ -96,6 +96,7 @@ CREATE TABLE `clases` (
   `profesor_id` int(11) NOT NULL,
   `horario_id` int(11) NOT NULL,
   `disciplina_id` int(11) NOT NULL,
+  `alumno_count` INT UNSIGNED NULL DEFAULT NULL COMMENT 'cantidad de alumnos por clase';
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
