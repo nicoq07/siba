@@ -196,7 +196,6 @@ class PagosAlumnosController extends AppController
 	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 	 					,'PagosConceptos']
 	 	]);
-	 	
 	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A4", "landscape");
 	 	$this->set(compact('pagoalumno'));
 	 	
@@ -233,7 +232,6 @@ class PagosAlumnosController extends AppController
 	 				$pagosAlumno->mes = $mes;
 	 				$pagosAlumno->monto = $alumno->monto_arancel;
 	 				$pagosAlumno->pagado = false;
-	 				$pagosAlumno->user_id = $this->Auth->user('id');
 	 				$pagosAlumno->alumno_id = $alumno->id;
 	 				if ($idPago = $this->PagosAlumnos->save($pagosAlumno))
 	 				{
@@ -433,11 +431,11 @@ class PagosAlumnosController extends AppController
     
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
-    					'dpi' => 150,
-    					'margin-bottom' => 0,
-    					'margin-right' => 0,
-    					'margin-left' => 0,
-    					'margin-top' => 0,
+    					'pageSize' => $tipoHoja,
+    					'margin-bottom' => 1,
+    					'margin-right' => 1,
+    					'margin-left' => 1,
+    					'margin-top' => 1,
     					'orientation' => $orientacion,
     					'filename' => "Pago del mes " .$nombreMes.' de '.$dniAlumno. '.pdf'
     			]

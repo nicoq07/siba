@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Aviso de pago</title>
-
 </head>
 <body>
 <!--div general  --> 
 <div class = "general">
 	<div class= "troquel">
-		<div class= "fila-troquel">
+		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-fecha"> <?= h($pagoalumno->created->format('d/m/y'))?> </p>
 		</div>
-		<div class= "fila-troquel">
+		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-nomyape"><?= h("Código : ")?> </p>
 			<p class="texto-troquel-nomyape"><?= h($pagoalumno->id)?> </p> 
 		</div>
@@ -20,7 +19,7 @@
 			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
 			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </p>
 		</div>
-		<div class= "fila-troquel">
+		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-fecha"><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?> </p>
 		</div>
 		<div class= "fila-troquel-ultima">
@@ -59,9 +58,9 @@
 				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
 		    </div>
 				<?php
-				 		$clases = " ";
+				 		$clases = " - ";
 				 			foreach ($pagoalumno->alumno->clases as $clase):
-				 			$clases .= $clase->disciplina->descripcion. " ";
+				 			$clases .= $clase->disciplina->descripcion. " - ";
 				 		 endforeach;?>
 			<div class="curso">
 				<p class="texto-alumno"> Cursos: <?= h($clases); ?></p>
@@ -115,8 +114,5 @@
 
 	<!-- FIN DIV FACTURA -->
 </div>
-
-
-
 </body>
 </html>

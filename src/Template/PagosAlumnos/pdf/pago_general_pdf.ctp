@@ -1,4 +1,3 @@
-<?php foreach ($pagosAlumnos as $pagoalumno) : ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,21 +7,22 @@
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 </head>
 <body>
+<?php foreach ($pagosAlumnos as $pagoalumno) : ?>
 <!--div general  --> 
 <div class = "general">
 	<div class= "troquel">
-		<div class= "fila-troquel">
+		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-fecha"> <?= h($pagoalumno->created->format('d/m/y'))?> </p>
 		</div>
-		<div class= "fila-troquel">
-			<p class=" "><?= h("Código : ")?> </p>
-			<p class="texto-troquel-codigo"><?= h($pagoalumno->id)?> </p> 
+		<div class= "fila-troquel-chica">
+			<p class="texto-troquel-nomyape"><?= h("Código : ")?> </p>
+			<p class="texto-troquel-nomyape"><?= h($pagoalumno->id)?> </p> 
 		</div>
 		<div class= "fila-troquel">
-			<span class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></span>
-			<span class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </span>
+			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
+			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </p>
 		</div>
-		<div class= "fila-troquel">
+		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-fecha"><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?> </p>
 		</div>
 		<div class= "fila-troquel-ultima">
@@ -50,25 +50,23 @@
 			
 		</div>
 		
-		<div class="logo" style="margin: auto; text-align:center">
-			<?php  echo $this->Html->image('logoIba.png', ['height' => '200px', 'width' => '200px', 'fullBase' => true]); ?>
-			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 2rem; font-style:bold;">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
+		<div class="logo" style=" text-align:center">
+			<?php  echo $this->Html->image('logoIba.png', ['margin-top' => '5px', 'height' => '200px', 'width' => '200px', 'fullBase' => true]); ?>
+			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 1.5rem; font-style:bold;">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
 		</div>
 		
 		<div class="descripcion-alumno-curso">
 		
 			<div class="alumno">
-				<p class="texto-alumno"> Alumno:</p>
-				<p class="texto-alumno"> <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
+				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
 		    </div>
 				<?php
-				 		$clases = " ";
+				 		$clases = " - ";
 				 			foreach ($pagoalumno->alumno->clases as $clase):
-				 			$clases .= $clase->disciplina->descripcion. " ";
+				 			$clases .= $clase->disciplina->descripcion. " - ";
 				 		 endforeach;?>
 			<div class="curso">
-				<p class="texto-alumno"> Cursos:</p>
-				<p class="texto-alumno"> <?= h($clases); ?> </p>
+				<p class="texto-alumno"> Cursos: <?= h($clases); ?></p>
 			</div>
 			
 		
@@ -108,21 +106,14 @@
 	                                  'locale' => 'es_Ar'
 	                                  ]))?>  </p>
 			</div>  
-	           
 			</div>
-				
-		
 		</div>
-		
-		
 	</div>
-
 	<!-- FIN DIV FACTURA -->
 </div>
 
 
-
+<?php endforeach; ?>
 </body>
 </html>
 
-<?php endforeach; ?>

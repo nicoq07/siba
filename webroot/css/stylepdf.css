@@ -2,9 +2,10 @@
 {
 	border : 3px;
 	border-style: solid;
-	width: 1500px;
-	height: 1000px;
-    margin: 50px 0px 50px 0px;
+	width: 19 cm;
+	height: 23.65cm;
+    margin-bottom: 0.5cm;
+    padding: 0;
 	 
 }
 .troquel
@@ -14,23 +15,32 @@
 	border : 3px;
 	border-right-style: dotted;
 	width: 15%;
-	height: 997px;
+	height: 23.45cm;
 }
 
+.fila-troquel-chica
+{
+	display: table; 
+	border : 0.5px;
+	border-bottom-style: solid;
+	width: 100%;
+	height: 4cm;
+}
 .fila-troquel
 {
 	display: table; 
 	border : 0.5px;
 	border-bottom-style: solid;
 	width: 100%;
-	height: 20%;
+	height: 6.13cm;
 }
+
 
 .fila-troquel-ultima
 {
 	display: table; 
 	width: 100%;
-	height: 102px;
+	height: 4.60cm;
 }
 .texto-troquel-fecha
 {
@@ -48,8 +58,10 @@
 
 .texto-troquel-nomyape
 {
+	margin : 0;
+	padding: 0;
 	text-align:center; 
-	font-size: 2rem;	
+	font-size: 180%;	
 }
 
 
@@ -57,9 +69,9 @@
 {
 	
 	float:left;
-	display:inline-table;
 	width: 84.8%;
-	height: 273px;
+	height: 23.45cm;
+	border : 0.1cm;
 	 border-left-style: solid;
 }
 	
@@ -97,7 +109,7 @@
 	right: 0px;
     top: 0px;
 	float: left;
-	margin: 0;
+	text-align:center;
 	border :1px;
 	border-bottom-style: solid;
 	border-left-style: solid;
@@ -183,7 +195,7 @@
 	float: left;
 	margin: 0;
 	width: 85%;
-	height: 582px;
+	height: 12.9cm;
 	border :0px;
 	border-bottom-style: solid;
 }
@@ -198,6 +210,7 @@
 	border-bottom-style: solid;
 	border-left-style: none;
 	border-right-style: none;
+	
 }
 
 .texto-concepto
@@ -218,7 +231,7 @@
 	float: left;
 	margin: 0;
 	width: 14.9%;
-	height: 582px;
+	height: 12.9cm;
 	position: relative;
 }
 
@@ -247,7 +260,7 @@
 {
 	margin-left: 3px;
 	text-align:left; 
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 /*     style para listado de cursos en profesores   */
