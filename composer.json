@@ -14,7 +14,8 @@
         "fzaninotto/faker": "^1.6",
         "phpoffice/phpexcel": "^1.8",
         "friendsofcake/CakePdf": "^3.2",
-        "cakephp/localized": "^3.3"
+        "cakephp/localized": "^3.3",
+        "dereuromark/cakephp-ajax": "^1.1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
