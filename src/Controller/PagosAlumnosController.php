@@ -381,14 +381,14 @@ class PagosAlumnosController extends AppController
     	->select(['alumno' =>'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre)','fecha' =>'PagosAlumnos.fecha_pagado' ])
     	->matching('Alumnos')
     	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => true,"PagosAlumnos.fecha_pagado >= cast('$year-$mes-01' as datetime)",
-    			"PagosAlumnos.fecha_pagado <= cast('$year-$mes-10 23:59:59' as datetime)"])
+    			"PagosAlumnos.fecha_pagado <= cast('$year-$mes-10 23:59:59' as datetime)"])->orderAsc('Alumnos.apellido')
     	;
     	$pagosDelOnceAFin = $this->PagosAlumnos->find()
     	->select(['alumno' => 'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre)','fecha' =>'PagosAlumnos.fecha_pagado' ])
     	->matching('Alumnos')
     	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => true,"PagosAlumnos.fecha_pagado >= cast('$year-$mes-11' as datetime)",
     			"PagosAlumnos.fecha_pagado <= LAST_DAY(cast('$year-$mes-01 23:59:59' as datetime))",
-    	])
+    	])->orderAsc('Alumnos.apellido')
     	;
     	
     	$qcantPagosGenerados   = $this->PagosAlumnos->find()
@@ -416,7 +416,7 @@ class PagosAlumnosController extends AppController
     	->select(['alumno' => 'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre) ', 'montoadeudado' => "PagosAlumnos.monto" ])
     	->matching('Alumnos')
     	->where(['PagosAlumnos.mes' => $mes, 'PagosAlumnos.pagado' => false])
-    	;
+    	->orderAsc('Alumnos.apellido');
     	
     	
     	$nombreMes = __(date('F'),strtotime('2017-'.$mes.'-01'));
