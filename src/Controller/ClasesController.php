@@ -71,6 +71,10 @@ class ClasesController extends AppController
         $clase = $this->Clases->newEntity();
         if ($this->request->is('post')) {
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
+            if (!empty($this->request->getData("alumnos")['_ids']))
+            {
+            	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);
+            }
             if ($this->Clases->save($clase)) {
             	if (!empty($this->request->getData("alumnos")['_ids']))
             	{
@@ -79,11 +83,11 @@ class ClasesController extends AppController
             				$this->Flash->error(__('Problema creando los seguimientos.'));
             			}
             	}
-                $this->Flash->success(__('The clase has been saved.'));
+                $this->Flash->success(__('Clase guardada!.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The clase could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error creando la clase, por favor reintente!.'));
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
@@ -113,7 +117,10 @@ class ClasesController extends AppController
             {
             	$cambioDia = true;
             }
-            
+            if (!empty($this->request->getData("alumnos")['_ids']))
+            {
+            	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);
+            }
             if ($this->Clases->save($clase))
             {
             	$r = 0;

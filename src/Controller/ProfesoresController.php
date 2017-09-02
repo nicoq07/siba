@@ -23,7 +23,6 @@ class ProfesoresController extends AppController
 				return true;
 			}
 		}
-		
 		return parent::isAuthorized($user);
 		
 		return true;

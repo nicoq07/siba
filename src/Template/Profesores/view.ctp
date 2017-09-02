@@ -49,6 +49,7 @@
             <tr>
             	 <th scope="col"><?= __('Disciplina') ?></th>
                 <th scope="col"><?= __('Horario') ?></th>
+                <th width="10%" scope="col"><?= __('Cant. A') ?></th>
                 <th scope="col"><?= __('Active') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -56,7 +57,7 @@
             <tr>
              <td><?= h($clases->disciplina->descripcion) ?></td>
                 <td><?= h($clases->horario->presentacion) ?></td>
-               
+                <td><?= h($clases->alumno_count) ?></td>
                 <td><?= $clases->active ? h("Sí") : h("No") ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Clases', 'action' => 'view', $clases->id],['class' => 'btn-sm btn-info']) ?>
