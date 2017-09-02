@@ -20,9 +20,7 @@ class ClasesController extends AppController
 		{
 			return false;
 		}
-		
 		return parent::isAuthorized($user);
-		
 		return true;
 	}
     /**
@@ -34,6 +32,7 @@ class ClasesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
+        	'order' => ['Horarios.nombre_dia','Horarios.hora']
         ];
         $clases = $this->paginate($this->Clases);
 
@@ -90,7 +89,7 @@ class ClasesController extends AppController
             $this->Flash->error(__('Error creando la clase, por favor reintente!.'));
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
-        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
+        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia','Horarios.hora');
         $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
         $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true])->orderAsc('apellido');
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
