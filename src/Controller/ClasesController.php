@@ -69,7 +69,10 @@ class ClasesController extends AppController
     {
         $clase = $this->Clases->newEntity();
         if ($this->request->is('post')) {
+        	debug($this->request->getData());
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
+            debug($clase);
+            exit;
             if (!empty($this->request->getData("alumnos")['_ids']))
             {
             	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);

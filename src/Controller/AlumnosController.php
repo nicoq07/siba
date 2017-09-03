@@ -146,8 +146,17 @@ class AlumnosController extends AppController
         $alumno = $this->Alumnos->newEntity();
         if ($this->request->is('post')) 
         {
+        	if (!empty($this->request->getData("clases")))
+        	{
+        		$i=0;
+        		foreach ($this->request->getData("clases") as $c)
+        		{
+        			$ids['_ids'][$i]=  $c;
+        			$i++;
+        		}
+        		$this->request  = $this->request->withData('clases',$ids);
+        	}
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
-            debug($alumno); exit;
             if ($this->request->getData()['foto']['error'] != 4)
             {
            		if ($this->request->getData()['foto']['error'] == 0)
@@ -178,7 +187,7 @@ class AlumnosController extends AppController
 	            
         }
         $profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
-        $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
+        //$clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
         $this->set(compact('alumno', 'clases','profesores'));
     }
 
@@ -195,8 +204,24 @@ class AlumnosController extends AppController
             'contain' => ['Clases']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+        	//debug($this->request->getData()); exit;
+        	if (!empty($this->request->getData("clasesnuevas")[0]) )
+        	{
+        		$i=0;
+        		foreach ($this->request->getData("clasesnuevas") as $c)
+        		{
+        			$ids['_ids'][$i]=  $c;
+        			$i++;
+        		}
+        		foreach ($this->request->getData("clases") as $c)
+        		{
+        			$ids['_ids'][$i]=  $c;
+        			$i++;
+        		}
+        		$this->request  = $this->request->withData('clases',$ids);
+        	}
+        	
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
-        	//debug($alumno); exit;
         	if(!$alumno->active)
         	{
         		$alumno->desactivarme();
@@ -234,8 +259,9 @@ class AlumnosController extends AppController
             }
             $this->Flash->error(__('The alumno could not be saved. Please, try again.'));
         }
-       // $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
-        $this->set(compact('alumno'));
+       $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
+       $profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
+        $this->set(compact('alumno','clases','profesores'));
     }
 
     /**
