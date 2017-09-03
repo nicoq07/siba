@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Http\Response;
 
 /**
  * Alumnos Controller
@@ -176,9 +177,9 @@ class AlumnosController extends AppController
             	}
 	            
         }
+        $profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
         $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
-        $this->set(compact('alumno', 'clases'));
-        $this->set('_serialize', ['alumno']);
+        $this->set(compact('alumno', 'clases','profesores'));
     }
 
     /**
@@ -233,8 +234,8 @@ class AlumnosController extends AppController
             }
             $this->Flash->error(__('The alumno could not be saved. Please, try again.'));
         }
-        $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
-        $this->set(compact('alumno', 'clases'));
+       // $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
+        $this->set(compact('alumno'));
     }
 
     /**
@@ -525,4 +526,62 @@ class AlumnosController extends AppController
 		} //fin foreach de IDSclases
 		return true;
 	}
+	
+	/*
+	 * prueba de ajax
+	 */
+	public function getDisciplinas() {
+		$this->autoRender = false; // We don't render a view in this example
+		$profesor_id = $this->request->getQuery('profesor_id');
+		$discs = TableRegistry::get('Disciplinas')->find('all')
+	//	->select(['Disciplinas.id' => 'id','Disciplinas.descripcion' => 'desc' ])
+		->distinct('Disciplinas.descripcion')
+		->matching('Clases')
+		->where(['Clases.profesor_id' => $profesor_id])
+		->order('Disciplinas.descripcion')
+		;
+		$i = 0;
+		foreach ($discs as $d){
+			$i++;
+			
+			if($i != $discs->count())
+			{
+				echo $d->id.'-'.$d->descripcion.".";
+			}
+			else {
+				echo $d->id.'-'.$d->descripcion;
+			}
+		}
+		//print $array;
+		exit;
+	}
+	public function getDiaHorario() {
+		$this->autoRender = false; // We don't render a view in this example
+		$disciplina_id = $this->request->getQuery('idDisciplina');
+		$profesor_id= $this->request->getQuery('profesor_id');
+		$clases = TableRegistry::get('Clases')->find('all')
+		//	->select(['Disciplinas.id' => 'id','Disciplinas.descripcion' => 'desc' ])
+		->contain(['Disciplinas','Horarios'])
+		->where(['Clases.profesor_id' => $profesor_id, 'Clases.disciplina_id' => $disciplina_id])
+		->order('Horarios.num_dia','Horarios.hora')
+		;
+		$i = 0;
+		foreach ($clases as $c){
+			$i++;
+			$dia = __($c->horario->nombre_dia);
+			if($i != $clases->count())
+			{
+				
+				echo  $c->id."-".$dia.' '.$c->horario->hora->format('H:i').".";
+			}
+			else {
+				echo  $c->id."-".$dia.' '.$c->horario->hora->format('H:i');
+			}
+
+		}
+		
+		//print $array;
+		exit;
+	}
+	
 }

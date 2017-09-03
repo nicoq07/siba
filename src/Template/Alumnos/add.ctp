@@ -2,7 +2,95 @@
 .container-clases { border:2px solid #ccc; width:100%; height: 100px; overflow-y: scroll; }
 
 </style>
+<script type="text/javascript">
+//en busca los dias y horarios, pero el id es de la clase
+function getDiaHorario()
+{
+	
+	var idDisciplina = $( "#disciplinas" ).val();
+	var profesor_id = $( "#profesores" ).val();
+	 $.ajax({
+	        url: "getDiaHorario",
+	        type: "get",
+	        data: {profesor_id:profesor_id,idDisciplina:idDisciplina },
+	        success: function(data) {
 
+				
+	        	var array = data.split('.');
+	        	var sel = $('#clases');
+	        	sel.empty();
+// 	        	sel.on('change', function (data) {
+// 						mifuncion();
+// 	            })
+// 	            sel.attr('id', 'clases._ids');
+	           	
+ 	        	sel.append($("<option>").attr('value',null).text('Seleccione horario'));
+	         	$(array).each(function() {
+	        	
+	        		d = this.split('-');
+	            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
+	           	})
+// 		         	div = document.createElement('div');
+// 		        	$(div).addClass('input select')
+// 		     	    .html(sel);
+		        	
+// 		         	$('#shorario').append(div)
+	        },
+	        error: function(){
+				alert("Error");
+	        },
+	        complete: function() {
+	        }
+	    });
+}
+
+function buscarDisciplinas()
+{
+	
+	var profesor_id = $( "#profesores" ).val();
+    $.ajax({
+        url: "getDisciplinas",
+        type: "get",
+        data: {profesor_id:profesor_id},
+        success: function(data) {
+
+            
+        	//$("#disciplinas").remove();
+        	var array = data.split('.');
+        //	var sel = $('<select>');
+      		var sel = $('#disciplinas');
+      		sel.empty();
+//         	sel.on('change', function (data) {
+//         		getDiaHorario();
+//             })
+//             sel.attr('id', 'disciplinas');
+//             ;
+        	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
+         	$(array).each(function() {
+        	
+        		d = this.split('-');
+            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
+           	})
+           		
+// 	         	div = document.createElement('div');
+// 	        	$(div).addClass('input select')
+// 	     	    .html(sel);
+	        	
+// 	         	$('#sdisciplina').append(div)
+	         	
+        },
+        error: function(){
+			alert("Error buscando las disciplinas");
+        },
+        complete: function() {
+           // alert('Disciplinas disponibles');
+        }
+    });
+}
+<!--
+
+//-->
+</script>
 <?= $this->assign('title', 'Nuevo alumno');?>
 <div class="col-log-10">
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
@@ -117,11 +205,29 @@
 			 ?>
 	         </div>  
 	         <div class="col-lg-10"> 
-	         <div class="container-clases">
-	        <?php  echo $this->Form->select('clases._ids', $clases, [
-	         		'multiple' => 'checkbox'
-	         ]); ?>
-	         </div>
+	         	<div id = 'sprofesor' class= "col-lg-4">
+	         	<?php  //echo $this->Form->select('clases._ids', $clases, [
+		         		//'multiple' => 'checkbox'
+		        // ]); 
+		       	 echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Clases','empty' => 'Seleccione profesor','onchange' => 'buscarDisciplinas()']);
+		        ?>
+	         	</div>
+	         	<div id = 'sdisciplina' class= "col-lg-3">
+	         	   	<?php  
+	         	   	echo $this->Form->label('disciplinas',['label' => 'Disciplinas']);
+	         	   	echo $this->Form->select('disciplinas',['empty' => '-'],['id' => 'disciplinas','onchange' => 'getDiaHorario();']);
+	         	   	?>
+	         	</div>
+	         	<div id = 'shorario' class= "col-lg-3">
+	         			<?php  
+	         		//	echo $this->Form->label('clases._ids',['label' => 'Fecha y hora']);
+	         			//echo $this->Form->input('clases',['empty' => '-'],['id' => 'clases','type' => 'select']);
+		        ?>
+		         <select id ='clases' name="clases._ids">
+					  <option value="null">-</option>
+					</select> 
+	         	</div>
+		        
 	         </div>  
 	    	 <div class="col-lg-10"> 
 	         <?php
