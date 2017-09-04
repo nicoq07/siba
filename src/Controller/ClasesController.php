@@ -69,10 +69,10 @@ class ClasesController extends AppController
     {
         $clase = $this->Clases->newEntity();
         if ($this->request->is('post')) {
-        	debug($this->request->getData());
+        	//debug($this->request->getData());
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
-            debug($clase);
-            exit;
+            //debug($clase);
+          
             if (!empty($this->request->getData("alumnos")['_ids']))
             {
             	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);
@@ -93,7 +93,7 @@ class ClasesController extends AppController
         }
         $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
         $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia','Horarios.hora');
-        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
+        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->orderAsc('descripcion');
         $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true])->orderAsc('apellido');
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
