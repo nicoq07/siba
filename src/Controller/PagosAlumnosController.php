@@ -93,6 +93,7 @@ class PagosAlumnosController extends AppController
     	$this->paginate = [
     			'contain' => ['Alumnos', 'Users','PagosConceptos'],
     			'conditions' => [$this->conditions],
+				'order' => ['Alumnos.apellido'],
     			'limit' => 25
     	];
     	
