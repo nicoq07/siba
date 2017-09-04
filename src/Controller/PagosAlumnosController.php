@@ -93,7 +93,8 @@ class PagosAlumnosController extends AppController
     	$this->paginate = [
     			'contain' => ['Alumnos', 'Users','PagosConceptos'],
     			'conditions' => [$this->conditions],
-				'order' => ['Alumnos.apellido'],
+				//'order' => ['Alumnos.apellido'],
+				'finder' => 'ordered',
     			'limit' => 25
     	];
     	
@@ -210,7 +211,7 @@ class PagosAlumnosController extends AppController
 	 	
 	    	//Guarda base y genera pdf de todos los alumnos
 	 	//return $this->redirect(['action' => 'pago_general_pdf', $pagosAlumnos,'_ext' => 'pdf']);
-	 	$idsAlumnos="-1";
+	 	$idsAlumnos=null;
 	 	if ($this->request->is(['patch', 'post', 'put'])) 
 	 	{
 	 		$mes = $this->request->getData('mes')['month'];
@@ -218,7 +219,13 @@ class PagosAlumnosController extends AppController
 	 		$noCobroAQuienPago = $this->request->getData('tienepago');
 	 		
 	 		$alumnosTable = TableRegistry::get('Alumnos');
-	 		$alumnos = $alumnosTable->find()->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false,'alumnos.futuro_alumno' => false]);
+	 		$alumnos = $alumnosTable->find()
+	 		
+	 		->where(['alumnos.active' => true , 'alumnos.programa_adolecencia' => false,'alumnos.futuro_alumno' => false,
+	 				'alumnos.monto_arancel >' => 0])
+	 		;
+	 		
+	 		
 	 		foreach ($alumnos as $alumno)
 	 		{
 	 			//si pago y no quieren que vuelva a generar un pago
@@ -263,16 +270,17 @@ class PagosAlumnosController extends AppController
     
 	public function pagoGeneralPdf($mes, $idsAlumnos)
 	{
-		if(empty($idsAlumnos) ||  ($idsAlumnos == -1))
+		if(empty($idsAlumnos) ||  ($idsAlumnos == null))
 		{
 			$this->Flash->error("Los pagos ya fueron generados");
 			return $this->redirect(['action' => 'index']);
 		}
 		$aux = explode('-', $idsAlumnos);
 		$pagosAlumnos = $this->PagosAlumnos->find()
+		->find('ordered')
 		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
 				,'PagosConceptos']) 
-				->where(['PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.alumno_id IN ' => $aux]);
+				->where(['PagosAlumnos.monto > ' => 0,'PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.alumno_id IN ' => $aux]);
 		$this->prepararPDFGeneral($mes, "A4", "landscape");
 		$this->set(compact('pagosAlumnos'));
 	}
