@@ -28,6 +28,3 @@
 </div>
 <?php }?>
 </div>
-<div class="col-lg-4 well">
-		<?php echo h("Módulo Notificaciones proximamente... ")?>
-</div>
