@@ -1,5 +1,5 @@
 <style>
-.container-clases { border:2px solid #ccc; width:100%; height: 100px; overflow-y: scroll; }
+.container-clases { border:2px solid #ccc; width:100%; height: 400px; overflow-y: scroll; }
 
 </style>
 <div class="col-lg-6 col-lg-offset-1">
