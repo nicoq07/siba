@@ -34,6 +34,9 @@ class ProfesoresController extends AppController
      */
     public function index()
     {
+    	$this->paginate = [
+    			'finder' => 'ordered'
+    	];
         $profesores = $this->paginate($this->Profesores);
 
         $this->set(compact('profesores'));

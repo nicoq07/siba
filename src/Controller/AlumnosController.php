@@ -77,7 +77,7 @@ class AlumnosController extends AppController
     	
      	$this->paginate = [
      			'conditions' => [$where1,$where2,$where3,$where4],
-     			'order' => ['Alumnos.apellido']
+     			'finder' => 'ordered',
      	];
      
         $alumnos = $this->paginate($this->Alumnos);
@@ -314,11 +314,12 @@ class AlumnosController extends AppController
     public function pIndex()
     {
     	$alumnos = $this->Alumnos->find('all')
-    	
+    	->find('ordered')
     	->matching('Clases', function ($q)  {
     		return $q->where(['ClasesAlumnos.active' => true, 'Clases.profesor_id' =>  $this->Auth->user('profesor_id')]);
     	})
     	->distinct(['Alumnos.id'])
+    	
     	->toArray()
     	;
     	

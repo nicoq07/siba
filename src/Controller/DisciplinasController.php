@@ -31,6 +31,10 @@ class DisciplinasController extends AppController
      */
     public function index()
     {
+    	$this->paginate = [
+    			'finder' => 'ordered',
+    	];
+    	
         $disciplinas = $this->paginate($this->Disciplinas);
 
         $this->set(compact('disciplinas'));

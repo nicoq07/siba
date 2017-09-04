@@ -32,7 +32,7 @@ class ClasesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
-        	'order' => ['Horarios.nombre_dia','Horarios.hora']
+        	'order' => ['Horarios.num_dia','Horarios.hora']
         ];
         $clases = $this->paginate($this->Clases);
 
@@ -91,10 +91,10 @@ class ClasesController extends AppController
             }
             $this->Flash->error(__('Error creando la clase, por favor reintente!.'));
         }
-        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
-        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia','Horarios.hora');
-        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->orderAsc('descripcion');
-        $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true])->orderAsc('apellido');
+        $profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
+        $horarios = $this->Clases->Horarios->find('list')->find('ordered');
+        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
+        $alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
     }
@@ -156,10 +156,10 @@ class ClasesController extends AppController
             }
             $this->Flash->error(__('Error guardando la clase'));
         }
-        $profesores = $this->Clases->Profesores->find('list', ['limit' => 200])->where(['Profesores.active' => true]);
-        $horarios = $this->Clases->Horarios->find('list', ['limit' => 200])->orderAsc('Horarios.num_dia');
-        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200]);
-        $alumnos = $this->Clases->Alumnos->find('list')->where(['Alumnos.active' => true])->orderAsc('apellido');;
+        $profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
+        $horarios = $this->Clases->Horarios->find('list')->find('ordered');
+        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
+        $alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
         $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
         $this->set('_serialize', ['clase']);
     }

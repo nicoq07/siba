@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\Query;
 
 /**
  * Profesores Model
@@ -131,4 +132,15 @@ class ProfesoresTable extends Table
 
 //         return $rules;
 //     }
+
+    
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Profesores.apellido' => 'asc',
+    			'Profesores.nombre' => 'asc',
+    	]);
+    }
+    
 }

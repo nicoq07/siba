@@ -2,7 +2,6 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -66,5 +65,12 @@ class CalificacionesTable extends Table
             ->notEmpty('aprobado');
 
         return $validator;
+    }
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Calificaciones.valor' => 'asc',
+    	]);
     }
 }

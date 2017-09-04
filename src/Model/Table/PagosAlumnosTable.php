@@ -95,4 +95,13 @@ class PagosAlumnosTable extends Table
 
         return $rules;
     }
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Alumnos.apellido' => 'asc',
+    			'Alumnos.nombre' => 'asc'
+    	]);
+    }
+    
 }

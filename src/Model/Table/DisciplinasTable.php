@@ -68,4 +68,13 @@ class DisciplinasTable extends Table
 
         return $validator;
     }
+    
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Disciplinas.descripcion' => 'asc',
+    	]);
+    }
+    
 }

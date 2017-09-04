@@ -31,6 +31,10 @@ class CiclolectivoController extends AppController
      */
     public function index()
     {
+    	$this->paginate = [
+    			'finder' => 'ordered',
+    	];
+    	
         $ciclolectivo = $this->paginate($this->Ciclolectivo);
 
         $this->set(compact('ciclolectivo'));

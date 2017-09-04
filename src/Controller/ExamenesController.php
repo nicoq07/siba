@@ -32,7 +32,7 @@ class ExamenesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['ClasesAlumnos']
+            'contain' => ['ClasesAlumnos' => ['Alumnos']]
         ];
         $examenes = $this->paginate($this->Examenes);
 

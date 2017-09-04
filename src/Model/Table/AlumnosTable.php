@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -170,5 +171,14 @@ class AlumnosTable extends Table
 		$rules->add($rules->isUnique(['nro_documento']));
 
         return $rules;
+    }
+    
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Alumnos.apellido' => 'asc',
+    			'Alumnos.nombre'=> 'asc'
+    	]);
     }
 }

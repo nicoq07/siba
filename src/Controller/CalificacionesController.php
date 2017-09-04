@@ -31,8 +31,16 @@ class CalificacionesController extends AppController
      */
     public function index()
     {
+    	
+    	$this->paginate = [
+    			'finder' => 'ordered',
+    	];
+    	
         $calificaciones = $this->paginate($this->Calificaciones);
 
+        
+      
+        
         $this->set(compact('calificaciones'));
         $this->set('_serialize', ['calificaciones']);
     }
