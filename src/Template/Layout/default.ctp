@@ -26,7 +26,7 @@ $description = 'Iba Escuela ' .date("Y");
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader']) ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','varios','ajaxAlumnos']) ?>
 
@@ -35,6 +35,7 @@ $description = 'Iba Escuela ' .date("Y");
     <?= $this->fetch('script') ?>
 </head>
 <body>
+<!-- <div id="loader" class="loader loader-bar is-active"></div> -->
  <?php if (!empty($current_user)) : ?>
     <nav class="top-bar expanded" data-topbar role="navigation">
      
