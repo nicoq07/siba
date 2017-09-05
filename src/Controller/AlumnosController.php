@@ -214,12 +214,14 @@ class AlumnosController extends AppController
         			$ids['_ids'][$i]=  $c;
         			$i++;
         		}
-        		foreach ($this->request->getData("clases") as $c)
+        		if(!empty($this->request->getData("clases")))
         		{
-        			$ids['_ids'][$i]=  $c;
-        			$i++;
+        				foreach ($this->request->getData("clases") as $c)
+        				{
+        					$ids['_ids'][$i]=  $c;
+        					$i++;
+        				}
         		}
-        		
         	}
         	else 
         	{
