@@ -29,7 +29,8 @@
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Alta'), ['controller' =>'profesores', 'action' => 'add']) ?></li>
 	            <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'profesores', 'action' => 'index']) ?></li>
-	             <li><?= $this->Html->link(h('Planillas'), ['controller' =>'profesores', 'action' => 'planillas']) ?></li>
+	            <li><?= $this->Html->link(h('Planillas'), ['controller' =>'profesores', 'action' => 'planillas']) ?></li>
+	            <li><?= $this->Html->link(h('Clases libres'), ['controller' =>'profesores', 'action' => 'clasesLibres']) ?></li>
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION PROFESORES-->
