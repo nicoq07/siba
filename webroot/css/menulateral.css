@@ -44,7 +44,6 @@ body,html{
     }
 
     nav.sidebar .navbar-nav > li:first-child{
-      border-top: 1px #e5e5e5 solid;
      
     }
 
@@ -58,7 +57,6 @@ body,html{
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: #116D76; /*2*/
       border: 0;
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -74,7 +72,6 @@ body,html{
 
     nav.sidebar{
       background-color:#01545B; /*1*/
-      
       width: 200px;
       height: 100%;
       margin-left: -160px;
