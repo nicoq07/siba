@@ -58,7 +58,7 @@
 		<div class="descripcion-alumno-curso">
 		
 			<div class="alumno">
-				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
+				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->presentacion) ?></p>
 		    </div>
 				<?php
 				 		$clases = " - ";

@@ -16,8 +16,8 @@
 			<p class="texto-troquel-nomyape"><?= h($pagoalumno->id)?> </p> 
 		</div>
 		<div class= "fila-troquel">
-			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?></p>
-			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?> </p>
+			<p class="texto-troquel-nomyape"><?= h($pagoalumno->alumno->apellido) ;?></p>
+			<p class="texto-troquel-nomyape"> <?= h($pagoalumno->alumno->nombre) ;?> </p>
 		</div>
 		<div class= "fila-troquel-chica">
 			<p class="texto-troquel-fecha"><?php echo __(date('F', strtotime(date('Y')."-".$pagoalumno->mes."-01")))?> </p>
@@ -55,7 +55,7 @@
 		<div class="descripcion-alumno-curso">
 		
 			<div class="alumno">
-				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->nombre." ".$pagoalumno->alumno->apellido) ?></p>
+				<p class="texto-alumno"> Alumno:  <?= h($pagoalumno->alumno->presentacion) ?></p>
 		    </div>
 				<?php
 				 		$clases = " - ";
