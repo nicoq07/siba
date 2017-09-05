@@ -13,7 +13,7 @@
 	    
 	        <h4><?= __('Clases en esta hora') ?></h4>
 	        <?php if (!empty($horario->clases)): ?>
-	        <table class="table table-inversed">
+	        <table class="table">
 	            <tr>
 	                <th scope="col"><?= __('Detalle') ?></th>
 	            </tr>
@@ -31,7 +31,7 @@
 <div class="related">
 	<h3><?= h("Clases sin alumnos")?> </h3>
 	
-	        <table class="table table-inversed">
+	        <table class="table">
 	            <tr>
 	                <th scope="col"><?= __('Disciplina') ?></th>
 	                <th scope="col"><?= __('Dia y hora ') ?></th>

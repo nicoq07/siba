@@ -7,7 +7,7 @@
 	<div class="separador"></div>
 	
 	<div class="col-lg-2 view-div borde"><?= __('DNI') ?></div>
-	<div class="col-lg-4 borde"><?= h($profesore->nro_documento) ?></div>
+	<div class="col-lg-4 borde"><?= $profesore->nro_documento ? h($profesore->nro_documento) : h("-") ?></div>
 	<div class="col-lg-2 view-div borde"><?= __('Direccion') ?></div>
 	<div class="col-lg-4 borde"><?= $profesore->direccion ? h($profesore->direccion) : "-" ?> </div>
 	<div class="col-lg-2 borde view-div"><?= __('Código Postal') ?></div>

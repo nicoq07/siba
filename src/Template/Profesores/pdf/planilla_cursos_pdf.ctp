@@ -1,33 +1,11 @@
-<div class="div-fragmento-dia">
+<div style="width:100%" class="div-fragmento-dia">
 	<div class="div-dia-horario">
 		<h4 class="text-dia-horaio">
 			<?= h($profesor->presentacion ." - ". $mes . " de ". date('Y') )?>
 		 </h4>
 	</div>
 	
-	
-	<h3><?= h("Resumen de clases: ")?> </h3>
-	
-	        <table class="table table-inversed">
-	            <tr>
-	                <th scope="col"><?= __('Disciplina') ?></th>
-	                <th scope="col"><?= __('Día y hora ') ?></th>
-	                <th scope="col"><?= __('Cant. Alumnos') ?></th>
-	            </tr>
-	            <?php foreach ($clasesD as $c){?>
-	            <tr>
-	           		<td><?= h($c['disci']) ?></td>
-	           		<td><?= h(__($c['nom_dia']) ." " . date("H:i",strtotime($c['hora'] ))) ?></td>
-	           		<td><?= h($c['cantAlu'] ) ?></td>
-	            </tr>
-	            <?php }?>
-	        </table>
-	        
-	
-	
-	
-	
-	
+
 	
 	<?php $tamanio =  null;
 	$diaActual = null;
