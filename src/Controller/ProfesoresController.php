@@ -232,7 +232,7 @@ class ProfesoresController extends AppController
 					ca.id = s.clase_alumno_id AND
 					MONTH(s.fecha) = $mes
 					GROUP by ca.id, h.nombre_dia , h.hora
-					ORDER BY h.num_dia, h.hora";
+					ORDER BY h.num_dia, h.hora, alumno";
     	
 		
 		$connection = ConnectionManager::get('default');

@@ -1,4 +1,6 @@
-<div style="width:1200px" class="div-fragmento-dia">
+
+
+<div class="div-fragmento-dia">
 	<div class="div-dia-horario">
 		<h4 class="text-dia-horaio">
 			<?= h($profesor->presentacion ." - ". $mes . " de ". date('Y') )?>
@@ -32,7 +34,7 @@
 			$flag = false;
 			?>
 			
-			<div style="width:1200px" class="dia">
+			<div class="dia page-break">
 			
 			<div  style="margin-top: 10px"  class="div-fila">
 				<div class="div-texto-cabeza-alumno" style="">
