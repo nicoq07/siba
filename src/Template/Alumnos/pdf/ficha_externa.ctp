@@ -33,7 +33,7 @@
         <?php endif; ?>
     </div>
     <div class="div-footer">
-	    <div style="border: 1px dotted; float:left; text-align:center;  font-size:2rem; font-style: bold; width: 34.2cm" class="separador" ><span> <?=  h("José León Suarez 5246 CP(1439) - Tel: 4638-5062")?></span> 
+	    <div style="border: 1px dotted; float:left; text-align:center;  font-size:2rem; font-style: bold; width: 34.2cm" class="separador" ><span> <?=  h("José León Suárez 5246 CP(1439) - Tel: 4638-5062")?></span> 
 	    </div>
 		 <div style="border: 1px dotted;float:left; text-align:center;  font-size:1.5rem; font-style: bold; width: 10cm" class="separador"  >
 		 			<span>

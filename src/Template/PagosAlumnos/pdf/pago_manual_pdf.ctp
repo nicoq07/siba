@@ -42,7 +42,7 @@
 			<div class="descripcionIba">
 				<p class="texto-descripcionIba"> Instituto Buenos Aires</p>
 				<p class="texto-descripcionIba"> Dir. Profesor Hugo Castro</p>
-				<p class="texto-descripcionIba"> José León Suarez 5246 CP(1439) - Tel: 4638-5062</p>
+				<p class="texto-descripcionIba"> José León Suárez 5246 CP(1439) - Tel: 4638-5062</p>
 			</div>
 			
 		</div>
