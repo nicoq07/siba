@@ -276,6 +276,22 @@ class ProfesoresController extends AppController
     			]
     	]);
     }
+    
+    
+    
+    
+    public function clasesLibres()
+    {
+    	$qClases = "SELECT * FROM view_clases as vc
+		WHERE vc.cantAlu = 0
+    	ORDER BY dia, hora";
+    	$connection = ConnectionManager::get('default');
+    	$clasesD = $connection->execute($qClases);
+    	$array = $clasesD->fetchAll('assoc');
+    	$this->set('array',$array);
+    
+    }
+    
     function groupBy($array, $key) {
     	$return = array();
     	foreach($array as $val) {
