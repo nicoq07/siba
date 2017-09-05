@@ -6,10 +6,11 @@
 </div>
 <?php if ($current_user['rol_id'] == ADMINISTRADOR){?>
 <div class="col-lg-5 well">
+<div class="related">
 	<h2><?= h(__(date('l')))?> </h2>
 	<?php foreach ($horarios as $horario){?>
 	    <h3><?= h($horario->hora->format('H:i')) ?></h3>
-	    <div class="related">
+	    
 	        <h4><?= __('Clases en esta hora') ?></h4>
 	        <?php if (!empty($horario->clases)): ?>
 	        <table class="table table-inversed">
@@ -24,6 +25,28 @@
 	        </table>
 	        <?php endif; 
 		}	?>
+	    </div>
+</div>
+<div class="col-lg-5 well">
+<div class="related">
+	<h3><?= h("Clases sin alumnos")?> </h3>
+	
+	        <table class="table table-inversed">
+	            <tr>
+	                <th scope="col"><?= __('Disciplina') ?></th>
+	                <th scope="col"><?= __('Dia y hora ') ?></th>
+	                <th scope="col"><?= __('Profesor') ?></th>
+	            </tr>
+	     <?php foreach ($clasesD as $c){?>
+	            <tr>
+	           		<td><?= h($c['disci']) ?></td>
+	           		<td><?= h(__($c['nom_dia']) ." " . date("H:i",strtotime($c['hora'] ))) ?></td>
+	           		<td><?= h($c['profesor'] ) ?></td>
+	            </tr>
+	            <?php }?>
+	        </table>
+	        
+
 	    </div>
 </div>
 <?php }?>

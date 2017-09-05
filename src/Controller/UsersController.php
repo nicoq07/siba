@@ -2,6 +2,8 @@
 namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
+
 /**
  * Users Controller
  *
@@ -205,11 +207,14 @@ class UsersController extends AppController
     	->where(['nombre_dia' => date('l')])
     	->orderAsc("hora");
     	
+    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0";
+    	$connection = ConnectionManager::get('default');
+    	$clasesD = $connection->execute($qClases);
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
     	
-    	$this->set(['user','horarios'],[$user,$horarios]);
+    	$this->set(['user','horarios','clasesD'],[$user,$horarios,$clasesD]);
     }
     public function desactivar($id = null)
     {

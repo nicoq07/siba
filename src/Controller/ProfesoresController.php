@@ -238,8 +238,14 @@ class ProfesoresController extends AppController
 		$connection = ConnectionManager::get('default');
 		$rClases = $connection->execute($qClases);
 		
-		$arrayClases = $this->groupBy($rClases, 'nom_dia');
 		
+		$qClases = "SELECT * FROM view_clases as v WHERE v.profesor_id = $idProfesor
+		ORDER BY dia,hora";
+		$connection = ConnectionManager::get('default');
+		$clasesD = $connection->execute($qClases);
+		
+		
+		$arrayClases = $this->groupBy($rClases, 'nom_dia');
 		
     	$dias = $profesor->workingDays($mes);
     	if(empty($dias))
@@ -251,7 +257,7 @@ class ProfesoresController extends AppController
     	
 
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');
-    	$this->set(compact('profesor','dias','arrayClases','mes'));
+    	$this->set(compact('clasesD','profesor','dias','arrayClases','mes'));
     	
     }
     private function prepararListado($mes,$profesor,$tipoHoja,$orientacion)
