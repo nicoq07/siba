@@ -264,10 +264,12 @@ class ProfesoresController extends AppController
     {
     	$this->viewBuilder()->setOptions([
     			'pdfConfig' => [
-    					'margin-bottom' => 0,
-    					'margin-right' => 0,
-    					'margin-left' => 0,
-    					'margin-top' => 0,
+    					'margin' => [
+    							'bottom' => 15,
+    							'left' => 0,
+    							'right' => 3,
+    							'top' => 9
+    					],
     					'pageSize' => $tipoHoja,
     					'orientation' => $orientacion,
     					'filename' => "Listado de".$profesor.' del mes'.$mes.'.pdf'
