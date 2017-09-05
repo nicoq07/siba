@@ -73,10 +73,7 @@ class ClasesController extends AppController
             $clase = $this->Clases->patchEntity($clase, $this->request->getData());
             //debug($clase);
           
-            if (!empty($this->request->getData("alumnos")['_ids']))
-            {
-            	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);
-            }
+            $clase->set('alumno_count',count($clase->alumnos));
             if ($this->Clases->save($clase)) {
             	if (!empty($this->request->getData("alumnos")['_ids']))
             	{
@@ -119,10 +116,8 @@ class ClasesController extends AppController
             {
             	$cambioDia = true;
             }
-            if (!empty($this->request->getData("alumnos")['_ids']))
-            {
-            	$clase->alumno_count = count($this->request->getData("alumnos")['_ids']);
-            }
+            
+            $clase->set('alumno_count',count($clase->alumnos));
             if ($this->Clases->save($clase))
             {
             	$r = 0;
