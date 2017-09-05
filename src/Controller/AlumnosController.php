@@ -204,7 +204,8 @@ class AlumnosController extends AppController
             'contain' => ['Clases']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-        	//debug($this->request->getData()); exit;
+//         	debug($this->request->getData());
+        	$ids = null;
         	if (!empty($this->request->getData("clasesnuevas")[0]) )
         	{
         		$i=0;
@@ -218,9 +219,20 @@ class AlumnosController extends AppController
         			$ids['_ids'][$i]=  $c;
         			$i++;
         		}
-        		$this->request  = $this->request->withData('clases',$ids);
+        		
         	}
+        	else 
+        	{
+        		$i=0;
+        		foreach ($this->request->getData("clases") as $c)
+        		{
+        			$ids['_ids'][$i]=  $c;
+        			$i++;
+        		}
+        	}
+        	$this->request  = $this->request->withData('clases',$ids);
         	
+//         	debug($this->request->getData()); exit;
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
         	if(!$alumno->active)
         	{
