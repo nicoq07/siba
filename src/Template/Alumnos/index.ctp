@@ -3,7 +3,7 @@
     	<h3><?= __('Alumnos') ?></h3>
 	</div>
 	<?php echo $this->Form->create($alumnos, ['id' => 'frmIndex', 'type' => 'post']); ?>
-	<div class = "col-lg-10 separador">
+	<div class = "col-lg-12">
 		<div class ="col-lg-3">
 		 <?php
             echo $this->Form->label('Activos');

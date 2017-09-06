@@ -1,4 +1,4 @@
-<div class="col-lg-2 nopadding">
+<div class="col-lg-2">
 	<nav class="navbar navbar-default sidebar" role="navigation">
 	    <div class="container-fluid">
 	    <div class="navbar-header">

@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\Query;
 
 /**
  * SeguimientosClasesAlumnos Model
@@ -88,5 +89,15 @@ class SeguimientosClasesAlumnosTable extends Table
         $rules->add($rules->existsIn(['calificacion_id'], 'Calificaciones'));
 
         return $rules;
+    }
+    
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Horarios.num_dia' => 'asc',
+    			'Horarios.hora' => 'asc',
+    			
+    	]);
     }
 }

@@ -94,7 +94,8 @@ class SeguimientosClasesAlumnosController extends AppController
     	
         $this->paginate = [
         		'conditions' => $where,
-        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
+        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+        		'finder' => 'ordered'
         ];
         $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
         $this->set(compact('seguimientosClasesAlumnos','clases'));
@@ -301,7 +302,8 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$this->paginate = [
     			'conditions' => [$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
-    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones']
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'finder' => 'ordered',
     	];
     	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
     	
