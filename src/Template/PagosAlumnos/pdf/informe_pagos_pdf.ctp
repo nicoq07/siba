@@ -1,7 +1,7 @@
  <style>
  	.tamano-titulo
  	{
- 	font-size: 3rem;
+ 	font-size: 2rem;
  	}
  	
  	.tamano-encabezado
@@ -26,7 +26,7 @@
  .td-numeros
  {
   text-align:center;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: bold;
   }
  
@@ -36,7 +36,7 @@
    <div style="width: 80%;float:left;"><p class ="legend tamano-titulo"><?= h("Informe de Pagos : $nombreMes $year")?></p> </div>
    <div class="nopadding" >
   <div style="width: 20%; float:left;">
-	   <div style="margin: 0; text-align:center">
+	   <div style="margin: 0; top:0 text-align:center">
 				<?php  echo $this->Html->image('logoIba.png', ['height' => '100px', 'width' => '100px', 'fullBase' => true]); ?>
 		</div>
 	</div>
