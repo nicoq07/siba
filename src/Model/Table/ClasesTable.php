@@ -100,4 +100,12 @@ class ClasesTable extends Table
 
         return $rules;
     }
+	public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'Horarios.num_dia' => 'asc',
+    			'Horarios.hora'=> 'asc'
+    	]);
+    }
 }

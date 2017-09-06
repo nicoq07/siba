@@ -27,7 +27,7 @@
 		<div class="div-calificacion-examen">
 			<div class="div-puntos-examen" >
 				<p class="texto-puntos-examen"> <?php echo h("Calificación:")?></p>
-				<p class="texto-puntos-examen"> <?php echo h("Audioperceptiva:")?></p>
+				<p class="texto-puntos-examen"> <?php echo h("Lenguaje Musical:")?></p>
 				<p class="texto-puntos-examen"> <?php echo h("Práctica de Ensamble:")?></p>
 				<p class="texto-puntos-examen"> <?php echo h("Trabajos Prácticos:")?></p>
 			</div>
@@ -37,9 +37,7 @@
 				<p class="texto-puntos-examen"> <?php echo $examen->practica_ensamble? h($examen->practica_ensamble) : h("-")?></p>
 				<p class="texto-puntos-examen"> <?php echo $examen->trabajos_practicos?  h($examen->trabajos_practicos) : h("-")?></p>
 			</div>
-			<div class="div-puntos-examen" >
-			<p align="center" class="texto-negrita "> <?php echo h("Firma del Director: ")?></p>
-			</div>
+			
 		</div>
 		
 	</div>

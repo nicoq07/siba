@@ -32,7 +32,7 @@ class ClasesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
-        	'order' => ['Horarios.num_dia','Horarios.hora']
+        	'finder' => 'ordered'
         ];
         $clases = $this->paginate($this->Clases);
 

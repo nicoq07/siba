@@ -63,7 +63,10 @@
 				?>
 				<div  class="div-fila">
 					<div class= "div-alumno" style="width: 100%;float: left;">
-						<p class="p-nom-dia"> <?= "<strong>".h($hora)."</strong>"?>  </p>
+						<p class="p-nom-hora"> &nbsp; </p>
+					</div>
+					<div class= "div-alumno" style="width: 100%;float: left;">
+						<p class="p-nom-hora"> <?= "<strong>".h($hora)."</strong>"?>  </p>
 					</div>
 				</div >
 				<?php 
@@ -73,7 +76,10 @@
 				?>
 				<div  class="div-fila">
 					<div class= "div-alumno" style="width: 100%;float: left;">
-						<p class="p-nom-dia"> <?= "<strong>".h($hora)."</strong>"?>  </p>
+						<p class="p-nom-hora"> &nbsp;  </p>
+					</div>
+					<div class= "div-alumno" style="width: 100%;float: left;">
+						<p class="p-nom-hora"> <?= "<strong>".h($hora)."</strong>"?>  </p>
 					</div>
 				</div >
 				<?php 
@@ -82,7 +88,7 @@
 			<!-- DIV ALUMNO -->
 			<div  class="div-fila">
 				<div class= "div-alumno" style="width: 70%;float: left;">
-					<p class="p-alumno"> <?= h($clases[$j]['alumno']. ' ')."<strong>".h($clases[$j]['disci']) ."</strong>"?>  </p>
+					<p class="p-alumno"> <?="<strong>". h($clases[$j]['alumno']. ' ') ."</strong>". h($clases[$j]['disci']) ?>  </p>
 				</div>
 				<?php for($i = 1; $i <= $numDia; $i++ )
 				{?>

@@ -138,8 +138,9 @@ class ProfesoresTable extends Table
     {
     	return $query
     	->order([
+				'Profesores.nombre' => 'asc',
     			'Profesores.apellido' => 'asc',
-    			'Profesores.nombre' => 'asc',
+    			
     	]);
     }
     

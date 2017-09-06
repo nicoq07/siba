@@ -146,7 +146,8 @@ class AlumnosController extends AppController
         $alumno = $this->Alumnos->newEntity();
         if ($this->request->is('post')) 
         {
-        	if (!empty($this->request->getData("clases")))
+		$tieneClases = false;
+        	if (!empty($this->request->getData("clases")) &&  $this->request->getData("clases")[0] != '')
         	{
         		$i=0;
         		foreach ($this->request->getData("clases") as $c)
@@ -155,7 +156,9 @@ class AlumnosController extends AppController
         			$i++;
         		}
         		$this->request  = $this->request->withData('clases',$ids);
+				$tieneClases = true;
         	}
+		
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
             if ($this->request->getData()['foto']['error'] != 4)
             {
@@ -172,7 +175,7 @@ class AlumnosController extends AppController
              }
             	if ($this->Alumnos->save($alumno)) 
             	{
-            		if (!empty($this->request->getData("clases")['_ids']))
+            		if ($tieneClases)
             		{
             			if (!$this->insertarSeguimiento($alumno->id, $this->request->getData("clases")['_ids']))
             			{
