@@ -90,7 +90,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	{
     		$where = null;
     	}
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list');
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
     	
         $this->paginate = [
         		'conditions' => $where,
@@ -297,7 +297,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	{
     		$where = null;
     	}
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')
     	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
     	
     	$this->paginate = [
