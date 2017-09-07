@@ -12,7 +12,7 @@
 	    	</td>
 		</tr>
 	</table>
-	<table class="table tabla-cuerpo-ficha-interna">
+	<table width="100%" class="table">
 		<tr>
 			<td class="view-div   td-interna-general"  colspan="1">DNI</td><td class="td-interna-general" colspan="2"><?= h($alumno->nro_documento) ?></td>
 			<td class="view-div   td-interna-general" colspan="1"><?= h("Dirección") ?></td><td class="td-interna-general" colspan="2"><?= $alumno->direccion ? h($alumno->direccion) : "-" ?> </td>
@@ -49,11 +49,11 @@
 
 		</tr>
 		<tr>
-					<td class="view-div   td-interna-general" colspan="1"><?= h("Arancel") ?></td><td class="td-interna-general" colspan="2"><?=$alumno->monto_arancel?  h($alumno->monto_arancel) : "-" ?></td>
+			<td class="view-div   td-interna-general" colspan="1"><?= h("Arancel") ?></td><td class="td-interna-general" colspan="2"><?=$alumno->monto_arancel?  h($alumno->monto_arancel) : "-" ?></td>
 		</tr>
 		<tr>
-			<td class="view-div   td-interna-general" colspan="1"><?= h("Observaciones") ?></td>
-			<td class=" "  colspan="5"><p class="parrafo"><?= h($alumno->observacion); ?></p></td>
+			<td class="view-div   td-interna-general" colspan="2"><?= h("Observaciones") ?></td>
+			<td class=" "  colspan="4"><p class="parrafo"><?= h($alumno->observacion); ?></p></td>
 			
 		</tr>
 	</table>
