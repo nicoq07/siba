@@ -97,7 +97,14 @@ function buscarDisciplinas()
 	      
 	      <div class="col-lg-12 pull-right nopadding">
 		        <div class="col-lg-7">
-		        <?php 	echo $this->Html->image('alumnos'.DS.$alumno->referencia_foto, ['title' => $alumno->presentacion ,'alt' => $alumno->presentacion, 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); ?>
+		        
+		        <?php 
+		        $ds  = DS;
+		        if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		        {
+		        	$ds = DS_WINDOWS_IMG;
+		        }
+		        echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['title' => $alumno->presentacion ,'alt' => $alumno->presentacion, 'class' => 'pull-right' , 'height' => "250" , 'width' => "250"]); ?>
 		        </div>
 		         <div class="col-lg-6">
 		          <?=  $this->Form->label('foto',['label' => 'Cargar nueva foto']); ?>

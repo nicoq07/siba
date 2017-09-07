@@ -158,13 +158,13 @@ class AlumnosController extends AppController
         		$this->request  = $this->request->withData('clases',$ids);
 				$tieneClases = true;
         	}
-		
+        	
             $alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
             if ($this->request->getData()['foto']['error'] != 4)
             {
            		if ($this->request->getData()['foto']['error'] == 0)
 	            {
-	            	$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion);
+	            	$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->nro_documento);
 	            	$alumno->referencia_foto = $ref;
 	            }
 	            else
@@ -207,7 +207,7 @@ class AlumnosController extends AppController
             'contain' => ['Clases']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-//         	debug($this->request->getData());
+
         	$ids = null;
         	if (!empty($this->request->getData("clasesnuevas")[0]) )
         	{
@@ -226,7 +226,7 @@ class AlumnosController extends AppController
         				}
         		}
         	}
-        	else 
+        	elseif (!empty($this->request->getData("clases")) && $this->request->getData("clases"))
         	{
         		$i=0;
         		foreach ($this->request->getData("clases") as $c)
@@ -235,9 +235,11 @@ class AlumnosController extends AppController
         			$i++;
         		}
         	}
+        	else 
+        	{
+        			$ids['_ids'] = null;
+        	}
         	$this->request  = $this->request->withData('clases',$ids);
-        	
-//         	debug($this->request->getData()); exit;
         	$alumno = $this->Alumnos->patchEntity($alumno, $this->request->getData());
         	if(!$alumno->active)
         	{
@@ -252,7 +254,7 @@ class AlumnosController extends AppController
         		if ($this->request->getData()['foto']['error'] == 0)
         		{
         			
-        			$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->presentacion);
+        			$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->nro_documento);
         			$alumno->referencia_foto = $ref;
         		}
         		else
