@@ -218,7 +218,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	}
     	
     	$seg = $this->SeguimientosClasesAlumnos->newEntity();
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->where(['clases.active' => true]) ;
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')->where(['clases.active' => true]) ;
     	if (!empty($where))
     	{
 	    	$clasesAlu = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('all')->where($where)->select(['alumno_id']);
@@ -228,7 +228,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	    	}
 	    	
     	}
-    	$alumnos = TableRegistry::get('Alumnos')->find('list')
+    	$alumnos = TableRegistry::get('Alumnos')->find('list')->find('ordered')
     	->where(['alumnos.active' => true,'alumnos.futuro_alumno' => false,'alumnos.id IN' =>$arrayAlumnos])->toArray();
     	$this->set(compact('seg','clases', 'alumnos'));
     }
