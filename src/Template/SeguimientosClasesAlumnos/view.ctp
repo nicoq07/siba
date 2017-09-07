@@ -15,7 +15,7 @@
 	    </div>
 	    
 	    <div class="col-lg-8 separador-ligth">
-	        <h4><?= __('Observacion') ?></h4>
+	        <h4><?= __('Observación') ?></h4>
 	        <?= $this->Text->autoParagraph(h($seguimientosClasesAlumno->observacion)); ?>
 	    </div>
 	</div>
