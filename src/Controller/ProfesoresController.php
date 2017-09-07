@@ -266,8 +266,8 @@ class ProfesoresController extends AppController
     			'pdfConfig' => [
     					'margin' => [
     							'bottom' => 15,
-    							'left' => 0,
-    							'right' => 3,
+    							'left' => 20,
+    							'right' => 0,
     							'top' => 9
     					],
     					'pageSize' => $tipoHoja,
