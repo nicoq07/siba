@@ -78,8 +78,9 @@ class ExamenesController extends AppController
         $clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', [
         		'groupField' => 'clase.disciplina.descripcion'
         		])
-        		->contain(['Clases' => ['Disciplinas']]);
-
+        		->contain(['Alumnos', 'Clases' => ['Disciplinas']])
+        		->find('ordered');
+		
         		$calificaciones = TableRegistry::get('Calificaciones')->find('list')
         		->toArray()
         		;
