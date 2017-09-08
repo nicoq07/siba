@@ -51,7 +51,7 @@ $ds  = DS;
 		</tr>
 		<tr>
 			<td class="view-div   td-interna-general" colspan="2"><?= h("Observaciones") ?></td>
-			<td class=" "  colspan="4"><p class="parrafo"><?= h($alumno->observacion); ?></p></td>
+			<td class=" "  colspan="4"><p style="font-size: 1.5rem"><?= h($alumno->observacion); ?></p></td>
 			
 		</tr>
 	</table>
