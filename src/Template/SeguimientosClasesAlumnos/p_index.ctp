@@ -32,8 +32,8 @@
         <tbody>
             <?php foreach ($seguimientosClasesAlumnos as $seguimientosClasesAlumno): ?>
             <tr>
-                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->clase->presentacionCorta, ['controller' => 'Clases', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->clase->id])  ?></td>
-                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'view', $seguimientosClasesAlumno->clases_alumno->alumno->id])  ?></td>
+                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->clase->presentacionCorta, ['controller' => 'Clases', 'action' => 'p_view', $seguimientosClasesAlumno->clases_alumno->clase->id])  ?></td>
+                <td><?= $this->Html->link($seguimientosClasesAlumno->clases_alumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'p_view', $seguimientosClasesAlumno->clases_alumno->alumno->id])  ?></td>
                 <td><?= $seguimientosClasesAlumno->presente ? h('Sí') : h("No") ?></td>
                 <td><?= $seguimientosClasesAlumno->has('calificacione') ? $seguimientosClasesAlumno->calificacione->presentacion : '' ?></td>
                 <td><?= h($seguimientosClasesAlumno->fecha->format('d-m-Y')) ?></td>

@@ -7,7 +7,13 @@
 	    	</td>
 	    	<td class="td-interna-title"><span class="title"> <?= h($alumno->presentacion) ?></span> </td>
 			<td height = "180px" width="300px"><div>
-	    	 	<?php  echo $this->Html->image('alumnos'.DS.$alumno->referencia_foto, ['class' => 'pull-right' , 'height' => "180" , 'width' => "200",'fullBase' => true]); ?>
+	    	 	<?php
+$ds  = DS;
+			if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+			{
+				$ds = DS_WINDOWS_IMG;
+			}
+				echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['class' => 'pull-right' , 'height' => "180" , 'width' => "200",'fullBase' => true]); ?>
 	    		</div>
 	    	</td>
 		</tr>

@@ -164,7 +164,7 @@ class AlumnosController extends AppController
             {
            		if ($this->request->getData()['foto']['error'] == 0)
 	            {
-	            	$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->nro_documento);
+	            	$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->id);
 	            	$alumno->referencia_foto = $ref;
 	            }
 	            else
@@ -254,7 +254,7 @@ class AlumnosController extends AppController
         		if ($this->request->getData()['foto']['error'] == 0)
         		{
         			
-        			$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->nro_documento);
+        			$ref = $this->guardarImg($this->request->getData()['foto'], $alumno->id);
         			$alumno->referencia_foto = $ref;
         		}
         		else
@@ -372,7 +372,6 @@ class AlumnosController extends AppController
     	
     	$segTable= TableRegistry::get('SeguimientosClasesAlumnos');
     	$seguimientos = $segTable->find()
-    	->limit(10)
     	->orderDesc('fecha')
     	->where(['fecha <='=>  date('Y-m-d h:m',time())])
     	->matching('ClasesAlumnos', function ($q) use ($ids) {
@@ -380,6 +379,7 @@ class AlumnosController extends AppController
     	})
     	->toArray();
     	
+		
     	
     	$alumno = $this->Alumnos->get($id, [
     			'contain' => ['Clases' => [ 'conditions' => $where]  ]  ]);

@@ -43,24 +43,5 @@
         </table>
         <?php  }  else { echo h("NO TIENE CLASES ACTIVAS"); }?>
     </div>
-     <div class="related separador-ligth">
-        <h4><?= __('Seguimientos de Clases' ) ?></h4>
-        <?php if (!empty($seguimientos)){ ?>
-        <table class="table table-striped">
-            <tr>
-                <th width="55%" scope="col"><?= __('Observación') ?></th>
-                <th width="10%" scope="col"><?= __('Presente') ?></th>
-                 <th width="20%" scope="col"><?= __('Fecha') ?></th>
-            </tr>
-            <?php foreach ($seguimientos as $seguimiento): ?>
-            <tr>
-               
-                <td><?= h($seguimiento->observacion) ?></td>
-                <td><?= $seguimiento->presente ? h("Sí") : h("No") ?></td>
-                <td><?= __($seguimiento->fecha->format('l')) .' '. $seguimiento->fecha->format('d-m-Y') ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php  }  else { echo h("NO TIENE SEGUIMIENTOS ACTIVOS"); }?>
-    </div>
+    
 </div>
