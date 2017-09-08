@@ -374,8 +374,8 @@ class AlumnosController extends AppController
     	$seguimientos = $segTable->find()
     	->orderDesc('fecha')
     	->where(['fecha <='=>  date('Y-m-d h:m',time())])
-    	->matching('ClasesAlumnos', function ($q) use ($ids) {
-    		return $q->where(['ClasesAlumnos.clase_id IN' => $ids]);
+    	->matching('ClasesAlumnos', function ($q) use ($ids,$id) {
+    		return $q->where(['ClasesAlumnos.clase_id IN' => $ids, 'ClasesAlumnos.alumno_id' => $id]);
     	})
     	->toArray();
     	
