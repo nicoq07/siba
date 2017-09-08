@@ -18,7 +18,10 @@ class ClasesController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
 		{
-			return false;
+			if(in_array($this->request->action, ['pView']))
+			{
+				return true;
+			}
 		}
 		return parent::isAuthorized($user);
 		return true;
@@ -58,6 +61,19 @@ class ClasesController extends AppController
         ->where(['ClasesAlumnos.clase_id' => $id , 'ClasesAlumnos.active' => true]);
         $this->set(['clase','clasesAlumnos'], [$clase,$clasesAlumnos]);
         $this->set('_serialize', ['clase']);
+    }
+    
+    public function pView($id = null)
+    {
+    	$clase = $this->Clases->get($id, [
+    			'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos']
+    	]);
+    	
+    	$clasesAlumnosTable = TableRegistry::get('ClasesAlumnos');
+    	$clasesAlumnos = $clasesAlumnosTable->find('all')
+    	->where(['ClasesAlumnos.clase_id' => $id , 'ClasesAlumnos.active' => true]);
+    	$this->set(['clase','clasesAlumnos'], [$clase,$clasesAlumnos]);
+    	$this->set('_serialize', ['clase']);
     }
 
     /**

@@ -18,10 +18,11 @@
 	            <?php foreach ($horario->clases as $clases): ?>
 	            <tr>
 	            <?php if ($current_user['rol_id'] == ADMINISTRADOR){ ?>
-	           			<td><?= h($clases->presentacion) ?></td>
+	           			<td><?= $this->Html->link($clases->presentacion, [ 'controller' => 'Clases', 'action' => 'view', $clases->id])?></td>
+
 	           		<?php }?>
 	           		 <?php if($current_user['rol_id'] == PROFESOR){ ?>
-	           			<td><?= h($clases->presentacionDisciplina) ?></td>
+	           			<td><?= $this->Html->link($clases->presentacionDisciplina, [ 'controller' => 'Clases', 'action' => 'pView', $clases->id])?></td>
 	           		<?php }?>
 	            </tr>
 	            <?php endforeach; ?>
