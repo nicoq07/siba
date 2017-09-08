@@ -1,10 +1,8 @@
 <div class="container col-lg-10">
-
 <div class="col-lg-12 col-lg-offset-2">
 	<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
 	
 </div>
-
 <div class="col-lg-5 well">
 <div class="related">
 	<h2><?= h(__(date('l')))?> </h2>
@@ -19,7 +17,12 @@
 	            </tr>
 	            <?php foreach ($horario->clases as $clases): ?>
 	            <tr>
-	           		<td><?= h($clases->presentacion) ?></td>
+	            <?php if ($current_user['rol_id'] == ADMINISTRADOR){ ?>
+	           			<td><?= h($clases->presentacion) ?></td>
+	           		<?php }?>
+	           		 <?php if($current_user['rol_id'] == PROFESOR){ ?>
+	           			<td><?= h($clases->presentacionDisciplina) ?></td>
+	           		<?php }?>
 	            </tr>
 	            <?php endforeach; ?>
 	        </table>

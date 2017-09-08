@@ -214,10 +214,10 @@ class UsersController extends AppController
     		$whereClases = " AND v.profesor_id  = $id";
     	}
     	$horarios = TableRegistry::get('Horarios')->find('all')
+    	->contain('Clases')
     	->matching('Clases')
     	->where(['nombre_dia' => date('l'),$whereHorario])
     	->orderAsc("hora");
-    	
     	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 ";
     	$qClases .= $whereClases;
     	$connection = ConnectionManager::get('default');
@@ -226,7 +226,7 @@ class UsersController extends AppController
     			'contain' => ['Roles']
     	]);
     	
-    	$this->set(['user','horarios','clasesD'],[$user,$horarios,$clasesD]);
+    	$this->set(compact('user','horarios','clasesD'));
     }
     public function desactivar($id = null)
     {

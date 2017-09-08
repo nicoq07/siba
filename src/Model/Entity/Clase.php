@@ -65,6 +65,15 @@ class Clase extends Entity
     	return $cadena;
     }
     
+    public function _getPresentacionDisciplina()
+    {
+    	$disciplinas = TableRegistry::get('Disciplinas');
+    	$disciplina = $disciplinas->get($this->disciplina_id);
+    	$cadena = strtoupper($disciplina->descripcion);
+    	
+    	return $cadena;
+    }
+    
 //     public function existeSeguimiento($idAlumno)
 //     {
 //     	$Seguimientos = TableRegistry::get("SeguimientosClases");
