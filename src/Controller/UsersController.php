@@ -200,14 +200,26 @@ class UsersController extends AppController
     
     public function perfil()
     {
-    	
-    	$horarios = TableRegistry::get('Horarios')->find('all', [
-    			'contain' => ['Ciclolectivo', 'Clases']
-    	])
-    	->where(['nombre_dia' => date('l')])
+    	$whereHorario = null;
+    	$whereClases = null;
+
+    	if ($this->Auth->user('rol_id') == ADMINISTRADOR)
+    	{
+    		
+    	}
+    	elseif ($this->Auth->user('rol_id') == PROFESOR)
+    	{
+    		$id = $this->Auth->user('profesor_id');
+    		$whereHorario = ['Clases.profesor_id' => $id];
+    		$whereClases = " AND v.profesor_id  = $id";
+    	}
+    	$horarios = TableRegistry::get('Horarios')->find('all')
+    	->matching('Clases')
+    	->where(['nombre_dia' => date('l'),$whereHorario])
     	->orderAsc("hora");
     	
-    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0";
+    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 ";
+    	$qClases .= $whereClases;
     	$connection = ConnectionManager::get('default');
     	$clasesD = $connection->execute($qClases);
     	$user = $this->Users->get($this->Auth->user('id'), [

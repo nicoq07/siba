@@ -4,7 +4,7 @@
 	<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
 	
 </div>
-<?php if ($current_user['rol_id'] == ADMINISTRADOR){?>
+
 <div class="col-lg-5 well">
 <div class="related">
 	<h2><?= h(__(date('l')))?> </h2>
@@ -27,6 +27,7 @@
 		}	?>
 	    </div>
 </div>
+<?php if ($current_user['rol_id'] == ADMINISTRADOR){?>
 <div class="col-lg-5 well">
 <div class="related">
 	<h3><?= h("Clases sin alumnos")?> </h3>
