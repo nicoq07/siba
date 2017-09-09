@@ -10,6 +10,6 @@
             echo $this->Form->control('fecha', ['empty' => true]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Cargar', ['class' => 'btn-lg btn-success'])) ?>
     <?= $this->Form->end() ?>
 </div>

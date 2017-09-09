@@ -58,7 +58,7 @@
                 <td><?= h($seguimientosClasesAlumno->fecha->format('d-m-Y')) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $seguimientosClasesAlumno->id], ['class' => 'btn-sm btn-info']) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $seguimientosClasesAlumno->id], ['class' => 'btn-sm btn-warning']) ?>
+                    <?= $this->Html->link(__('Cargar'), ['action' => 'edit', $seguimientosClasesAlumno->id], ['class' => 'btn-sm btn-warning']) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $seguimientosClasesAlumno->id], ['class' => 'btn-sm btn-danger','confirm' => __('Are you sure you want to delete # {0}?', $seguimientosClasesAlumno->id)]) ?>
                 </td>
             </tr>
