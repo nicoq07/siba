@@ -348,12 +348,14 @@ class AlumnosController extends AppController
     
     public function pView($id = null)
     {
+    	$idProfesor = $this->Auth->user('profesor_id');
     	$clasesTable= TableRegistry::get('Clases');
     	$clases = $clasesTable->find()
     	->select('Clases.id')
     	->matching('Alumnos', function ($q) use ($id) {
     		return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
     	})
+    	->where(['Clases.profesor_id' => $idProfesor])
     	->toArray();
     	$ids = null;
     	(count($clases) > 0) ? $ids = array() : $ids = -1 ;

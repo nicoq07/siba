@@ -16,7 +16,7 @@ class ClasesController extends AppController
 	
 	public function isAuthorized($user)
 	{
-		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
+		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
 			if(in_array($this->request->action, ['pView']))
 			{

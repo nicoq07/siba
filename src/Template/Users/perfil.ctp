@@ -17,13 +17,8 @@
 	            </tr>
 	            <?php foreach ($horario->clases as $clases): ?>
 	            <tr>
-	            <?php if ($current_user['rol_id'] == ADMINISTRADOR){ ?>
 	           			<td><?= $this->Html->link($clases->presentacion, [ 'controller' => 'Clases', 'action' => 'view', $clases->id])?></td>
 
-	           		<?php }?>
-	           		 <?php if($current_user['rol_id'] == PROFESOR){ ?>
-	           			<td><?= $this->Html->link($clases->presentacionDisciplina, [ 'controller' => 'Clases', 'action' => 'pView', $clases->id])?></td>
-	           		<?php }?>
 	            </tr>
 	            <?php endforeach; ?>
 	        </table>
@@ -31,7 +26,6 @@
 		}	?>
 	    </div>
 </div>
-<?php if ($current_user['rol_id'] == ADMINISTRADOR){?>
 <div class="col-lg-5 well">
 <div class="related">
 	<h3><?= h("Clases sin alumnos")?> </h3>
@@ -54,5 +48,4 @@
 
 	    </div>
 </div>
-<?php }?>
 </div>

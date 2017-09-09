@@ -24,7 +24,7 @@ class UsersController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','perfil']))
+			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','pPerfil']))
 			{
 				return true;
 			}
@@ -163,7 +163,15 @@ class UsersController extends AppController
     		if($user)
     		{
     			$this->Auth->setUser($user);
-    			return $this->redirect($this->Auth->redirectUrl());
+    			if (	$this->Auth->user('rol_id') === PROFESOR)
+    			{
+    				return $this->redirect(['action' => 'pPerfil']);
+    			}
+    			else 
+    			{
+    				return $this->redirect($this->Auth->redirectUrl());
+    			}
+    			//
     		}
     		else
     		{
@@ -202,32 +210,44 @@ class UsersController extends AppController
     {
     	$whereHorario = null;
     	$whereClases = null;
-
-    	if ($this->Auth->user('rol_id') == ADMINISTRADOR)
-    	{
+    	
+    		$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 order by dia, hora";
+    		$qClases .= $whereClases;
+    		$connection = ConnectionManager::get('default');
+    		$clasesD = $connection->execute($qClases);
     		
-    	}
-    	elseif ($this->Auth->user('rol_id') == PROFESOR)
-    	{
-    		$id = $this->Auth->user('profesor_id');
-    		$whereHorario = ['Clases.profesor_id' => $id];
-    		$whereClases = " AND v.profesor_id  = $id";
-    	}
+    		$horarios = TableRegistry::get('Horarios')->find('all')
+    		->contain('Clases')
+    		->where(['nombre_dia' =>  date('l')])
+    		->orderAsc("hora");
+    		
+    		$user = $this->Users->get($this->Auth->user('id'), [
+    						'contain' => ['Roles']
+   			]);
+    		$this->set(compact('user','horarios','clasesD'));
+
+    	
+    }
+    
+    public  function pPerfil()
+    {
+    	
+    	$id = $this->Auth->user('profesor_id');
+    	
     	$horarios = TableRegistry::get('Horarios')->find('all')
-    	->contain('Clases')
-    	->matching('Clases')
-    	->where(['nombre_dia' => date('l'),$whereHorario])
-    	->orderAsc("hora");
-    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 ";
-    	$qClases .= $whereClases;
-    	$connection = ConnectionManager::get('default');
-    	$clasesD = $connection->execute($qClases);
+    	->matching('Clases'
+    			)
+    			->where(['nombre_dia' => date('l'), 'Clases.profesor_id' => $id])
+    	
+    	->orderAsc("hora")
+;    			
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
-    	
-    	$this->set(compact('user','horarios','clasesD'));
+    	$this->set(compact('user','horarios'));
     }
+    
+    
     public function desactivar($id = null)
     {
     	
