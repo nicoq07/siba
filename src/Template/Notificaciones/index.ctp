@@ -1,55 +1,74 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Notificacione[]|\Cake\Collection\CollectionInterface $notificaciones
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Notificacione'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="notificaciones index large-9 medium-8 columns content">
-    <h3><?= __('Notificaciones') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('emisor') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('receptor') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('leida') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('broadcast') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($notificaciones as $notificacione): ?>
-            <tr>
-                <td><?= $this->Number->format($notificacione->id) ?></td>
-                <td><?= $this->Number->format($notificacione->emisor) ?></td>
-                <td><?= $this->Number->format($notificacione->receptor) ?></td>
-                <td><?= h($notificacione->leida) ?></td>
-                <td><?= h($notificacione->broadcast) ?></td>
-                <td><?= h($notificacione->created) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $notificacione->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $notificacione->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $notificacione->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notificacione->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<script type="text/javascript">
+
+function marcarLeido(mensajeId)
+{
+	$.ajax({
+	url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Notificaciones','action'=>'marcarLeida'));?>",
+
+     type: "get",
+     data: {mensajeId:mensajeId },
+     success: function(data) {
+     	var button = $('#'+mensajeId);
+     	button.hide('fast');
+	 console.log(data);
+     },
+     error: function(){
+			alert("Error");
+     },
+     complete: function() {
+     }
+ });
+}
+
+
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 current-chat">
+            <div class="row chat-toolbar-row">
+                <div class="col-sm-12">
+
+                    <div class="btn-group chat-toolbar" role="group" aria-label="...">
+                       <?php if($current_user['rol_id'] == ADMINISTRADOR): ?>
+                        <?=  $this->Html->link(' Nuevo mensaje', ['controller' => 'Notificaciones', 'action' => 'add'],['class' => 'btn btn-default ticket-option fa fa-pencil ']) ?>
+                        <?php endif; ?>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row current-chat-area">
+
+                <div class="col-lg-12">
+                      <ul class="media-list">
+                          <?php foreach ($notificaciones as $mensaje) :  ?>
+                        <li class="media">
+
+                            <div class="media-body">
+                                <div class="media">
+                                    <div class="pull-left icono-mensaje">
+                                        <?= h($users[$mensaje->emisor]) ?>
+                                     <!--  </div> -->
+                                    </div>
+                                    <div style="height: 100%;" class="media-body">
+                                        <?= h($mensaje->descripcion) ?>
+                                        <br>
+                                        <small class="text-muted">  <?="  " . h($mensaje->created->format('h:m a d-m-Y '))  ?></small>
+                                                                            <?php if (!$mensaje->leida) { ?> 
+                                                                                <button title="Marcar como leída" id ="<?php echo $mensaje->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarLeido(<?php echo $mensaje->id ?>)"> </button>
+                                       <?php } ?>
+                                        <hr>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </li>
+                          <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+	</div>
+</div>
 </div>

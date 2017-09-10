@@ -37,6 +37,13 @@ class NotificacionesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->belongsTo('Users', [
+        		'foreignKey' => 'emisor',
+        ]);
+        
+        $this->belongsTo('Users', [
+        		'foreignKey' => 'receptor',
+        ]);
     }
 
     /**

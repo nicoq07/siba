@@ -26,7 +26,7 @@ $description = 'Iba Escuela ' .date("Y");
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader','chat']) ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','varios','ajaxAlumnos']) ?>
 
@@ -52,6 +52,7 @@ $description = 'Iba Escuela ' .date("Y");
 					<li>
 						<a style="color: white; background-color:#01545B;" href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
 	                        <ul class="dropdown-menu forAnimate">
+	                        	<li><?= $this->Html->link(h('Mensajes'), ['controller' =>'Notificaciones', 'action' => 'chat']) ?></li>							
 								<li><?= $this->Html->link(h('Cambiar password'), ['controller' =>'Users', 'action' => 'cambiarPassword',$current_user['id']]) ?></li>							
 	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
 							</ul>
