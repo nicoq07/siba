@@ -11,3 +11,5 @@ config/bootstrap.php
 /tmp/
 
 config/bootstrap.php
+
+wkhtmltopdf
