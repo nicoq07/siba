@@ -13,3 +13,7 @@ config/bootstrap.php
 config/bootstrap.php
 
 wkhtmltopdf
+
+*.xml
+
+.idea/siba.iml
