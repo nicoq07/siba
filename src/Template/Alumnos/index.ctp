@@ -2,7 +2,18 @@
 	<div class = "col-lg-12 container">
     	<h3><?= __('Alumnos') ?></h3>
 	</div>
-	<?php echo $this->Form->create($alumnos, ['id' => 'frmIndex', 'type' => 'post']); ?>
+	<?php 
+	if($this->request->session()->read('search_key') != "")
+	{
+		$search_key = $this->request->session()->read('search_key');
+	}
+	else
+	{
+		$search_key = "";
+	}
+	
+	?>
+	<?php echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
 	<div class = "col-lg-12 container">
 		<div class ="col-lg-3">
 		 <?php
@@ -26,7 +37,7 @@
 		<div class ="col-lg-3">
 		 <?php
 			echo $this->Form->label('Búsqueda :');
-            echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Nombre, Apellido ó DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
+			echo $this->Form->control('palabra_clave', ['value' => $search_key,  'label' => false,'placeholder' => 'Nombre, Apellido ó DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
 	 </div>
