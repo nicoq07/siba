@@ -1,5 +1,6 @@
-
-
+	<div class="pull-left">
+		<span><?php echo "Generada: ". date('d-m-Y') ?></span>
+	</div>
 <div class="div-fragmento-dia">
 	<div class="div-dia-horario">
 		<h4 class="text-dia-horaio">
@@ -109,4 +110,5 @@
 	</div> <?php
 	}
 	?> <!-- WHILE ITEM-->
+	
 </div>
