@@ -14,6 +14,7 @@
 	       <li class="dropdown">
 	          
 	        
+	           <?= $this->Html->link(h('Clases del día'), ['controller' =>'Users', 'action' => 'pPerfil'],['class' => 'dropdown-toggle','escape' => true]) ?>
 	             <!--          SECCION SEGUIMIENTOS-->
 	        </li>
 	        <li class="dropdown">

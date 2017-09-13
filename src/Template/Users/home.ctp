@@ -1,7 +1,6 @@
 <div class="container col-lg-10">
 	<div class="col-lg-8 col-lg-offset-2">
 		<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
-		
 	</div>
 	&nbsp;
 	<div class="well col-lg-4 col-lg-offset-3">
@@ -16,6 +15,4 @@
 		</div>
 
 	</div>
-
-
 </div>
