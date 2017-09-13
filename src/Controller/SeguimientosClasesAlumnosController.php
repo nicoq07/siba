@@ -18,7 +18,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['pIndex','edit','view']))
+			if(in_array($this->request->action, ['pIndex','edit','view','pSearch']))
 			{
 				return true;
 			}
@@ -322,7 +322,52 @@ class SeguimientosClasesAlumnosController extends AppController
     	$this->set(compact('seguimientosClasesAlumnos','clases'));
     }
     
-    
+    public function pSearch()
+    {
+    	$where1 = $where2 = null;
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			
+    			$where1 = null;
+    			$where2 = null;
+    			if (!(empty($this->request->getData()['clases'])))
+    			{
+    				$clase = $this->request->getData()['clases'];
+    				$where1= ["clases.id = $clase"];
+    			}
+    			if ($this->request->getData()['nomodificados'])
+    			{
+    				$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+    			}
+    			
+    			$this->request->session()->write('searchCond', [$where1,$where2]);
+    		}
+    	}
+    	
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
+    	}
+    	
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
+    	
+    	$this->paginate = [
+    			'conditions' => [$conditions, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'finder' => 'ordered',
+    	];
+    	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
+    	
+    	
+    	
+    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	
+    	$this->render('/SeguimientosClasesAlumnos/p_index');
+    }
     
     private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
     {
