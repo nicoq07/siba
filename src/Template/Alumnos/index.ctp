@@ -12,8 +12,7 @@
 		$search_key = "";
 	}
 	
-	?>
-	<?php echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
+	 echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
 	<div class = "col-lg-12 container">
 		<div class ="col-lg-3">
 		 <?php

@@ -44,22 +44,9 @@ class AlumnosController extends AppController
      */
     public function index()
     {
-    	$where1 = null;
-    	$where2 = null;
-    	$where3 = null;
-    	$where4 = null;
-    	
-	    if ($this->request->is('post'))
-	    {
-	    	
-	    }
-	    else 
-	    {
-	    	$where1 =['alumnos.active' => true];
-	    }
     	
      	$this->paginate = [
-     			'conditions' => [$where1,$where2,$where3,$where4],
+     			'conditions' => ['alumnos.active' => true],
      			'finder' => 'ordered',
      	];
      
@@ -70,6 +57,7 @@ class AlumnosController extends AppController
 
     public function search()
     {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
@@ -105,7 +93,8 @@ class AlumnosController extends AppController
     	
     	$this->paginate = [
     			'conditions' => $conditions,
-    			'limit' => 10
+    			'limit' => 20,
+    			'finder' => 'ordered',
     	];
     	
     	$alumnos = $this->paginate($this->Alumnos);

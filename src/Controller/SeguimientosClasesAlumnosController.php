@@ -36,33 +36,32 @@ class SeguimientosClasesAlumnosController extends AppController
      */
     public function index()
     {
-    	$number = null;
-    	$where = null;
-    	$session = $this->request->session();
-    
+    	
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	
+        $this->paginate = [
+        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+        		'finder' => 'ordered'
+        ];
+        $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
+        $this->set(compact('seguimientosClasesAlumnos','clases'));
+    }
+    public function search()
+    {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
     	if ($this->request->is('post'))
     	{
-    		$session->delete('where');
-    		$where1 = null;
-    		$where2 = null;
-    		$where3 = null;
-    		if (!(empty($this->request->getData()['palabra_clave'])))
-    		{ 
-    			$palabra = $this->request->getData()['palabra_clave'];
-    			$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
-							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
-	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
-							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
-    			];
-    		}
-    		if (!(empty($this->request->getData()['clases'])))
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
-    			$clase = $this->request->getData()['clases'];
-    			$where2= ["clases.id = $clase"];
-    		}
-    		
+    			
+    			if (!(empty($this->request->getData()['clases'])))
+    			{
+    				$clase = $this->request->getData()['clases'];
+    				$where2= ["clases.id = $clase"];
+    			}
+    			
     			$mes= $this->request->getData()['mob']['month'];
-    			 $year= $this->request->getData()['year']['year'];
+    			$year= $this->request->getData()['year']['year'];
     			if ($year && $mes)
     			{
     				$fecha =date('Y-m-d h:i:s',strtotime("$year-$mes-01"));
@@ -78,29 +77,40 @@ class SeguimientosClasesAlumnosController extends AppController
     				$fecha =date('Y-m-d h:i:s',strtotime("2000-$mes-01"));
     				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
     			}
-    			$session->write('where',[$where1,$where2,$where3]);
-    			
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
+							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
+    				];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('search_key', $palabra);
+    		}
     	}
     	
-    	if ($session->check('where'))
-    	{
-    		$where = $session->read('where');
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
     	}
-    	else 
-    	{
-    		$where = null;
-    	}
+    	
+    	$this->paginate = [
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'conditions' => $conditions,
+    			'limit' => 20
+    	];
+    	
     	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
     	
-        $this->paginate = [
-        		'conditions' => $where,
-        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
-        		'finder' => 'ordered'
-        ];
-        $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
-        $this->set(compact('seguimientosClasesAlumnos','clases'));
+    	$seguimientosClasesAlumnos= $this->paginate($this->SeguimientosClasesAlumnos);
+    	
+    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	
+    	$this->render('/SeguimientosClasesAlumnos/index');
     }
-
     /**
      * View method
      *
