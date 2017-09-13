@@ -40,7 +40,7 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-
+        
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
@@ -62,7 +62,7 @@ class AppController extends Controller
         		
         		'loginRedirect' => [ //que pasa despues del login
         				'controller' => 'Users',
-        				'action' => 'perfil'
+        				'action' => 'home'
         		],
         		'logoutRedirect' => [ //que pasa despues del logout
         				'controller' => 'Users',
