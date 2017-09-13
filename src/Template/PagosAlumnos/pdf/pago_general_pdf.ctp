@@ -85,7 +85,7 @@
 		
 			<div class="informacion">
 				<p class="texto-informacion"><strong> NOTA : Pasado el vencimiento, el arancel sufrirá un ajuste. A todo efecto el mes es
-				considerado 4 (cuatro) semanas.  <br> Recibo a su dispoción una vez abonado.  <br>
+				considerado 4 (cuatro) semanas.  <br> Recibo a su disposición una vez abonado.  <br>
 				 AVISO DE PAGO | DOCUMENTACIÓN INTERNA | IBA LUGANO </strong> </p> 
 			</div>	
 				
