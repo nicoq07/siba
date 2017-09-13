@@ -18,7 +18,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['pIndex','edit','view','pSearch']))
+			if(in_array($this->request->action, ['pIndex','edit','view','pSearch','addProfesor']))
 			{
 				return true;
 			}
@@ -136,6 +136,7 @@ class SeguimientosClasesAlumnosController extends AppController
     {
         $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->newEntity();
         if ($this->request->is('post')) {
+        	debug($this->request->getData()); exit;
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
                 $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
@@ -148,6 +149,32 @@ class SeguimientosClasesAlumnosController extends AppController
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
         $this->set(compact('seguimientosClasesAlumno', 'ClasesAlumnos', 'calificaciones'));
         $this->set('_serialize', ['seguimientosClasesAlumno']);
+    }
+    
+    
+    public function addProfesor($claseAlumno = null)
+    {
+    	$seg = $this->SeguimientosClasesAlumnos->find()
+    	->where(['clase_alumno_id' => $claseAlumno,'fecha' => date('Y-m-d',strtotime('now'))]);
+    	
+    	$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->get($seg->first()->id, [
+    			'contain' => ['ClasesAlumnos']
+    	]);
+    	if ($this->request->is(['patch', 'post', 'put'])) {
+    		$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
+    		if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
+    			$this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+    			$url = ['controller' => 'Clases' ,'action' => 'pView', $seguimientosClasesAlumno->clases_alumno->clase_id];
+    			return $this->redirect($url);
+    		}
+    		$this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+    	}
+    	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
+    	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
+    	$this->set(compact('seguimientosClasesAlumno', 'ClasesAlumnos', 'calificaciones'));
+    	$this->set('_serialize', ['seguimientosClasesAlumno']);
+    	$this->render('/SeguimientosClasesAlumnos/edit/');
+    	
     }
 
     /**
