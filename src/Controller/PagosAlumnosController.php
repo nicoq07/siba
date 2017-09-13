@@ -132,6 +132,8 @@ class PagosAlumnosController extends AppController
     public function add()
     {
     }
+    
+    
 	public function pagoManual($idAlumno = null)
 	{
 	    	//pago particular de un alumno, que puede venir desde el alumno (forzar a siempre es lo ideal) o desde pago.

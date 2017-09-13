@@ -60,8 +60,9 @@
                 <td><?= $pagosAlumno->pagado ? h("Sí") : h("No") ?></td>
                 <td><?= $pagosAlumno->has('user') ? $this->Html->link($pagosAlumno->user->nombre, ['controller' => 'Users', 'action' => 'view', $pagosAlumno->user->id]) : '' ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Ver'), ['action' => 'view', $pagosAlumno->id],['class' => 'btn-sm btn-info']) ?>
                     <?= $pagosAlumno->pagado ? h("")  : $this->Form->postLink(__('Pagar'), ['action' => 'pagar', $pagosAlumno->id], ['class' => 'btn-sm btn-success','confirm' => __('Marcar como pago?', $pagosAlumno->id)])?>
+                    <?= $this->Html->link(__('Reimprimir'), ['action' => 'pagoManualPdf', $pagosAlumno->id, '_ext' => 'pdf'],['class' => 'btn-sm btn-info','target' => '_blank']) ?>
+                    <?= $this->Html->link(__('Ver'), ['action' => 'view', $pagosAlumno->id],['class' => 'btn-sm btn-info']) ?>
                     <?= $this->Form->postLink(__('Eliminar'), ['action' => 'delete', $pagosAlumno->id], ['class' => 'btn-sm btn-danger','confirm' => __('Eliminar el pago?', $pagosAlumno->id)]) ?>
                 </td>
             </tr>
