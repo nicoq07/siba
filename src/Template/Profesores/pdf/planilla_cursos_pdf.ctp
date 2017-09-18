@@ -7,7 +7,9 @@
 			<?= h($profesor->presentacion ." - ". $mes . " de ". date('Y') )?>
 		 </h4>
 	</div>
-	
+		<small style="font-size: 15px; ">
+			<?php echo "Referencias: <b>P</b>: Presente. <b>A</b>: Ausente. <b>X</b>: No tuvo clase ese día. <b>Vacío</b>: Nada cargado";?>
+		 </small>
 
 	
 	<?php $tamanio =  null;
@@ -48,7 +50,7 @@
 					<?php foreach ($dias as $dia) {
 						if (key($arrayClases) == key($dia)) {
 						?>
-						<div  style=" width: <?php print "$tamanio%"?>" class="div-dia-cabeza">
+						<div  style="height:40px; width: <?php print "$tamanio%"?>" class="div-dia-cabeza">
 								   <p class="p-num-dia">	<?= "<strong>". h($dia[key($arrayClases)]) ."</strong>"?>  </p>
 						</div>
 					<?php } ?>
@@ -100,7 +102,7 @@
 				$x = 0;
 				for($i = 0; $i < $numDia; $i++ )
 				{
-					$presente = ' ';
+					$presente = 'X';
 					
 					reset($arrayPresentes);
 					while($alumno= current($arrayPresentes))
