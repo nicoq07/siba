@@ -53,9 +53,27 @@
 	border-radius: 50px 50px;
 	margin-right: 5px;
 }
-
-
-
+.icono-mensaje2
+{
+	background-color: #7cd33c;
+	padding: 10px 10px;	
+	border-radius: 50px 50px;
+	margin-right: 5px;
+}
+.icono-mensaje3
+{
+	background-color: #9e7a76;
+	padding: 10px 10px;	
+	border-radius: 50px 50px;
+	margin-right: 5px;
+}
+.icono-mensaje4
+{
+	background-color: #9e808f;
+	padding: 10px 10px;	
+	border-radius: 50px 50px;
+	margin-right: 5px;
+}
 
 
 

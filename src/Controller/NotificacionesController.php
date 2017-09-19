@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Notificaciones Controller
@@ -146,6 +148,18 @@ class NotificacionesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function enviadas()
+    {
+    	$this->paginate = [
+    			'limit' => 200,
+    			'conditions' => ['Notificaciones.emisor' => $this->Auth->user('id')],
+    			'order' => ['Notificaciones.created' => 'desc']];
+    	$notificaciones = $this->paginate($this->Notificaciones);
+    	$users = $this->Notificaciones->Users->find('list')->toArray();
+    	$this->set(compact('notificaciones','users'));
+    }
+    
     
     public function chat()
     {

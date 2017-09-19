@@ -51,6 +51,12 @@ class UsersTable extends Table
         $this->hasMany('PagosAlumnos', [
             'foreignKey' => 'user_id'
         ]);
+        $this->hasMany('Notificaciones', [
+        		'foreignKey' => 'receptor'
+        ]);
+        $this->hasMany('Notificaciones', [
+        		'foreignKey' => 'emisor'
+        ]);
     }
 
     /**

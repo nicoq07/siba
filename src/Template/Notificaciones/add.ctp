@@ -1,3 +1,4 @@
+<?= $this->assign('title', 'Nueva');?>
 <div class="notificaciones form large-9 medium-8 columns content">
     <?= $this->Form->create($notificacione) ?>
     <fieldset>

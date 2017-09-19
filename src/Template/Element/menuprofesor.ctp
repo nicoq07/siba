@@ -32,6 +32,12 @@
 	          </ul>
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
+	          <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-key"></span></a>
+	          <ul class="dropdown-menu forAnimate" role="menu">
+	            <li><?= $this->Html->link(h('Recibidas'), ['controller' =>'Notificaciones', 'action' => 'index']) ?></li>
+	          </ul>
+	        </li>
 	      </ul>
 	    </div>
 	  </div>

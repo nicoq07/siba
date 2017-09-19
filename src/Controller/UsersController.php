@@ -205,7 +205,11 @@ class UsersController extends AppController
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
-    	$this->set(compact('user'));
+    	$notificaciones = $this->Users->Notificaciones->find('all')
+    	->where(['receptor' => $user->id , 'leida' => false])
+    	->toArray();
+    	;
+    	$this->set(compact('user','notificaciones'));
     }
     
     
