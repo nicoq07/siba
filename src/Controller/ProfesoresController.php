@@ -214,13 +214,13 @@ class ProfesoresController extends AppController
     
     public function planillaCursosPdf($id, $mes)
     {
-   	
+    	$connection = ConnectionManager::get('default');
     	$profesor = $this->Profesores->get($id);
   		$idProfesor = $profesor->id;
 
-		$qClases = "select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia,
-					 h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci
-					from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
+		$qClases = "select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia, a.id as alumno_id,
+					 h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci	
+				from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
 					, disciplinas as d
 					WHERE
 					h.id = c.horario_id AND
@@ -234,18 +234,38 @@ class ProfesoresController extends AppController
 					GROUP by ca.id, h.nombre_dia , h.hora
 					ORDER BY h.num_dia, h.hora, alumno";
     	
-		
-		$connection = ConnectionManager::get('default');
 		$rClases = $connection->execute($qClases);
 		
 		
+		
+		$qPresentes = "SELECT ca.id as ca, DATE_FORMAT(s.fecha, '%d') as fecha, s.presente, a.id as alumno_id, s.created as creada, s.modified as modificada, c.id as clase_id
+ 		from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
+ 		, disciplinas as d
+		WHERE
+		h.id = c.horario_id AND
+		c.id = ca.clase_id AND
+		c.disciplina_id = d.id AND
+		p.id = $idProfesor AND
+		c.profesor_id = p.id AND
+		ca.alumno_id = a.id AND
+		ca.id = s.clase_alumno_id AND
+		MONTH(s.fecha) = $mes
+		ORDER BY  alumno_id, fecha";
+		
+
+		$rPresentes= $connection->execute($qPresentes);
+		$arrayPresentes = $this->groupBy($rPresentes, 'ca');
+		
+//  		debug($arrayPresentes); exit;
+		
 		$qClases = "SELECT * FROM view_clases as v WHERE v.profesor_id = $idProfesor
 		ORDER BY dia,hora";
-		$connection = ConnectionManager::get('default');
+
 		$clasesD = $connection->execute($qClases);
 		
 		
 		$arrayClases = $this->groupBy($rClases, 'nom_dia');
+		
 		
     	$dias = $profesor->workingDays($mes);
     	if(empty($dias))
@@ -257,7 +277,7 @@ class ProfesoresController extends AppController
     	
 
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');
-    	$this->set(compact('clasesD','profesor','dias','arrayClases','mes'));
+    	$this->set(compact('clasesD','profesor','dias','arrayClases','mes','arrayPresentes'));
     	
     }
     private function prepararListado($mes,$profesor,$tipoHoja,$orientacion)

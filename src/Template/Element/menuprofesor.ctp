@@ -11,7 +11,12 @@
 	    </div>
 	    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
+	       <li class="dropdown">
+	          
+	        
+	           <?= $this->Html->link(h('Clases del día'), ['controller' =>'Users', 'action' => 'pPerfil'],['class' => 'dropdown-toggle','escape' => true]) ?>
 	             <!--          SECCION SEGUIMIENTOS-->
+	        </li>
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alumnos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">

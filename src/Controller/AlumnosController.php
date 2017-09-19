@@ -44,39 +44,9 @@ class AlumnosController extends AppController
      */
     public function index()
     {
-    	$where1 = null;
-    	$where2 = null;
-    	$where3 = null;
-    	$where4 = null;
-    	
-	    if ($this->request->is('post'))
-	    {
-	    	
-	     		$esActive = $this->request->getData()['activos'];
-	     		$where1= ['alumnos.active' => $esActive];
-	     	
-	     		$esAdolecencia =$this->request->getData()['adolecencia'];
-	     		$where2= ['alumnos.programa_adolecencia' => $esAdolecencia];
-	     	
-	     		$esFuturo = $this->request->getData()['futuro'];
-	     		$where3= ['alumnos.futuro_alumno' => $esFuturo];
-	     	
-	     	if (!(empty($this->request->getData()['palabra_clave'])))
-	     	{
-	     		$palabra = $this->request->getData()['palabra_clave'];
-	     		$where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
-							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
-	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
-	     		];
-	     	}
-	    }
-	    else 
-	    {
-	    	$where1 =['alumnos.active' => true];
-	    }
     	
      	$this->paginate = [
-     			'conditions' => [$where1,$where2,$where3,$where4],
+     			'conditions' => ['alumnos.active' => true],
      			'finder' => 'ordered',
      	];
      
@@ -85,6 +55,54 @@ class AlumnosController extends AppController
         $this->set(compact('alumnos'));
     }
 
+    public function search()
+    {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			
+    			$esActive = $this->request->getData()['activos'];
+    			$where1= ['alumnos.active' => $esActive];
+    			
+    			$esAdolecencia =$this->request->getData()['adolecencia'];
+    			$where2= ['alumnos.programa_adolecencia' => $esAdolecencia];
+    			
+    			$esFuturo = $this->request->getData()['futuro'];
+    			$where3= ['alumnos.futuro_alumno' => $esFuturo];
+    			
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
+    				];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('search_key', $palabra);
+    		}
+    	}
+    	
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
+    	}
+    	
+    	$this->paginate = [
+    			'conditions' => $conditions,
+    			'limit' => 20,
+    			'finder' => 'ordered',
+    	];
+    	
+    	$alumnos = $this->paginate($this->Alumnos);
+    	
+    	$this->set(compact('alumnos'));
+    	
+    	$this->render('/Alumnos/index');
+    }
     
     
     /**

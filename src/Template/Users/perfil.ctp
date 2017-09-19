@@ -1,8 +1,5 @@
 <div class="container col-lg-10">
-<div class="col-lg-12 col-lg-offset-2">
-	<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
-	
-</div>
+
 <div class="col-lg-5 well">
 <div class="related">
 	<h2><?= h(__(date('l')))?> </h2>

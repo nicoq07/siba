@@ -2,8 +2,18 @@
 <div class="seguimientosClasesAlumnos index col-lg-10 nopadding">
 	<h3><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
-  		<?php echo $this->Form->create($seguimientosClasesAlumnos, ['id' => 'frmIndex', 'type' => 'post']); ?>
-  	  
+  	<?php 
+	if($this->request->session()->read('search_key') != "")
+	{
+		$search_key = $this->request->session()->read('search_key');
+	}
+	else
+	{
+		$search_key = "";
+	}
+	
+	 echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
+	
   	  <div class="col-lg-3 "> 
 		 <?php
 			echo $this->Form->label('Búsqueda :');

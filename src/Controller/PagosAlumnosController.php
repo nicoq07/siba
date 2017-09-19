@@ -98,7 +98,6 @@ class PagosAlumnosController extends AppController
     			'limit' => 25
     	];
     	
-    	$this->informePagos();
     	
     	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
     	
@@ -106,7 +105,67 @@ class PagosAlumnosController extends AppController
     	
         
     }
-
+    public function search()
+    {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			
+    			$mes = $this->request->getData()['mes']['month'];
+    			
+    			if ($mes)
+    			{
+    				$where1= ['PagosAlumnos.mes' => $mes];
+    				
+    			}
+    			$year= $this->request->getData()['year']['year'];
+    			if ($year)
+    			{
+    				$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
+    				$where2 = ["YEAR(PagosAlumnos.created) = YEAR('$fecha')"];
+    			}
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where3= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
+    				];
+    			}
+    			
+    			if (!(empty($this->request->getData()['deuda'])))
+    			{
+    				$where4= ["PagosAlumnos.pagado" => false];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('search_key', $palabra);
+    		}
+    	}
+    	
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
+    	}
+    	
+    	$this->paginate = [
+    			'contain' => ['Alumnos', 'Users','PagosConceptos'],
+    			'conditions' => $conditions,
+    			//'order' => ['Alumnos.apellido'],
+    			'finder' => 'ordered',
+    			'limit' => 25
+    	];
+    	
+    	
+    	$pagosAlumnos = $this->paginate($this->PagosAlumnos);
+    	
+    	
+    	$this->set(compact('pagosAlumnos'));
+    	
+    	$this->render('/PagosAlumnos/index');
+    }
     /**
      * View method
      *
@@ -132,6 +191,8 @@ class PagosAlumnosController extends AppController
     public function add()
     {
     }
+    
+    
 	public function pagoManual($idAlumno = null)
 	{
 	    	//pago particular de un alumno, que puede venir desde el alumno (forzar a siempre es lo ideal) o desde pago.

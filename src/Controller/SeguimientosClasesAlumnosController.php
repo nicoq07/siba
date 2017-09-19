@@ -18,7 +18,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['pIndex','edit','view']))
+			if(in_array($this->request->action, ['pIndex','edit','view','pSearch','addProfesor']))
 			{
 				return true;
 			}
@@ -36,33 +36,32 @@ class SeguimientosClasesAlumnosController extends AppController
      */
     public function index()
     {
-    	$number = null;
-    	$where = null;
-    	$session = $this->request->session();
-    
+    	
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	
+        $this->paginate = [
+        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+        		'finder' => 'ordered'
+        ];
+        $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
+        $this->set(compact('seguimientosClasesAlumnos','clases'));
+    }
+    public function search()
+    {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
     	if ($this->request->is('post'))
     	{
-    		$session->delete('where');
-    		$where1 = null;
-    		$where2 = null;
-    		$where3 = null;
-    		if (!(empty($this->request->getData()['palabra_clave'])))
-    		{ 
-    			$palabra = $this->request->getData()['palabra_clave'];
-    			$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
-							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
-	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
-							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
-    			];
-    		}
-    		if (!(empty($this->request->getData()['clases'])))
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
-    			$clase = $this->request->getData()['clases'];
-    			$where2= ["clases.id = $clase"];
-    		}
-    		
+    			
+    			if (!(empty($this->request->getData()['clases'])))
+    			{
+    				$clase = $this->request->getData()['clases'];
+    				$where2= ["clases.id = $clase"];
+    			}
+    			
     			$mes= $this->request->getData()['mob']['month'];
-    			 $year= $this->request->getData()['year']['year'];
+    			$year= $this->request->getData()['year']['year'];
     			if ($year && $mes)
     			{
     				$fecha =date('Y-m-d h:i:s',strtotime("$year-$mes-01"));
@@ -78,29 +77,40 @@ class SeguimientosClasesAlumnosController extends AppController
     				$fecha =date('Y-m-d h:i:s',strtotime("2000-$mes-01"));
     				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
     			}
-    			$session->write('where',[$where1,$where2,$where3]);
-    			
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
+							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
+    				];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('search_key', $palabra);
+    		}
     	}
     	
-    	if ($session->check('where'))
-    	{
-    		$where = $session->read('where');
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
     	}
-    	else 
-    	{
-    		$where = null;
-    	}
+    	
+    	$this->paginate = [
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'conditions' => $conditions,
+    			'limit' => 20
+    	];
+    	
     	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
     	
-        $this->paginate = [
-        		'conditions' => $where,
-        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
-        		'finder' => 'ordered'
-        ];
-        $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
-        $this->set(compact('seguimientosClasesAlumnos','clases'));
+    	$seguimientosClasesAlumnos= $this->paginate($this->SeguimientosClasesAlumnos);
+    	
+    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	
+    	$this->render('/SeguimientosClasesAlumnos/index');
     }
-
     /**
      * View method
      *
@@ -126,6 +136,7 @@ class SeguimientosClasesAlumnosController extends AppController
     {
         $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->newEntity();
         if ($this->request->is('post')) {
+        	debug($this->request->getData()); exit;
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
                 $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
@@ -138,6 +149,32 @@ class SeguimientosClasesAlumnosController extends AppController
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
         $this->set(compact('seguimientosClasesAlumno', 'ClasesAlumnos', 'calificaciones'));
         $this->set('_serialize', ['seguimientosClasesAlumno']);
+    }
+    
+    
+    public function addProfesor($claseAlumno = null)
+    {
+    	$seg = $this->SeguimientosClasesAlumnos->find()
+    	->where(['clase_alumno_id' => $claseAlumno,'fecha' => date('Y-m-d',strtotime('now'))]);
+    	
+    	$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->get($seg->first()->id, [
+    			'contain' => ['ClasesAlumnos']
+    	]);
+    	if ($this->request->is(['patch', 'post', 'put'])) {
+    		$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
+    		if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
+    			$this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+    			$url = ['controller' => 'Clases' ,'action' => 'pView', $seguimientosClasesAlumno->clases_alumno->clase_id];
+    			return $this->redirect($url);
+    		}
+    		$this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+    	}
+    	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
+    	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
+    	$this->set(compact('seguimientosClasesAlumno', 'ClasesAlumnos', 'calificaciones'));
+    	$this->set('_serialize', ['seguimientosClasesAlumno']);
+    	$this->render('/SeguimientosClasesAlumnos/edit/');
+    	
     }
 
     /**
@@ -312,7 +349,52 @@ class SeguimientosClasesAlumnosController extends AppController
     	$this->set(compact('seguimientosClasesAlumnos','clases'));
     }
     
-    
+    public function pSearch()
+    {
+    	$where1 = $where2 = null;
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			
+    			$where1 = null;
+    			$where2 = null;
+    			if (!(empty($this->request->getData()['clases'])))
+    			{
+    				$clase = $this->request->getData()['clases'];
+    				$where1= ["clases.id = $clase"];
+    			}
+    			if ($this->request->getData()['nomodificados'])
+    			{
+    				$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+    			}
+    			
+    			$this->request->session()->write('searchCond', [$where1,$where2]);
+    		}
+    	}
+    	
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
+    	}
+    	
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
+    	
+    	$this->paginate = [
+    			'conditions' => [$conditions, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'finder' => 'ordered',
+    	];
+    	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
+    	
+    	
+    	
+    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	
+    	$this->render('/SeguimientosClasesAlumnos/p_index');
+    }
     
     private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
     {

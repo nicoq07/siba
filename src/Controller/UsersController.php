@@ -24,7 +24,7 @@ class UsersController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','pPerfil']))
+			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','pPerfil','home']))
 			{
 				return true;
 			}
@@ -163,11 +163,6 @@ class UsersController extends AppController
     		if($user)
     		{
     			$this->Auth->setUser($user);
-    			if (	$this->Auth->user('rol_id') === PROFESOR)
-    			{
-    				return $this->redirect(['action' => 'pPerfil']);
-    			}
-    			else 
     			{
     				return $this->redirect($this->Auth->redirectUrl());
     			}
@@ -180,7 +175,7 @@ class UsersController extends AppController
     	}
     	if ($this->Auth->user())
     	{
-    		return $this->redirect(['controller' => 'Alumnos', 'action' => 'index']);
+    		return $this->redirect(['controller' => 'Users', 'action' => 'home']);
     	}
     }
     
@@ -204,6 +199,15 @@ class UsersController extends AppController
 
     	$this->set(compact('user'));
     }
+    
+    public function home()
+    {
+    	$user = $this->Users->get($this->Auth->user('id'), [
+    			'contain' => ['Roles']
+    	]);
+    	$this->set(compact('user'));
+    }
+    
     
     
     public function perfil()
