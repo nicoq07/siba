@@ -1,28 +1,4 @@
-<script type="text/javascript">
-
-function marcarLeido(mensajeId)
-{
-	$.ajax({
-	url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Notificaciones','action'=>'marcarLeida'));?>",
-
-     type: "get",
-     data: {mensajeId:mensajeId },
-     success: function(data) {
-     	var button = $('#'+mensajeId);
-     	button.hide('fast');
-	 console.log(data);
-     },
-     error: function(){
-			alert("Error");
-     },
-     complete: function() {
-     }
- });
-}
-
-
-</script>
-<?= $this->assign('title', 'Recibidas');?>
+<?= $this->assign('title', 'Enviadas');?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-10 current-chat">
@@ -35,9 +11,9 @@ function marcarLeido(mensajeId)
                         <?php endif; ?>
 
                     </div>
-                    <div class="btn-group chat-toolbar" role="group" aria-label="...">
+                     <div class="btn-group chat-toolbar" role="group" aria-label="...">
                        <?php if($current_user['rol_id'] == ADMINISTRADOR): ?>
-                        <?=  $this->Html->link(' Enviadas', ['controller' => 'Notificaciones', 'action' => 'enviadas'],['class' => 'btn btn-default ticket-option fa fa-send ']) ?>
+                        <?=  $this->Html->link(' Recibidas', ['controller' => 'Notificaciones', 'action' => 'index'],['class' => 'btn btn-default ticket-option fa fa-send ']) ?>
                         <?php endif; ?>
 
                     </div>
@@ -55,16 +31,24 @@ function marcarLeido(mensajeId)
                             <div class="media-body">
                                 <div class="media">
                                     <div class="pull-left icono-mensaje">
-                                        <?= h($users[$mensaje->emisor]) ?>
+                                        <?= //h($users[$mensaje->emisor]) 
+											h("Yo") 
+										?>
                                      <!--  </div> -->
                                     </div>
+                                    <div class="pull-left" style="text-align: center; margin-top:10px;">
+                                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pull-left icono-mensaje4">
+                                        <?= h($users[$mensaje->receptor]) ?>
+                                     <!--  </div> -->
+                                    </div>
+                                    
                                     <div style="height: 100%;" class="media-body">
                                         <?= h($mensaje->descripcion) ?>
                                         <br>
                                         <small class="text-muted">  <?="  " . h($mensaje->created->format('h:m a d-m-Y '))  ?></small>
-                                                                            <?php if (!$mensaje->leida) { ?> 
-                                                                                <button title="Marcar como leída" id ="<?php echo $mensaje->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarLeido(<?php echo $mensaje->id ?>)"> </button>
-                                       <?php } ?>
+                                        <small class="pull-right "> <?= $mensaje->leida ? h("Vista") : h("")  ?> </small>
                                         <hr>
                                         
                                     </div>

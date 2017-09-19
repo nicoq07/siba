@@ -53,7 +53,7 @@ class NotificacionesFixture extends TestFixture
             'receptor' => 1,
             'leida' => 1,
             'broadcast' => 1,
-            'created' => '2017-06-18 23:05:22'
+            'created' => '2017-09-10 19:04:05'
         ],
     ];
 }
