@@ -1,3 +1,6 @@
+define('URGENTE', 1);
+define('NORMAL', 2);
+define('BAJA', 3);
 -- phpMyAdmin SQL Dump
 -- version 4.6.5.1
 -- https://www.phpmyadmin.net/
@@ -26,6 +29,7 @@ CREATE TABLE `gestor_tareas` (
   `descripcion` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
   `prioridad_id` int(11) DEFAULT NULL,
   `fecha_vencimiento` datetime DEFAULT NULL,
+   `resuelta` tinyint DEFAULT FALSE,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;

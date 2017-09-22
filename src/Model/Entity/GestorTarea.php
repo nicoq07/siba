@@ -10,9 +10,10 @@ use Cake\ORM\Entity;
  * @property string $titulo
  * @property string $descripcion
  * @property int $prioridad_id
- * @property \Cake\I18n\FrozenTime $fecha_vencimiento
+ * @property \Cake\I18n\FrozenDate $fecha_vencimiento
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property int $resuelta
  *
  * @property \App\Model\Entity\GestorTareasPrioridad $gestor_tareas_prioridad
  */

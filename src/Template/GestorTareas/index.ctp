@@ -1,3 +1,30 @@
+<script type="text/javascript">
+
+function marcarResuelta(tareaId)
+{
+	$.ajax({
+	url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'GestorTareas','action'=>'marcarResuelta'));?>",
+
+     type: "get",
+     data: {tareaId:tareaId },
+     success: function(data) {
+     	var button = $('#'+tareaId);
+     	button.hide('fast');
+     	var div = $('#div'+tareaId);
+     	div.css("text-decoration","line-through;");
+     	
+	 console.log(data);
+     },
+     error: function(){
+			alert("Error");
+     },
+     complete: function() {
+     }
+ });
+}
+
+
+</script>
 <!-- <div class="container"> -->
 <!--     <div class="notices notice-success"> -->
 <!--         <strong>Notice</strong> notice-success -->
@@ -18,26 +45,63 @@
 <!--         <strong>Small notice</strong> notice-sm -->
 <!--     </div> -->
 <!-- </div> -->
+<?php $ver = ""; $action="";
+if($this->request->action == 'index')
+{
+	$ver = 'Ver resueltas'; $action = 'indexResueltas';
+}
+else
+{
+	$ver = 'Ver pendientes'; $action = 'index';
+}
+
+?>
 <div class="col-lg-8">
-<div class='col-lg-10'><h2>Lista de Tareas</h2></div>
-<div class="col-lg-2 pull-rigth"><?php echo $this->Html->Link('Nueva',['action' => 'add'],['top' => '15px','class' => 'btn btn-success'] ) ?></div>
+<div class="row">
+	<div class='col-lg-6'><h2>Lista de Tareas</h2></div>
+	<div style="margin-top:15px;" class="col-lg-4"><?php echo $this->Html->Link($ver,['action' => $action],['class' => 'btn-lg btn-info'] ) ?></div>
+	<div style="margin-top:15px;" class="col-lg-2"><?php echo $this->Html->Link('Nueva',['action' => 'add'],['class' => 'btn-lg btn-success'] ) ?></div>
+</div>
 <div class="container">
-            <?php foreach ($gestorTareas as $gestorTarea){?>
+            <?php foreach ($gestorTareas as $gestorTarea){
+            	$tachada = "";
+            	if ($gestorTarea->resuelta) { $tachada = "text-decoration:line-through;"; }
+            	?>
+
             	<?php if ($gestorTarea->gestor_tareas_prioridad->valor === URGENTE) { ?>
-            	<div title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-danger">
+            	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-danger">
 				        <strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
+				  <?php if (!$gestorTarea->resuelta) { ?> 
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                       <?php } ?>
+				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
+                                                                                <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
+                          <?php } ?>
+				 
 				</div>
             	
             	 <?php  } ?>
             	<?php if ($gestorTarea->gestor_tareas_prioridad->valor === NORMAL) { ?>
-            	 <div title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-warning">
+            	 <div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-warning">
         			    <strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
+				      <?php if (!$gestorTarea->resuelta) { ?> 
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                       <?php } ?>
+				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
+                                                                                <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
+                          <?php } ?>
 				    </div>
             	
             	 <?php   } ?>
             	<?php if ($gestorTarea->gestor_tareas_prioridad->valor === BAJA) { ?>
-            	<div title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-success">
+            	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-success">
 			        	<strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
+			  			  <?php if (!$gestorTarea->resuelta) { ?> 
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                       <?php } ?>
+				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
+                                                                                <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
+                          <?php } ?>
 			    </div>
             	<?php } ?>
             	

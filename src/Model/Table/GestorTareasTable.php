@@ -65,8 +65,12 @@ class GestorTareasTable extends Table
             ->notEmpty('descripcion');
 
         $validator
-            ->dateTime('fecha_vencimiento')
+            ->date('fecha_vencimiento')
             ->allowEmpty('fecha_vencimiento');
+
+        $validator
+            ->integer('resuelta')
+            ->allowEmpty('resuelta');
 
         return $validator;
     }
@@ -83,5 +87,14 @@ class GestorTareasTable extends Table
         $rules->add($rules->existsIn(['prioridad_id'], 'GestorTareasPrioridad'));
 
         return $rules;
+    }
+    public function findOrdered(Query $query, array $options)
+    {
+    	return $query
+    	->order([
+    			'GestorTareasPrioridad.valor' => 'asc',
+    			'GestorTareas.created' => 'desc',
+    			
+    	]);
     }
 }

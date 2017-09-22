@@ -81,4 +81,14 @@ class GestorTareasTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test findOrdered method
+     *
+     * @return void
+     */
+    public function testFindOrdered()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

@@ -21,9 +21,10 @@ class GestorTareasFixture extends TestFixture
         'titulo' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_spanish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'descripcion' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'prioridad_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'fecha_vencimiento' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'fecha_vencimiento' => ['type' => 'date', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'resuelta' => ['type' => 'integer', 'length' => 4, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
             'FK_PrioridadGestorTareas' => ['type' => 'index', 'columns' => ['prioridad_id'], 'length' => []],
         ],
@@ -49,9 +50,10 @@ class GestorTareasFixture extends TestFixture
             'titulo' => 'Lorem ipsum dolor sit amet',
             'descripcion' => 'Lorem ipsum dolor sit amet',
             'prioridad_id' => 1,
-            'fecha_vencimiento' => '2017-09-22 10:09:51',
-            'created' => '2017-09-22 10:09:51',
-            'modified' => '2017-09-22 10:09:51'
+            'fecha_vencimiento' => '2017-09-22',
+            'created' => '2017-09-22 16:30:23',
+            'modified' => '2017-09-22 16:30:23',
+            'resuelta' => 1
         ],
     ];
 }

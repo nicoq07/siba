@@ -12,8 +12,10 @@
 	    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      <li class="dropdown">
-	           <?= $this->Html->link(h('Clases del día'), ['controller' =>'Users', 'action' => 'perfil'],['class' => 'dropdown-toggle','escape' => true]) ?>
-	             <!--          SECCION SEGUIMIENTOS-->
+	             <a href="/siba/Users/perfil" class="dropdown-toggle" >Clases del día <span style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-home "></span></a>
+	        </li>
+	        <li class="dropdown">
+	         	          <a href="/siba/GestorTareas/index" class="dropdown-toggle" >Lista de tareas <span style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-thumb-tack"></span></a>
 	        </li>
 	<!--          SECCION ALUMNOS-->
 	        <li class="dropdown">
@@ -82,7 +84,7 @@
 	         <!--  FIN SECCION SEGUIMIENTOS-->
 	             <!--          SECCION USERS-->
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-key"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <span class="caret"></span><span style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-user-o "></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Ver usuarios'), ['controller' =>'Users', 'action' => 'index']) ?></li>
 	            <li><?= $this->Html->link(h('Crear'), ['controller' =>'Users', 'action' => 'add']) ?></li>
@@ -90,7 +92,7 @@
 	        </li>
 	         <!--  FIN SECCION USERS-->
 	         <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-key"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-bell "></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Nueva'), ['controller' =>'Notificaciones', 'action' => 'add']) ?></li>
 	            <li><?= $this->Html->link(h('Enviadas'), ['controller' =>'Notificaciones', 'action' => 'enviadas']) ?></li>

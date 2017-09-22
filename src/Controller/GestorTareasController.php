@@ -21,12 +21,25 @@ class GestorTareasController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['GestorTareasPrioridad']
+           		'contain' => ['GestorTareasPrioridad'],
+        		'conditions' => ['GestorTareas.resuelta' => false],
+        		'finder' => 'ordered'
         ];
         $gestorTareas = $this->paginate($this->GestorTareas);
 
         $this->set(compact('gestorTareas'));
-        $this->set('_serialize', ['gestorTareas']);
+    }
+    
+    public function indexResueltas()
+    {
+    	$this->paginate = [
+    			'contain' => ['GestorTareasPrioridad'],
+    			'conditions' => ['GestorTareas.resuelta' => true],
+    			'finder' => 'ordered'
+    	];
+    	$gestorTareas = $this->paginate($this->GestorTareas);
+    	$this->set(compact('gestorTareas'));
+    	$this->render("/GestorTareas/index");
     }
 
     /**
@@ -55,6 +68,15 @@ class GestorTareasController extends AppController
     {
         $gestorTarea = $this->GestorTareas->newEntity();
         if ($this->request->is('post')) {
+        	/*
+        	 * 'fecha_vencimiento' => [
+		'year' => '2017',
+		'month' => '11',
+		'day' => '06',
+		'hour' => '01',
+		'minute' => '00'
+	]
+        	 */
             $gestorTarea = $this->GestorTareas->patchEntity($gestorTarea, $this->request->getData());
             if ($this->GestorTareas->save($gestorTarea)) {
                 $this->Flash->success(__('The gestor tarea has been saved.'));
@@ -112,5 +134,21 @@ class GestorTareasController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function marcarResuelta()
+    {
+    	$this->autoRender = false; // We don't render a view in this example
+    	$tareaId= $this->request->getQuery('tareaId');
+    	$tarea= $this->GestorTareas->get($tareaId);
+    	$tarea->resuelta = true;
+    	if ($this->GestorTareas->save($tarea)) {
+    		echo true;
+    	}
+    	else {
+    		echo false;
+    	}
+    	
+    	exit;
     }
 }
