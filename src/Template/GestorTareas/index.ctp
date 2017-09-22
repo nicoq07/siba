@@ -25,6 +25,7 @@ function marcarResuelta(tareaId)
 
 
 </script>
+<?= $this->assign('title', 'Lista de tareas'); ?>
 <!-- <div class="container"> -->
 <!--     <div class="notices notice-success"> -->
 <!--         <strong>Notice</strong> notice-success -->

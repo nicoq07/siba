@@ -1,4 +1,5 @@
 	&nbsp;
+	<?= $this->assign('title', 'Cargar tarea'); ?>
 <div class="col-lg-5 col-lg-offset-2 well">
     <?= $this->Form->create($gestorTarea) ?>
     <fieldset>
