@@ -81,7 +81,7 @@ class AlumnosTable extends Table
             ->notEmpty('apellido');
 
         $validator
-            ->dateTime('fecha_nacimiento')
+            ->date('fecha_nacimiento')
             ->allowEmpty('fecha_nacimiento');
 
         $validator

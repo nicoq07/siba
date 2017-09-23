@@ -18,7 +18,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+ALTER TABLE `alumnos` CHANGE `fecha_nacimiento` `fecha_nacimiento` DATE NULL DEFAULT NULL;
+ALTER TABLE `profesores` CHANGE `fecha_nacimiento` `fecha_nacimiento` DATE NULL DEFAULT NULL
 --
 -- Estructura de tabla para la tabla `gestor_tareas`
 --
