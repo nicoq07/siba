@@ -42,7 +42,10 @@
 	         </div>
 	         <div class="col-lg-8"> 
 	         <?php
-	         echo $this->Form->control('fecha_nacimiento',['label' => 'Fecha de nacimiento', 'empty' => false, 'dateFormat' => 'DMY', 'minYear' => date('Y') - 70, 'maxYear' => date('Y') - 5 ]);
+	         $this->Form->templates(
+	         		['dateWidget' => '{{day}}{{month}}{{year}}']
+	         		);
+	         echo $this->Form->control('fecha_nacimiento',['label' => 'Fecha de nacimiento','type' => 'date' ,'empty' => false, 'dateFormat' => 'DMY', 'minYear' => date('Y') - 70, 'maxYear' => date('Y') - 5 ]);
 			 ?>
 	         </div>
 	         <div class="col-lg-8">

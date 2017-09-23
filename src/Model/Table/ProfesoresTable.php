@@ -113,7 +113,7 @@ class ProfesoresTable extends Table
             ->notEmpty('active');
 
         $validator
-            ->dateTime('fecha_nacimiento')
+            ->date('fecha_nacimiento')
             ->allowEmpty('fecha_nacimiento');
 
         return $validator;
