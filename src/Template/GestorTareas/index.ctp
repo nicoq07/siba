@@ -73,7 +73,7 @@ else
             	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-danger">
 				        <strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
 				  <?php if (!$gestorTarea->resuelta) { ?> 
-                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" style="background-color:#faf9fa " class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
                                        <?php } ?>
 				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
                                                                                 <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
@@ -86,7 +86,7 @@ else
             	 <div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-warning">
         			    <strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
 				      <?php if (!$gestorTarea->resuelta) { ?> 
-                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" style="background-color:#faf9fa " class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
                                        <?php } ?>
 				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
                                                                                 <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
@@ -98,7 +98,7 @@ else
             	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-success">
 			        	<strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
 			  			  <?php if (!$gestorTarea->resuelta) { ?> 
-                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" style="background-color:#faf9fa " class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
                                        <?php } ?>
 				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
                                                                                 <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
