@@ -209,7 +209,13 @@ class UsersController extends AppController
     	->where(['receptor' => $user->id , 'leida' => false])
     	->toArray();
     	;
-    	$this->set(compact('user','notificaciones'));
+    	
+    	$tareas = TableRegistry::get("GestorTareas")->find('all')
+    	->where(['resuelta' => false])
+    	->toArray();
+    	;
+    	
+    	$this->set(compact('user','notificaciones','tareas'));
     }
     
     
