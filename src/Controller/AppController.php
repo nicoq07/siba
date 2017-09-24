@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -70,7 +71,14 @@ class AppController extends Controller
         		],
         		'unauthorizedRedirect' => $this->referer()
         ]);
-
+		if(TableRegistry::get('Notificaciones')->userNotificaciones($this->Auth->user('id')) > 0)
+		{
+			$this->set('not',true);
+		}
+		if(TableRegistry::get('GestorTareas')->hayTareas() > 0)
+		{
+			$this->set('task',true);
+		}
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html

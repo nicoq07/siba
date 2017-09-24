@@ -63,7 +63,7 @@ else
 	<div style="margin-top:15px;" class="col-lg-4"><?php echo $this->Html->Link($ver,['action' => $action],['class' => 'btn-lg btn-info'] ) ?></div>
 	<div style="margin-top:15px;" class="col-lg-2"><?php echo $this->Html->Link('Nueva',['action' => 'add'],['class' => 'btn-lg btn-success'] ) ?></div>
 </div>
-<div class="container">
+<div class="col-lg-12">
             <?php foreach ($gestorTareas as $gestorTarea){
             	$tachada = "";
             	if ($gestorTarea->resuelta) { $tachada = "text-decoration:line-through;"; }

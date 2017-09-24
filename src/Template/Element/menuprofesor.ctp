@@ -1,3 +1,8 @@
+<script type="text/javascript">
+$(document).ready(parpadear);
+function parpadear(){
+$('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
+</script>
 <div class="col-lg-2 nopadding">
 	<nav class="navbar navbar-default sidebar" role="navigation">
 	    <div class="container-fluid">
@@ -33,7 +38,7 @@
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
 	          <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-key"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span id="<?= empty($not) ? "" : "noti"?>" style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-bell "></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Recibidas'), ['controller' =>'Notificaciones', 'action' => 'index']) ?></li>
 	          </ul>

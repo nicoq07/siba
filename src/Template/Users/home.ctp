@@ -1,6 +1,7 @@
 <script type="text/javascript">
-$(document).ready(parpadear);
-function parpadear(){ $('#campana').fadeIn(500).delay(250).fadeOut(500, parpadear) }
+$(document).ready(parpadearHome);
+function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) 
+	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
 </script>
 <?= $this->assign('title', 'Bienvenido'); ?>
 <div class="container col-lg-10">
@@ -23,7 +24,7 @@ function parpadear(){ $('#campana').fadeIn(500).delay(250).fadeOut(500, parpadea
 	 <?php if (count($notificaciones) > 0) {?>
 	<div class="well col-lg-4 col-lg-offset-3">
 		<div style="text-align: center;">
-		 <div class="col-lg-12"><span id="campana" style="color: #c80009" class="fa fa-lg fa-bell"></span></div>
+		 <div class="col-lg-12"><span id="campanaHome" style="color: #c80009" class="fa fa-lg fa-bell"></span></div>
 		 <?php echo $this->Html->link(__('Tenés notificaciones nuevas'), ['controller' => 'Notificaciones' , 'action' => 'index'], ['class' => 'fa']);?>
 			
 		</div>
@@ -33,7 +34,7 @@ function parpadear(){ $('#campana').fadeIn(500).delay(250).fadeOut(500, parpadea
 	  if (count($tareas) > 0) {?>
 	<div class="well col-lg-4 col-lg-offset-3">
 		<div style="text-align: center;">
-		 <div class="col-lg-12"><span id="campana" style="color: #c80009" class="showopacity fa fa-thumb-tack fa-2x"></span></div>
+		 <div class="col-lg-12"><span id="taskHome" style="color: #c80009" class="showopacity fa fa-thumb-tack fa-2x"></span></div>
 		 <?php echo $this->Html->link(__('Hay tareas pendientes'), ['controller' => 'GestorTareas' , 'action' => 'index'], ['class' => 'fa']);?>
 			
 		</div>
