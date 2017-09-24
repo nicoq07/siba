@@ -97,4 +97,14 @@ class GestorTareasTable extends Table
     			
     	]);
     }
+    
+    public function hayTareas()
+    {
+    	$hay = $this->find()->where(['resuelta' => false])->count();
+    	if ($hay)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
 }

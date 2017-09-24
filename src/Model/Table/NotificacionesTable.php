@@ -84,4 +84,16 @@ class NotificacionesTable extends Table
 
         return $validator;
     }
+    
+    public function userNotificaciones($userID)
+    {
+    	$tiene = $this->find()->where(['receptor' => $userID,'leida' => false])->count();
+    	if ($tiene)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    
 }
