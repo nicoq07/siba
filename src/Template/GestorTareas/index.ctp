@@ -68,7 +68,7 @@ else
             	$tachada = "";
             	if ($gestorTarea->resuelta) { $tachada = "text-decoration:line-through;"; }
             	?>
-
+				<?php if($gestorTarea->gestor_tareas_prioridad) { ?>
             	<?php if ($gestorTarea->gestor_tareas_prioridad->valor === URGENTE) { ?>
             	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-danger">
 				        <strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
@@ -96,6 +96,18 @@ else
             	 <?php   } ?>
             	<?php if ($gestorTarea->gestor_tareas_prioridad->valor === BAJA) { ?>
             	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Prioridad '.$gestorTarea->gestor_tareas_prioridad->nombre)?>" class="notices notice-success">
+			        	<strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
+			  			  <?php if (!$gestorTarea->resuelta) { ?> 
+                                                                                <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" style="background-color:#faf9fa " class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
+                                       <?php } ?>
+				  <?php if ($gestorTarea->fecha_vencimiento) { ?> 
+                                                                                <small class="pull-right"><strong><?php echo $gestorTarea->fecha_vencimiento->format('d-m-Y')?></strong> </small>
+                          <?php } ?>
+			    </div>
+            	<?php } 
+            	}?>
+            	<?php if (empty($gestorTarea->gestor_tareas_prioridad->valor)) { ?>
+            	<div style="<?php print $tachada;?>;" id="div<?= h($gestorTarea->id)?>" title="<?= h('Sin prioridad ')?>" class="notices notice-default">
 			        	<strong><?= h($gestorTarea->titulo)?></strong> <?= h($gestorTarea->descripcion)?>
 			  			  <?php if (!$gestorTarea->resuelta) { ?> 
                                                                                 <button title="Resuelta" id ="<?php echo $gestorTarea->id?>" style="background-color:#faf9fa " class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarResuelta(<?php echo $gestorTarea->id ?>)"> </button>
