@@ -71,6 +71,11 @@
 		<div class="col-lg-2 col-md-2 borde"><?=$alumno->futuro_alumno ? __('Sí') : __('No');?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Activo') ?></div>
 		<div class="col-lg-2 col-md-2 borde"><?=$alumno->active ? __('Sí') : __('No');?> </div>
+		<div class="col-lg-12 col-md-12">
+		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Edad') ?></div>
+		<div class="col-lg-2 col-md-2 borde"><?=$alumno->edad ? __($alumno->edad) : __('-');?></div>
+				
+	    </div>
 	    <div class="col-lg-12 col-md-12">
 	        <h4><?= __('Observación') ?></h4>
 	       <div class="separador"><?= $this->Text->autoParagraph(h($alumno->observacion)); ?></div>

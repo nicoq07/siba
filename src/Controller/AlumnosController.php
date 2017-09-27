@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Http\Response;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Alumnos Controller
@@ -51,7 +52,19 @@ class AlumnosController extends AppController
      	];
      
         $alumnos = $this->paginate($this->Alumnos);
-
+// 		$alus= $this->Alumnos->find('all');
+// 		foreach ($alus as $alumno)
+//         {
+//         	$id = $alumno->id;
+//         	$connection = ConnectionManager::get('default');
+//         	$queryEdad = "(SELECT DATEDIFF(CURRENT_DATE, t.fecha_nacimiento)/365 as edad
+//         	FROM alumnos t where t.id = $id)";
+//         	$rEdad=$connection->execute($queryEdad);
+//         	$edad = intval($rEdad->fetch()[0]);
+//         	$connection->execute("UPDATE alumnos SET edad= $edad  WHERE alumnos.id = $id");
+        	
+//         }
+        
         $this->set(compact('alumnos'));
     }
 
