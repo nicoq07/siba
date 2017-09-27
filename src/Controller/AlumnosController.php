@@ -204,6 +204,18 @@ class AlumnosController extends AppController
 	            	return $this->redirect($this->referer());
 	            }
              }
+             
+             
+             /*
+             Calculo la edad sí tiene cargada la fecha de nac
+             */
+             if (!empty($alumno->fecha_nacimiento))
+             {
+	             $today = date("Y-m-d");
+	             $difference = date_diff(date_create($alumno->fecha_nacimiento->format('Y-m-d')), date_create($today));
+	             $alumno->set('edad',$difference->format('%y'));
+             }
+             /* */
             	if ($this->Alumnos->save($alumno)) 
             	{
             		if ($tieneClases)
@@ -294,6 +306,16 @@ class AlumnosController extends AppController
         			return $this->redirect($this->referer());
         		}
         	}
+        	/*
+        	 Calculo la edad sí tiene cargada la fecha de nac
+        	 */
+        	if (!empty($alumno->fecha_nacimiento))
+        	{
+        		$today = date("Y-m-d");
+        		$difference = date_diff(date_create($alumno->fecha_nacimiento->format('Y-m-d')), date_create($today));
+        		$alumno->set('edad',$difference->format('%y'));
+        	}
+        	/* */
             if ($this->Alumnos->save($alumno)) 
             {
             	if (!empty($this->request->getData("clases")['_ids']))
