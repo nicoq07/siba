@@ -16,6 +16,7 @@
 	border-right-style: dotted;
 	width: 15%;
 	height: 23.45cm;
+	margin-right: 10px;
 }
 
 .fila-troquel-chica
@@ -69,9 +70,9 @@
 {
 	
 	float:left;
-	width: 84.8%;
+	width: 83%;
 	height: 23.45cm;
-	border : 0.1cm;
+	border : 2px;
 	 border-left-style: solid;
 }
 	
