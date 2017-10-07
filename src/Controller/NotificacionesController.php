@@ -104,6 +104,27 @@ class NotificacionesController extends AppController
     		$this->set('_serialize', ['notificacione']);
     }
 
+    public function addProfesor()
+    {
+    	$this->autoRender = false;
+    	$notificacione = $this->Notificaciones->newEntity();
+    	if ($this->request->is('post')) {
+    		$notificacione = $this->Notificaciones->patchEntity($notificacione, $this->request->getData());
+    		$notificacione['emisor'] = $this->Auth->user('id');
+    		$notificacione['leida'] = false;
+    		if ($this->Notificaciones->save($notificacione)) {
+    			$this->Flash->success(__('Mensaje enviado.'));
+    			
+    			return $this->redirect(['action' => 'index']);
+    		}
+    		$this->Flash->error(__('Error al enviar el mensaje'));
+    	}
+    	$users = $this->Notificaciones->Users->find('list')
+    	->where(['Users.id <>' => $this->Auth->user('id')])
+    	;
+    	$this->set(compact('notificacione','users'));
+    	$this->render('/Notificaciones/add');
+    }
     /**
      * Edit method
      *

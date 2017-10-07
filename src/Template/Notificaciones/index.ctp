@@ -33,12 +33,13 @@ function marcarLeido(mensajeId)
                        <?php if($current_user['rol_id'] == ADMINISTRADOR): ?>
                         <?=  $this->Html->link(' Nuevo mensaje', ['controller' => 'Notificaciones', 'action' => 'add'],['class' => 'btn btn-default ticket-option fa fa-pencil ']) ?>
                         <?php endif; ?>
+                        <?php if($current_user['rol_id'] == PROFESOR): ?>
+                        <?=  $this->Html->link(' Nuevo mensaje', ['controller' => 'Notificaciones', 'action' => 'addProfesor'],['class' => 'btn btn-default ticket-option fa fa-pencil ']) ?>
+                        <?php endif; ?>
 
                     </div>
                     <div class="btn-group chat-toolbar" role="group" aria-label="...">
-                       <?php if($current_user['rol_id'] == ADMINISTRADOR): ?>
                         <?=  $this->Html->link(' Enviadas', ['controller' => 'Notificaciones', 'action' => 'enviadas'],['class' => 'btn btn-default ticket-option fa fa-send ']) ?>
-                        <?php endif; ?>
 
                     </div>
                 </div>
