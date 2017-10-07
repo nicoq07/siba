@@ -15,13 +15,6 @@ class ExamenesController extends AppController
 {
 	public function isAuthorized($user)
 	{
-		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
-		{
-			return false;
-		}
-		
-		return parent::isAuthorized($user);
-		
 		return true;
 	}	
     /**
@@ -90,6 +83,35 @@ class ExamenesController extends AppController
         $this->set('_serialize', ['examene']);
     }
 
+    public function addProfesor()
+    {
+    	$this->autoRender = false;
+    	$examene = $this->Examenes->newEntity();
+    	if ($this->request->is('post')) {
+    		$examene = $this->Examenes->patchEntity($examene, $this->request->getData());
+    		if ($this->Examenes->save($examene)) {
+    			//                 $this->Flash->success(__('The examene has been saved.'));
+    			
+    			//                 return $this->redirect(['action' => 'index']);
+    			return $this->redirect(['action' => 'examen_pdf', $examene->id ,'_ext' => 'pdf']);
+    		}
+    		$this->Flash->error(__('Error generando el examen! Reintente.'));
+    	}
+    	$clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', [
+    			'groupField' => 'clase.disciplina.descripcion'
+    	])
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')])
+    	->contain(['Alumnos', 'Clases' => ['Disciplinas']])
+    	->find('ordered');
+    	
+    	$calificaciones = TableRegistry::get('Calificaciones')->find('list')
+    	->toArray()
+    	;
+    	$calificaciones =  array_combine(array_values($calificaciones),array_values($calificaciones));
+    	
+    	$this->set(compact('examene', 'clasesAlumnos','calificaciones'));
+		$this->render('/Examenes/add');
+    }
     /**
      * Edit method
      *
