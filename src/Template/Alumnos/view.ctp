@@ -34,9 +34,11 @@
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Télefono') ?></div>
 		<div class="col-lg-4 col-md-4  borde"><?= $alumno->telefono ? h($alumno->telefono) : "-"?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Email') ?></div>
-		<div class="col-lg-4 col-md-4  borde"><?= $alumno->email ? h($alumno->email) : "-"?> </div>
+		<div class="col-lg-2 col-md-2  borde"><?= $alumno->email ? h($alumno->email) : "-"?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('F Nac') ?></div>
-		<div class="col-lg-4 col-md-4  borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
+		<div class="col-lg-2 col-md-2  borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
+		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Edad') ?></div>
+		<div class="col-lg-2 col-md-2 borde"><?=$alumno->edad ? __($alumno->edad) : __('-');?></div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Tutor') ?></div>
 		<div class="col-lg-2 col-md-2 borde"><?= $alumno->nombre_madre ? h($alumno->nombre_madre) : "-" ?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Celular tutor') ?></div>

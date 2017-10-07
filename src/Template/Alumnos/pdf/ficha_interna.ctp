@@ -1,19 +1,19 @@
 <div>
 	<table class="tabla-header-ficha-interna">
 		<tr>
-			<td height = "180px" width="300px"><div>
-	    	 	<?php  echo $this->Html->image('logoIba.png', ['class' => 'pull-left' , 'height' => "150" , 'width' => "180",'fullBase' => true]); ?>
+			<td height = "200px" width="300px"><div>
+	    	 	<?php  echo $this->Html->image('logoIba.png', ['class' => 'pull-left' , 'height' => "200" , 'width' => "200",'fullBase' => true]); ?>
 	    		</div>
 	    	</td>
-	    	<td class="td-interna-title"><span class="title"> <?= h($alumno->presentacion) ?></span> </td>
-			<td height = "180px" width="300px"><div>
+	    	<td class="td-interna-title"><span class="title"> <?= h($alumno->apellido) ?> <?php echo "</br> </br>" ?> <?= h($alumno->nombre) ?> </span> </td>
+			<td height="200px" width="300px"><div>
 	    	 	<?php
 $ds  = DS;
 			if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
 			{
 				$ds = DS_WINDOWS_IMG;
 			}
-				echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['class' => 'pull-right' , 'height' => "180" , 'width' => "200",'fullBase' => true]); ?>
+			echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['class' => 'pull-right', 'height' => "100%" , 'width' => "300",'fullBase' => true]); ?>
 	    		</div>
 	    	</td>
 		</tr>

@@ -8,7 +8,10 @@
             // echo $this->Form->input('emisor', ['options' => $users]);
             echo $this->Form->input('receptor', ['options' => $users]);
             // echo $this->Form->input('leida');
+            if ($current_user['rol_id'] === ADMINISTRADOR)
+            {
              echo $this->Form->input('broadcast', ['label' => 'Enviar a todos los profesores' ]);
+            }
         ?>
     </fieldset>
     <?= $this->Form->button(__('Enviar')) ?>

@@ -77,10 +77,10 @@ class NotificacionesTable extends Table
             ->requirePresence('leida', 'create')
             ->notEmpty('leida');
 
-        $validator
-            ->boolean('broadcast')
-            ->requirePresence('broadcast', 'create')
-            ->notEmpty('broadcast');
+//         $validator
+//             ->boolean('broadcast')
+//             ->requirePresence('broadcast', 'create')
+//             ->notEmpty('broadcast');
 
         return $validator;
     }

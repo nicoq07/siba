@@ -26,6 +26,8 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Alumnos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Ver'), ['controller' =>'Alumnos', 'action' => 'pIndex']) ?></li>
+	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'addProfesor'],['target' => '_blank' ]) ?></li>
+	            
 	          </ul>
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
@@ -40,7 +42,10 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificaciones <span class="caret"></span><span id="<?= empty($not) ? "" : "noti"?>" style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-bell "></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
+	          	<li><?= $this->Html->link(h('Nueva'), ['controller' =>'Notificaciones', 'action' => 'addProfesor']) ?></li>
 	            <li><?= $this->Html->link(h('Recibidas'), ['controller' =>'Notificaciones', 'action' => 'index']) ?></li>
+	            <li><?= $this->Html->link(h('Enviados'), ['controller' =>'Notificaciones', 'action' => 'enviadas']) ?></li>
+	         	
 	          </ul>
 	        </li>
 	      </ul>

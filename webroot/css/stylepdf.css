@@ -1,7 +1,7 @@
 .general
 {
-	border : 3px;
-	border-style: solid;
+	/* border : 3px;
+	border-style: solid; */
 	width: 19 cm;
 	height: 23.65cm;
     margin-bottom: 0.5cm;
@@ -13,9 +13,11 @@
 	float:left;
 	display:inline-table;
 	border : 3px;
+	border-style: solid;
 	border-right-style: dotted;
 	width: 15%;
 	height: 23.45cm;
+	margin-right: 2cm;
 }
 
 .fila-troquel-chica
@@ -69,10 +71,10 @@
 {
 	
 	float:left;
-	width: 84.8%;
+	width: 79%;
 	height: 23.45cm;
-	border : 0.1cm;
-	 border-left-style: solid;
+	border : 2px;
+	 border-style: solid;
 }
 	
 .container-titulo
@@ -153,7 +155,7 @@
 
 .texto-alumno
 {
-	margin: 0 0 0 5px;
+	margin: 0 0 0 10px;
 	text-align:left; 
 	font-size: 1.7rem;	
 }
@@ -215,7 +217,7 @@
 
 .texto-concepto
 {
-	margin: 0 0 0 5px;
+	margin: 0 0 0 10px;
 	text-align:left; 
 	font-size: 2rem;	
 }
@@ -258,7 +260,7 @@
 
 .texto-informacion
 {
-	margin-left: 3px;
+	margin-left: 10px;
 	text-align:left; 
 	font-size: 1.1rem;
 }

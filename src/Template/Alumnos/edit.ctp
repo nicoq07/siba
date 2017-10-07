@@ -135,8 +135,11 @@ function buscarDisciplinas()
 			 ?>
 	         </div>
 	         <div class="col-lg-10">
-	        <?php
-	        echo $this->Form->control('fecha_nacimiento', ['label' => 'Fecha de nacimiento', 'empty' => false, 'dateFormat' => 'DMY', 'minYear' => date('Y') - 70, 'maxYear' => date('Y') - 5 ]);
+	       <?php
+	        $this->Form->templates(
+	        		['dateWidget' => '{{day}}{{month}}{{year}}']
+	        		);
+	        echo $this->Form->control('fecha_nacimiento', ['label' => 'Fecha de nacimiento', 'empty' => false, 'type' => 'date' ,'dateFormat' => 'DMY', 'minYear' => date('Y') - 70, 'maxYear' => date('Y') - 5 ]);
 	        ?>
 	        </div>
 	       
