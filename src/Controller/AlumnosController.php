@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Http\Response;
-use Cake\Datasource\ConnectionManager;
+use Cake\Mailer\Email;
 
 /**
  * Alumnos Controller
@@ -656,7 +656,8 @@ class AlumnosController extends AppController
 		//print $array;
 		exit;
 	}
-	public function getDiaHorario() {
+	public function getDiaHorario() 
+	{
 		$this->autoRender = false; // We don't render a view in this example
 		$disciplina_id = $this->request->getQuery('idDisciplina');
 		$profesor_id= $this->request->getQuery('profesor_id');
@@ -683,6 +684,38 @@ class AlumnosController extends AppController
 		
 		//print $array;
 		exit;
+	}
+	
+	public function quienCumpleHoy()
+	{
+		$dia = date('d');
+		$mes = date('m');
+		$alumnos = $this->Alumnos->find('all')
+		->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
+		->orderAsc('nombre')
+		->toArray();
+		
+		foreach ($alumnos as $alumno)
+		{
+			
+			if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
+			{
+			$email = new Email('nico');
+			$email
+				->setEmailFormat('html')
+				->setTo($alumno->email)
+				->setSubject("Felíz cumpleaños !!!")
+				->setLayout('userTemplate')
+				->setTemplate('cumple')
+				->setViewVars(['alumno' => $alumno]);
+				$email->send('');
+			
+			}
+		}
+		
+		
+		
+		
 	}
 	
 }

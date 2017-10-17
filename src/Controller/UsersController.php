@@ -166,7 +166,6 @@ class UsersController extends AppController
     			{
     				return $this->redirect($this->Auth->redirectUrl());
     			}
-    			//
     		}
     		else
     		{
@@ -214,6 +213,14 @@ class UsersController extends AppController
     	->where(['resuelta' => false])
     	->toArray();
     	;
+    	
+    	$tareas = TableRegistry::get("GestorTareas")->find('all')
+    	->where(['resuelta' => false])
+    	->toArray();
+    	;
+    	
+    	$alumnos = new AlumnosController;
+    	$alumnos->quienCumpleHoy();
     	
     	$this->set(compact('user','notificaciones','tareas'));
     }
