@@ -688,34 +688,58 @@ class AlumnosController extends AppController
 	
 	public function quienCumpleHoy()
 	{
-		$dia = date('d');
-		$mes = date('m');
-		$alumnos = $this->Alumnos->find('all')
-		->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
-		->orderAsc('nombre')
-		->toArray();
 		
-		foreach ($alumnos as $alumno)
+		$historialHoy = TableRegistry::get('HistorialMails')->find('all')->where(['dia' => date('Y-m-d')]);
+		if ($historialHoy->count() == 0)
 		{
-			
-			if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
-			{
-			$email = new Email('nico');
-			$email
-				->setEmailFormat('html')
-				->setTo($alumno->email)
-				->setSubject("Felíz cumpleaños !!!")
-				->setLayout('userTemplate')
-				->setTemplate('cumple')
-				->setViewVars(['alumno' => $alumno]);
-				$email->send('');
-			
-			}
+				$dia = date('d');
+				$mes = date('m');
+				$alumnos = $this->Alumnos->find('all')
+				->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
+				->orderAsc('nombre')
+				->toArray();
+				
+				$cantMailEnviados = 0;
+				$cantMailNoEnviados = 0;
+				
+				foreach ($alumnos as $alumno)
+				{
+					if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
+					{
+					$email = new Email('nico');
+					$email
+						->setEmailFormat('html')
+						->setTo($alumno->email)
+						->setSubject("Felíz cumpleaños !!!")
+						->setLayout('userTemplate')
+						->setTemplate('cumple')
+						->setViewVars(['alumno' => $alumno]);
+						if ($email->send(''))
+						{
+							$cantMailEnviados++;
+						}
+					}
+					else {
+						$cantMailNoEnviados++;
+						$this->Flash->error('Por favor revise el mail de '. $alumno->presentacion);
+					}
+				}
+				
+				if ($cantMailEnviados > 1)
+				{
+					$historial = TableRegistry::get('HistorialMails')->newEntity();
+					$historial->set([
+							'dia' => date('Y-m-d'),
+							'enviado' => true,
+							'cantidad' => $cantMailEnviados
+					]);
+					if (!TableRegistry::get('HistorialMails')->save($historial))
+					{
+						$this->Flash->error('No se puedo guardar el historial de mails!');
+					}
+				}
+				$this->Flash->set("Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados");
 		}
-		
-		
-		
-		
 	}
 	
 }

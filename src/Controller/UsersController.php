@@ -219,8 +219,6 @@ class UsersController extends AppController
     	->toArray();
     	;
     	
-    	$alumnos = new AlumnosController;
-    	$alumnos->quienCumpleHoy();
     	
     	$this->set(compact('user','notificaciones','tareas'));
     }
@@ -283,6 +281,20 @@ class UsersController extends AppController
     	
     	return $this->redirect(['action' => 'index']);
     	//
+    }
+    
+    public function ajaxEnviarMails()
+    {
+    	$this->autoRender = false;
+    	$parametro = TableRegistry::get("Parametros")->find('all')
+    	->where(['nombre' => ENVIAR_MAIL_AUTOMATICAMENTE]);
+    	
+    	if ($parametro->first()->get('valor'))
+    	{
+    		$alumnos = new AlumnosController;
+    		$alumnos->quienCumpleHoy();
+    	}
+    	exit;
     }
     
 }

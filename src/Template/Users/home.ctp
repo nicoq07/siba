@@ -1,4 +1,25 @@
 <script type="text/javascript">
+$(window).on('load', function() {
+	jsShowWindowLoad() ;
+	 $.ajax({
+ url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Users','action'=>'ajaxEnviarMails'));?>",
+
+		 
+      type: "get",
+      data: {},
+      success: function(data) {
+    	  jsRemoveWindowLoad();
+      },
+      error: function(){
+    	  jsRemoveWindowLoad();
+      },
+      complete: function() {
+    	  jsRemoveWindowLoad();
+      }
+  });
+	
+	});
+
 $(document).ready(parpadearHome);
 function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) 
 	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
@@ -41,3 +62,6 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 	</div>
 	<?php } }?>
 </div>
+<?php echo $this->Html->css('switch');?>
+
+<?php echo $this->Html->script('modal');?>
