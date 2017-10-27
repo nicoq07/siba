@@ -29,7 +29,7 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	             <li><?= $this->Html->link(h('Alta'), ['controller' =>'alumnos', 'action' => 'add']) ?></li>
 	             <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'alumnos', 'action' => 'index']) ?></li>
 	          	 <li><?= $this->Html->link(h('Cumpleaños'), ['controller' =>'alumnos', 'action' => 'listadoCumple'],['target' => '_blank' ]) ?></li>
-	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'add'],['target' => '_blank' ]) ?></li>
+	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'index']) ?></li>
 	          
 	          </ul>
 	        </li>    

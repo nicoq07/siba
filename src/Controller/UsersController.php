@@ -166,7 +166,6 @@ class UsersController extends AppController
     			{
     				return $this->redirect($this->Auth->redirectUrl());
     			}
-    			//
     		}
     		else
     		{
@@ -214,6 +213,12 @@ class UsersController extends AppController
     	->where(['resuelta' => false])
     	->toArray();
     	;
+    	
+    	$tareas = TableRegistry::get("GestorTareas")->find('all')
+    	->where(['resuelta' => false])
+    	->toArray();
+    	;
+    	
     	
     	$this->set(compact('user','notificaciones','tareas'));
     }
@@ -277,5 +282,6 @@ class UsersController extends AppController
     	return $this->redirect(['action' => 'index']);
     	//
     }
+    
     
 }

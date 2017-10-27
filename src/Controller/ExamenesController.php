@@ -25,11 +25,12 @@ class ExamenesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['ClasesAlumnos' => ['Alumnos']]
+            'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas']]]
         ];
         $examenes = $this->paginate($this->Examenes);
-
-        $this->set(compact('examenes'));
+        $clases = $this->Examenes->ClasesAlumnos->Clases->find('list');
+        
+        $this->set(compact('examenes','clases'));
         $this->set('_serialize', ['examenes']);
     }
 
@@ -45,7 +46,7 @@ class ExamenesController extends AppController
         $examene = $this->Examenes->get($id, [
             'contain' => ['ClasesAlumnos']
         ]);
-
+	
         $this->set('examene', $examene);
         $this->set('_serialize', ['examene']);
     }
@@ -188,6 +189,52 @@ class ExamenesController extends AppController
     	]);
     	
     }
-
+    public function search()
+    {
+    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			
+    			if (!(empty($this->request->getData()['clases'])))
+    			{
+    				$clase = $this->request->getData()['clases'];
+    				$where2= ["clases.id = $clase"];
+    			}
+    			
+    			$mes= $this->request->getData()['mob']['month'];
+    			$year= $this->request->getData()['year']['year'];
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where1= $where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
+							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
+    				];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('search_key', $palabra);
+    		}
+    	}
+    	
+    	if ($this->request->session()->check('searchCond')) {
+    		$conditions = $this->request->session()->read('searchCond');
+    	} else {
+    		$conditions = null;
+    	}
+    	
+    	$this->paginate = [
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas']]],
+    			'conditions' => $conditions,
+    			'limit' => 20
+    	];
+    	$examenes = $this->paginate($this->Examenes);
+    	$clases = $this->Examenes->ClasesAlumnos->Clases->find('list');
+    	
+    	$this->set(compact('examenes','clases'));
+    	$this->render('/Examenes/index');
+    }
 
 }

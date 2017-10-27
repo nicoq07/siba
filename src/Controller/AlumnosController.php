@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Http\Response;
-use Cake\Datasource\ConnectionManager;
+use Cake\Mailer\Email;
 
 /**
  * Alumnos Controller
@@ -656,7 +656,8 @@ class AlumnosController extends AppController
 		//print $array;
 		exit;
 	}
-	public function getDiaHorario() {
+	public function getDiaHorario() 
+	{
 		$this->autoRender = false; // We don't render a view in this example
 		$disciplina_id = $this->request->getQuery('idDisciplina');
 		$profesor_id= $this->request->getQuery('profesor_id');
@@ -683,6 +684,74 @@ class AlumnosController extends AppController
 		
 		//print $array;
 		exit;
+	}
+	
+	public function ajaxEnviarMails()
+	{
+		$this->autoRender = false;
+		$parametro = TableRegistry::get("Parametros")->find('all')
+		->where(['nombre' => ENVIAR_MAIL_AUTOMATICAMENTE]);
+		if ($parametro->first()->get('valor'))
+		{
+			$historialHoy = TableRegistry::get('HistorialMails')->find('all')->where(['dia' => date('Y-m-d')]);
+			if ($historialHoy->count() == 0)
+			{
+					$dia = date('d');
+					$mes = date('m');
+					$alumnos = $this->Alumnos->find('all')
+					->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
+					->orderAsc('nombre')
+					->toArray();
+					
+					$cantMailEnviados = 0;
+					$cantMailNoEnviados = 0;
+					
+					foreach ($alumnos as $alumno)
+					{
+						if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
+						{
+						$email = new Email('nico');
+						$email
+							->setEmailFormat('html')
+							->setTo($alumno->email)
+							->setSubject("Felíz cumpleaños !!!")
+							->setLayout('userTemplate')
+							->setTemplate('cumple')
+							->setViewVars(['alumno' => $alumno]);
+							if ($email->send(''))
+							{
+								$cantMailEnviados++;
+							}
+						}
+						else {
+							$cantMailNoEnviados++;
+							$return .=' Por favor revise el mail de '. $alumno->presentacion.'  ';
+						}
+					}
+					
+					if ($cantMailEnviados > 0)
+					{
+						$historial = TableRegistry::get('HistorialMails')->newEntity();
+						$historial->set([
+								'dia' => date('Y-m-d'),
+								'enviado' => true,
+								'cantidad' => $cantMailEnviados
+						]);
+						if (!TableRegistry::get('HistorialMails')->save($historial))
+						{
+							$return = 'No se puedo guardar el historial de mails!';
+						}
+					}
+					$return = "Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados";
+					echo $return;
+					exit;
+			}
+			else
+			{
+				echo "Ya se enviaron los mails de Saludos!";
+				exit;
+			}
+		}
 	}
 	
 }

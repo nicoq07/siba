@@ -1,65 +1,71 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Examene[]|\Cake\Collection\CollectionInterface $examenes
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Examene'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Clases Alumnos'), ['controller' => 'ClasesAlumnos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Clases Alumno'), ['controller' => 'ClasesAlumnos', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="examenes index large-9 medium-8 columns content">
-    <h3><?= __('Examenes') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+
+<div class="examenes col-lg-10">
+	<div class="row">
+	<div class="col-lg-12">
+		<h3><?= __('Examenes') ?></h3>
+	</div>
+	<div class="col-lg-3 col-lg-offset-9">
+		  <?= $this->Html->link(__('Nuevo'), ['action' => 'add'],['class' => 'btn-lg btn-success']) ?>
+	</div>
+  	<div class="col-lg-12" style="margin-top: 10px; ">
+  	<?php 
+	if($this->request->session()->read('search_key') != "")
+	{
+		$search_key = $this->request->session()->read('search_key');
+	}
+	else
+	{
+		$search_key = "";
+	}
+	
+	 echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
+	
+  	  <div class="col-lg-3 "> 
+		 <?php
+			echo $this->Form->label('Búsqueda :');
+            echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Alumno o Profesor ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
+          ?>
+	 </div>
+  	 
+	  <div class="col-lg-4" >
+  		 <?php
+  		 echo $this->Form->control('clases',['empty' => true ,  'onchange'=>'document.getElementById("frmIndex").submit()'])
+          ?>
+         	
+	 </div>
+
+	 <?php echo $this->Form->end(); ?>
+  	 </div>
+	
+    
+    <table>
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('clase_alumno_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('alumno_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('clase_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('periodo') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('aprobado') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('calificacion') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('audioperceptiva') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('practica_ensamble') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('trabajos_practicos') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($examenes as $examene): ?>
             <tr>
-                <td><?= $this->Number->format($examene->id) ?></td>
-                <td><?= $examene->has('clases_alumno') ? $this->Html->link($examene->clases_alumno->id, ['controller' => 'ClasesAlumnos', 'action' => 'view', $examene->clases_alumno->id]) : '' ?></td>
+                <td><?= $examene->clases_alumno->alumno->presentacion ?></td>
+                <td><?= $examene->clases_alumno->clase->disciplina->descripcion?></td>
                 <td><?= h($examene->periodo) ?></td>
-                <td><?= $this->Number->format($examene->aprobado) ?></td>
-                <td><?= h($examene->calificacion) ?></td>
-                <td><?= h($examene->audioperceptiva) ?></td>
-                <td><?= h($examene->practica_ensamble) ?></td>
-                <td><?= h($examene->trabajos_practicos) ?></td>
+                <td><?= $examene->aprobado ? "Sí" : "No" ?></td>
                 <td><?= h($examene->created) ?></td>
-                <td><?= h($examene->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $examene->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $examene->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $examene->id], ['confirm' => __('Are you sure you want to delete # {0}?', $examene->id)]) ?>
+                    <?= $this->Html->link(__('Reimprimir'), ['action' => 'examen_pdf', $examene->id, '_ext' => 'pdf'],['class' => 'btn-sm btn-info','target' => '_blank']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+   <?php 
+  echo  $this->element('footer');
+   ?>
+   </div>
 </div>
