@@ -1,17 +1,23 @@
 <script type="text/javascript">
 $(window).on('load', function() {
-	jsShowWindowLoad() ;
+	jsShowWindowLoad("Enviando saludos de cumpleaños! Espere por favor.") ;
 	 $.ajax({
- url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Users','action'=>'ajaxEnviarMails'));?>",
+ url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'ajaxEnviarMails'));?>",
 
 		 
       type: "get",
       data: {},
       success: function(data) {
     	  jsRemoveWindowLoad();
+    	  if (data)
+    	  {
+    		  alert(data);
+    	  }
+    	 
       },
       error: function(){
     	  jsRemoveWindowLoad();
+    	  console.log(data);
       },
       complete: function() {
     	  jsRemoveWindowLoad();

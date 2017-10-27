@@ -283,18 +283,5 @@ class UsersController extends AppController
     	//
     }
     
-    public function ajaxEnviarMails()
-    {
-    	$this->autoRender = false;
-    	$parametro = TableRegistry::get("Parametros")->find('all')
-    	->where(['nombre' => ENVIAR_MAIL_AUTOMATICAMENTE]);
-    	
-    	if ($parametro->first()->get('valor'))
-    	{
-    		$alumnos = new AlumnosController;
-    		$alumnos->quienCumpleHoy();
-    	}
-    	exit;
-    }
     
 }

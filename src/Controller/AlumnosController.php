@@ -686,59 +686,71 @@ class AlumnosController extends AppController
 		exit;
 	}
 	
-	public function quienCumpleHoy()
+	public function ajaxEnviarMails()
 	{
-		
-		$historialHoy = TableRegistry::get('HistorialMails')->find('all')->where(['dia' => date('Y-m-d')]);
-		if ($historialHoy->count() == 0)
+		$this->autoRender = false;
+		$parametro = TableRegistry::get("Parametros")->find('all')
+		->where(['nombre' => ENVIAR_MAIL_AUTOMATICAMENTE]);
+		if ($parametro->first()->get('valor'))
 		{
-				$dia = date('d');
-				$mes = date('m');
-				$alumnos = $this->Alumnos->find('all')
-				->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
-				->orderAsc('nombre')
-				->toArray();
-				
-				$cantMailEnviados = 0;
-				$cantMailNoEnviados = 0;
-				
-				foreach ($alumnos as $alumno)
-				{
-					if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
+			$historialHoy = TableRegistry::get('HistorialMails')->find('all')->where(['dia' => date('Y-m-d')]);
+			if ($historialHoy->count() == 0)
+			{
+					$dia = date('d');
+					$mes = date('m');
+					$alumnos = $this->Alumnos->find('all')
+					->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
+					->orderAsc('nombre')
+					->toArray();
+					
+					$cantMailEnviados = 0;
+					$cantMailNoEnviados = 0;
+					
+					foreach ($alumnos as $alumno)
 					{
-					$email = new Email('nico');
-					$email
-						->setEmailFormat('html')
-						->setTo($alumno->email)
-						->setSubject("Felíz cumpleaños !!!")
-						->setLayout('userTemplate')
-						->setTemplate('cumple')
-						->setViewVars(['alumno' => $alumno]);
-						if ($email->send(''))
+						if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
 						{
-							$cantMailEnviados++;
+						$email = new Email('nico');
+						$email
+							->setEmailFormat('html')
+							->setTo($alumno->email)
+							->setSubject("Felíz cumpleaños !!!")
+							->setLayout('userTemplate')
+							->setTemplate('cumple')
+							->setViewVars(['alumno' => $alumno]);
+							if ($email->send(''))
+							{
+								$cantMailEnviados++;
+							}
+						}
+						else {
+							$cantMailNoEnviados++;
+							$return .=' Por favor revise el mail de '. $alumno->presentacion.'  ';
 						}
 					}
-					else {
-						$cantMailNoEnviados++;
-						$this->Flash->error('Por favor revise el mail de '. $alumno->presentacion);
-					}
-				}
-				
-				if ($cantMailEnviados > 1)
-				{
-					$historial = TableRegistry::get('HistorialMails')->newEntity();
-					$historial->set([
-							'dia' => date('Y-m-d'),
-							'enviado' => true,
-							'cantidad' => $cantMailEnviados
-					]);
-					if (!TableRegistry::get('HistorialMails')->save($historial))
+					
+					if ($cantMailEnviados > 0)
 					{
-						$this->Flash->error('No se puedo guardar el historial de mails!');
+						$historial = TableRegistry::get('HistorialMails')->newEntity();
+						$historial->set([
+								'dia' => date('Y-m-d'),
+								'enviado' => true,
+								'cantidad' => $cantMailEnviados
+						]);
+						if (!TableRegistry::get('HistorialMails')->save($historial))
+						{
+							$return = 'No se puedo guardar el historial de mails!';
+						}
 					}
-				}
-				$this->Flash->set("Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados");
+					$return = "Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados";
+					echo $return;
+					exit;
+			}
+			else
+			{
+				echo "Ya se enviaron los mails de Saludos!";
+				exit;
+			}
 		}
 	}
 	
