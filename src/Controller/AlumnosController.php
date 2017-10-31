@@ -451,7 +451,7 @@ class AlumnosController extends AppController
     		$mes = $this->request->getData('mob')['month'];
     		if ($mes)
     		{
-    			return $this->redirect(['action' => 'listado_cumple_pdf', $mes,$activos,'_ext' => 'pdf']);
+    			return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xlsx']);
     			
     		}
     	}
@@ -489,6 +489,90 @@ class AlumnosController extends AppController
     		$this->prepararPDFListado($month,$hoja,$ori );
     		$this->set(['alumnos','month'],[$alumnos,$nombreMes]);
     		
+    }
+    
+    public function listadoCumpleExcel($mes,$activos)
+    {
+    	$this->autoRender = false;
+    	$where = null;
+    	if($activos)
+    	{
+    		$where=['active' => $activos];
+    	}
+    	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
+    	$alumnos = $this->Alumnos->find('all')
+    	->where([
+    			$where,
+    			'MONTH(fecha_nacimiento)' => "$mes"
+    	])
+    	->select(['nombre','apellido','fecha_nacimiento'])
+    	->orderAsc('DAY(fecha_nacimiento)')
+    	->toArray();
+    	
+    	if(empty($alumnos))
+    	{
+    		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
+    		return $this->redirect(['action' => 'listado_cumple']);
+    	}
+    	
+    	$month =  __(date('F',strtotime("01-$mes-2000")));
+    	
+    	$objPHPExcel = new \PHPExcel();
+    	ini_set('memory_limit', '-1');
+    	$objPHPExcel->
+    	getProperties()
+    	->setCreator($this->current_user['nombre']. " ".$this->current_user['apellido'])
+    	->setTitle("Cumpleanos $month");
+    	$styleCells = array(
+    			'borders' => array(
+    					'allborders' => array(
+    							'style' => \PHPExcel_Style_Border::BORDER_THIN
+    					)
+    			)
+    	);
+    	$objPHPExcel->setActiveSheetIndex(0)
+    	->setCellValue('A1', 'Nombre y Apellido')
+    	->setCellValue('B1', 'Día');
+    	$_row = 1;
+    	foreach ($alumnos as $alumno)
+    	{
+    		$_row = $_row +1;
+    		$objPHPExcel->setActiveSheetIndex(0)
+    		->setCellValue('A'.$_row,h($alumno->presentacion))
+    		->setCellValue('B'.$_row,h($alumno->fecha_nacimiento->format('j')));
+    		// Le aplico a todas las celdas el formato de borde.
+    		$objPHPExcel->getActiveSheet()->getStyle('A'.$_row)->applyFromArray($styleCells);
+    		$objPHPExcel->getActiveSheet()->getStyle('B'.$_row)->applyFromArray($styleCells);
+    	}
+    	// Ajusto el ancho de las columnas
+    	foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+    		$objPHPExcel->getActiveSheet()
+    		->getColumnDimension($col)
+    		->setAutoSize(true);
+    	}
+    	//
+    	// Seteo el formato por default de los bordes para las celdas del encabezado y las pongo en negrita
+    	$styleHeader = array(
+    			'borders' => array(
+    					'allborders' => array(
+    							'style' => \PHPExcel_Style_Border::BORDER_THIN
+    					)
+    			),
+    			'font' => array(
+    					'bold' => true
+    			)
+    	);
+    	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleHeader);
+    	$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($styleHeader);
+    	// Seteo el nombre del archivo
+    	$_file_name_aux = "Cumple mes de $month";
+    	header('Content-Type: application/vnd.ms-excel');
+    	header('Content-Disposition: attachment;filename='.$_file_name_aux.'.xlsx');
+//     	header('Cache-Control: max-age=0');
+    	$objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+    	$objWriter->save('php://output');
+    $this->set(compact('archivo','archivo'));
+    	
     }
     
     public function fichaInterna($id)
@@ -696,55 +780,113 @@ class AlumnosController extends AppController
 			$historialHoy = TableRegistry::get('HistorialMails')->find('all')->where(['dia' => date('Y-m-d')]);
 			if ($historialHoy->count() == 0)
 			{
-					$dia = date('d');
-					$mes = date('m');
-					$alumnos = $this->Alumnos->find('all')
-					->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes"])
-					->orderAsc('nombre')
-					->toArray();
-					
-					$cantMailEnviados = 0;
-					$cantMailNoEnviados = 0;
-					
-					foreach ($alumnos as $alumno)
+				$return = null;
+				$dia = date('d');
+				$mes = date('m');
+				$alumnos = $this->Alumnos->find('all')
+				->where(['DAY(fecha_nacimiento)' => "$dia", 'MONTH(fecha_nacimiento)' => "$mes",'active' => true ])
+				->orderAsc('nombre')
+				->toArray();
+				
+				$cantMailEnviados = 0;
+				$cantMailNoEnviados = 0;
+				
+				foreach ($alumnos as $alumno)
+				{
+					if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
 					{
-						if (filter_var($alumno->email, FILTER_VALIDATE_EMAIL))
-						{
-						$email = new Email('nico');
+						$nombre = $alumno->nombre;
+						$email = new Email('iba');
 						$email
-							->setEmailFormat('html')
-							->setTo($alumno->email)
-							->setSubject("Felíz cumpleaños !!!")
-							->setLayout('userTemplate')
-							->setTemplate('cumple')
-							->setViewVars(['alumno' => $alumno]);
-							if ($email->send(''))
-							{
-								$cantMailEnviados++;
-							}
-						}
-						else {
-							$cantMailNoEnviados++;
-							$return .=' Por favor revise el mail de '. $alumno->presentacion.'  ';
-						}
-					}
-					
-					if ($cantMailEnviados > 0)
-					{
-						$historial = TableRegistry::get('HistorialMails')->newEntity();
-						$historial->set([
-								'dia' => date('Y-m-d'),
-								'enviado' => true,
-								'cantidad' => $cantMailEnviados
-						]);
-						if (!TableRegistry::get('HistorialMails')->save($historial))
+						->setEmailFormat('html')
+						->setTo($alumno->email)
+						->setSubject("Felíz cumpleaños $nombre!!!")
+						->setLayout('default')
+						->setTemplate('cumple')
+						
+						->setAttachments([
+								'cumple.png' => [
+										'file' => WWW_ROOT.'img'.DS.'cumple.png',
+										'mimetype' => 'image/png',
+										'contentId' => '4422'
+								]
+						])
+						->setViewVars(['cid' => 4422]);
+						if ($email->send(''))
 						{
-							$return = 'No se puedo guardar el historial de mails!';
+							$cantMailEnviados++;
 						}
 					}
-					$return = "Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados";
-					echo $return;
-					exit;
+					elseif(filter_var($alumno->email_madre, FILTER_VALIDATE_EMAIL))
+					{
+						$nombre = $alumno->nombre;
+						$email = new Email('iba');
+						$email
+						->setEmailFormat('html')
+						->setTo($alumno->email_madre)
+						->setSubject("Felíz cumpleaños $nombre!!!")
+						->setLayout('default')
+						->setTemplate('cumple')
+						
+						->setAttachments([
+								'cumple.png' => [
+										'file' => WWW_ROOT.'img'.DS.'cumple.png',
+										'mimetype' => 'image/png',
+										'contentId' => '4422'
+								]
+						])
+						->setViewVars(['cid' => 4422]);
+						if ($email->send(''))
+						{
+							$cantMailEnviados++;
+						}
+					}
+					elseif(filter_var($alumno->email_padre, FILTER_VALIDATE_EMAIL))
+					{
+						$nombre = $alumno->nombre;
+						$email = new Email('iba');
+						$email
+						->setEmailFormat('html')
+						->setTo($alumno->email_padre)
+						->setSubject("Felíz cumpleaños $nombre!!!")
+						->setLayout('default')
+						->setTemplate('cumple')
+						
+						->setAttachments([
+								'cumple.png' => [
+										'file' => WWW_ROOT.'img'.DS.'cumple.png',
+										'mimetype' => 'image/png',
+										'contentId' => '4422'
+								]
+						])
+						->setViewVars(['cid' => 4422]);
+						if ($email->send(''))
+						{
+							$cantMailEnviados++;
+						}
+					}
+					else {
+						$cantMailNoEnviados++;
+						$return .=' Por favor revise el mail de '. $alumno->presentacion.'  ';
+					}
+				}
+				
+				if ($cantMailEnviados > 0)
+				{
+					$historial = TableRegistry::get('HistorialMails')->newEntity();
+					$historial->set([
+							'dia' => date('Y-m-d'),
+							'enviado' => true,
+							'cantidad' => $cantMailEnviados
+					]);
+					if (!TableRegistry::get('HistorialMails')->save($historial))
+					{
+						$return = 'No se puedo guardar el historial de mails!';
+					}
+				}
+				$return = "Se enviaron $cantMailEnviados mails. No pudieron enviarse $cantMailNoEnviados";
+				echo $return;
+				exit;
 			}
 			else
 			{
@@ -753,5 +895,6 @@ class AlumnosController extends AppController
 			}
 		}
 	}
+	
 	
 }
