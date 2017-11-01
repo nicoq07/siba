@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "94949738f2ba6b162d201754e6450960",
+    "content-hash": "ded25093c9eb210b572144819cc67bde",
     "packages": [
         {
             "name": "aura/intl",
@@ -325,6 +325,54 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2017-03-21T13:48:47+00:00"
+        },
+        {
+            "name": "dakota/cake-excel",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dakota/CakeExcel.git",
+                "reference": "2d6f947e731802738a66c170b0fd78d0fe5d0ab0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dakota/CakeExcel/zipball/2d6f947e731802738a66c170b0fd78d0fe5d0ab0",
+                "reference": "2d6f947e731802738a66c170b0fd78d0fe5d0ab0",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.1",
+                "php": ">=5.4.16",
+                "phpoffice/phpexcel": "~1.8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeExcel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Walther Lalk",
+                    "email": "emailme@waltherlalk.com"
+                }
+            ],
+            "description": "CakePHP excel generator",
+            "homepage": "https://github.com/dakota/CakeExcel",
+            "keywords": [
+                "PHPExcel",
+                "cakephp",
+                "dakota",
+                "excel"
+            ],
+            "time": "2016-07-18T08:37:03+00:00"
         },
         {
             "name": "dereuromark/cakephp-ajax",

@@ -5,5 +5,6 @@
 		echo $this->Form->radio('activos', [false => 'Todos', true => 'Sólo activos']);
 	  ?>
 	  <?= $this->Form->button(__('Descargar')) ?>
-    <?= $this->Form->end() ?>
+    <?= $this->Form->end();  ?>
+   
 </div>

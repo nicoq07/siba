@@ -451,7 +451,7 @@ class AlumnosController extends AppController
     		$mes = $this->request->getData('mob')['month'];
     		if ($mes)
     		{
-    			return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xls']);
+    			return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xlsx']);
     			
     		}
     	}
@@ -516,13 +516,7 @@ class AlumnosController extends AppController
     	}
     	
     	$month =  __(date('F',strtotime("01-$mes-2000")));
-    	
-    	$this->set(compact('alumnos'));
-    	$this->viewBuilder()->setLayout('xls/default');
-    	$this->viewBuilder()->setTemplate('xls/cumple');
-    	$this->RequestHandler->respondAs('xlsx');
-    	$this->render();
-
+    	$this->set(compact('alumnos','month'));
     	
     }
     

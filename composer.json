@@ -15,7 +15,8 @@
         "phpoffice/phpexcel": "^1.8",
         "friendsofcake/CakePdf": "^3.2",
         "cakephp/localized": "^3.3",
-        "dereuromark/cakephp-ajax": "^1.1"
+        "dereuromark/cakephp-ajax": "^1.1",
+        "dakota/cake-excel": "^2.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
