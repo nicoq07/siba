@@ -451,7 +451,84 @@ class AlumnosController extends AppController
     		$mes = $this->request->getData('mob')['month'];
     		if ($mes)
     		{
-    			return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xlsx']);
+    			require_once (ROOT.DS.'vendor'.DS.'phpoffice'.DS.'phpexcel'.DS.'Classes'.DS.'PHPExcel.php');
+    							$objPHPExcel = new \PHPExcel();
+    							ini_set('memory_limit', '-1');
+    							$objPHPExcel->
+    							getProperties()
+    							->setCreator($this->current_user['nombre']. " ".$this->current_user['apellido'])
+    							->setTitle("Reporte");
+    							
+    							
+    							// Seteo el formato por default de los bordes para las celdas
+    							$styleCells = array(
+    									'borders' => array(
+    											'allborders' => array(
+    													'style' => \PHPExcel_Style_Border::BORDER_THIN
+    											)
+    									)
+    							);
+    							
+    							$objPHPExcel->setActiveSheetIndex(0)
+    							->setCellValue('A1', 'Nombre y Apellido')
+    							->setCellValue('B1', 'DNI')
+    							->setCellValue('C1', 'Producto')
+    							->setCellValue('D1', 'Numero Producto')
+    							->setCellValue('E1', 'Capital Inicial')
+    							->setCellValue('F1', 'Total')
+    							->setCellValue('G1', 'Estado')
+    							->setCellValue('H1', 'Fecha Mora')
+    							->setCellValue('I1', 'Ultima Gestion')
+    							->setCellValue('J1', 'Fecha Gestion')
+    							->setCellValue('K1', 'Operador');
+    							
+    							
+    							$_row = 1;
+    							
+    							
+    							
+    							// Ajusto el ancho de las columnas
+    							foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+    								$objPHPExcel->getActiveSheet()
+    								->getColumnDimension($col)
+    								->setAutoSize(true);
+    							}
+    							
+    							//
+    							// Seteo el formato por default de los bordes para las celdas del encabezado y las pongo en negrita
+    							$styleHeader = array(
+    									'borders' => array(
+    											'allborders' => array(
+    													'style' => \PHPExcel_Style_Border::BORDER_THIN
+    											)
+    									),
+    									'font' => array(
+    											'bold' => true
+    									)
+    							);
+    							$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($styleHeader);
+    							$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($styleHeader);
+    							
+    							
+    							
+    							// Seteo el nombre del archivo
+    							
+    							$_file_name_aux = "Reporte ". date('d-m-Y');
+    							
+    							$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    							$uniqid = uniqid();
+    							debug($objWriter->save('./'.$uniqid . '.xls'));
+    						//	redirect(base_url('/assets/files/Gastos_' . $uniqid . '.xls'));
+    			//return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xlsx']);
     			
     		}
     	}
@@ -462,6 +539,7 @@ class AlumnosController extends AppController
     
     public function listadoCumplePdf($mes,$activos)
     {
+   
     	$where = null;
     	if($activos)
     	{
@@ -493,29 +571,31 @@ class AlumnosController extends AppController
     
     public function listadoCumpleExcel($mes,$activos)
     {
-    	
-    	$where = null;
+    	$this->autoRender=false;
+     	$where = null;
     	if($activos)
-    	{
-    		$where=['active' => $activos];
+     	{
+     		$where=['active' => $activos];
     	}
-    	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
-    	$alumnos = $this->Alumnos->find('all')
-    	->where([
-    			$where,
-    			'MONTH(fecha_nacimiento)' => "$mes"
+     	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
+     	$alumnos = $this->Alumnos->find('all')
+     	->where([
+     			$where,
+     			'MONTH(fecha_nacimiento)' => "$mes"
     	])
-    	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
-    	->orderAsc('DAY(fecha_nacimiento)')
-    	;
-    	
+     	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
+     	->orderAsc('DAY(fecha_nacimiento)')
+     	;
     	if(empty($alumnos))
-    	{
-    		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
-    		return $this->redirect(['action' => 'listado_cumple']);
+    	     	{
+     		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
+     		return $this->redirect(['action' => 'listado_cumple']);
     	}
     	
-    	$month =  __(date('F',strtotime("01-$mes-2000")));
+     	$month =  __(date('F',strtotime("01-$mes-2000")));
+    
+    	
+    	
     	$this->set(compact('alumnos','month'));
     	
     }
