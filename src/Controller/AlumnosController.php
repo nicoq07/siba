@@ -843,6 +843,7 @@ class AlumnosController extends AppController
 	}
 	public function exportarCabecera()
 	{
+		$this->autoRender = false;
 		$objPHPExcel = new \PHPExcel();
 		ini_set('memory_limit', '-1');
 		$objPHPExcel->
