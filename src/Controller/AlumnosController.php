@@ -529,32 +529,11 @@ class AlumnosController extends AppController
 	ini_set('memory_limit', '-1');
 	$objPHPExcel->
 	getProperties()
-	->setTitle("cabecera");
+	->setTitle(utf8_decode("hola"));
 	
 	
 	$objPHPExcel->setActiveSheetIndex(0)
-	->setCellValue('A1', 'nombre')
-	->setCellValue('B1', 'dni')
-	->setCellValue('C1', 'domicilio')
-	->setCellValue('D1', 'provincia')
-	->setCellValue('E1', 'localidad')
-	->setCellValue('F1', 'laboral')
-	->setCellValue('G1', 'cantidad')
-	->setCellValue('H1', 'categoria')
-	->setCellValue('I1', 'producto')
-	->setCellValue('J1', 'numero_producto')
-	->setCellValue('K1', 'fecha_mora')
-	->setCellValue('L1', 'dias_mora')
-	->setCellValue('M1', 'capital_inicial')
-	->setCellValue('N1', 'total')
-	->setCellValue('O1', 'asignado')
-	->setCellValue('P1', 'telefono')
-	->setCellValue('Q1', 'telefono')
-	->setCellValue('R1', 'telefono')
-	->setCellValue('S1', 'telefono')
-	->setCellValue('T1', 'telefono')
-	->setCellValue('U1', 'telefono')
-	->setCellValue('V1', 'telefono');
+	->setCellValue('A1', utf8_decode('hola'));
 	
 	foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col)
 	{
