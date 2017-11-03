@@ -894,7 +894,7 @@ class AlumnosController extends AppController
 		
 		$objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
 		$objWriter->save('php://output');
-		return;
+		return $this->redirect($this->referer());
 		
 	}
 	
