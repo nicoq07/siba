@@ -522,43 +522,117 @@ class AlumnosController extends AppController
 //      	$this->viewBuilder()->setLayout('default');
 //      	$this->viewBuilder()->setTemplate('listado_cumple_excel');
 //      	$this->render();
-$fileName = "cumple ".$month.".xls";
-//$fileName = "bookreport_".date("d-m-y:h:s").".csv";
-$headerRow = array("Nombre", "Fecha", "correo", "correomadre", "correopadre");
-$data = array();
-foreach ($alumnos as $alumno)
-{
-	$aux = array(h($alumno->presentacion),h($alumno->fecha_nacimiento->format('j')),h($alumno->email),h($alumno->email_madre),h($alumno->email_padre));
-	array_push($data,$aux);
-// 	
-// 	$this->PhpExcel->setActiveSheetIndex(0)
-// 	->setCellValue('A'.$_row,h($alumno->presentacion))
-// 	->setCellValue('B'.$_row,h($alumno->fecha_nacimiento->format('j')))
-// 	->setCellValue('C'.$_row,h($alumno->email))
-// 	->setCellValue('D'.$_row,h($alumno->email_madre))
-// 	->setCellValue('E'.$_row,h($alumno->email_padre))
-// 	;
-// 	// Le aplico a todas las celdas el formato de borde.
-// 	$this->PhpExcel->getActiveSheet()->getStyle('A'.$_row)->applyFromArray($styleCells);
-// 	$this->PhpExcel->getActiveSheet()->getStyle('B'.$_row)->applyFromArray($styleCells);
-// 	$this->PhpExcel->getActiveSheet()->getStyle('C'.$_row)->applyFromArray($styleCells);
-// 	$this->PhpExcel->getActiveSheet()->getStyle('D'.$_row)->applyFromArray($styleCells);
-// 	$this->PhpExcel->getActiveSheet()->getStyle('E'.$_row)->applyFromArray($styleCells);
+// $fileName = "cumple ".$month.".xls";
+// //$fileName = "bookreport_".date("d-m-y:h:s").".csv";
+// $headerRow = array("Nombre", "Fecha", "correo", "correomadre", "correopadre");
+// $data = array();
+// foreach ($alumnos as $alumno)
+// {
+// 	$aux = array(h($alumno->presentacion),h($alumno->fecha_nacimiento->format('j')),h($alumno->email),h($alumno->email_madre),h($alumno->email_padre));
+// 	array_push($data,$aux);
+// }
+
+// ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
+// $fileContent = implode("\t ", $headerRow)."\n";
+
+// foreach($data as $result) {
+// 	$fileContent .=  implode("\t ", $result)."\n";
+// }
+
+// header('Content-type: application/ms-excel'); /// you can set csv format
+// header('Content-Disposition: attachment; filename='.$fileName);
+// echo $fileContent;
+
+// exit;
+
+
+$objPHPExcel = new \PHPExcel();
+
+$objPHPExcel->
+getProperties()
+->setCreator($this->current_user['nombre']. " ".$this->current_user['apellido'])
+->setTitle("Reporte");
+
+
+// Seteo el formato por default de los bordes para las celdas
+$styleCells = array(
+		'borders' => array(
+				'allborders' => array(
+						'style' => \PHPExcel_Style_Border::BORDER_THIN
+				)
+		)
+);
+
+$objPHPExcel->setActiveSheetIndex(0)
+->setCellValue('A1', 'Nombre y Apellido')
+->setCellValue('B1', 'DNI')
+->setCellValue('C1', 'Producto')
+->setCellValue('D1', 'Numero Producto')
+->setCellValue('E1', 'Capital Inicial')
+->setCellValue('F1', 'Total')
+->setCellValue('G1', 'Estado')
+->setCellValue('H1', 'Ultima Gestion')
+->setCellValue('I1', 'Fecha Gestion')
+->setCellValue('J1', 'Operador');
+
+
+$_row = 1;
+
+
+
+// Ajusto el ancho de las columnas
+foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col) {
+	$objPHPExcel->getActiveSheet()
+	->getColumnDimension($col)
+	->setAutoSize(true);
 }
 
+    
+    //
+    // Seteo el formato por default de los bordes para las celdas del encabezado y las pongo en negrita
+    $styleHeader = array(
+    		'borders' => array(
+    				'allborders' => array(
+    						'style' => \PHPExcel_Style_Border::BORDER_THIN
+    				)
+    		),
+    		'font' => array(
+    				'bold' => true
+    		)
+    );
+    $objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($styleHeader);
+    
+    
+    
+    // Seteo el nombre del archivo
+    
+    $_file_name_aux = "Reporte ". date('d-m-Y');
+    
+    //header("Content-Type:   application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8");
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'.$_file_name_aux.'".xls"');
+    header('Cache-Control: max-age=0');
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
+    header("Pragma: public");
+    
+    $objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+    $objWriter->save('php://output');
+    return;
+    
+    ////////
+    
+    ///////////////////////////////////////////////////////////////////////////////
 
-ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
-$fileContent = implode("\t ", $headerRow)."\n";
-
-foreach($data as $result) {
-	$fileContent .=  implode("\t ", $result)."\n";
-}
-
-header('Content-type: application/ms-excel'); /// you can set csv format
-header('Content-Disposition: attachment; filename='.$fileName);
-echo $fileContent;
-
-exit;
 
     }
     
