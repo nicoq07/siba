@@ -31,12 +31,12 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
 </script>
 <?= $this->assign('title', 'Bienvenido'); ?>
-<div class="container col-lg-10">
-	<div class="col-lg-7 col-lg-offset-2">
-		<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
+<div class="col-lg-5 col-lg-offset-2 panel panel-info">
+	<div class="col-lg-12 panel panel-heading">
+		<h1 style="text-align: center"><?= h("Hola ". $user->nombre."!")?> </h1>
 	</div>
 	&nbsp;
-	<div class="well col-lg-4 col-lg-offset-3">
+	<div class="well col-lg-12">
 		<div style="text-align: center;">
 		   <?php if ($current_user['rol_id'] !== ADMINISTRADOR) {
 			echo $this->Html->link(__('Ir a clases del día'), ['action' => 'p_perfil'], ['class' => 'btn-lg btn-success']);

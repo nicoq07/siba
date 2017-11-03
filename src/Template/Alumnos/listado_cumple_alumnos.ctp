@@ -1,5 +1,5 @@
 
-<div class="table-responsive col-lg-8 col-lg-offset-1 well"> 
+<div class="table-responsive col-lg-8 col-lg-offset-1 well well-sm"> 
 <h3><?php echo h("Cumpleaños del mes de $month")?></h3>
     <table class="table table-bordered">
 	<thead>
