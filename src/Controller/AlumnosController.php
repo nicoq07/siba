@@ -522,36 +522,27 @@ class AlumnosController extends AppController
 //      	$this->viewBuilder()->setLayout('default');
 //      	$this->viewBuilder()->setTemplate('listado_cumple_excel');
 //      	$this->render();
+$fileName = "bookreport_".date("d-m-y:h:s").".xls";
+//$fileName = "bookreport_".date("d-m-y:h:s").".csv";
+$headerRow = array("Book Title", "ISBN No.", "Auther");
+$data = array(
+		array('Book Title1', '1111111111', 'Pramod Sharma-1'),
+		array('Book Title2', '2222222222', 'Pramod Sharma-2'),
+		array('Book Title3', '3333333333', 'Pramod Sharma-3'),
+		array('Book Title4', '4444444444', 'Pramod Sharma-4')
+);
+ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
+$fileContent = implode("\t ", $headerRow)."\n";
 
-	$this->autoRender = false;
-	$this->viewBuilder()->setLayout(false);
-	$objPHPExcel = new \PHPExcel();
-	ini_set('memory_limit', '-1');
-	$objPHPExcel->
-	getProperties()
-	->setTitle(utf8_decode("hola"));
-	
-	
-	$objPHPExcel->setActiveSheetIndex(0)
-	->setCellValue('A1', utf8_decode('hola'));
-	
-	foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col)
-	{
-		$objPHPExcel->getActiveSheet()
-		->getColumnDimension($col)
-		->setAutoSize(true);
-	}
-	
-	// Seteo el nombre del archivo
-	
-	$_file_name_aux = "cabecera.xls";
-	
-	$objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
-	header('Content-type: application/ms-excel'); /// you can set csv format
-	header('Content-Disposition: attachment; filename='.$_file_name_aux);
-	$objWriter->save('php://output');
-	
-	exit;
+foreach($data as $result) {
+	$fileContent .=  implode("\t ", $result)."\n";
+}
+
+header('Content-type: application/ms-excel'); /// you can set csv format
+header('Content-Disposition: attachment; filename='.$fileName);
+echo $fileContent;
+
+exit;
 
     }
     
