@@ -619,13 +619,13 @@ foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $
     $_file_name_aux = "Reporte ". date('d-m-Y');
     
     //header("Content-Type:   application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8");
-    header('Content-Type: application/vnd.ms-excel');
+   // header('Content-Type: application/vnd.ms-excel');
     header('Content-Disposition: attachment;filename="'.$_file_name_aux.'".xls"');
     header('Cache-Control: max-age=0');
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
     header("Pragma: public");
-    
+    $this->RequestHandler->renderAs($this, 'xls');
     $objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
     $objWriter->save('php://output');
     return;
