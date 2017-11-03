@@ -497,6 +497,7 @@ class AlumnosController extends AppController
     public function listadoCumpleExcel($mes,$activos)
     {
      	$this->autoRender=false;
+     	$this->viewBuilder()->enableAutoLayout(false);
      	$where = null;
     	if($activos)
      	{
