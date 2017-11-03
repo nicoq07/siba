@@ -1,3 +1,5 @@
+<?= $this->assign('title', "Cumple del mes de $month");?>
+
 <?php 
 $this->PhpExcel->
     	getProperties()
@@ -57,10 +59,7 @@ $this->PhpExcel->
     	$this->PhpExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleHeader);
     	$this->PhpExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleHeader);
     	// Seteo el nombre del archivo
-    	$_file_name_aux = "Cumple mes de $month";
+    	$_file_name_aux = "Cumple del mes de $month.xlsx";
     	$objWriter= PHPExcel_IOFactory::createWriter($this->PhpExcel,'Excel2007');
-    	
-
-
 
 ?>

@@ -43,11 +43,9 @@ class AppController extends Controller
         parent::initialize();
         
         $this->loadComponent('RequestHandler',[
-        		'RequestHandler' => [
         				'viewClassMap' => [
         						'xlsx' => 'CakeExcel.Excel',
         				],
-        		]
         ]);
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
