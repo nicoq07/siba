@@ -1,5 +1,4 @@
 <div class="col-lg-10">
-                                  <?=  $this->Html->link('Exportar cabecera', ['controller' => 'Alumnos', 'action' => 'exportarCabecera']) ?>
 
 	<div class = "col-lg-12 container">
     	<h3><?= __('Alumnos') ?></h3>
