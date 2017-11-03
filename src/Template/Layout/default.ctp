@@ -33,9 +33,20 @@ $description = 'Iba Escuela ' .date("Y");
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    
+       <style type="text/css">
+    body{
+		background: url('<?php echo "/webroot"."/img"."/fondos/".$current_user['fondo']?>') no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		}
+    
+    </style>
+    
 </head>
 <body>
-<!-- <div id="loader" class="loader loader-bar is-active"></div> -->
  <?php if (!empty($current_user)) : ?>
     <nav class="top-bar expanded" data-topbar role="navigation">
      
@@ -55,6 +66,7 @@ $description = 'Iba Escuela ' .date("Y");
 	                        	<?php if (!empty($current_user) && $current_user['rol_id'] === ADMINISTRADOR) : ?>
 	                        		<li><?= $this->Html->link(h('Parámetros'), ['controller' =>'Parametros', 'action' => 'index']) ?></li>							
 	                        	<?php endif; ?>
+	                        	<li><?= $this->Html->link(h('Cambiar fondo'), ['controller' =>'Users', 'action' => 'cargarFondo']) ?></li>							
 								<li><?= $this->Html->link(h('Cambiar password'), ['controller' =>'Users', 'action' => 'cambiarPassword',$current_user['id']]) ?></li>							
 	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
 							</ul>
@@ -66,14 +78,15 @@ $description = 'Iba Escuela ' .date("Y");
          
     </nav>
     <?= $this->Flash->render() ?>
+	<div class='image' ></div>
     <div class ="flex-container" >
-     	<div class="col-lg-12 nopadding">
+     	<div  class="col-lg-12 nopadding">
      	<?php if (!empty($current_user) && $current_user['rol_id'] === ADMINISTRADOR) : ?>
           	<?= $this->element('menuadmin') ?>
          <?php elseif (!empty($current_user) && $current_user['rol_id'] === PROFESOR) : ?>
          	<?= $this->element('menuprofesor') ?>
          <?php endif; ?>
-            <?= $this->fetch('content') ?>
+           	 <?= $this->fetch('content') ?>
         </div>
     </div>
     <footer>

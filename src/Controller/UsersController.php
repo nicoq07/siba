@@ -283,5 +283,34 @@ class UsersController extends AppController
     	//
     }
     
+    public function cargarFondo()
+    {
+    	if ($this->request->is('post'))
+    	{
+    		$id = $this->Auth->user('id');
+    		$user = $this->Users->get($id);
+    		$user->set('fondo',$this->request->getData('fondo'));
+    		if ($this->Users->save($user)) {
+    			$this->Flash->success(__('Fondo cargado! Cierre sesión y vuelva a entrar.'));
+    		} else {
+    			$this->Flash->error(__('Error, reitente!.'));
+    		}
+    	}
+    	$fondos = array(
+    		"Batería" =>	"bateria.jpg",
+    			"Ciudad" =>"ciudad.jpg",
+    			"Guitarra" =>"guitarra.jpg",
+    			"Batería" =>"mic.jpg",
+    			"Montañas" =>"montanas.jpg",
+    			"Piano" =>"piano.jpg" ,
+    			"Ruta" =>"ruta.jpg",
+    			"Trombón" =>"tromp.jpg",
+    			"Violín" =>"violin.jpg" 
+				    			
+    	);
+    	$this->set('fondos',$fondos);
+    	
+    }
+    
     
 }

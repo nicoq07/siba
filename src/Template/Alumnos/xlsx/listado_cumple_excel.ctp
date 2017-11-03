@@ -59,6 +59,6 @@ $this->PhpExcel->
     	$this->PhpExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleHeader);
     	$this->PhpExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleHeader);
     	// Seteo el nombre del archivo
-    
+    	$this->response = $this->response->withType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 ?>

@@ -14,7 +14,7 @@
 	}
 	
 	 echo $this->Form->create('search', ['id' => 'frmIndex', 'url' => ['action' => 'search']]); ?>
-	<div class = "col-lg-12 container">
+	<div class = "well col-lg-12 container">
 		<div class ="col-lg-3">
 		 <?php
             echo $this->Form->label('Activos');

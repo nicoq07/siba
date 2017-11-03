@@ -1,5 +1,5 @@
 
-<div class="examenes col-lg-10">
+<div class="examenes col-lg-8 col-lg-offset-1 well">
 	<div class="row">
 	<div class="col-lg-12">
 		<h3><?= __('Examenes') ?></h3>
