@@ -4,6 +4,7 @@ Class FuncionesExcel
 {
   public static function exportarCabecera()
     {
+  	
       $objPHPExcel = new \PHPExcel();
       ini_set('memory_limit', '-1');
     	$objPHPExcel->
@@ -46,8 +47,8 @@ Class FuncionesExcel
 
                   $_file_name_aux = "cabecera";
 
-                  //header("Content-Type:   application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8");
-                  header('Content-Type: application/vnd.ms-excel');
+                  header("Content-Type:   application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8");
+                  //header('Content-Type: application/vnd.ms-excel');
                   header('Content-Disposition: attachment;filename='.$_file_name_aux.'.xls');
                   header('Cache-Control: max-age=0');
 

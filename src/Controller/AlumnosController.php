@@ -451,8 +451,9 @@ class AlumnosController extends AppController
     		$mes = $this->request->getData('mob')['month'];
     		if ($mes)
     		{
-    			require_once APP.'Excel'.DS.'Excel.php';
-    			\FuncionesExcel::exportarCabecera();
+    			$this->listadoCumpleExcel($mes, $activos);
+//     			require_once APP.'Excel'.DS.'Excel.php';
+//     			\FuncionesExcel::exportarCabecera();
     			//return $this->redirect(['action' => 'listado_cumple_excel', $mes,$activos,'_ext' => 'xlsx']);
     		}
     	}
@@ -495,32 +496,84 @@ class AlumnosController extends AppController
     
     public function listadoCumpleExcel($mes,$activos)
     {
-    	$this->autoRender=false;
-     	$where = null;
-    	if($activos)
-     	{
-     		$where=['active' => $activos, 'futuro_alumno' => false];
-    	}
-     	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
-     	$alumnos = $this->Alumnos->find('all')
-     	->where([
-     			$where,
-     			'MONTH(fecha_nacimiento)' => "$mes"
-    	])
-     	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
-     	->orderAsc('DAY(fecha_nacimiento)')
-     	;
-    	if(empty($alumnos))
-    	     	{
-     		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
-     		return $this->redirect(['action' => 'listado_cumple']);
-    	}
+//     	$this->autoRender=false;
+//      	$where = null;
+//     	if($activos)
+//      	{
+//      		$where=['active' => $activos, 'futuro_alumno' => false];
+//     	}
+//      	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
+//      	$alumnos = $this->Alumnos->find('all')
+//      	->where([
+//      			$where,
+//      			'MONTH(fecha_nacimiento)' => "$mes"
+//     	])
+//      	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
+//      	->orderAsc('DAY(fecha_nacimiento)')
+//      	;
+//     	if(empty($alumnos))
+//     	     	{
+//      		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
+//      		return $this->redirect(['action' => 'listado_cumple']);
+//     	}
     	
-     	$month =  __(date('F',strtotime("01-$mes-2000")));
-     	$this->set(compact('alumnos','month'));
-     	$this->viewBuilder()->setLayout('default');
-     	$this->viewBuilder()->setTemplate('listado_cumple_excel');
-     	$this->render();
+//      	$month =  __(date('F',strtotime("01-$mes-2000")));
+//      	$this->set(compact('alumnos','month'));
+//      	$this->viewBuilder()->setLayout('default');
+//      	$this->viewBuilder()->setTemplate('listado_cumple_excel');
+//      	$this->render();
+
+	$this->autoRender = false;
+	$this->viewBuilder()->setLayout(false);
+	$objPHPExcel = new \PHPExcel();
+	ini_set('memory_limit', '-1');
+	$objPHPExcel->
+	getProperties()
+	->setTitle("cabecera");
+	
+	
+	$objPHPExcel->setActiveSheetIndex(0)
+	->setCellValue('A1', 'nombre')
+	->setCellValue('B1', 'dni')
+	->setCellValue('C1', 'domicilio')
+	->setCellValue('D1', 'provincia')
+	->setCellValue('E1', 'localidad')
+	->setCellValue('F1', 'laboral')
+	->setCellValue('G1', 'cantidad')
+	->setCellValue('H1', 'categoria')
+	->setCellValue('I1', 'producto')
+	->setCellValue('J1', 'numero_producto')
+	->setCellValue('K1', 'fecha_mora')
+	->setCellValue('L1', 'dias_mora')
+	->setCellValue('M1', 'capital_inicial')
+	->setCellValue('N1', 'total')
+	->setCellValue('O1', 'asignado')
+	->setCellValue('P1', 'telefono')
+	->setCellValue('Q1', 'telefono')
+	->setCellValue('R1', 'telefono')
+	->setCellValue('S1', 'telefono')
+	->setCellValue('T1', 'telefono')
+	->setCellValue('U1', 'telefono')
+	->setCellValue('V1', 'telefono');
+	
+	foreach (range('A', $objPHPExcel->getActiveSheet()->getHighestDataColumn()) as $col)
+	{
+		$objPHPExcel->getActiveSheet()
+		->getColumnDimension($col)
+		->setAutoSize(true);
+	}
+	
+	// Seteo el nombre del archivo
+	
+	$_file_name_aux = "cabecera.xls";
+	
+	$objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+	header('Content-type: application/ms-excel'); /// you can set csv format
+	header('Content-Disposition: attachment; filename='.$_file_name_aux);
+	$objWriter->save('php://output');
+	
+	exit;
+
     }
     
     public function fichaInterna($id)
