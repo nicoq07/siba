@@ -496,41 +496,57 @@ class AlumnosController extends AppController
     
     public function listadoCumpleExcel($mes,$activos)
     {
-//     	$this->autoRender=false;
-//      	$where = null;
-//     	if($activos)
-//      	{
-//      		$where=['active' => $activos, 'futuro_alumno' => false];
-//     	}
-//      	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
-//      	$alumnos = $this->Alumnos->find('all')
-//      	->where([
-//      			$where,
-//      			'MONTH(fecha_nacimiento)' => "$mes"
-//     	])
-//      	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
-//      	->orderAsc('DAY(fecha_nacimiento)')
-//      	;
-//     	if(empty($alumnos))
-//     	     	{
-//      		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
-//      		return $this->redirect(['action' => 'listado_cumple']);
-//     	}
+     	$this->autoRender=false;
+     	$where = null;
+    	if($activos)
+     	{
+     		$where=['active' => $activos, 'futuro_alumno' => false];
+    	}
+     	$nombreMes = __(date('F',strtotime("01-$mes-2000")));
+     	$alumnos = $this->Alumnos->find('all')
+     	->where([
+     			$where,
+     			'MONTH(fecha_nacimiento)' => "$mes"
+    	])
+     	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
+     	->orderAsc('DAY(fecha_nacimiento)')
+     	;
+    	if(empty($alumnos))
+    	     	{
+     		$this->Flash->error("No hay alumnos que cumplan en el mes de ".$nombreMes);
+     		return $this->redirect(['action' => 'listado_cumple']);
+    	}
     	
-//      	$month =  __(date('F',strtotime("01-$mes-2000")));
+      	$month =  __(date('F',strtotime("01-$mes-2000")));
 //      	$this->set(compact('alumnos','month'));
 //      	$this->viewBuilder()->setLayout('default');
 //      	$this->viewBuilder()->setTemplate('listado_cumple_excel');
 //      	$this->render();
-$fileName = "bookreport_".date("d-m-y:h:s").".xls";
+$fileName = "cumple ".$month.".xls";
 //$fileName = "bookreport_".date("d-m-y:h:s").".csv";
-$headerRow = array("Book Title", "ISBN No.", "Auther");
-$data = array(
-		array('Book Title1', '1111111111', 'Pramod Sharma-1'),
-		array('Book Title2', '2222222222', 'Pramod Sharma-2'),
-		array('Book Title3', '3333333333', 'Pramod Sharma-3'),
-		array('Book Title4', '4444444444', 'Pramod Sharma-4')
-);
+$headerRow = array("Nombre", "Fecha", "correo", "correomadre", "correopadre");
+$data = array();
+foreach ($alumnos as $alumno)
+{
+	$aux = array(h($alumno->presentacion),h($alumno->fecha_nacimiento->format('j')),h($alumno->email),h($alumno->email_madre),h($alumno->email_padre));
+	array_push($data,$aux);
+// 	
+// 	$this->PhpExcel->setActiveSheetIndex(0)
+// 	->setCellValue('A'.$_row,h($alumno->presentacion))
+// 	->setCellValue('B'.$_row,h($alumno->fecha_nacimiento->format('j')))
+// 	->setCellValue('C'.$_row,h($alumno->email))
+// 	->setCellValue('D'.$_row,h($alumno->email_madre))
+// 	->setCellValue('E'.$_row,h($alumno->email_padre))
+// 	;
+// 	// Le aplico a todas las celdas el formato de borde.
+// 	$this->PhpExcel->getActiveSheet()->getStyle('A'.$_row)->applyFromArray($styleCells);
+// 	$this->PhpExcel->getActiveSheet()->getStyle('B'.$_row)->applyFromArray($styleCells);
+// 	$this->PhpExcel->getActiveSheet()->getStyle('C'.$_row)->applyFromArray($styleCells);
+// 	$this->PhpExcel->getActiveSheet()->getStyle('D'.$_row)->applyFromArray($styleCells);
+// 	$this->PhpExcel->getActiveSheet()->getStyle('E'.$_row)->applyFromArray($styleCells);
+}
+
+
 ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
 $fileContent = implode("\t ", $headerRow)."\n";
 
