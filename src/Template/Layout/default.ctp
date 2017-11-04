@@ -33,9 +33,10 @@ $description = 'Iba Escuela ' .date("Y");
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script')?>
+   
     <style type="text/css">
-    body{
-		background: url('<?php echo "../img/fondos/".$current_user['fondo']?>') no-repeat center center fixed;
+     body{
+		background: url('<?php echo $this->Url->image('fondos'.DS.$current_user['fondo'])?>') no-repeat center center fixed;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
