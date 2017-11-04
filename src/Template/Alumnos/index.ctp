@@ -42,7 +42,7 @@
 		 </div>
 	 </div>
 	   <?php echo $this->Form->end(); ?>
-    <table class="table table-striped"  cellpadding="0" cellspacing="10">
+    <table class="table table-striped"  style="cellpadding=0; cellspacing=10;">
         <thead>
             <tr>
                 <th width="15%" scope="row"><?= $this->Paginator->sort('apellido') ?></th>

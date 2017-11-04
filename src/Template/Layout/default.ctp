@@ -24,19 +24,19 @@ $description = 'Iba Escuela ' .date("Y");
         <?= $description?>:
         <?= $this->fetch('title') ?>
     </title>
+     
     <?= $this->Html->meta('icon') ?>
-
     <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader','chat','cards']) ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','varios','ajaxAlumnos']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-    
-       <style type="text/css">
+    <?= $this->fetch('script')?>
+   
+      <style type="text/css">
     body{
-		background: url('<?php echo "../img/fondos/".$current_user['fondo']?>') no-repeat center center fixed;
+		background: url('<?php echo "webroot/img/fondos/".$current_user['fondo']?>') no-repeat center center fixed;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
@@ -44,7 +44,6 @@ $description = 'Iba Escuela ' .date("Y");
 		}
     
     </style>
-    
 </head>
 <body>
  <?php if (!empty($current_user)) : ?>
