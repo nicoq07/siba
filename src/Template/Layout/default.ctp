@@ -33,10 +33,16 @@ $description = 'Iba Escuela ' .date("Y");
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script')?>
-   
+	<?php $fondo  = $current_user['fondo'];
+	$ds  = DS;
+	if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+	{
+		$ds = DS_WINDOWS_IMG;
+	}
+	?>
     <style type="text/css">
      body{
-		background: url('<?php echo $this->Url->image('fondos'.DS.$current_user['fondo'])?>') no-repeat center center fixed;
+		background: url('<?php echo $this->Url->image('fondos'.$ds.$fondo)?>') no-repeat center center fixed;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
