@@ -297,10 +297,10 @@ class UsersController extends AppController
     		}
     	}
     	$fondos = array(
-    		"Batería" =>	"bateria.jpg",
+    		    "Batería" =>"bateria.jpg",
     			"Ciudad" =>"ciudad.jpg",
     			"Guitarra" =>"guitarra.jpg",
-    			"Batería" =>"mic.jpg",
+    			"Canto" =>"mic.jpg",
     			"Montañas" =>"montanas.jpg",
     			"Piano" =>"piano.jpg" ,
     			"Ruta" =>"ruta.jpg",
