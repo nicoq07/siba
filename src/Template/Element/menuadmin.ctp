@@ -1,3 +1,8 @@
+<script type="text/javascript">
+$(document).ready(parpadear);
+function parpadear(){ $('#campana').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear);
+$('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
+</script>
 <nav class="navbar navbar-default sidebar" role="navigation">
     <div class="container-fluid">
     <div class="navbar-header">

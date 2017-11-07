@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1 well">
     <h3><?= h($ciclolectivo->descripcion) ?></h3>
     <table class="vertical-table">
         <tr>

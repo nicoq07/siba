@@ -299,6 +299,7 @@ class UsersController extends AppController
     	$fondos = array(
     		    "Batería" =>"bateria.jpg",
     			"Ciudad" =>"ciudad.jpg",
+    			"Bajo" =>"bajo.jpg",
     			"Guitarra" =>"guitarra.jpg",
     			"Canto" =>"mic.jpg",
     			"Montañas" =>"montanas.jpg",

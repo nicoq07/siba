@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1 well">
     <h2><?= h($horario->presentacion .", " .$horario->ciclolectivo->descripcion) ?></h2>
     <div class="related">
         <h4><?= __('Clases en esta hora') ?></h4>

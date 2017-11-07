@@ -1,4 +1,4 @@
-<div class="col-lg-5 col-lg-offset-2">
+<div class="col-lg-5 col-lg-offset-2 well">
     <?= $this->Form->create($disciplina) ?>
     <fieldset>
         <legend><?= __('Nueva disciplina') ?></legend>

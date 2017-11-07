@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1">
 	&nbsp;
     <h3><?= h($clase->presentacion) ?></h3>
     &nbsp;

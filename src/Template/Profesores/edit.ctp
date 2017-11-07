@@ -1,4 +1,4 @@
-	<div class="col-lg-10 col-lg-offset-1 well well-sm">
+	<div class="col-lg-8 col-lg-offset-1 well well-sm">
 	    <?= $this->Form->create($profesore) ?>
 	    <fieldset>
 	        <legend><?= __('Modificar Profesor') ?></legend>
