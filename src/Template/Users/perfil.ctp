@@ -1,6 +1,6 @@
 <div class="container col-lg-10">
 
-<div class="col-lg-5 panel panel-sm">
+<div class="col-lg-4 col-lg-offset-1 panel panel-sm">
 <div class="related">
 	<h2 class="panel panel-heading"><?= h(__(date('l')))?> </h2>
 	<?php foreach ($horarios as $horario){?>
@@ -23,7 +23,7 @@
 		}	?>
 	    </div>
 </div>
-<div class="col-lg-5 panel panel-sm">
+<div class="col-lg-4 col-lg-offset-1 panel panel-sm">
 <div class="related">
 	<h3 class="panel panel-heading"><?= h("Clases sin alumnos")?> </h3>
 	

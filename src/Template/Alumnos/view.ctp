@@ -1,5 +1,5 @@
 
-	<div class="well col-lg-8" style="padding: 0;">
+	<div class="well col-lg-7 col-lg-offset-1" style="padding: 0;">
 	   <div  style="margin-top:10px" class="row">
 		     <div class="col-lg-7">
 		     	<span style="font-size:4rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
@@ -21,36 +21,47 @@
 		</div>
 		<div class="separador"></div>
 		
-		<div class="col-lg-2 col-md-2 view-div borde"><?= __('DNI') ?></div>
-		<div class="col-lg-4 col-md-4  borde"><?= $alumno->nro_documento ? h($alumno->nro_documento) : h("-") ?></div>
+		<div class="col-lg-1 col-md-1 view-div borde"><?= __('DNI') ?></div>
+		<div class="col-lg-5 col-md-5  borde"><?= $alumno->nro_documento ? h($alumno->nro_documento) : h("-") ?></div>
 		<div class="col-lg-2 col-md-2 view-div borde"><?= __('Direccion') ?></div>
 		<div class="col-lg-4 col-md-4  borde"><?= $alumno->direccion ? h($alumno->direccion) : "-" ?> </div>
+<!-- 		a -->
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Código Postal') ?></div>
 		<div class="col-lg-4 col-md-4  borde "><?=$alumno->codigo_postal ?  h($alumno->codigo_postal) : "-" ?></div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Ciudad') ?></div>
 		<div class="col-lg-4 col-md-4  borde"><?= $alumno->ciudad ? h($alumno->ciudad) : "-"?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Celular') ?></div>
-		<div class="col-lg-4 col-md-4  borde"><?= $alumno->celular ? h($alumno->celular) : "-"?></div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Télefono') ?></div>
-		<div class="col-lg-4 col-md-4  borde"><?= $alumno->telefono ? h($alumno->telefono) : "-"?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Email') ?></div>
-		<div class="col-lg-2 col-md-2  borde"><?= $alumno->email ? h($alumno->email) : "-"?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('F Nac') ?></div>
-		<div class="col-lg-2 col-md-2  borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
+<!-- 		7 -->
+		<div class="col-lg-1 col-md-1 borde view-div"><?= __('Celular') ?></div>
+		<div class="col-lg-5 col-md-5  borde"><?= $alumno->celular ? h($alumno->celular) : "-"?></div>
+		<div class="col-lg-1 col-md-1 borde view-div"><?= __('Télefono') ?></div>
+		<div class="col-lg-5 col-md-5  borde"><?= $alumno->telefono ? h($alumno->telefono) : "-"?> </div>
+<!-- 		a -->
+		<div class="col-lg-3 col-md-3 borde view-div"><?= __('Email') ?></div>
+		<div class="col-lg-9 col-md-9  borde"><?= $alumno->email ? h($alumno->email) : "-"?> </div>
+		
+		
+<!-- 		7 -->
+		<div class="col-lg-4 col-md-4 borde view-div"><?= __('Fecha Nac.') ?></div>
+		<div class="col-lg-4 col-md-4  borde"><?= h($alumno->fecha_nacimiento->format('d/m/Y')) ?></div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Edad') ?></div>
 		<div class="col-lg-2 col-md-2 borde"><?=$alumno->edad ? __($alumno->edad) : __('-');?></div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Tutor') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?= $alumno->nombre_madre ? h($alumno->nombre_madre) : "-" ?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Celular tutor') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?=$alumno->celular_madre ? h($alumno->celular_madre) : "-"?> </div>
+<!-- 		7 -->
+		<div class="col-lg-3 col-md-2 borde view-div"><?= __('Tutor') ?></div>
+		<div class="col-lg-3 col-md-2 borde"><?= $alumno->nombre_madre ? h($alumno->nombre_madre) : "-" ?> </div>
+		<div class="col-lg-3 col-md-2 borde view-div"><?= __('Tutor 2') ?></div>
+		<div class="col-lg-3 col-md-2 borde"><?= $alumno->nombre_padre ? h($alumno->nombre_padre) : "-" ?> </div>
+		
+		
+		<div class="col-lg-3 col-md-2 borde view-div"><?= __('Celular tutor') ?></div>
+		<div class="col-lg-3 col-md-2 borde"><?=$alumno->celular_madre ? h($alumno->celular_madre) : "-"?> </div>
+		<div class="col-lg-3 col-md-2 borde view-div"><?= __('Celular tutor 2') ?></div>
+		<div class="col-lg-3 col-md-2 borde"><?=$alumno->celular_padre ? h($alumno->celular_padre) : "-"?> </div>
+		
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Email tutor') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?=$alumno->email_madre ? h($alumno->email_madre) : "-" ?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Tutor 2') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?= $alumno->nombre_padre ? h($alumno->nombre_padre) : "-" ?> </div>
-		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Celular tutor 2') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?=$alumno->celular_padre ? h($alumno->celular_padre) : "-"?> </div>
+		<div class="col-lg-4 col-md-4 borde"><?=$alumno->email_madre ? h($alumno->email_madre) : "-" ?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Email tutor 2') ?></div>
-		<div class="col-lg-2 col-md-2 borde"><?=$alumno->email_padre ? h($alumno->email_padre) : "-" ?> </div>
+		<div class="col-lg-4 col-md-4 borde"><?=$alumno->email_padre ? h($alumno->email_padre) : "-" ?> </div>
+		
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Legajo') ?></div>
 		<div class="col-lg-4 col-md-4  borde"><?= h($alumno->id) ?> </div>
 		<div class="col-lg-2 col-md-2 borde view-div"><?= __('Legajo anterior') ?></div>
@@ -78,7 +89,7 @@
 	       <div class="separador"><?= $this->Text->autoParagraph(h($alumno->observacion)); ?></div>
 	    </div>
 	    
-	    <div class="related">
+	    <div class="related col-lg-12 col-md-12">
 	        <h4><?= __('Pagos correspondientes') ?></h4>
 	        <?php if (!empty($alumno->pagos_alumnos)): ?>
 	        <table class="table table-striped">
@@ -111,7 +122,7 @@
 	        </table>
 	        <?php endif; ?>
 	    </div>
-	    <div class="related">
+	    <div class="related col-lg-12 col-md-12">
 	        <h4><?= __('Clases inscriptas' ) ?></h4>
 	        <?php if (!empty($alumno->clases)){ ?>
 	        <table class="table table-striped">
@@ -135,7 +146,7 @@
 	        </table>
 	        <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
 	    </div>
-	     <div class="related">
+	     <div class="related col-lg-12 col-md-12">
 	        <h4><?= __('Seguimientos de Clases' ) ?></h4>
 	        <?php if (!empty($seguimientos)){ ?>
 	        <table class="table table-striped">
