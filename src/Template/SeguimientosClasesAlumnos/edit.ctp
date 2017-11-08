@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Cargar seguimiento'); ?>
-<div class="seguimientosClasesAlumnos form large-9 medium-8 columns content">
+<div class="col-lg-5 col-lg-offset-2 panel">
     <?= $this->Form->create($seguimientosClasesAlumno) ?>
     <fieldset>
         <legend><?= __('Editar seguimiento') ?></legend>

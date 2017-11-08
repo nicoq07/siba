@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Nueva');?>
-<div class="notificaciones form large-9 medium-8 columns content">
+<div class="col-lg-8 col-lg-offset-1 well">
     <?= $this->Form->create($notificacione) ?>
     <fieldset>
         <legend><?= __('Enviar mensaje') ?></legend>
@@ -14,6 +14,6 @@
             }
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Enviar')) ?>
+    <?= $this->Form->button(__('Enviar'),['class' => 'btn-lg btn-success']) ?>
     <?= $this->Form->end() ?>
 </div>

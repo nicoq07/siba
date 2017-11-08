@@ -1,4 +1,4 @@
-<div class="users form large-5 medium-5 col-lg-offset-4">
+<div class="col-lg-4 col-lg-offset-3 panel">
     <?= $this->Form->create($user) ?>
     <fieldset>
         <legend><?= __('Cambiar contraseña') ?></legend>

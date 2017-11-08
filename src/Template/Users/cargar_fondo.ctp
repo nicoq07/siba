@@ -18,7 +18,7 @@
 
 <h3>Seleecione fondo</h3>
 
-<div class="col-lg-4 col-lg-offset-3">
+<div class="col-lg-4 col-lg-offset-3 panel">
 <?php echo $this->Form->create();?>
 <?php  foreach ($fondos as $nombre => $fondo){?>
 	

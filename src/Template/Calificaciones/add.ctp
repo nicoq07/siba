@@ -1,4 +1,4 @@
-<div class="calificaciones form large-9 medium-8 columns content">
+<div class="col-lg-5 col-lg-offset-2 panel">
     <?= $this->Form->create($calificacione) ?>
     <fieldset>
         <legend><?= __('Nueva calificación') ?></legend>
