@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Pagos de alumnos');?>
-<div class="col-lg-10 index">
+<div class="col-lg-10 well">
     <h3><?= __('Pagos Alumnos') ?></h3>
     <div class = "col-lg-10 separador">
     <?php 	

@@ -40,6 +40,7 @@ $description = 'Iba Escuela ' .date("Y");
 		$ds = DS_WINDOWS_IMG;
 	}
 	?>
+<?php if (!empty($current_user)) : ?>
     <style type="text/css">
      body{
 		background: url('<?php echo $this->Url->image('fondos'.$ds.$fondo)?>') no-repeat center center fixed;
@@ -50,7 +51,7 @@ $description = 'Iba Escuela ' .date("Y");
 		}
     
     </style>
-
+<?php endif; ?>
 </head>
 <body>
  <?php if (!empty($current_user)) : ?>
