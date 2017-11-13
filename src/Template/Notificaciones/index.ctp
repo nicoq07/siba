@@ -64,7 +64,7 @@ function marcarLeido(mensajeId)
                                         <br>
                                         <small class="text-muted">  <?="  " . h($mensaje->created->format('h:m a d-m-Y '))  ?></small>
                                                                             <?php if (!$mensaje->leida) { ?> 
-                                                                                <button title="Marcar como leída" id ="<?php echo $mensaje->id?>" class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarLeido(<?php echo $mensaje->id ?>)"> </button>
+                                                                                <button title="Marcar como leída" id ="<?php echo $mensaje->id?>" style="background-color:#f2f1f2;"  class="pull-right btn-sm btn-default glyphicon glyphicon-check" onclick="marcarLeido(<?php echo $mensaje->id ?>)"> </button>
                                        <?php } ?>
                                         <hr>
                                         

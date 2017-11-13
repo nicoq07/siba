@@ -1,13 +1,13 @@
 <div class="col-lg-10">
-	<div class = "col-lg-8">
+	<div class = "col-lg-5 col-lg-offset-2 panel">
     	<h3><?= __('Alumnos en mis clases') ?></h3>
 	</div>
-	<div class=" col-lg-8" >
+	<div class="col-lg-5 col-lg-offset-2 panel" >
 	    <table class= "table table-striped">
 	        <thead>
 	            <tr>
-	                <th><?= h('Nombre') ?></th>
-	                <th ><?= h('Programa Adolecencia') ?></th>
+	                <th  width="70%"><?= h('Nombre') ?></th>
+	                <th width="30%" ><?= h('Programa Adolecencia') ?></th>
 	            </tr>
 	        </thead>
 	        <tbody>

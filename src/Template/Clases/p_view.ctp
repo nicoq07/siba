@@ -1,6 +1,6 @@
-<div class="col-lg-8 col-lg-offset-1">
+<div class="col-lg-7 col-lg-offset-1 panel">
 	&nbsp;
-    <h3><?= h($clase->presentacion) ?></h3>
+    <h3 class="panel panel-heading" ><?= h($clase->presentacion) ?></h3>
     &nbsp;
     <div class="related">
     	<div class="row">
@@ -9,9 +9,9 @@
         <?php if (!empty($clase->alumnos)): ?>
         <table class = "table table-striped">
             <tr>
-                <th scope="col"><?= __('Nombre') ?></th>
-                <th scope="col"><?= __('Programa Adolecencia') ?></th>
-                <th scope="col"><?= __('Acción') ?></th>
+                <th width="60%" scope="col"><?= __('Nombre') ?></th>
+                <th width="20%" scope="col"><?= __('Programa Adolecencia') ?></th>
+                <th width="20%" scope="col"><?= __('Acción') ?></th>
             </tr>
             <?php foreach ($clase->alumnos as $alumnos): ?>
             <tr>

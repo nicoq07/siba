@@ -1,6 +1,6 @@
 <?= $this->assign('title', 'Mis Seguimientos'); ?>
-<div class="seguimientosClasesAlumnos index col-lg-10">
-	<h3><?= __('Seguimientos') ?></h3> 
+<div class="index col-lg-9 panel">
+	<h3 class="panel-heading"><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
   		<?php echo $this->Form->create('pSearch', ['url' => [ 'action' => 'pSearch'], 'id' => 'frmIndex', 'type' => 'post']); ?>
   	  
@@ -45,5 +45,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?=  $this->element('footer')?>
 </div>
-<?=  $this->element('footer')?>

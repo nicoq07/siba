@@ -139,11 +139,11 @@ class SeguimientosClasesAlumnosController extends AppController
         	debug($this->request->getData()); exit;
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-                $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+                $this->Flash->success(__('Seguimiento guardado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error, reintente!.'));
         }
         $ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
@@ -156,18 +156,22 @@ class SeguimientosClasesAlumnosController extends AppController
     {
     	$seg = $this->SeguimientosClasesAlumnos->find()
     	->where(['clase_alumno_id' => $claseAlumno,'fecha' => date('Y-m-d',strtotime('now'))]);
-    	
+    	if($seg->count() == 0)
+    	{
+    		$this->Flash->error(__('El día de hoy no se puede cargar este seguimiento. Dirigase a Ver Seguimientos.'));
+    		return $this->redirect($this->referer());
+    	}
     	$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->get($seg->first()->id, [
     			'contain' => ['ClasesAlumnos']
     	]);
     	if ($this->request->is(['patch', 'post', 'put'])) {
     		$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
     		if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-    			$this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+    			$this->Flash->success(__('Seguimiento guardado'));
     			$url = ['controller' => 'Clases' ,'action' => 'pView', $seguimientosClasesAlumno->clases_alumno->clase_id];
     			return $this->redirect($url);
     		}
-    		$this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+    		$this->Flash->error(__('El seguimiento no ha podido guardarse, reintente!.'));
     	}
     	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
     	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
@@ -192,8 +196,8 @@ class SeguimientosClasesAlumnosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-                $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
-				
+            	$this->Flash->success(__('Seguimiento guardado'));
+            	
                 $url = ['action' => 'index'];
                 if($this->Auth->user('rol_id') === PROFESOR)
                 {
@@ -201,7 +205,7 @@ class SeguimientosClasesAlumnosController extends AppController
                 }
                 return $this->redirect($url);
             }
-            $this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+            $this->Flash->error(__('El seguimiento no ha podido guardarse, reintente!.'));
         }
         $ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
