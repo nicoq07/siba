@@ -4,11 +4,9 @@
 	      <h4 class="panel-heading"><?= h($seguimientosClasesAlumno->clases_alumno->clase->presentacion) ?></h4>
 	    
 	    
-	     <div class="col-lg-2 pull-right">
-	       <?= $this->Html->link(__('Edit'), ['action' => 'edit', $seguimientosClasesAlumno->id],['class' => 'btn btn-warning']) ?>
-	    </div>
 	    
 	    <div class="col-lg-12">
+	    	 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $seguimientosClasesAlumno->id],['class' => 'btn btn-warning']) ?>
 		   <div class = "col-lg-4 "  ><span title="<?php $seguimientosClasesAlumno->has('calificacione') ? print "Nota: ". $seguimientosClasesAlumno->calificacione->valor : print "Sin valor"  ?> "><?=h("Calificación: ")?> <?=    $seguimientosClasesAlumno->has('calificacione') ? $seguimientosClasesAlumno->calificacione->nombre : 'No tiene' ?></span>  </div>
 		   <div class = "col-lg-4 "><?= h("Fecha: ")  . h($seguimientosClasesAlumno->fecha->format('d-m-Y')) ?></div>
 		   <div class = "col-lg-4 "><?=h("Presente: ")?><?=  $seguimientosClasesAlumno->presente ? __('Sí') : __('No'); ?></div>

@@ -26,7 +26,7 @@ $description = 'Iba Escuela ' .date("Y");
     </title>
      
     <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader','chat','cards']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','css-loader','chat','cards','noTables']) ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','varios','ajaxAlumnos']) ?>
 
