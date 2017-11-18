@@ -41,6 +41,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	
         $this->paginate = [
         		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+        		'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified'],
         		'finder' => 'ordered'
         ];
         $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
@@ -48,11 +49,15 @@ class SeguimientosClasesAlumnosController extends AppController
     }
     public function search()
     {
-    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
+    	$where1 = $where2 = $where3 = $where4 = $where5 = $palabra = null;
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
+    			if ($this->request->getData()['modificados'])
+    			{
+    				$where5= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
+    			}
     			
     			if (!(empty($this->request->getData()['clases'])))
     			{
@@ -86,7 +91,7 @@ class SeguimientosClasesAlumnosController extends AppController
 							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
     				];
     			}
-    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4,$where5]);
     			$this->request->session()->write('search_key', $palabra);
     		}
     	}
@@ -316,17 +321,12 @@ class SeguimientosClasesAlumnosController extends AppController
     	{
     		
     		$where1 = null;
-    		$where2 = null;
     		if (!(empty($this->request->getData()['clases'])))
     		{
     			$clase = $this->request->getData()['clases'];
     			$where1= ["clases.id = $clase"];
     		}
-    		if ($this->request->getData()['nomodificados'])
-    		{
-    			$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
-    		}
-    		$session->write('where',[$where1,$where2]);
+    		$session->write('where',[$where1]);
     		
     	}
     	
@@ -342,7 +342,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
     	
     	$this->paginate = [
-    			'conditions' => [$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
+    			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
     			'finder' => 'ordered',
     	];
@@ -361,16 +361,14 @@ class SeguimientosClasesAlumnosController extends AppController
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
     			
-    			$where1 = null;
-    			$where2 = null;
     			if (!(empty($this->request->getData()['clases'])))
     			{
     				$clase = $this->request->getData()['clases'];
     				$where1= ["clases.id = $clase"];
     			}
-    			if ($this->request->getData()['nomodificados'])
+    			if ($this->request->getData()['modificados'])
     			{
-    				$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+    				$where2= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
     			}
     			
     			$this->request->session()->write('searchCond', [$where1,$where2]);

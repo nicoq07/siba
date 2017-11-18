@@ -12,14 +12,15 @@
 	 </div>
 	<div class ="col-lg-3">
 		 <?php
-            echo $this->Form->label('nomodificados','Ver sólo seguimientos sin editar');
-            echo $this->Form->checkbox('nomodificados', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
+            echo $this->Form->label('modificados','Ver sólo cargados');
+            echo $this->Form->checkbox('modificados', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
 	 <?php echo $this->Form->end(); ?>
   	 </div>
-    <table class="table table-striped">
-        <thead>
+    <div id="no-more-tables">
+            <table class="col-lg-12 table-striped table-condensed cf">
+        		<thead class="cf">
             <tr>
                 <th width="30%" scope="col"><?= h('Clase') ?></th>
                 <th width="20%" scope="col"><?=  $this->Paginator->sort('alumno_id') ?></th>
@@ -45,5 +46,6 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <?=  $this->element('footer')?>
 </div>
