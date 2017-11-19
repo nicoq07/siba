@@ -42,7 +42,8 @@ use Cake\Routing\Route\DashedRoute;
  *
  */
 Router::defaultRouteClass(DashedRoute::class);
-Router::extensions(['pdf']);
+Router::extensions('pdf');
+Router::extensions('xlsx');
 Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',

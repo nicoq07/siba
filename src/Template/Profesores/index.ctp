@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-9 col-lg-offset-1 well well-sm">
     <h3><?= __('Profesores') ?></h3>
     <table class="table table-striped">
         <thead>
@@ -35,6 +35,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?= $this->element('footer') ?>
  </div>
- <?= $this->element('footer') ?>
+ 
    

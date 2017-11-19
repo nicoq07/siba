@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1 well">
     <h3><?= __('Horarios') ?></h3>
     <div class="col-lg-10 ">
     	<div class="col-lg-3 col-lg-offset-11">

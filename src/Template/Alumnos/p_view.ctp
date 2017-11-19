@@ -1,4 +1,4 @@
-<div class="col-lg-8" style="padding: 0;">
+<div class="well col-lg-8" style="padding: 0;">
    <div  style="margin-top:10px" class="row">
 	     <div class="col-lg-5">
 	     	<span style="font-size:3.50rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>

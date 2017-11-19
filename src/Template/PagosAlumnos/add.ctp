@@ -1,4 +1,4 @@
-<div class="col-lg-3 col-lg-offset-3">
+<div class="col-lg-3 col-lg-offset-3 well">
 	<fieldset>
   		<legend><?= h("¿Qué pago vas a generar?") ?></legend>
    </fieldset>

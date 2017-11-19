@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1 well">
     <h3><?= h($disciplina->descripcion) ?></h3>
     <div class="related">
         <h4><?= __('Clases en esta disciplina') ?></h4>

@@ -1,4 +1,4 @@
-<div class="col-lg-6 col-lg-offset-1">
+<div class="col-lg-6 col-lg-offset-2 well">
     <?= $this->Form->create($horario) ?>
     <fieldset>
          <legend><?= __('Nueva horario') ?></legend>

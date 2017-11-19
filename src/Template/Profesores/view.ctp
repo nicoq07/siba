@@ -1,4 +1,4 @@
-<div class="col-lg-9">
+<div class="col-lg-8 col-lg-offset-1 well well-sm">
    <div  style="margin-top:10px" class="row">
 	     <div class="col-lg-5">
 	     <h1 style="margin-top:10px"><?= h($profesore->presentacion) ?></h1>
@@ -70,6 +70,6 @@
         <?php endif; ?>
     </div>
 </div>
-<div class="col-lg-1 separador">
+<div class="col-lg-1">
 	     <?php  echo $this->Html->link('Editar', ['action' => 'edit', $profesore->id],['class' => 'btn btn-warning']); ?>
 </div>

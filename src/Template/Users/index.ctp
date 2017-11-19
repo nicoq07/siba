@@ -1,4 +1,4 @@
-<div class="users index large-9 medium-8 columns content">
+<div class="col-lg-8 col-lg-offset-1 panel">
     <h3><?= __('Usuarios') ?></h3>
     <table>
         <thead>

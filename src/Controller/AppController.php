@@ -28,7 +28,7 @@ use Cake\ORM\TableRegistry;
  */
 class AppController extends Controller
 {
-
+	
     /**
      * Initialization hook method.
      *
@@ -42,7 +42,11 @@ class AppController extends Controller
     {
         parent::initialize();
         
-        $this->loadComponent('RequestHandler');
+        $this->loadComponent('RequestHandler',[
+        				'viewClassMap' => [
+        						'xlsx' => 'CakeExcel.Excel',
+        				],
+        ]);
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
         		'authorize' => ['Controller'],

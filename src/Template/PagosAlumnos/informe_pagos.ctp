@@ -1,4 +1,5 @@
-<div class="col-lg-5 col-lg-offset-2">
+<?php $this->assign('title','Informe de pagos');?>
+<div class="col-lg-5 col-lg-offset-2 panel">
 	<?=  $this->Form->create();
 		echo $this->Form->label('mob', ['label' => 'Mes']);
 		echo $this->Form->month('mob', ['empty' => true]);
@@ -8,6 +9,6 @@
 				'maxYear' => date('Y')
 		]);
 	  ?>
-	  <?= $this->Form->button(__('Descargar')) ?>
+	  <?= $this->Form->button(__('Ver')) ?>
     <?= $this->Form->end() ?>
 </div>

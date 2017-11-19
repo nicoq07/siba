@@ -41,6 +41,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	
         $this->paginate = [
         		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+        		'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified'],
         		'finder' => 'ordered'
         ];
         $seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
@@ -48,11 +49,15 @@ class SeguimientosClasesAlumnosController extends AppController
     }
     public function search()
     {
-    	$where1 = $where2 = $where3 = $where4 = $palabra = null;
+    	$where1 = $where2 = $where3 = $where4 = $where5 = $palabra = null;
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
+    			if ($this->request->getData()['modificados'])
+    			{
+    				$where5= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
+    			}
     			
     			if (!(empty($this->request->getData()['clases'])))
     			{
@@ -86,7 +91,7 @@ class SeguimientosClasesAlumnosController extends AppController
 							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
     				];
     			}
-    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4,$where5]);
     			$this->request->session()->write('search_key', $palabra);
     		}
     	}
@@ -139,11 +144,11 @@ class SeguimientosClasesAlumnosController extends AppController
         	debug($this->request->getData()); exit;
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-                $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+                $this->Flash->success(__('Seguimiento guardado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error, reintente!.'));
         }
         $ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
@@ -156,18 +161,22 @@ class SeguimientosClasesAlumnosController extends AppController
     {
     	$seg = $this->SeguimientosClasesAlumnos->find()
     	->where(['clase_alumno_id' => $claseAlumno,'fecha' => date('Y-m-d',strtotime('now'))]);
-    	
+    	if($seg->count() == 0)
+    	{
+    		$this->Flash->error(__('El día de hoy no se puede cargar este seguimiento. Dirigase a Ver Seguimientos.'));
+    		return $this->redirect($this->referer());
+    	}
     	$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->get($seg->first()->id, [
     			'contain' => ['ClasesAlumnos']
     	]);
     	if ($this->request->is(['patch', 'post', 'put'])) {
     		$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
     		if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-    			$this->Flash->success(__('The seguimientos clases alumno has been saved.'));
+    			$this->Flash->success(__('Seguimiento guardado'));
     			$url = ['controller' => 'Clases' ,'action' => 'pView', $seguimientosClasesAlumno->clases_alumno->clase_id];
     			return $this->redirect($url);
     		}
-    		$this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+    		$this->Flash->error(__('El seguimiento no ha podido guardarse, reintente!.'));
     	}
     	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
     	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
@@ -192,8 +201,8 @@ class SeguimientosClasesAlumnosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
-                $this->Flash->success(__('The seguimientos clases alumno has been saved.'));
-				
+            	$this->Flash->success(__('Seguimiento guardado'));
+            	
                 $url = ['action' => 'index'];
                 if($this->Auth->user('rol_id') === PROFESOR)
                 {
@@ -201,7 +210,7 @@ class SeguimientosClasesAlumnosController extends AppController
                 }
                 return $this->redirect($url);
             }
-            $this->Flash->error(__('The seguimientos clases alumno could not be saved. Please, try again.'));
+            $this->Flash->error(__('El seguimiento no ha podido guardarse, reintente!.'));
         }
         $ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
@@ -312,17 +321,12 @@ class SeguimientosClasesAlumnosController extends AppController
     	{
     		
     		$where1 = null;
-    		$where2 = null;
     		if (!(empty($this->request->getData()['clases'])))
     		{
     			$clase = $this->request->getData()['clases'];
     			$where1= ["clases.id = $clase"];
     		}
-    		if ($this->request->getData()['nomodificados'])
-    		{
-    			$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
-    		}
-    		$session->write('where',[$where1,$where2]);
+    		$session->write('where',[$where1]);
     		
     	}
     	
@@ -338,7 +342,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
     	
     	$this->paginate = [
-    			'conditions' => [$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
+    			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
     			'finder' => 'ordered',
     	];
@@ -357,16 +361,14 @@ class SeguimientosClasesAlumnosController extends AppController
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
     			
-    			$where1 = null;
-    			$where2 = null;
     			if (!(empty($this->request->getData()['clases'])))
     			{
     				$clase = $this->request->getData()['clases'];
     				$where1= ["clases.id = $clase"];
     			}
-    			if ($this->request->getData()['nomodificados'])
+    			if ($this->request->getData()['modificados'])
     			{
-    				$where2= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+    				$where2= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
     			}
     			
     			$this->request->session()->write('searchCond', [$where1,$where2]);

@@ -90,28 +90,30 @@
  }
 </script>
 <?= $this->assign('title', 'Nuevo alumno');?>
-<div class="col-log-10">
+
+<div class="col-lg-8 col-lg-offset-1 well" >
+   <h3><?= __('Nuevo alumno') ?></h3>
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
-	        <legend><?= __('Nuevo alumno') ?></legend>
+	     
 	      
-	        <div class="col-lg-5">
+	        <div class="col-lg-6">
 	        <?php
 	       	 	echo $this->Form->control('legajo_numero',['label' => 'Legajo sistema anterior']);
 	        ?>
 	        </div>
-	        <div class="col-lg-5"> 
+	        <div class="col-lg-6"> 
 	         <?php
 	         	echo $this->Form->control('nro_documento',['label' => 'DNI']);
 			 ?>
 	         </div>
 	       
-	        <div class="col-lg-5">
+	        <div class="col-lg-6">
 	        <?php
 	        	echo $this->Form->control('nombre');
 	        ?>
 	        </div>
-	        <div class="col-lg-5"> 
+	        <div class="col-lg-6"> 
 	         <?php
 	         	echo $this->Form->control('apellido');
 			 ?>

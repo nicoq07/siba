@@ -79,11 +79,11 @@ class GestorTareasController extends AppController
         	 */
             $gestorTarea = $this->GestorTareas->patchEntity($gestorTarea, $this->request->getData());
             if ($this->GestorTareas->save($gestorTarea)) {
-                $this->Flash->success(__('The gestor tarea has been saved.'));
+                $this->Flash->success(__('Tarea guardada.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The gestor tarea could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error, reintente!.'));
         }
         $gestorTareasPrioridad = $this->GestorTareas->GestorTareasPrioridad->find('list', ['limit' => 200]);
         $this->set(compact('gestorTarea', 'gestorTareasPrioridad'));

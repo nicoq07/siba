@@ -24,7 +24,7 @@ class UsersController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['cambiarPassword','index','view','logout','home','pPerfil','home']))
+			if(in_array($this->request->action, ['cargarFondo','cambiarPassword','index','view','logout','home','pPerfil','home']))
 			{
 				return true;
 			}
@@ -281,6 +281,36 @@ class UsersController extends AppController
     	
     	return $this->redirect(['action' => 'index']);
     	//
+    }
+    
+    public function cargarFondo()
+    {
+    	if ($this->request->is('post'))
+    	{
+    		$id = $this->Auth->user('id');
+    		$user = $this->Users->get($id);
+    		$user->set('fondo',$this->request->getData('fondo'));
+    		if ($this->Users->save($user)) {
+    			$this->Flash->success(__('Fondo cargado! Cierre sesión y vuelva a entrar.'));
+    		} else {
+    			$this->Flash->error(__('Error, reitente!.'));
+    		}
+    	}
+    	$fondos = array(
+    		    "Batería" =>"bateria.jpg",
+    			"Ciudad" =>"ciudad.jpg",
+    			"Bajo" =>"bajo.jpg",
+    			"Guitarra" =>"guitarra.jpg",
+    			"Canto" =>"mic.jpg",
+    			"Montañas" =>"montanas.jpg",
+    			"Piano" =>"piano.jpg" ,
+    			"Ruta" =>"ruta.jpg",
+    			"Trombón" =>"tromp.jpg",
+    			"Violín" =>"violin.jpg" 
+				    			
+    	);
+    	$this->set('fondos',$fondos);
+    	
     }
     
     

@@ -1,4 +1,4 @@
-<div class="col-lg-6 col-lg-offset-1">
+<div class="col-lg-5 col-lg-offset-2 well">
     <?= $this->Form->create($ciclolectivo) ?>
     <fieldset>
         <legend><?= __('Nuevo ciclo lectivo') ?></legend>
@@ -8,7 +8,7 @@
             echo $this->Form->control('descripcion');
             echo $this->Form->control('active',['label' => 'Activa']);
         ?>
-          <?= $this->Form->button(__('Submit'),['class' => 'btn-lg btn-success']) ?>
+          <?= $this->Form->button(__('Guardar'),['class' => 'btn-lg btn-success']) ?>
     </fieldset>
   
     <?= $this->Form->end() ?>

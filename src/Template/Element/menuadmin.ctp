@@ -3,24 +3,23 @@ $(document).ready(parpadear);
 function parpadear(){ $('#campana').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear);
 $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 </script>
-<div class="col-lg-2">
-	<nav class="navbar navbar-default sidebar" role="navigation">
-	    <div class="container-fluid">
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
-	        <span class="sr-only">Menu</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>      
-	    </div>
-	    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-	      <ul class="nav navbar-nav">
+<nav class="navbar navbar-default sidebar" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>      
+    </div>
+    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+    <ul class="nav navbar-nav">
 	      <li class="dropdown">
-	             <a href="/siba/Users/perfil" class="dropdown-toggle" >Clases del día <span  style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-home "></span></a>
+	             <a href="<?php echo \Cake\Routing\Router::url(array('controller'=>'Users','action'=>'perfil'));?>" class="dropdown-toggle" >Clases del día <span  style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-home "></span></a>
 	        </li>
 	        <li class="dropdown">
-	         	          <a href="/siba/GestorTareas/index" class="dropdown-toggle" >Lista de tareas <span id="<?= empty($task) ? "" : "campana"?>" style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-thumb-tack"></span></a>
+	         	          <a href="<?php echo \Cake\Routing\Router::url(array('controller'=>'GestorTareas','action'=>'index'));?>" class="dropdown-toggle" >Lista de tareas <span id="<?= empty($task) ? "" : "campana"?>" style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-thumb-tack"></span></a>
 	        </li>
 	<!--          SECCION ALUMNOS-->
 	        <li class="dropdown">
@@ -28,7 +27,7 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	             <li><?= $this->Html->link(h('Alta'), ['controller' =>'alumnos', 'action' => 'add']) ?></li>
 	             <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'alumnos', 'action' => 'index']) ?></li>
-	          	 <li><?= $this->Html->link(h('Cumpleaños'), ['controller' =>'alumnos', 'action' => 'listadoCumple'],['target' => '_blank' ]) ?></li>
+	          	 <li><?= $this->Html->link(h('Cumpleaños'), ['controller' =>'alumnos', 'action' => 'listadoCumple']) ?></li>
 	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'index']) ?></li>
 	          
 	          </ul>
@@ -106,7 +105,8 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          </ul>
 	        </li>
 	      </ul>
-	    </div>
-	  </div>
-	</nav>
-</div>
+    
+    
+    </div>
+  </div>
+</nav>

@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-8 col-lg-offset-1 well">
      <h3><?= __('Disciplinas') ?></h3>
      <div class="col-lg-2 col-lg-offset-8">
      	 <?= $this->Html->link(__('Nuevo'), ['action' => 'add'],['class' => 'btn btn-success']) ?>

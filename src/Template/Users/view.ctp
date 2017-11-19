@@ -1,5 +1,5 @@
-<div class="users view large-9 medium-8 columns content">
-    <h3><?= h($user->presentacion) ?></h3>
+<div class="col-lg-6 col-lg-offset-2 panel panel-default">
+    <h3 class="panel-heading"><?= h($user->presentacion) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Dni') ?></th>
@@ -37,7 +37,7 @@
     <div class="related">
         <h4><?= __('Pagos recibidos') ?></h4>
         <?php if (!empty($user->pagos_alumnos)): ?>
-        <table cellpadding="0" cellspacing="0">
+        <table>
             <tr>
                 <th scope="col"><?= __('Alumno Id') ?></th>
                 <th scope="col"><?= __('Created') ?></th>

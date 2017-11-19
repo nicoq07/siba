@@ -1,42 +1,42 @@
 <script type="text/javascript">
-$(window).on('load', function() {
-	jsShowWindowLoad("Enviando saludos de cumpleaños! Espere por favor.") ;
-	 $.ajax({
- url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'ajaxEnviarMails'));?>",
+// $(window).on('load', function() {
+// 	jsShowWindowLoad("Enviando saludos de cumpleaños! Espere por favor.") ;
+// 	 $.ajax({
+ //url: "<?php  echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'ajaxEnviarMails'));?>",
 
 		 
-      type: "get",
-      data: {},
-      success: function(data) {
-    	  jsRemoveWindowLoad();
-    	  if (data)
-    	  {
-    		  alert(data);
-    	  }
+//       type: "get",
+//       data: {},
+//       success: function(data) {
+//     	  jsRemoveWindowLoad();
+//     	  if (data)
+//     	  {
+//     		  alert(data);
+//     	  }
     	 
-      },
-      error: function(){
-    	  jsRemoveWindowLoad();
-    	  console.log(data);
-      },
-      complete: function() {
-    	  jsRemoveWindowLoad();
-      }
-  });
+//       },
+//       error: function(data){
+//     	  jsRemoveWindowLoad();
+//     	  console.log(data);
+//       },
+//       complete: function() {
+//     	  jsRemoveWindowLoad();
+//       }
+//   });
 	
-	});
+// 	});
 
 $(document).ready(parpadearHome);
 function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) 
 	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
 </script>
 <?= $this->assign('title', 'Bienvenido'); ?>
-<div class="container col-lg-10">
-	<div class="col-lg-7 col-lg-offset-2">
-		<h1><?= h("Bienvenido ". $user->presentacion)?> </h1>
+<div class="col-lg-5 col-lg-offset-2 panel panel-info">
+	<div class="col-lg-12 panel panel-heading">
+		<h1 style="text-align: center"><?= h("Hola ". $user->nombre."!")?> </h1>
 	</div>
 	&nbsp;
-	<div class="well col-lg-4 col-lg-offset-3">
+	<div class="well col-lg-12">
 		<div style="text-align: center;">
 		   <?php if ($current_user['rol_id'] !== ADMINISTRADOR) {
 			echo $this->Html->link(__('Ir a clases del día'), ['action' => 'p_perfil'], ['class' => 'btn-lg btn-success']);

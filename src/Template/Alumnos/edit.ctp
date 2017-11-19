@@ -90,10 +90,10 @@ function buscarDisciplinas()
     });
 }
 </script>
-<div class="col-log-10">
+<div class="col-lg-8 col-lg-offset-1 well">
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
 	    <fieldset>
-	        <legend><?= __('Modificar alumno') ?></legend>
+	        <h3><?= __('Modificar alumno') ?></h3>
 	      
 	      <div class="col-lg-12 pull-right nopadding">
 		        <div class="col-lg-7">
