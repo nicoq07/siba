@@ -7,23 +7,23 @@
 //en busca los dias y horarios, pero el id es de la clase
 function getDiaHorario()
 {
+	var programa = 0;
+	 if ($('#programa_adolecencia').is(":checked"))
+	 {
+		 programa = 1;
+	}
 	
 	var idDisciplina = $( "#disciplinas" ).val();
 	var profesor_id = $( "#profesores" ).val();
 	 $.ajax({
-// 	        url: "getDiaHorario",
        url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDiaHorario'));?>",
 
 	        type: "get",
-	        data: {profesor_id:profesor_id,idDisciplina:idDisciplina },
+	        data: {profesor_id:profesor_id,idDisciplina:idDisciplina,programa:programa },
 	        success: function(data) {
 	        	var array = data.split('.');
 	        	var sel = $('#clases');
 	        	sel.empty();
-// 	        	sel.on('change', function (data) {
-// 						mifuncion();
-// 	            })
-// 	            sel.attr('id', 'clases._ids');
 	           	
  	        	sel.append($("<option>").attr('value',null).text('Seleccione horario'));
 	         	$(array).each(function() {
@@ -31,11 +31,6 @@ function getDiaHorario()
 	        		d = this.split('-');
 	            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
 	           	})
-// 		         	div = document.createElement('div');
-// 		        	$(div).addClass('input select')
-// 		     	    .html(sel);
-		        	
-// 		         	$('#shorario').append(div)
 	        },
 	        error: function(){
 				alert("Error");
@@ -45,47 +40,66 @@ function getDiaHorario()
 	    });
 }
 
-function buscarDisciplinas()
+function buscarDisciplinas(programa)
 {
+	var programa = 0;
+	 if ($('#programa_adolecencia').is(":checked"))
+	 {
+		 programa = 1;
+	}
 	
 	var profesor_id = $( "#profesores" ).val();
     $.ajax({
         //url: "getDisciplinas",
        url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDisciplinas'));?>",
         type: "get",
-        data: {profesor_id:profesor_id},
+        data: {profesor_id:profesor_id,programa:programa},
         success: function(data) {
 
-            
-        	//$("#disciplinas").remove();
-        	var array = data.split('.');
-        //	var sel = $('<select>');
-      		var sel = $('#disciplinas');
-      		sel.empty();
-//         	sel.on('change', function (data) {
-//         		getDiaHorario();
-//             })
-//             sel.attr('id', 'disciplinas');
-//             ;
-        	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
-         	$(array).each(function() {
+//         	var array = data.split('.');
+//       		var sel = $('#disciplinas');
+//       		sel.empty();
+//         	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
+//          	$(array).each(function() {
         	
-        		d = this.split('-');
-            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
-           	})
-           		
-// 	         	div = document.createElement('div');
-// 	        	$(div).addClass('input select')
-// 	     	    .html(sel);
-	        	
-// 	         	$('#sdisciplina').append(div)
-	         	
+//         		d = this.split('-');
+//             	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
+//            	})
+        	if (data != '')
+            {
+       		var array = data.split('.');
+
+          		var sel = $('#disciplinas');
+          		sel.attr('disabled',false);
+          		var sel2 = $('#clases');
+       		sel2.attr('disabled',false);
+       		
+          		sel.empty();
+
+            	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
+             	$(array).each(function() {
+                 
+            		d = this.split('-');
+                	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
+               	})
+             }
+       	else
+       	{
+       		var sel = $('#disciplinas');
+       		sel.attr('disabled',true);
+          		sel.empty();
+       		sel.append($("<option>").attr('value',null).text('Sin clases'));
+       		var sel = $('#clases');
+       		sel.attr('disabled',true);
+          		sel.empty();
+       		sel.append($("<option>").attr('value',null).text('Sin clases'));
+       	}
+            
         },
         error: function(){
 			alert("Error buscando las disciplinas");
         },
         complete: function() {
-           // alert('Disciplinas disponibles');
         }
     });
 }
@@ -237,7 +251,7 @@ function buscarDisciplinas()
 	         
 	         <div class="col-lg-5"> 
 	         <?php
-	         echo $this->Form->control('programa_adolecencia');
+	         echo $this->Form->control('programa_adolecencia',['id' => 'programa_adolecencia' ]);
 			 ?>
 	         </div> 
 	         <div class="col-lg-5"> 
@@ -263,8 +277,8 @@ function buscarDisciplinas()
 	          <div class="col-lg-10" id="div-clases"> 
 		         	<div id = 'sprofesor' class= "col-lg-4">
 					<?php 
-			       	 echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Profesores','empty' => 'Seleccione profesor','onchange' => 'buscarDisciplinas()']);
-			        ?>
+					echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Profesores','empty' => 'Seleccione profesor','onchange' => "buscarDisciplinas('$alumno->programa_adolecencia')"]);
+					?>
 		         	</div>
 		         	<div id = 'sdisciplina' class= "col-lg-3">
 		         	   	<?php  

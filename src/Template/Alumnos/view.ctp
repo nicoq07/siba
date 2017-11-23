@@ -89,7 +89,7 @@
 	        <h4><?= __('Observación') ?></h4>
 	       <div class="separador"><?= $this->Text->autoParagraph(h($alumno->observacion)); ?></div>
 	    </div>
-	    
+	    <?php if ($alumno->programa_adolescencia){?>
 	    <div class="related col-lg-12 col-md-12">
 	        <h4><?= __('Pagos correspondientes') ?></h4>
 	        <?php if (!empty($alumno->pagos_alumnos)): ?>
@@ -126,6 +126,7 @@
 	        </table>
 	        <?php endif; ?>
 	    </div>
+	    <?php }?>
 	    <div class="related col-lg-12 col-md-12">
 	        <h4><?= __('Clases inscriptas' ) ?></h4>
 	        <?php if (!empty($alumno->clases)){ ?>
@@ -184,7 +185,7 @@
 	       <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
 	    </div>
 	</div>
-</div>
 	<div style="margin-top: 10px;" class="col-lg-2 col-md-2">
 		<?= $this->element('menuEnAlumno')?> 
-	</div>
+</div>
+</div>

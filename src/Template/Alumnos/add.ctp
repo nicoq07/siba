@@ -2,11 +2,18 @@
 .container-clases { border:2px solid #ccc; width:100%; height: 100px; overflow-y: scroll; }
 
  </style>
- <script type="text/javascript"> 
+ <script type="text/javascript">
+ 
 //en busca los dias y horarios, pero el id es de la clase
- function getDiaHorario()
+ function getDiaHorario(programa)
  {
- 	
+	 
+	 var programa = 0;
+	 if ($('#programa_adolecencia').is(":checked"))
+	 {
+		 programa = 1;
+	}
+	
  	var idDisciplina = $( "#disciplinas" ).val();
  	var profesor_id = $( "#profesores" ).val();
  	 $.ajax({
@@ -14,15 +21,11 @@
         url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDiaHorario'));?>",
 
  	        type: "get",
- 	        data: {profesor_id:profesor_id,idDisciplina:idDisciplina },
+ 	        data: {profesor_id:profesor_id,idDisciplina:idDisciplina,programa:programa },
  	        success: function(data) {
  	        	var array = data.split('.');
  	        	var sel = $('#clases');
  	        	sel.empty();
-//  	        	sel.on('change', function (data) {
-//  						mifuncion();
-//  	            })
-//  	            sel.attr('id', 'clases._ids');
  	           	
   	        	sel.append($("<option>").attr('value',null).text('Seleccione horario'));
  	         	$(array).each(function() {
@@ -30,11 +33,6 @@
  	        		d = this.split('-');
  	            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
  	           	})
-//  		         	div = document.createElement('div');
-//  		        	$(div).addClass('input select')
-//  		     	    .html(sel);
- 		        	
-//  		         	$('#shorario').append(div)
  	        },
  	        error: function(){
  				alert("Error");
@@ -46,38 +44,49 @@
 
  function buscarDisciplinas()
  {
- 	
+	 var programa = 0;
+	 if ($('#programa_adolecencia').is(":checked"))
+	 {
+		 programa = 1;
+	}
+	
  	var profesor_id = $( "#profesores" ).val();
      $.ajax({
          //url: "getDisciplinas",
         url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDisciplinas'));?>",
          type: "get",
-         data: {profesor_id:profesor_id},
+         data: {profesor_id:profesor_id,programa:programa},
          success: function(data) {
+        	if (data != '')
+             {
+        		var array = data.split('.');
 
+           		var sel = $('#disciplinas');
+           		sel.attr('disabled',false);
+           		var sel2 = $('#clases');
+        		sel2.attr('disabled',false);
+        		
+           		sel.empty();
+
+             	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
+              	$(array).each(function() {
+                  
+             		d = this.split('-');
+                 	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
+                	})
+              }
+        	else
+        	{
+        		var sel = $('#disciplinas');
+        		sel.attr('disabled',true);
+           		sel.empty();
+        		sel.append($("<option>").attr('value',null).text('Sin clases'));
+        		var sel = $('#clases');
+        		sel.attr('disabled',true);
+           		sel.empty();
+        		sel.append($("<option>").attr('value',null).text('Sin clases'));
+        	}
              
-         	//$("#disciplinas").remove();
-         	var array = data.split('.');
-         //	var sel = $('<select>');
-       		var sel = $('#disciplinas');
-       		sel.empty();
-//          	sel.on('change', function (data) {
-//          		getDiaHorario();
-//              })
-//              sel.attr('id', 'disciplinas');
-//              ;
-         	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
-          	$(array).each(function() {
-         	
-         		d = this.split('-');
-             	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
-            	})
-            		
-//  	         	div = document.createElement('div');
-//  	        	$(div).addClass('input select')
-//  	     	    .html(sel);
- 	        	
-//  	         	$('#sdisciplina').append(div)
  	         	
          },
          error: function(){
@@ -207,25 +216,7 @@
 	         echo $this->Form->control('monto_materiales');
 			 ?>
 	         </div>  
-	         <div class="col-lg-10" id="div-clases"> 
-		         	<div id = 'sprofesor' class= "col-lg-4">
-					<?php 
-			       	 echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Profesores','empty' => 'Seleccione profesor','onchange' => 'buscarDisciplinas()']);
-			        ?>
-		         	</div>
-		         	<div id = 'sdisciplina' class= "col-lg-3">
-		         	   	<?php  
-		         	   	echo $this->Form->label('disciplinas',['label' => 'Disciplinas']);
-		         	   	echo $this->Form->select('disciplinas',['empty' => '-'],['id' => 'disciplinas','onchange' => 'getDiaHorario();']);
-		         	   	?>
-		         	</div>
-		         	<div id = 'shorario' class= "col-lg-3">
-		         			<?php  
-		         			echo $this->Form->input('clases[]',['label' => 'Fecha y hora','option' => '-','empty' => '-','id' => 'clases','type' => 'select']);
-			      		  ?>
-			        </div>
-			        <div class="col-lg-1" id="div-add" > 	<input type="button" class="btn-sm btn-info" id="btnAdd" value="+" onclick="addClase();" /></div>
-	         </div>  
+	        
 	    	 <div class="col-lg-10"> 
 	         <?php
 	         echo $this->Form->control('observacion',['label' => 'Observación']);
@@ -240,13 +231,32 @@
 	         
 	         <div class="col-lg-5"> 
 	         <?php
-	         echo $this->Form->control('programa_adolecencia',['label' => 'Adolescencia']);
+	        	 echo $this->Form->input('programa_adolecencia',['id' => 'programa_adolecencia', 'label' => 'Adolescencia']);
 			 ?>
 	         </div> 
 	         <div class="col-lg-5"> 
 	         <?php
 	         echo $this->Form->control('active',['label' => 'Activo']);
 			 ?>
+	         </div>
+	            <div class="col-lg-10" id="div-clases"> 
+		         	<div id = 'sprofesor' class= "col-lg-4">
+					<?php 
+			       	 echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Profesores','empty' => 'Seleccione profesor','onchange' => "buscarDisciplinas()"]);
+			        ?>
+		         	</div>
+		         	<div id = 'sdisciplina' class= "col-lg-3">
+		         	   	<?php  
+		         	   	echo $this->Form->label('disciplinas',['label' => 'Disciplinas']);
+		         	   	echo $this->Form->select('disciplinas',['empty' => '-'],['id' => 'disciplinas','onchange' => "getDiaHorario();"]);
+		         	   	?>
+		         	</div>
+		         	<div id = 'shorario' class= "col-lg-3">
+		         			<?php  
+		         			echo $this->Form->input('clases[]',['label' => 'Fecha y hora','option' => '-','empty' => '-','id' => 'clases','type' => 'select']);
+			      		  ?>
+			        </div>
+			        <div class="col-lg-1" id="div-add" > 	<input type="button" class="btn-sm btn-info" id="btnAdd" value="+" onclick="addClase();" /></div>
 	         </div> 
 	         <div class="col-lg-8"> 
 	          <label for="foto"> Foto</label>
