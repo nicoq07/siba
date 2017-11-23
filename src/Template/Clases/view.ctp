@@ -1,4 +1,4 @@
-<div class="col-lg-8 col-lg-offset-1">
+<div class="col-lg-8 col-lg-offset-1 panel">
 	&nbsp;
     <h3><?= h($clase->presentacion) ?></h3>
     &nbsp;
@@ -12,7 +12,6 @@
             <tr>
                 <th scope="col"><?= __('Nombre') ?></th>
                 <th scope="col"><?= __('Programa Adolecencia') ?></th>
-                <th scope="col"><?= __('Futuro Alumno') ?></th>
                 <th scope="col"><?= __('Activo') ?></th>
                 <th scope="col" class="actions"><?= __('Acciones sobre alumnos') ?></th>
             </tr>
@@ -20,7 +19,6 @@
             <tr>
                 <td><?= h($alumnos->presentacion) ?></td>
                 <td><?= $alumnos->programa_adolecencia ? h("Sí") : h("No") ?></td>
-                <td><?= $alumnos->futuro_alumno ? h("Sí") : h("No")?></td>
                 <td><?= $alumnos->active ? h("Sí") : h("No")?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['controller' => 'Alumnos', 'action' => 'view', $alumnos->id],['class' => 'btn-sm btn-info']) ?>

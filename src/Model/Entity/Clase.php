@@ -9,8 +9,11 @@ use Cake\ORM\TableRegistry;
  *
  * @property int $id
  * @property int $profesor_id
+ * @property int $operador_id
  * @property int $horario_id
  * @property int $disciplina_id
+ * @property bool $programa_adolescencia
+ * @property int $alumno_count
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property bool $active
@@ -18,6 +21,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Profesore $profesore
  * @property \App\Model\Entity\Horario $horario
  * @property \App\Model\Entity\Disciplina $disciplina
+ * @property \App\Model\Entity\SeguimientosClase[] $seguimientos_clases
  * @property \App\Model\Entity\Alumno[] $alumnos
  */
 class Clase extends Entity
@@ -36,6 +40,7 @@ class Clase extends Entity
         '*' => true,
         'id' => false
     ];
+    
     public function _getPresentacion()
     {
     	$disciplinas = TableRegistry::get('Disciplinas');
@@ -74,27 +79,5 @@ class Clase extends Entity
     	return $cadena;
     }
     
-//     public function existeSeguimiento($idAlumno)
-//     {
-//     	$Seguimientos = TableRegistry::get("SeguimientosClases");
-    	
-//     	if($Seguimientos->exists(["clase_id" => $this->id, "alumno_id" => $idAlumno]))
-//     	{
-//     		return true;
-//     	}
-    	
-//     	return false;
-//     }
     
-//     public function eliminarSeguimientos($idAlumno)
-//     {
-//     	$Seguimientos = TableRegistry::get("SeguimientosClases");
-    	
-//     	if ($this->existeSeguimiento($idAlumno))
-//     	{
-//     		$rows = $Seguimientos->deleteAll(["clase_id" => $this->id, "alumno_id" => $idAlumno]);
-//     		return $rows;
-//     	}
-//     	return false;
-//     }
 }

@@ -27,11 +27,18 @@ class ClasesTableTest extends TestCase
         'app.clases',
         'app.profesores',
         'app.horarios',
+        'app.ciclolectivo',
         'app.disciplinas',
+        'app.seguimientos_clases',
         'app.alumnos',
-        'app.fotos_alumnos',
         'app.pagos_alumnos',
-        'app.clases_alumnos'
+        'app.users',
+        'app.roles',
+        'app.notificaciones',
+        'app.pagos_conceptos',
+        'app.clases_alumnos',
+        'app.seguimientos_clases_alumnos',
+        'app.calificaciones'
     ];
 
     /**
@@ -84,6 +91,16 @@ class ClasesTableTest extends TestCase
      * @return void
      */
     public function testBuildRules()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findOrdered method
+     *
+     * @return void
+     */
+    public function testFindOrdered()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

@@ -10,8 +10,10 @@ use Cake\Validation\Validator;
  * Clases Model
  *
  * @property \App\Model\Table\ProfesoresTable|\Cake\ORM\Association\BelongsTo $Profesores
+ * @property |\Cake\ORM\Association\BelongsTo $Operadores
  * @property \App\Model\Table\HorariosTable|\Cake\ORM\Association\BelongsTo $Horarios
  * @property \App\Model\Table\DisciplinasTable|\Cake\ORM\Association\BelongsTo $Disciplinas
+ * @property |\Cake\ORM\Association\HasMany $ViewClases
  * @property \App\Model\Table\AlumnosTable|\Cake\ORM\Association\BelongsToMany $Alumnos
  *
  * @method \App\Model\Entity\Clase get($primaryKey, $options = [])
@@ -47,6 +49,9 @@ class ClasesTable extends Table
             'foreignKey' => 'profesor_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Operadores', [
+            'foreignKey' => 'operador_id'
+        ]);
         $this->belongsTo('Horarios', [
             'foreignKey' => 'horario_id',
             'joinType' => 'INNER'
@@ -55,8 +60,8 @@ class ClasesTable extends Table
             'foreignKey' => 'disciplina_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('SeguimientosClases', [
-        		'foreignKey' => 'clase_id'
+        $this->hasMany('ViewClases', [
+            'foreignKey' => 'clase_id'
         ]);
         $this->belongsToMany('Alumnos', [
             'foreignKey' => 'clase_id',
@@ -78,6 +83,14 @@ class ClasesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->boolean('programa_adolescencia')
+            ->allowEmpty('programa_adolescencia');
+
+        $validator
+            ->integer('alumno_count')
+            ->allowEmpty('alumno_count');
+
+        $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');
@@ -95,12 +108,14 @@ class ClasesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['profesor_id'], 'Profesores'));
+        $rules->add($rules->existsIn(['operador_id'], 'Operadores'));
         $rules->add($rules->existsIn(['horario_id'], 'Horarios'));
         $rules->add($rules->existsIn(['disciplina_id'], 'Disciplinas'));
 
         return $rules;
     }
-	public function findOrdered(Query $query, array $options)
+    
+    public function findOrdered(Query $query, array $options)
     {
     	return $query
     	->order([

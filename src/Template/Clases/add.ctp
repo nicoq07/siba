@@ -5,9 +5,15 @@
 <div class="col-lg-6 col-lg-offset-2 well">
     <?= $this->Form->create($clase) ?>
     <fieldset>
-        <legend><?= __('Nueva clase') ?></legend>
+        <legend><?= __('Nueva clase ' .$tipo) ?></legend>
         <?php
+      
             echo $this->Form->control('profesor_id', ['options' => $profesores]);
+            if ($this->request->params['action'] == 'addPrograma')
+            {
+	            echo $this->Form->control('programa_adolescencia',['label' => 'Programa Adolescencia']);
+	            echo $this->Form->control('operador_id', ['id' => 'operador_id','options' => $operadores,'empty' => true]);
+            }
             echo $this->Form->control('horario_id', ['options' => $horarios]);
             echo $this->Form->control('disciplina_id', ['options' => $disciplinas]);
             echo $this->Form->control('active',['label' => 'Activa']);
