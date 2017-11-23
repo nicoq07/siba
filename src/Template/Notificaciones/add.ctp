@@ -10,7 +10,7 @@
             // echo $this->Form->input('leida');
             if ($current_user['rol_id'] === ADMINISTRADOR)
             {
-             echo $this->Form->input('broadcast', ['label' => 'Enviar a todos los profesores' ]);
+             echo $this->Form->input('broadcast', ['label' => 'Enviar a todos' ]);
             }
         ?>
     </fieldset>

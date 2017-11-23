@@ -9,7 +9,7 @@
                        <?php if($current_user['rol_id'] == ADMINISTRADOR): ?>
                         <?=  $this->Html->link(' Nuevo mensaje', ['controller' => 'Notificaciones', 'action' => 'add'],['class' => 'btn btn-default ticket-option fa fa-pencil ']) ?>
                         <?php endif; ?>
-                        <?php if($current_user['rol_id'] == PROFESOR): ?>
+                        <?php if($current_user['rol_id'] !== ADMINISTRADOR): ?>
                         <?=  $this->Html->link(' Nuevo mensaje', ['controller' => 'Notificaciones', 'action' => 'addProfesor'],['class' => 'btn btn-default ticket-option fa fa-pencil ']) ?>
                         <?php endif; ?>
 
