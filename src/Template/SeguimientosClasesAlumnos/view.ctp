@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Vista de Seguimiento') ?>
-<div class=" col-lg-6 col-lg-offset-2 panel panel-default">
+<div  align="center"  class="col-lg-5 col-lg-offset-2 panel panel-default">
 	    <h3 class="panel-heading"><?= h("Seguimiento de " .$seguimientosClasesAlumno->clases_alumno->alumno->presentacion) ?></h3>
 	      <h4 class="panel-heading"><?= h($seguimientosClasesAlumno->clases_alumno->clase->presentacion) ?></h4>
 	    
