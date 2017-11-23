@@ -92,6 +92,8 @@ $description = 'Iba Escuela ' .date("Y");
           	<?= $this->element('menuadmin') ?>
          <?php elseif (!empty($current_user) && $current_user['rol_id'] === PROFESOR) : ?>
          	<?= $this->element('menuprofesor') ?>
+         <?php elseif (!empty($current_user) && $current_user['rol_id'] === OPERADOR) : ?>
+         	<?= $this->element('menuoperador') ?>
          <?php endif; ?>
            	 <?= $this->fetch('content') ?>
         </div>

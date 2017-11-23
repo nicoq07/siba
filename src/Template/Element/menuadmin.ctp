@@ -29,7 +29,6 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	             <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'alumnos', 'action' => 'index']) ?></li>
 	          	 <li><?= $this->Html->link(h('Cumpleaños'), ['controller' =>'alumnos', 'action' => 'listadoCumple']) ?></li>
 	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'index']) ?></li>
-	          
 	          </ul>
 	        </li>    
 	          <!--  FIN SECCION ALUMNOS-->
@@ -44,11 +43,20 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION PROFESORES-->
+	           <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operadores <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity fa fa-group"></span></a>
+	          <ul class="dropdown-menu forAnimate" role="menu">
+	            <li><?= $this->Html->link(h('Alta'), ['controller' =>'operadores', 'action' => 'add']) ?></li>
+	            <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'operadores', 'action' => 'index']) ?></li>
+	            <li><?= $this->Html->link(h('Planillas'), ['controller' =>'operadores', 'action' => 'planillas']) ?></li>
+	          </ul>
+	        </li>
 	    <!--          SECCION CLASES-->
 	      <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cursos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cursos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-book"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
-	             <li><?= $this->Html->link(h('Nueva clase'), ['controller' =>'clases', 'action' => 'add']) ?></li>
+	             <li><?= $this->Html->link(h('Nueva clase IBA'), ['controller' =>'clases', 'action' => 'addIba']) ?></li>
+	             <li><?= $this->Html->link(h('Nueva clase Programa'), ['controller' =>'clases', 'action' => 'addPrograma']) ?></li>
 	             <li><?= $this->Html->link(h('Ver clases'), ['controller' =>'clases', 'action' => 'index']) ?></li>
 	           	 <li class="divider"></li>
 	           	<li><?= $this->Html->link(h('Nueva disciplina'), ['controller' =>'disciplinas', 'action' => 'add']) ?></li>
@@ -63,6 +71,7 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION CLASES-->
+	           
 	              <!--          SECCION PAGOS-->
 	      <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pagos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-usd"></span></a>
@@ -78,11 +87,17 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seguimientos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-sort"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
+	          	<li  class="disabled"><a href="#" style="font-variant: bold; font-size: 18px;">IBA</a></li>
+	          	<li class="divider"></li>
 	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'index']) ?></li>
 	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'informe'],['target' => '_blank' ]) ?></li>
-	         	<li class="divider"></li>
-	           	 <li><?= $this->Html->link(h('Nueva calificación'), ['controller' =>'calificaciones', 'action' => 'add']) ?></li>
-	           	 <li><?= $this->Html->link(h('Ver calificaciones'), ['controller' =>'calificaciones', 'action' => 'index']) ?></li>
+	           	<li><?= $this->Html->link(h('Nueva calificación'), ['controller' =>'calificaciones', 'action' => 'add']) ?></li>
+	           	<li><?= $this->Html->link(h('Ver calificaciones'), ['controller' =>'calificaciones', 'action' => 'index']) ?></li>
+	      		<li class="divider"></li>
+	      		<li class="disabled"><a href="#" onclick="return false" style="font-variant: bold; font-size: 15px;">Programa Adolescencia</a></li>
+	            <li class="divider"></li>
+	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosPrograma', 'action' => 'index']) ?></li>
+	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'SeguimientosPrograma', 'action' => 'informe'],['target' => '_blank' ]) ?></li>
 	          </ul>
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
