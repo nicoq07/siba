@@ -45,6 +45,9 @@ class UsersTable extends Table
         $this->belongsTo('Profesores', [
             'foreignKey' => 'profesor_id'
         ]);
+        $this->belongsTo('Operadores', [
+        		'foreignKey' => 'operador_id'
+        ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'rol_id'
         ]);
@@ -99,6 +102,7 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['profesor_id'], 'Profesores'));
+        $rules->add($rules->existsIn(['operador_id'], 'Operadores'));
         $rules->add($rules->existsIn(['rol_id'], 'Roles'));
 
         return $rules;
@@ -114,7 +118,7 @@ class UsersTable extends Table
     public function findAuth(\Cake\ORM\Query $query, array $options)
     {
     	$query
-    	->select(['id','nombre','apellido', 'nombre_usuario', 'password', 'rol_id','profesor_id','fondo'])
+    	->select(['id','nombre','apellido', 'nombre_usuario', 'password', 'rol_id','profesor_id','fondo','operador_id'])
     	->where(['Users.active' => 1]);
     	return $query;
     }
