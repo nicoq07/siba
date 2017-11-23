@@ -23,7 +23,7 @@
 		}	?>
 	    </div>
 </div>
-<div class="col-lg-4 col-lg-offset-1 panel panel-sm">
+<div class="col-lg-5 col-lg-offset-1 panel panel-sm">
 <div class="related">
 	<h3 class="panel panel-heading"><?= h("Clases sin alumnos")?> </h3>
 	
