@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($seguimientosPrograma as $seguimientos): ?>
+            <?php foreach ($seguimientosProgramas as $seguimientos): ?>
             <tr>
                 <td><?= $this->Html->link($seguimientos->clases_alumno->clase->presentacionCorta, ['controller' => 'Clases', 'action' => 'p_view', $seguimientos->clases_alumno->clase->id])  ?></td>
                 <td><?= $this->Html->link($seguimientos->clases_alumno->alumno->presentacion, ['controller' => 'Alumnos', 'action' => 'p_view', $seguimientos->clases_alumno->alumno->id])  ?></td>
