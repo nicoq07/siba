@@ -9,6 +9,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property int $id
  * @property string $dni
  * @property int $profesor_id
+ * @property int $operador_id
  * @property string $nombre
  * @property string $apellido
  * @property string $nombre_usuario

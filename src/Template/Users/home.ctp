@@ -38,11 +38,15 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 	&nbsp;
 	<div class="well col-lg-12">
 		<div style="text-align: center;">
-		   <?php if ($current_user['rol_id'] !== ADMINISTRADOR) {
-			echo $this->Html->link(__('Ir a clases del día'), ['action' => 'p_perfil'], ['class' => 'btn-lg btn-success']);
+		   <?php if ($current_user['rol_id'] == ADMINISTRADOR) {
+			echo $this->Html->link(__('Ir a clases del día'), ['action' => 'perfil'], ['class' => 'btn-lg btn-success']);
 			}
-			else {
-				echo $this->Html->link(__('Ir a clases del día'), ['action' => 'perfil'], ['class' => 'btn-lg btn-success']);
+			elseif ($current_user['rol_id'] == PROFESOR) {
+				echo $this->Html->link(__('Ir a clases del día'), ['action' => 'p_perfil'], ['class' => 'btn-lg btn-success']);
+			}
+			elseif ($current_user['rol_id'] == OPERADOR)
+			{
+				echo $this->Html->link(__('Ir a clases del día'), ['action' => 'o_perfil'], ['class' => 'btn-lg btn-success']);
 			}
 			?>
 		</div>

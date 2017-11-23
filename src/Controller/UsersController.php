@@ -29,6 +29,13 @@ class UsersController extends AppController
 				return true;
 			}
 		}
+		if(isset($user['rol_id']) &&  $user['rol_id'] == OPERADOR)
+		{
+			if(in_array($this->request->action, ['cargarFondo','cambiarPassword','index','view','logout','home','oPerfil','home']))
+			{
+				return true;
+			}
+		}
 		return parent::isAuthorized($user);
 		return true;
 	}
@@ -80,11 +87,18 @@ class UsersController extends AppController
             if ($user->profesor_id > 0)
             {
 	            $profe =  $this->Users->Profesores->get($user->profesor_id);
-	            $user->set(['nombre' => $profe->nombre, 'apellido' => $profe->apellido,'dni' => $profe->cuit]);
+	            $user->set(['nombre' => $profe->nombre, 'apellido' => $profe->apellido,'dni' => $profe->cuit,
+	            			'operador_id' => null]);
             }
-            else 
+            elseif ($user->operador_id> 0)
             {
-            	$user->set('profesor_id',null);
+            	$operador =  $this->Users->Operadores->get($user->operador_id);
+            	$user->set(['nombre' => $operador->nombre, 'apellido' => $operador->apellido,'dni' => $operador->cuit,
+            			'profesor_id' => null]);
+            }
+            else
+            {
+            	$user->set(['profesor_id',null,'operador_id' => null]);
             }
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuario creado.'));
@@ -95,17 +109,27 @@ class UsersController extends AppController
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 3]);
         
-        $subquery = $this->Users
+        $subqueryProfes = $this->Users
 	    ->find('list')
 	    ->where(['Users.profesor_id = Profesores.id']);
 
 	    $profesores= $this->Users->Profesores
 		    ->find('list')
 		    ->where([
-		        'NOT EXISTS'  => $subquery
+		    	'NOT EXISTS'  => $subqueryProfes
 		    ]);
+		
+		$subqueryOperadores = $this->Users
+		    ->find('list')
+		    ->where(['Users.operador_id = Operadores.id']);
 		    
-        $this->set(compact('user', 'roles','profesores'));
+		    $operadores= $this->Users->Operadores
+		    ->find('list')
+		    ->where([
+		    		'NOT EXISTS'  => $subqueryOperadores
+		    ]);
+		
+        $this->set(compact('user', 'roles','profesores','operadores'));
         $this->set('_serialize', ['user']);
     }
 
@@ -264,6 +288,24 @@ class UsersController extends AppController
     			'contain' => ['Roles']
     	]);
     	$this->set(compact('user','horarios'));
+    }
+    
+    public  function oPerfil()
+    {
+    	
+    	$id = $this->Auth->user('operador_id');
+    	
+    	$horarios = TableRegistry::get('Horarios')->find('all')
+    	->matching('Clases'
+    			)
+    			->where(['nombre_dia' => date('l'), 'Clases.operador_id' => $id])
+    			
+    			->orderAsc("hora")
+    			;
+    			$user = $this->Users->get($this->Auth->user('id'), [
+    					'contain' => ['Roles']
+    			]);
+    			$this->set(compact('user','horarios'));
     }
     
     
