@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-           	    <p><?php echo h('Versión 2.0 - '.date('Y'));?></p>
+           	    <p><?php echo h($version. '- '.date('Y'));?></p>
                 <p>Powered by <strong><a href="https://www.linkedin.com/in/nicol%C3%A1s-quiroga-20a541b6/" target="_blank"><?php echo h('©NiQ')?></a></strong></p>
             </div>
         </div>

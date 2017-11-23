@@ -73,8 +73,8 @@ $description = 'Iba Escuela ' .date("Y");
 	                        	<?php if (!empty($current_user) && $current_user['rol_id'] === ADMINISTRADOR) : ?>
 	                        		<li><?= $this->Html->link(h('Parámetros'), ['controller' =>'Parametros', 'action' => 'index']) ?></li>							
 	                        	<?php endif; ?>
-	                        	<li><?= $this->Html->link(h('Cambiar fondo'), ['controller' =>'Users', 'action' => 'cargarFondo']) ?></li>							
-								<li><?= $this->Html->link(h('Cambiar password'), ['controller' =>'Users', 'action' => 'cambiarPassword',$current_user['id']]) ?></li>							
+	                        	<li><?= $this->Html->link(h('Cambiar fondo'), ['controller' =>'Users', 'action' => 'cargarFondo']) ?></li>	
+								<li><?= $this->Html->link(h('Cambiar password'), ['controller' =>'Users', 'action' => 'cambiarPassword',$current_user['id']]) ?></li>								<li><?= $this->Html->link('Novedades '. __('<i class="glyphicon glyphicon-info-sign"></i>'), ['controller' =>'Users', 'action' => 'novedades'],['escape' => false,]) ?></li>							
 	                            <li><?= $this->Html->link(h('Salir'), ['controller' =>'Users', 'action' => 'logout']) ?></li>
 							</ul>
 					</li>

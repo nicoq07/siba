@@ -200,6 +200,22 @@ class UsersController extends AppController
     	{
     		return $this->redirect(['controller' => 'Users', 'action' => 'home']);
     	}
+    	
+    	$version = null;
+    	$i = 0;
+    	if ($file = fopen(WWW_ROOT."notasVersion".DS."notasV.txt", "r")) {
+	    	while(!feof($file)) {
+	    		$line = fgets($file);
+	    		if ($i == 0)
+	    		{
+	    			$version = $line;
+	    			$i++;
+	    		}
+	    		break;
+	    	}
+	    	fclose($file);
+    	}
+    	$this->set("version",$version);
     }
     
     public function logout()
@@ -355,5 +371,29 @@ class UsersController extends AppController
     	
     }
     
-    
+    public function novedades()
+    {
+    	$version = null;
+    	$contenido = null;
+    	$i = 0;
+    	if ($file = fopen(WWW_ROOT."notasVersion".DS."notasV.txt", "r")) {
+    		while(!feof($file)) {
+    			$line = fgets($file);
+    			if ($i == 0)
+    			{
+    				$version = $line;
+    				$i++;
+    			}
+    			else
+    			{
+    				$contenido[$i] = $line;
+    				$i++;
+    			}
+    		}
+    		fclose($file);
+    	}
+    	
+    	$this->set(["version","contenido"],[$version,$contenido]);
+    	
+    }
 }
