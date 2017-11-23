@@ -2,9 +2,9 @@
 <section id="login">
     <div class="container">
     	<div class="row">
-    	    <div class="col-xs-12">
+    	    <div class="col-md-12">
     	     <?= $this->Flash->render('auth') ?>
-        	    <div class="form-wrap">
+        	    <div class="col-lg-4 col-lg-offset-4">
                 <h1>Ingreso a SIBA </h1>
                     <?= $this->Form->create('login-form') ?>
                         <div class="form-group">
