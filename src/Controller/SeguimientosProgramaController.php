@@ -307,11 +307,11 @@ class SeguimientosProgramaController extends AppController
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Operadores'] ]],
     			'finder' => 'ordered',
     	];
-    	$seguimientosPrograma = $this->paginate($this->SeguimientosPrograma);
+    	$seguimientosProgramas = $this->paginate($this->SeguimientosPrograma);
     	
     	
     	
-    	$this->set(compact('seguimientosPrograma','clases'));
+    	$this->set(compact('seguimientosProgramas','clases'));
     	
     	$this->render('/SeguimientosPrograma/o_index');
     }
