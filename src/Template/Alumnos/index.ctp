@@ -1,4 +1,4 @@
-<div class="col-lg-10">
+<div class="col-lg-10 panel">
 
 	<div class = "col-lg-12 container">
     	<h3><?= __('Alumnos') ?></h3>
@@ -34,7 +34,7 @@
             echo $this->Form->checkbox('futuro', ['label' => false, 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
-		<div class ="col-lg-3">
+		<div class ="col-lg-6">
 		 <?php
 			echo $this->Form->label('Búsqueda :');
 			echo $this->Form->control('palabra_clave', ['value' => $search_key,  'label' => false,'placeholder' => 'Nombre, Apellido ó DNI ', 'onchange'=>'document.getElementById("frmIndex").submit()']);

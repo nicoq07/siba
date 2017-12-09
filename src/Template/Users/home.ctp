@@ -53,7 +53,7 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 
 	</div>
 	 <?php if (count($notificaciones) > 0) {?>
-	<div class="well col-lg-4 col-lg-offset-3">
+	<div class="well col-lg-12">
 		<div style="text-align: center;">
 		 <div class="col-lg-12"><span id="campanaHome" style="color: #c80009" class="fa fa-lg fa-bell"></span></div>
 		 <?php echo $this->Html->link(__('Tenés notificaciones nuevas'), ['controller' => 'Notificaciones' , 'action' => 'index'], ['class' => 'fa']);?>

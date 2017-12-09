@@ -1,4 +1,4 @@
-<div class="col-lg-6 col-lg-offset-1 well well-sm">
+<div class="col-lg-6 col-lg-offset-2 well well-sm">
     <?= $this->Form->create($pagosAlumnos) ?>
     <fieldset>
         <legend><?= __('Nuevo pago general') ?></legend>
