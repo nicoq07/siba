@@ -18,7 +18,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['pIndex','edit','view','pSearch','addProfesor']))
+			if(in_array($this->request->action, ['pIndex','edit','view','pSearch','addProfesor','reset']))
 			{
 				return true;
 			}
@@ -69,17 +69,17 @@ class SeguimientosClasesAlumnosController extends AppController
     			$year= $this->request->getData()['year']['year'];
     			if ($year && $mes)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("$year-$mes-01"));
+    				$fecha =date('Y-m-d',strtotime("$year-$mes-01"));
     				$where3 = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
     			}
     			elseif ($year)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
+    				$fecha =date('Y-m-d',strtotime("$year-01-01"));
     				$where3 = ["YEAR(fecha) = YEAR('$fecha')"];
     			}
     			elseif ($mes)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("2000-$mes-01"));
+    				$fecha =date('Y-m-d',strtotime("2000-$mes-01"));
     				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
     			}
     			if (!(empty($this->request->getData()['palabra_clave'])))
@@ -314,6 +314,7 @@ class SeguimientosClasesAlumnosController extends AppController
     
     public function pIndex()
     {
+    	$form = 'pSearch';
     	$where = null;
     	$session = $this->request->session();
     	$session->delete('where');
@@ -342,7 +343,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
     	
     	$this->paginate = [
-    			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',$where, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
+    			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',$where, 'DATE(fecha) <= ' => date('Y-m-d'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
     			'finder' => 'ordered',
     	];
@@ -350,12 +351,13 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	
     	
-    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	$this->set(compact('seguimientosClasesAlumnos','clases','form'));
     }
     
     public function pSearch()
     {
-    	$where1 = $where2 = null;
+    	$form = 'pSearch';
+    	$where1 = $where2 = $where3 = $where4 = null;
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
@@ -370,8 +372,29 @@ class SeguimientosClasesAlumnosController extends AppController
     			{
     				$where2= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
     			}
-    			
-    			$this->request->session()->write('searchCond', [$where1,$where2]);
+    		//	debug($this->request->getData()); die;
+    			$day= $this->request->getData()['fecha']['day'];
+    			$month= $this->request->getData()['fecha']['month'];
+    			$year = date('Y');
+    			if ($day && $month)
+    			{
+    				$fecha =date('Y-m-d',strtotime("$year-$month-$day"));
+    				$where3 = ["DATE(fecha) = '$fecha'"];
+    			}
+    			elseif ($month)
+    			{
+    				$fecha = date('Y-m-d h:i:s',strtotime("$year-$month-01"));
+    				$where3 = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
+    			}
+    			if (!(empty($this->request->getData()['palabra_clave'])))
+    			{
+    				$palabra = $this->request->getData()['palabra_clave'];
+    				$where4= ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+							 CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
+	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."')"
+    				];
+    			}
+    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
     		}
     	}
     	
@@ -381,19 +404,20 @@ class SeguimientosClasesAlumnosController extends AppController
     		$conditions = null;
     	}
     	
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')
-    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	
     	
     	$this->paginate = [
-    			'conditions' => [$conditions, 'fecha <= ' => new \DateTime('now'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'conditions' => [$conditions, 'DATE(fecha) <= ' => date('Y-m-d'),'clases.profesor_id' => $this->Auth->user('profesor_id')],
     			'finder' => 'ordered',
+    			'limit' => 20
     	];
-    	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
     	
     	
+    	$seguimientosClasesAlumnos= $this->paginate($this->SeguimientosClasesAlumnos);
     	
-    	$this->set(compact('seguimientosClasesAlumnos','clases'));
+    	$this->set(compact('seguimientosClasesAlumnos','clases','form'));
     	
     	$this->render('/SeguimientosClasesAlumnos/p_index');
     }
@@ -411,5 +435,12 @@ class SeguimientosClasesAlumnosController extends AppController
     					'filename' => "Seguimientos  de ".$alumno.' en '.$clase.'.pdf'
     			]
     	]);
+    }
+    public function reset()
+    {
+    	if ($this->request->session()->check('searchCond')) {
+    		$this->request->session()->delete('searchCond');
+    	}
+    	$this->redirect($this->referer());
     }
 }
