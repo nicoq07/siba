@@ -77,13 +77,15 @@ class HorariosController extends AppController
             }
             $this->Flash->error(__('The horario could not be saved. Please, try again.'));
         }
-        $dia = array("Lunes","Martes","Miércoles","Jueves","Viernes");
+        $dia = array("Lunes","Martes","Miércoles","Jueves","Viernes",'Sábado','Domingo');
         $days = array(
         		'Monday',
         		'Tuesday',
         		'Wednesday',
         		'Thursday',
         		'Friday',
+        		'Saturday',
+        		'Sunday'
         		);
         $dias = array_combine($days, $dia);
         $ciclolectivo = $this->Horarios->Ciclolectivo->find('list', ['limit' => 200]);

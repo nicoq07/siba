@@ -375,7 +375,7 @@ class ClasesController extends AppController
     	
     	
     	//creo un array con los dias con clave y valor para despues poder compararlo con la funcion DATE
-    	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5];
+    	$days = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5, 'Saturday' => 6,'Sunday' => 7];
     	
     	//me traigo la tabla de seguimientos
     	$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
