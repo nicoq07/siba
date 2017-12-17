@@ -6,3 +6,4 @@ Clases para Programa Adolescencia.
 Seguimientos para Programa Adolescencia.
 Operadores para Programa Adolescencia.
 Notificaciones para Operadores.
+Mejoras en los Filtros de Seguimientos.
