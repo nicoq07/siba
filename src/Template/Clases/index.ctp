@@ -1,8 +1,15 @@
 <div class="col-lg-8 col-lg-offset-1 well">
     <h3><?= __('Clases') ?></h3>
-    <div class="col-lg-3 col-lg-offset-9">
-    	  <?= $this->Html->link(__('Nueva'), ['action' => 'add'],['class' => 'btn btn-success']) ?>
+    <div class="col-lg-12">
+    	<div class="col-lg-1 col-lg-offset-8">
+    	  <?= $this->Html->link(__('IBA'), ['action' => 'addIba'],['class' => 'btn btn-success']) ?>
     </div>
+    <div class="col-lg-1">
+    	  <?= $this->Html->link(__('PA'), ['action' => 'addPrograma'],['class' => 'btn btn-info']) ?>
+    </div>
+    &nbsp;
+    </div>
+    
     <table class="table table-striped">
         <thead>
             <tr>
@@ -29,5 +36,6 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+     <?= $this->element('footer') ?>
 </div>
- <?= $this->element('footer') ?>
+
