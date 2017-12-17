@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use App\Model\Entity\SeguimientosClasesAlumno;
 use Migrations\Table;
+use Cake\I18n\Time;
 /**
  * SeguimientosClasesAlumnos Controller
  *
@@ -18,7 +19,8 @@ class SeguimientosClasesAlumnosController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] == PROFESOR)
 		{
-			if(in_array($this->request->action, ['pIndex','edit','view','pSearch','addProfesor','reset']))
+			if(in_array($this->request->action, ['pIndex','edit','view','pSearch',
+					'addProfesor','reset','pPorDia','pCargaMultiple']))
 			{
 				return true;
 			}
@@ -372,7 +374,6 @@ class SeguimientosClasesAlumnosController extends AppController
     			{
     				$where2= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
     			}
-    		//	debug($this->request->getData()); die;
     			$day= $this->request->getData()['fecha']['day'];
     			$month= $this->request->getData()['fecha']['month'];
     			$year = date('Y');
@@ -404,7 +405,9 @@ class SeguimientosClasesAlumnosController extends AppController
     		$conditions = null;
     	}
     	
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios')
+    	->where(['clases.profesor_id' => $this->Auth->user('profesor_id')]);
+    	
     	
     	
     	$this->paginate = [
@@ -421,6 +424,91 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$this->render('/SeguimientosClasesAlumnos/p_index');
     }
+    
+    
+    public function pPorDia()
+    {
+    	$idProfesor = $this->Auth->user('profesor_id');
+    	$dia =  date('l');
+    	$fecha = date('Y-m-d');
+    	$rFechas = $this->SeguimientosClasesAlumnos->find('all')
+    	->select('fecha')
+    	->join('Clases')
+    	->where(['Clases.profesor_id' => $idProfesor, 
+    			'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
+    			'SeguimientosClasesAlumnos.fecha <=' => date('Y-m-d h:i:s') 
+    	])
+    	->distinct('fecha');
+    	if ($rFechas->count() > 0)
+    	{
+	    	$fechas = array();
+	    	foreach ($rFechas as $f)
+	    	{
+	    		$fechas[$f->fecha->format('d-m-Y')]=$f->fecha->format('d-m-Y');
+    		}
+    	}
+    	else
+    	{
+    		$fechas = false;
+    	}
+    	if ($this->request->is('post'))
+    	{
+    		if(!empty($this->request->getData()) && $this->request->getData() !== null )
+    		{
+    			if ( $fecha = $this->request->getData()['fechas'] != '')    
+    			{
+    			 $fecha = $this->request->getData()['fechas'];
+    			 $dia = date('l',strtotime($fecha));
+    			}
+    		}
+    	}
+    	
+    	
+    	$horarios = TableRegistry::get('Horarios')->find('all')
+    	->innerJoinWith('Clases')
+    	->contain(['Clases' => ['Disciplinas']])
+    			->where(['nombre_dia' =>$dia, 'Clases.profesor_id' => $idProfesor])
+    			->orderAsc("hora");
+    	
+    			$fecha =  bin2hex ( $fecha );
+    	$this->set(compact('horarios','fechas','dia','fecha'));
+    }
+    
+    public function pCargaMultiple($idClase, $fecha)
+    {
+    	$fecha = hex2bin($fecha);
+    	
+    	$seguimientosClasesAlumnos = $this->SeguimientosClasesAlumnos->find('all')
+    	->contain(['ClasesAlumnos' => ['Alumnos','Clases']])
+    	->where(['Clases.id' => $idClase, 'DATE(fecha)' => date('Y-m-d',strtotime($fecha)), 
+    			'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified'
+    	])
+    	->toArray();
+    	
+    	
+    	if ($this->request->is(['patch', 'post', 'put'])) {
+    		
+    		if ($this->request->getData()['id'] != '')
+    		{
+    			$id = $this->request->getData()['id'];
+    			$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->get($id);
+	    		$seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
+	    		if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
+	    			$this->Flash->success(__('Seguimiento guardado'));
+	    			
+	    			return $this->redirect($this->referer());
+	    		}
+	    		$this->Flash->error(__('El seguimiento no ha podido guardarse, reintente!.'));
+    		}
+    	}
+    	
+    	$clase = TableRegistry::get('Clases')->get($idClase);
+    	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
+    	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
+    	$this->set(compact('seguimientosClasesAlumnos', 'calificaciones','clase','fecha'));
+    	
+    }
+    
     
     private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
     {

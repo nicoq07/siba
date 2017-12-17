@@ -35,7 +35,8 @@ $('#noti').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadear) }
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seguimientos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
 	          <ul class="dropdown-menu forAnimate" role="menu">
-	            <li><?= $this->Html->link(h('Ver seguimientos'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'pIndex']) ?></li>
+	            <li><?= $this->Html->link(h('Ver por día'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'pPorDia']) ?></li>
+	            <li><?= $this->Html->link(h('Ver todos'), ['controller' =>'SeguimientosClasesAlumnos', 'action' => 'pIndex']) ?></li>
 	          </ul>
 	        </li>
 	         <!--  FIN SECCION SEGUIMIENTOS-->
