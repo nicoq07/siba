@@ -14,6 +14,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property string $apellido
  * @property string $nombre_usuario
  * @property string $password
+ * @property string $fondo
  * @property int $rol_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
