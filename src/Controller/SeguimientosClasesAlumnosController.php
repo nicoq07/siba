@@ -143,7 +143,6 @@ class SeguimientosClasesAlumnosController extends AppController
     {
         $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->newEntity();
         if ($this->request->is('post')) {
-        	debug($this->request->getData()); exit;
             $seguimientosClasesAlumno = $this->SeguimientosClasesAlumnos->patchEntity($seguimientosClasesAlumno, $this->request->getData());
             if ($this->SeguimientosClasesAlumnos->save($seguimientosClasesAlumno)) {
                 $this->Flash->success(__('Seguimiento guardado.'));
