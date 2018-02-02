@@ -1,10 +1,12 @@
 
 --SCRIPT V23
 
+DROP TABLE `historial_mails`;
+
 ALTER TABLE `clases` ADD COLUMN (
   `operador_id` int(11) DEFAULT NULL,
   `programa_adolescencia` tinyint(1) DEFAULT '0'
-) 
+)
 
 
 CREATE TABLE `operadores` (
@@ -61,7 +63,7 @@ CREATE TABLE `seguimientos_programa` (
 ALTER TABLE `users` ADD COLUMN (
   `operador_id` int(14) DEFAULT NULL,
   `fondo` varchar(50) COLLATE latin1_spanish_ci DEFAULT NULL COMMENT 'fondo'
-) 
+)
 
 ALTER TABLE `clases`
   ADD KEY `FK_OperadorClase` (`operador_id`);
