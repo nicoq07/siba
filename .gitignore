@@ -31,3 +31,13 @@ wkhtmltopdf
 .project
 
 .project
+
+webroot/.DS_Store
+
+.project
+
+*.properties
+
+.project
+
+webroot/.DS_Store
