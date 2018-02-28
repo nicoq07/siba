@@ -104,6 +104,14 @@ class ClasesTable extends Table
     {
     	return $query
     	->order([
+    			'Horarios.num_dia' => 'asc',
+    			'Horarios.hora'=> 'asc'
+    	]);
+    }
+    public function findOrderedIndex(Query $query, array $options)
+    {
+    	return $query
+    	->order([
     			'Profesores.nombre' => 'asc',
     	]);
     }

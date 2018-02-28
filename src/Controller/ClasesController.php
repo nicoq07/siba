@@ -35,7 +35,7 @@ class ClasesController extends AppController
 	{
 		$this->paginate = [
 				'contain' => ['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'],
-				'finder' => 'ordered',
+				'finder' => 'orderedIndex',
 				'finder' => 'currentYear',
 				
 		];
@@ -299,7 +299,7 @@ class ClasesController extends AppController
     		
     		$this->paginate = [
     				'contain' => ['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'],
-    				'finder' => 'ordered',
+    				'finder' => 'orderedIndex',
     				'conditions' => $where,
     				'limit' => 100
     		];
