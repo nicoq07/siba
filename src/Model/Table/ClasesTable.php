@@ -100,12 +100,19 @@ class ClasesTable extends Table
 
         return $rules;
     }
-	public function findOrdered(Query $query, array $options)
+    public function findOrdered(Query $query, array $options)
     {
     	return $query
     	->order([
-    			'Horarios.num_dia' => 'asc',
-    			'Horarios.hora'=> 'asc'
+    			'Profesores.nombre' => 'desc',
+    	]);
+    }
+    
+    public function findCurrentYear(Query $query, array $options)
+    {
+    	return $query
+    	->where([
+    			'YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),
     	]);
     }
 }

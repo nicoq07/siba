@@ -31,17 +31,19 @@ class ClasesController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Profesores', 'Horarios', 'Disciplinas'],
-        	'finder' => 'ordered'
-        ];
-        $clases = $this->paginate($this->Clases);
-
-        $this->set(compact('clases'));
-        $this->set('_serialize', ['clases']);
-    }
+	public function index()
+	{
+		$this->paginate = [
+				'contain' => ['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'],
+				'finder' => 'ordered',
+				'finder' => 'currentYear',
+				
+		];
+		$clases = $this->paginate($this->Clases);
+		
+		$this->set(compact('clases'));
+		$this->set('_serialize', ['clases']);
+	}
 
     /**
      * View method
@@ -81,33 +83,33 @@ class ClasesController extends AppController
      */
     public function add()
     {
-        $clase = $this->Clases->newEntity();
-        if ($this->request->is('post')) {
-        	//debug($this->request->getData());
-            $clase = $this->Clases->patchEntity($clase, $this->request->getData());
-            //debug($clase);
-          
-            $clase->set('alumno_count',count($clase->alumnos));
-            if ($this->Clases->save($clase)) {
-            	if (!empty($this->request->getData("alumnos")['_ids']))
-            	{
-            			if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
-            			{
-            				$this->Flash->error(__('Problema creando los seguimientos.'));
-            			}
-            	}
-                $this->Flash->success(__('Clase guardada!.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Error creando la clase, por favor reintente!.'));
-        }
-        $profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
-        $horarios = $this->Clases->Horarios->find('list')->find('ordered');
-        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
-        $alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
-        $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
-        $this->set('_serialize', ['clase']);
+    	$clase = $this->Clases->newEntity();
+    	if ($this->request->is('post')) {
+    		//debug($this->request->getData());
+    		$clase = $this->Clases->patchEntity($clase, $this->request->getData());
+    		//debug($clase);
+    		
+    		$clase->set('alumno_count',count($clase->alumnos));
+    		if ($this->Clases->save($clase)) {
+    			if (!empty($this->request->getData("alumnos")['_ids']))
+    			{
+    				if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
+    				{
+    					$this->Flash->error(__('Problema creando los seguimientos.'));
+    				}
+    			}
+    			$this->Flash->success(__('Clase guardada!.'));
+    			
+    			return $this->redirect(['action' => 'index']);
+    		}
+    		$this->Flash->error(__('Error creando la clase, por favor reintente!.'));
+    	}
+    	$profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
+    	$horarios = $this->Clases->Horarios->find('list')->contain('Ciclolectivo')->find('ordered')->find('currentYear');
+    	$disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
+    	$alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
+    	$this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
+    	$this->set('_serialize', ['clase']);
     }
 
     /**
@@ -120,57 +122,57 @@ class ClasesController extends AppController
     public function edit($id = null)
     {
     	$cambioDia = false;
-        $clase = $this->Clases->get($id, [
-            'contain' => ['Alumnos']
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $clase = $this->Clases->patchEntity($clase, $this->request->getData());
-         
-            if($clase->isDirty('horario_id'))
-            {
-            	$cambioDia = true;
-            }
-            
-            $clase->set('alumno_count',count($clase->alumnos));
-            if ($this->Clases->save($clase))
-            {
-            	$r = 0;
-            	if ($cambioDia)
-            	{
-            		$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
-            		
-            		$clasesAlumnos = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])
-            		->where(['ClasesAlumnos.clase_id' => $clase->id])->toArray();
-            		$ids = array();
-            		foreach ($clasesAlumnos as $ca)
-            		{
-            			array_push($ids, $ca->id);
-            		}
-            		
-            		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
-            		$r = $Seguimientos->deleteAll(['clase_alumno_id IN' => $ids]);
-            		
-            	}
-            	if (!empty($this->request->getData("alumnos")['_ids']))
-            	{
-            		if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
-            		{
-            			$this->Flash->error(__('Problema creando los seguimientos.'));
-            		}
-            		
-            	}
-                $this->Flash->success(__("Clase guardada. Se actualizaron $r seguimientos"));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Error guardando la clase'));
-        }
-        $profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
-        $horarios = $this->Clases->Horarios->find('list')->find('ordered');
-        $disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
-        $alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
-        $this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
-        $this->set('_serialize', ['clase']);
+    	$clase = $this->Clases->get($id, [
+    			'contain' => ['Alumnos']
+    	]);
+    	if ($this->request->is(['patch', 'post', 'put'])) {
+    		$clase = $this->Clases->patchEntity($clase, $this->request->getData());
+    		
+    		if($clase->isDirty('horario_id'))
+    		{
+    			$cambioDia = true;
+    		}
+    		
+    		$clase->set('alumno_count',count($clase->alumnos));
+    		if ($this->Clases->save($clase))
+    		{
+    			$r = 0;
+    			if ($cambioDia)
+    			{
+    				$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
+    				
+    				$clasesAlumnos = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])
+    				->where(['ClasesAlumnos.clase_id' => $clase->id])->toArray();
+    				$ids = array();
+    				foreach ($clasesAlumnos as $ca)
+    				{
+    					array_push($ids, $ca->id);
+    				}
+    				
+    				$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+    				$r = $Seguimientos->deleteAll(['clase_alumno_id IN' => $ids]);
+    				
+    			}
+    			if (!empty($this->request->getData("alumnos")['_ids']))
+    			{
+    				if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
+    				{
+    					$this->Flash->error(__('Problema creando los seguimientos.'));
+    				}
+    				
+    			}
+    			$this->Flash->success(__("Clase guardada. Se actualizaron $r seguimientos"));
+    			
+    			return $this->redirect(['action' => 'index']);
+    		}
+    		$this->Flash->error(__('Error guardando la clase'));
+    	}
+    	$profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
+    	$horarios = $this->Clases->Horarios->find('list')->contain('Ciclolectivo')->find('ordered')->find('currentYear');
+    	$disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
+    	$alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
+    	$this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
+    	$this->set('_serialize', ['clase']);
     }
 
     /**
@@ -286,6 +288,28 @@ class ClasesController extends AppController
     	return true;
     }
     
+    public function searchCurrentYear()
+    {
+    	$this->autoRender = false;
+    	$this->paginate = null;
+    	$year = $this->request->getData()['cboYear']['year'];
+    	if (is_numeric($year))
+    	{
+    		$where = ['YEAR(Ciclolectivo.fecha_inicio)' => $year];
+    		
+    		$this->paginate = [
+    				'contain' => ['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'],
+    				'finder' => 'ordered',
+    				'conditions' => $where,
+    				'limit' => 100
+    		];
+    		$clases = $this->paginate($this->Clases);
+    		$this->set(compact('clases'));
+    		$this->set('_serialize', ['clases']);
+    	}
+    	$this->render('/Clases/index');
+    	
+    }
     
     
 }
