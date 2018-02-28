@@ -256,7 +256,7 @@ class PagosAlumnosController extends AppController
 	 public function pagoManualPdf($idPago)
 	 {
 	 	$pagoalumno = $this->PagosAlumnos->get($idPago, [ 
-	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
+	 			'contain' => ['Alumnos' => ['Clases'=> ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]]] ]
 	 					,'PagosConceptos']
 	 	]);
 	 	$this->prepararPDFManual($pagoalumno->mes, $pagoalumno->alumno->nro_documento, "A4", "landscape");
@@ -339,8 +339,8 @@ class PagosAlumnosController extends AppController
 		$aux = explode('-', $idsAlumnos);
 		$pagosAlumnos = $this->PagosAlumnos->find()
 		->find('ordered')
-		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas'] ]
-				,'PagosConceptos']) 
+		->contain( ['Alumnos' => ['Clases'=> ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]]] ]
+				,'PagosConceptos'])
 				->where(['PagosAlumnos.monto > ' => 0,'PagosAlumnos.mes' => $mes, 'YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.alumno_id IN ' => $aux]);
 		$this->prepararPDFGeneral($mes, "A4", "landscape");
 		$this->set(compact('pagosAlumnos'));
