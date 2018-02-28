@@ -101,4 +101,11 @@ class HorariosTable extends Table
     			'Horarios.hora' => 'asc'
     	]);
     }
+    public function findCurrentYear(Query $query, array $options)
+    {
+    	return $query
+    	->where([
+    			'YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),
+    	]);
+    }
 }
