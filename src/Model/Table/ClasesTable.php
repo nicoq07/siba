@@ -104,7 +104,7 @@ class ClasesTable extends Table
     {
     	return $query
     	->order([
-    			'Profesores.nombre' => 'desc',
+    			'Profesores.nombre' => 'asc',
     	]);
     }
     
