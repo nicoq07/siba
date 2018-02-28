@@ -127,44 +127,46 @@ class AlumnosController extends AppController
      */
     public function view($id = null)
     {
-        $clasesTable= TableRegistry::get('Clases');
-        $clases = $clasesTable->find()
-        ->select('Clases.id')
-        ->matching('Alumnos', function ($q) use ($id) {
-        	return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
-        })
-        ->toArray();
-        $ids = null;
-        (count($clases) > 0) ? $ids = array() : $ids = -1 ;
-        foreach ($clases as $c)
-        {
-        	$ids[] = $c['id'];
-        }
-        if (empty($ids))
-        {
-        	$where = ['Clases.id IN ' => -1];
-        }
-        else
-        {
-        	$where = ['Clases.id IN ' => $ids];
-        }
-        
-        $segTable= TableRegistry::get('SeguimientosClasesAlumnos');
-        $seguimientos = $segTable->find()
-        ->limit(10)
-        ->orderDesc('fecha')
-        ->where(['fecha <='=>  date('Y-m-d h:m',time())])
-        ->matching('ClasesAlumnos', function ($q) use ($ids,$id) {
-        	return $q->where(['ClasesAlumnos.clase_id IN' => $ids,'ClasesAlumnos.alumno_id ' => $id]);
-        })
-        ->toArray();
-        
-        
-        $alumno = $this->Alumnos->get($id, [
-        		'contain' => ['PagosAlumnos' => ['Users'] ,'Clases' => [ 'conditions' => $where]  ]  ]);
-        
-        $this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
-        $this->set('_serialize', ['alumno']);
+    	$clasesTable= TableRegistry::get('Clases');
+    	$clases = $clasesTable->find()
+    	->contain(['Horarios' => 'Ciclolectivo'])
+    	->where(['YEAR(ciclolectivo.fecha_inicio)' => date('Y')])
+    	->select('Clases.id')
+    	->matching('Alumnos', function ($q) use ($id) {
+    		return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
+    	})
+    	->toArray();
+    	$ids = null;
+    	(count($clases) > 0) ? $ids = array() : $ids = -1 ;
+    	foreach ($clases as $c)
+    	{
+    		$ids[] = $c['id'];
+    	}
+    	if (empty($ids))
+    	{
+    		$where = ['Clases.id IN ' => -1];
+    	}
+    	else
+    	{
+    		$where = ['Clases.id IN ' => $ids];
+    	}
+    	
+    	$segTable= TableRegistry::get('SeguimientosClasesAlumnos');
+    	$seguimientos = $segTable->find()
+    	->limit(10)
+    	->orderDesc('fecha')
+    	->where(['fecha <='=>  date('Y-m-d h:m',time())])
+    	->matching('ClasesAlumnos', function ($q) use ($ids,$id) {
+    		return $q->where(['ClasesAlumnos.clase_id IN' => $ids,'ClasesAlumnos.alumno_id ' => $id]);
+    	})
+    	->toArray();
+    	
+    	
+    	$alumno = $this->Alumnos->get($id, [
+    			'contain' => ['PagosAlumnos' => ['Users'] ,'Clases' => [ 'conditions' => $where]  ]  ]);
+    	
+    	$this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
+    	$this->set('_serialize', ['alumno']);
     }
 
     /**
@@ -403,13 +405,16 @@ class AlumnosController extends AppController
     {
     	$idProfesor = $this->Auth->user('profesor_id');
     	$clasesTable= TableRegistry::get('Clases');
+    	
     	$clases = $clasesTable->find()
     	->select('Clases.id')
+    	->contain(['Horarios' => ['Ciclolectivo']])
     	->matching('Alumnos', function ($q) use ($id) {
     		return $q->where(['ClasesAlumnos.active' => true, 'ClasesAlumnos.alumno_id' => $id]);
     	})
-    	->where(['Clases.profesor_id' => $idProfesor])
+    	->where(['YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),'Clases.profesor_id' => $idProfesor])
     	->toArray();
+    	
     	$ids = null;
     	(count($clases) > 0) ? $ids = array() : $ids = -1 ;
     	foreach ($clases as $c)
@@ -434,7 +439,7 @@ class AlumnosController extends AppController
     	})
     	->toArray();
     	
-		
+    	
     	
     	$alumno = $this->Alumnos->get($id, [
     			'contain' => ['Clases' => [ 'conditions' => $where]  ]  ]);
@@ -667,10 +672,10 @@ class AlumnosController extends AppController
 		$this->autoRender = false; // We don't render a view in this example
 		$profesor_id = $this->request->getQuery('profesor_id');
 		$discs = TableRegistry::get('Disciplinas')->find('all')
-	//	->select(['Disciplinas.id' => 'id','Disciplinas.descripcion' => 'desc' ])
+		//	->select(['Disciplinas.id' => 'id','Disciplinas.descripcion' => 'desc' ])
 		->distinct('Disciplinas.descripcion')
-		->matching('Clases')
-		->where(['Clases.profesor_id' => $profesor_id])
+		->matching('Clases.Horarios.Ciclolectivo')
+		->where(['Clases.profesor_id' => $profesor_id, 'YEAR(Ciclolectivo.fecha_inicio)' => date('Y')])
 		->order('Disciplinas.descripcion')
 		;
 		$i = 0;
@@ -688,15 +693,16 @@ class AlumnosController extends AppController
 		//print $array;
 		exit;
 	}
-	public function getDiaHorario() 
+	public function getDiaHorario()
 	{
 		$this->autoRender = false; // We don't render a view in this example
 		$disciplina_id = $this->request->getQuery('idDisciplina');
 		$profesor_id= $this->request->getQuery('profesor_id');
 		$clases = TableRegistry::get('Clases')->find('all')
 		//	->select(['Disciplinas.id' => 'id','Disciplinas.descripcion' => 'desc' ])
-		->contain(['Disciplinas','Horarios'])
+		->contain(['Disciplinas','Horarios' => ['Ciclolectivo']])
 		->where(['Clases.profesor_id' => $profesor_id, 'Clases.disciplina_id' => $disciplina_id])
+		->find('currentYear')
 		->order('Horarios.num_dia','Horarios.hora')
 		;
 		$i = 0;
@@ -711,7 +717,7 @@ class AlumnosController extends AppController
 			else {
 				echo  $c->id."-".$dia.' '.$c->horario->hora->format('H:i');
 			}
-
+			
 		}
 		
 		//print $array;
