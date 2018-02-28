@@ -52,17 +52,21 @@ class ProfesoresController extends AppController
      */
     public function view($id = null)
     {
-        $profesore = $this->Profesores->get($id, [
-            'contain' => ['Clases'=>['Horarios','Disciplinas']]
-        ]);
-
-        $this->set('profesore', $profesore);
-        $this->set('_serialize', ['profesore']);
+    	$profesore = $this->Profesores->get($id, [
+    			'contain' => ['Clases'=>['Horarios' =>
+    					['Ciclolectivo' => ['conditions' => ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]
+    					,'Disciplinas']]
+    	]);
+    	
+    	$this->set('profesore', $profesore);
+    	$this->set('_serialize', ['profesore']);
     }
     public function pView($id = null)
     {
     	$profesore = $this->Profesores->get($id, [
-    			'contain' =>  ['Clases'=>['Horarios','Disciplinas']]
+    			'contain' =>  ['Clases'=>['Horarios'
+    					=>['Ciclolectivo' => ['conditions' => ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]
+    					,'Disciplinas']]
     	]);
     	
     	$this->set('profesore', $profesore);
@@ -190,92 +194,99 @@ class ProfesoresController extends AppController
     }
     
     public function planillaCursos()
-    {	
-    	$profesores = $this->Profesores->find('list')
+    {
+    	$profesores = $this->Profesores
+    	->find('list')
     	->where(['profesores.active ' => true])
-    	->matching('Clases');
-    	if ($this->request->is(['post'])) 
-    	{
-    	
-    		if(empty($this->request->getData('profesor_id')) )
+    	->matching('Clases.Horarios.Ciclolectivo', function ($q) {
+    		return $q->where(['YEAR(fecha_inicio)' => date('Y')]);
+    	});
+    		if ($this->request->is(['post']))
     		{
-	    		$this->Flash->error("Debe seleccionar un profesor");
-	    		$this->redirect($this->referer());
+    			
+    			if(empty($this->request->getData('profesor_id')) )
+    			{
+    				$this->Flash->error("Debe seleccionar un profesor");
+    				$this->redirect($this->referer());
+    			}
+    			$id = $this->request->getData('profesor_id');
+    			$mes = $this->request->getData('mes')['month'];
+    			
+    			return  $this->redirect(['action' => 'planilla_cursos_pdf',$id,$mes,'_ext' => 'pdf']);
+    			
     		}
-    		$id = $this->request->getData('profesor_id');
-    		$mes = $this->request->getData('mes')['month'];
-    	
-    	return  $this->redirect(['action' => 'planilla_cursos_pdf',$id,$mes,'_ext' => 'pdf']);
-    	
-    	}
-    	
-    	$this->set(compact('profesores'));
+    		
+    		$this->set(compact('profesores'));
     }
     
     public function planillaCursosPdf($id, $mes)
     {
     	$connection = ConnectionManager::get('default');
     	$profesor = $this->Profesores->get($id);
-  		$idProfesor = $profesor->id;
-
-		$qClases = "select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia, a.id as alumno_id,
-					 h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci	
-				from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
-					, disciplinas as d
-					WHERE
-					h.id = c.horario_id AND
-					c.id = ca.clase_id AND
-					c.disciplina_id = d.id AND
-					p.id = $idProfesor AND
-					c.profesor_id = p.id AND
-					ca.alumno_id = a.id AND
-					ca.id = s.clase_alumno_id AND
-					MONTH(s.fecha) = $mes
-					GROUP by ca.id, h.nombre_dia , h.hora
-					ORDER BY h.num_dia, h.hora, alumno";
+    	$idProfesor = $profesor->id;
     	
-		$rClases = $connection->execute($qClases);
-		
-		
-		
-		$qPresentes = "SELECT ca.id as ca, DATE_FORMAT(s.fecha, '%d') as fecha, s.presente, a.id as alumno_id, s.created as creada, s.modified as modificada, c.id as clase_id
- 		from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
- 		, disciplinas as d
-		WHERE
-		h.id = c.horario_id AND
-		c.id = ca.clase_id AND
-		c.disciplina_id = d.id AND
-		p.id = $idProfesor AND
-		c.profesor_id = p.id AND
-		ca.alumno_id = a.id AND
-		ca.id = s.clase_alumno_id AND
-		MONTH(s.fecha) = $mes
-		ORDER BY  alumno_id, fecha";
-		
-
-		$rPresentes= $connection->execute($qPresentes);
-		$arrayPresentes = $this->groupBy($rPresentes, 'ca');
-		
-//  		debug($arrayPresentes); exit;
-		
-		$qClases = "SELECT * FROM view_clases as v WHERE v.profesor_id = $idProfesor
-		ORDER BY dia,hora";
-
-		$clasesD = $connection->execute($qClases);
-		
-		
-		$arrayClases = $this->groupBy($rClases, 'nom_dia');
-		
-		
+    	$qClases = "select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia, a.id as alumno_id,
+    	h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci
+    	from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
+    	, disciplinas as d , ciclolectivo as ciclo
+    	WHERE
+    	h.id = c.horario_id AND
+    	c.id = ca.clase_id AND
+    	c.disciplina_id = d.id AND
+    	p.id = $idProfesor AND
+    	c.profesor_id = p.id AND
+    	ca.alumno_id = a.id AND
+    	ca.id = s.clase_alumno_id AND
+    	ciclo.id = h.ciclolectivo_id AND
+    	MONTH(s.fecha) = $mes AND
+    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())
+    	GROUP by ca.id, h.nombre_dia , h.hora
+    	ORDER BY h.num_dia, h.hora, alumno";
+    	
+    	$rClases = $connection->execute($qClases);
+    	
+    	
+    	
+    	$qPresentes = "SELECT ca.id as ca, DATE_FORMAT(s.fecha, '%d') as fecha, s.presente, a.id as alumno_id, s.created as creada, s.modified as modificada, c.id as clase_id
+    	from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
+    	, disciplinas as d, ciclolectivo as ciclo
+    	WHERE
+    	h.id = c.horario_id AND
+    	c.id = ca.clase_id AND
+    	c.disciplina_id = d.id AND
+    	p.id = $idProfesor AND
+    	c.profesor_id = p.id AND
+    	ca.alumno_id = a.id AND
+    	ca.id = s.clase_alumno_id AND
+    	ciclo.id = h.ciclolectivo_id AND
+    	MONTH(s.fecha) = $mes AND
+    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())
+    	ORDER BY  alumno_id, fecha";
+    	
+    	
+    	$rPresentes= $connection->execute($qPresentes);
+    	$arrayPresentes = $this->groupBy($rPresentes, 'ca');
+    	
+    	//  		debug($arrayPresentes); exit;
+    	
+    	$qClases = "SELECT * FROM view_clases as v WHERE v.profesor_id = $idProfesor
+    	ORDER BY dia,hora";
+    	
+    	$clasesD = $connection->execute($qClases);
+    	
+    	
+    	$arrayClases = $this->groupBy($rClases, 'nom_dia');
+    	
+    	
     	$dias = $profesor->workingDays($mes);
     	if(empty($dias))
     	{
     		$this->Flash->error("Este mes el profesor no tuvo trabajo");
     		return $this->redirect($this->referer());
     	}
-    	$mes = __(date("F", strtotime("2017-$mes-01")));
+    	$mes = __(date("F", strtotime(date('Y')."-$mes-01")));
     	
-
+    	
     	$this->prepararListado($mes, $profesor->presentacion, 'A4', 'portrait');
     	$this->set(compact('clasesD','profesor','dias','arrayClases','mes','arrayPresentes'));
     	

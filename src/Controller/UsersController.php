@@ -227,24 +227,24 @@ class UsersController extends AppController
     
     public function perfil()
     {
-    	$whereHorario = null;
     	$whereClases = null;
     	
-    		$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 order by dia, hora";
-    		$qClases .= $whereClases;
-    		$connection = ConnectionManager::get('default');
-    		$clasesD = $connection->execute($qClases);
-    		
-    		$horarios = TableRegistry::get('Horarios')->find('all')
-    		->contain('Clases')
-    		->where(['nombre_dia' =>  date('l')])
-    		->orderAsc("hora");
-    		
-    		$user = $this->Users->get($this->Auth->user('id'), [
-    						'contain' => ['Roles']
-   			]);
-    		$this->set(compact('user','horarios','clasesD'));
-
+    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 order by dia, hora";
+    	$qClases .= $whereClases;
+    	$connection = ConnectionManager::get('default');
+    	$clasesD = $connection->execute($qClases);
+    	
+    	$horarios = TableRegistry::get('Horarios')->find('all')
+    	->contain(['Clases','Ciclolectivo'])
+    	->where(['nombre_dia' =>  date('l'),'YEAR(ciclolectivo.fecha_inicio)' => date('Y') ])
+    	->orderAsc("hora");
+    	
+    	
+    	$user = $this->Users->get($this->Auth->user('id'), [
+    			'contain' => ['Roles']
+    	]);
+    	$this->set(compact('user','horarios','clasesD'));
+    	
     	
     }
     
@@ -254,12 +254,11 @@ class UsersController extends AppController
     	$id = $this->Auth->user('profesor_id');
     	
     	$horarios = TableRegistry::get('Horarios')->find('all')
-    	->matching('Clases'
-    			)
-    			->where(['nombre_dia' => date('l'), 'Clases.profesor_id' => $id])
-    	
+    	->contain('Ciclolectivo')
+    	->matching('Clases')
+    	->where(['nombre_dia' => date('l'), 'Clases.profesor_id' => $id,'YEAR(ciclolectivo.fecha_inicio)' => date('Y')])
     	->orderAsc("hora")
-;    			
+    	;
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
