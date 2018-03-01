@@ -91,7 +91,7 @@ class UsersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Error creando el usuario, reintente.'));
+            $this->Flash->error(__('Error, verifique los campos.'));
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 3]);
         

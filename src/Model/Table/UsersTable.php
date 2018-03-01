@@ -100,6 +100,7 @@ class UsersTable extends Table
     {
         $rules->add($rules->existsIn(['profesor_id'], 'Profesores'));
         $rules->add($rules->existsIn(['rol_id'], 'Roles'));
+        $rules->add($rules->isUnique(['nombre_usuario']));
 
         return $rules;
     }
