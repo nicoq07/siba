@@ -387,10 +387,36 @@ class AlumnosController extends AppController
     
     public function pIndex()
     {
+    	
+    	$clasesTable= TableRegistry::get('Clases');
+    	
+    	$clases = $clasesTable->find()
+    	->select('Clases.id')
+    	->contain(['Horarios' => ['Ciclolectivo']])
+    	->where(['YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),'Clases.profesor_id' => $this->Auth->user('profesor_id')])
+    	->toArray();
+    	
+    	$ids = null;
+    	(count($clases) > 0) ? $ids = array() : $ids = -1 ;
+    	foreach ($clases as $c)
+    	{
+    		$ids[] = $c['id'];
+    	}
+    	if (empty($ids))
+    	{
+    		$where = ['Clases.id IN ' => -1];
+    	}
+    	else
+    	{
+    		$where = ['Clases.id IN ' => $ids];
+    	}
+    	
+    	
+    	
     	$alumnos = $this->Alumnos->find('all')
     	->find('ordered')
-    	->matching('Clases', function ($q)  {
-    		return $q->where(['ClasesAlumnos.active' => true, 'Clases.profesor_id' =>  $this->Auth->user('profesor_id')]);
+    	->matching('Clases', function ($q) use ($where) {
+    		return  $q->where($where);
     	})
     	->distinct(['Alumnos.id'])
     	
@@ -539,7 +565,13 @@ class AlumnosController extends AppController
     public function fichaExterna($id)
     {
     	$alumno = $this->Alumnos->get($id, [
-    			'contain' => ['Clases']
+    			'contain' => ['Clases' =>
+    				['Horarios' =>
+    					[
+    						'Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]		
+    					]
+    				]
+    			]
     	]);
     	$this->prepararPDF($alumno,"externa","A4","landscape");
     	
