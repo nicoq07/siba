@@ -63,14 +63,15 @@ class NotificacionesController extends AppController
     {
     	$notificacione = $this->Notificaciones->newEntity();
     	if ($this->request->is('post')) {
-    		$notificacione = $this->Notificaciones->patchEntity($notificacione, $this->request->data);
+    		$notificacione = $this->Notificaciones->patchEntity($notificacione, $this->request->getData());
     		$notificacione['emisor'] = $this->Auth->user('id');
     		$notificacione['leida'] = false;
+    		
     		if ($notificacione['broadcast'])
     		{
     			$users = TableRegistry::get('Users');
     			$users = $users->find('all')
-    			->where(['Users.id <>' => $this->Auth->user('id')]);
+    			->where(['Users.id <>' => $this->Auth->user('id'),'Users.active' => true]);
     			foreach ($users as $user)
     			{
     				$query = $this->Notificaciones->query();
