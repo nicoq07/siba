@@ -25,10 +25,13 @@ class ExamenesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas']]]
+        		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]]]
         ];
+        
         $examenes = $this->paginate($this->Examenes);
-        $clases = $this->Examenes->ClasesAlumnos->Clases->find('list');
+        $clases = $this->Examenes->ClasesAlumnos->Clases->find('list')->contain(
+        		['Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]
+        		);
         
         $this->set(compact('examenes','clases'));
         $this->set('_serialize', ['examenes']);
@@ -72,7 +75,7 @@ class ExamenesController extends AppController
         $clasesAlumnos = $this->Examenes->ClasesAlumnos->find('list', [
         		'groupField' => 'clase.disciplina.descripcion'
         		])
-        		->contain(['Alumnos', 'Clases' => ['Disciplinas']])
+        		->contain(['Alumnos', 'Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]])
         		->find('ordered');
 		
         		$calificaciones = TableRegistry::get('Calificaciones')->find('list')
@@ -102,7 +105,7 @@ class ExamenesController extends AppController
     			'groupField' => 'clase.disciplina.descripcion'
     	])
     	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')])
-    	->contain(['Alumnos', 'Clases' => ['Disciplinas']])
+    	->contain(['Alumnos', 'Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]])
     	->find('ordered');
     	
     	$calificaciones = TableRegistry::get('Calificaciones')->find('list')
