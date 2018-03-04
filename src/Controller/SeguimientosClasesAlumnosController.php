@@ -503,7 +503,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$clase = TableRegistry::get('Clases')->get($idClase);
     	$calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
-    	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
+    	$ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list');
     	$this->set(compact('seguimientosClasesAlumnos', 'calificaciones','clase','fecha'));
     	
     }
