@@ -42,7 +42,7 @@
 	           			<td>
 	           				<?php if ($fechas != false) {?>
 	           				<?= $this->Html->link($clase->presentacionDisciplina, 
-	           					[ 'controller' => 'SeguimientosClasesAlumnos', 'action' => 'pCargaMultiple' ,$clase->id,$fecha],['target' => '_blank'])?>
+	           						[ 'controller' => 'SeguimientosClasesAlumnos', 'action' => 'pCargaMultiple' ,$clase->id,$fecha],['target' => '_blank']) . " (Cant. alumnos:  " . $clase->alumno_count . ")" ?>
 	           				<?php } else { ?>
 	           				<?= $this->Html->link($clase->presentacionDisciplina, 
 	           					['target' => '_blank'])?>

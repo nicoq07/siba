@@ -400,10 +400,11 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$clasesHorarios = TableRegistry::get('Clases')->find('all')
     	->select(['Horarios.id'])
-    	->contain(['Horarios'])
+    	->contain(['Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
     	->where(['Clases.profesor_id' => $idProfesor, 'Horarios.nombre_dia' =>$dia]);
     	
     	$horarios = TableRegistry::get('Horarios')->find('all')
+    	
     	->contain(['Clases' => ['conditions' => ['Clases.profesor_id' => $idProfesor]]])
     	->where(['Horarios.id IN' => $clasesHorarios])
     	->orderAsc("hora");
