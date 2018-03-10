@@ -113,6 +113,8 @@ class ClasesTable extends Table
     	return $query
     	->order([
     			'Profesores.nombre' => 'asc',
+    			'Horarios.num_dia' => 'asc',
+    			'Horarios.hora'=> 'asc'
     	]);
     }
     

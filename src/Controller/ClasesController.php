@@ -33,13 +33,12 @@ class ClasesController extends AppController
      */
 	public function index()
 	{
-		$this->paginate = [
-				'contain' => ['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'],
-				'finder' => 'orderedIndex',
-				'finder' => 'currentYear',
-				
-		];
-		$clases = $this->paginate($this->Clases);
+		$clases = $this->Clases->find('all')
+		->contain(['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'])
+		->find('orderedIndex')
+		->find('currentYear');
+		
+		$clases = $this->paginate($clases);
 		
 		$this->set(compact('clases'));
 		$this->set('_serialize', ['clases']);

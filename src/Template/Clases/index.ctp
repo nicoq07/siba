@@ -7,7 +7,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('Detalle') ?></th>
+                <th width="60%" scope="col"><?= $this->Paginator->sort('Detalle') ?></th>
                 <th width="10%" scope="col"><?= $this->Paginator->sort('alumno_count',['label' => 'Cant. A']) ?></th>
                 <th width="10%" scope="col"><?= $this->Paginator->sort('active',['label' => 'Activa']) ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
