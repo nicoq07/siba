@@ -88,6 +88,14 @@
          }
      });
  }
+ $(document).ready(function(){
+	 $("#divPadres").toggle();
+	    $("#botonDiv").click(function(){
+	    	$("#botonDiv").html('-');
+	        $("#divPadres").toggle();
+	        return false;
+	    });
+	});
 </script>
 <?= $this->assign('title', 'Nuevo alumno');?>
 
@@ -160,36 +168,42 @@
 	       </div>
 	        
 <!------------------------ SECCION PADRES -->
-	         <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('nombre_madre',['label' => 'Nombre de madre o tutor']);
-			 ?>
-	         </div>
-	        <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('celular_madre',['label' => 'Celular de madre o tutor']);
-			 ?>
-	         </div>
-	         <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('email_madre',['label' => 'Email de madre o tutor']);
-			 ?>
-	         </div>
-	         <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('nombre_padre',['label' => 'Nombre de padre o tutor']);
-			 ?>
-	         </div>
-	        <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('celular_padre',['label' => 'Celular de padre o tutor']);
-			 ?>
-	         </div>
-	         <div class="col-lg-8 col-lg-offset-2"> 
-	         <?php
-	         echo $this->Form->control('email_padre',['label' => 'Email de padre o tutor']);
-			 ?>
-	         </div>
+				<div class="col-lg-2 col-lg-offset-10"> 
+					<button title="Ocultar datos de padres" class="btn-sm btn-info" id="botonDiv">+</button>
+		         </div>
+			<div id="divPadres">
+				
+		         <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('nombre_madre',['label' => 'Nombre de madre o tutor']);
+				 ?>
+		         </div>
+		        <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('celular_madre',['label' => 'Celular de madre o tutor']);
+				 ?>
+		         </div>
+		         <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('email_madre',['label' => 'Email de madre o tutor']);
+				 ?>
+		         </div>
+		         <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('nombre_padre',['label' => 'Nombre de padre o tutor']);
+				 ?>
+		         </div>
+		        <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('celular_padre',['label' => 'Celular de padre o tutor']);
+				 ?>
+		         </div>
+		         <div class="col-lg-8 col-lg-offset-2"> 
+		         <?php
+		         echo $this->Form->control('email_padre',['label' => 'Email de padre o tutor']);
+				 ?>
+		         </div>
+		      </div>
  <!------------------------ FIN SECCION PADRES -->
 	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
