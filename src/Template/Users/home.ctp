@@ -1,31 +1,4 @@
 <script type="text/javascript">
-// $(window).on('load', function() {
-// 	jsShowWindowLoad("Enviando saludos de cumpleaños! Espere por favor.") ;
-// 	 $.ajax({
- //url: "<?php  echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'ajaxEnviarMails'));?>",
-
-		 
-//       type: "get",
-//       data: {},
-//       success: function(data) {
-//     	  jsRemoveWindowLoad();
-//     	  if (data)
-//     	  {
-//     		  alert(data);
-//     	  }
-    	 
-//       },
-//       error: function(data){
-//     	  jsRemoveWindowLoad();
-//     	  console.log(data);
-//       },
-//       complete: function() {
-//     	  jsRemoveWindowLoad();
-//       }
-//   });
-	
-// 	});
-
 $(document).ready(parpadearHome);
 function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) 
 	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
