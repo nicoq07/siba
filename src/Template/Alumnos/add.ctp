@@ -91,34 +91,33 @@
 </script>
 <?= $this->assign('title', 'Nuevo alumno');?>
 
-<div class="col-lg-8 col-lg-offset-1 well" >
-   <h3><?= __('Nuevo alumno') ?></h3>
+<div class="col-lg-6 col-lg-offset-3 panel panel-info" >
+   <h3 style="text-align:center;" class="panel-heading"><?= __('Nuevo alumno') ?></h3>
 	   <?= $this->Form->create($alumno,['type' => 'file']) ?>
-	    <fieldset>
-	     
-	      
-	        <div class="col-lg-6">
+	    <fieldset class="panel-body">
+	    <div >
+<!-- 	        <div class="col-lg-3"> -->
 	        <?php
-	       	 	echo $this->Form->control('legajo_numero',['label' => 'Legajo sistema anterior']);
-	        ?>
-	        </div>
-	        <div class="col-lg-6"> 
+// 	       	 	//echo $this->Form->control('legajo_numero',['label' => 'Legajo sistema anterior']);
+// 	        ?>
+<!-- 	        </div> -->
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         	echo $this->Form->control('nro_documento',['label' => 'DNI']);
 			 ?>
 	         </div>
 	       
-	        <div class="col-lg-6">
+	        <div class="col-lg-8 col-lg-offset-2">
 	        <?php
 	        	echo $this->Form->control('nombre');
 	        ?>
 	        </div>
-	        <div class="col-lg-6"> 
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         	echo $this->Form->control('apellido');
 			 ?>
 	         </div>
-	         <div class="col-lg-10">
+	         <div class="col-lg-8 col-lg-offset-2">
 	        <?php
 	        $this->Form->templates(
 	        		['dateWidget' => '{{day}}{{month}}{{year}}']
@@ -127,87 +126,87 @@
 	        ?>
 	        </div>
 	       
-	         <div class="col-lg-3"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('telefono',['label' => 'Tel. Fijo']);
 			 ?>
 	         </div>
-	        <div class="col-lg-3"> 
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('celular');
 			 ?>
 	         </div>
-	          <div class="col-lg-4"> 
+	          <div class="col-lg-8 col-lg-offset-2"> 
 	         	<?php
 	         	echo $this->Form->control('email');
 			 	?>
 			 </div>
-	         <div class="col-lg-10">
+	         <div class="col-lg-8 col-lg-offset-2">
 	        <?php
 	        echo $this->Form->control('direccion',['label' => 'Domicilio']);
 	        ?>
 	        </div>
-	         <div class="col-lg-7">
+	         <div class="col-lg-8 col-lg-offset-2">
 	        <?php
 	        echo $this->Form->control('ciudad');
 	        ?>
 	        </div>
-	        <div class="col-lg-3"> 
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('codigo_postal',['label' => 'CP']);
 			 ?>
 	         </div>
 	        
-	        
+	       </div>
 	        
 <!------------------------ SECCION PADRES -->
-	         <div class="col-lg-3"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('nombre_madre',['label' => 'Nombre de madre o tutor']);
 			 ?>
 	         </div>
-	        <div class="col-lg-3"> 
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('celular_madre',['label' => 'Celular de madre o tutor']);
 			 ?>
 	         </div>
-	         <div class="col-lg-4"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('email_madre',['label' => 'Email de madre o tutor']);
 			 ?>
 	         </div>
-	         <div class="col-lg-3"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('nombre_padre',['label' => 'Nombre de padre o tutor']);
 			 ?>
 	         </div>
-	        <div class="col-lg-3"> 
+	        <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('celular_padre',['label' => 'Celular de padre o tutor']);
 			 ?>
 	         </div>
-	         <div class="col-lg-4"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('email_padre',['label' => 'Email de padre o tutor']);
 			 ?>
 	         </div>
  <!------------------------ FIN SECCION PADRES -->
-	         <div class="col-lg-8"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('colegio');
 			 ?>
 	         </div> 
-	         <div class="col-lg-5"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('monto_arancel');
 			 ?>
 	         </div> 
-	         <div class="col-lg-5"> 
+	         <div class="col-lg-8 col-lg-offset-2"> 
 	         <?php
 	         echo $this->Form->control('monto_materiales');
 			 ?>
 	         </div>  
-	         <div class="col-lg-10" id="div-clases"> 
+	         <div class="col-lg-12" id="div-clases"> 
 		         	<div id = 'sprofesor' class= "col-lg-4">
 					<?php 
 			       	 echo $this->Form->control('profesores',['id' => 'profesores', 'option' => $profesores, 'label' => 'Profesores','empty' => 'Seleccione profesor','onchange' => 'buscarDisciplinas()']);
@@ -226,24 +225,24 @@
 			        </div>
 			        <div class="col-lg-1" id="div-add" > 	<input type="button" class="btn-sm btn-info" id="btnAdd" value="+" onclick="addClase();" /></div>
 	         </div>  
-	    	 <div class="col-lg-10"> 
+	    	 <div class="col-lg-12"> 
 	         <?php
 	         echo $this->Form->control('observacion',['label' => 'Observación']);
 			 ?>
 			 </div>
-			  <div class="col-lg-5"> 
+			  <div class="col-lg-4"> 
 			 
 	         <?php
 	         echo $this->Form->control('futuro_alumno');
 			 ?>
 	         </div>  
 	         
-	         <div class="col-lg-5"> 
+	         <div class="col-lg-4"> 
 	         <?php
 	         echo $this->Form->control('programa_adolecencia',['label' => 'Adolescencia']);
 			 ?>
 	         </div> 
-	         <div class="col-lg-5"> 
+	         <div class="col-lg-4"> 
 	         <?php
 	         echo $this->Form->control('active',['label' => 'Activo']);
 			 ?>
@@ -254,9 +253,9 @@
  			 $this->Form->file('foto',['label' => 'Foto']) 
  			 ?>
 	         </div>
-	    	<div class="col-lg-10"> 
+	    	<div class="col-lg-12"> 
 	         <?=
- 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-success']) 
+ 			 $this->Form->button('Guardar',['class' => 'btn-lg btn-success','text-align' => 'center']) 
  			 ?>
 	         </div>
 	          

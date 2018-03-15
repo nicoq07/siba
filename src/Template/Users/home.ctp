@@ -4,7 +4,7 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 	$('#taskHome').css('color', 'red').fadeIn(500).delay(250).fadeOut(500, parpadearHome) }
 </script>
 <?= $this->assign('title', 'Bienvenido'); ?>
-<div class="col-lg-5 col-lg-offset-2 panel panel-info">
+<div class="col-lg-6 col-lg-offset-3 panel panel-info">
 	<div class="col-lg-12 panel panel-heading">
 		<h1 style="text-align: center"><?= h("Hola ". $user->nombre."!")?> </h1>
 	</div>

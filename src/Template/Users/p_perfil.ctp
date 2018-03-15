@@ -1,5 +1,5 @@
 <div class="container col-lg-10">
-<div class="col-lg-6 col-lg-offset-2 well">
+<div class="col-lg-6 col-lg-offset-3 well">
 <div class="related">
 	<h2><?= h(__(date('l')))?> </h2>
 	<?php foreach ($horarios as $horario){?>

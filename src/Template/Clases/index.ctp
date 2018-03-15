@@ -1,4 +1,4 @@
-<div class="col-lg-8 col-lg-offset-1 well">
+<div class="col-lg-8 col-lg-offset-2 well">
     <h3><?= __('Clases') ?></h3>
     <?php echo $this->element('filtroAnioActual'); ?>
     <div class="col-lg-3 col-lg-offset-9">

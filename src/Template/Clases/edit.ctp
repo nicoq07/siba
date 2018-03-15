@@ -2,7 +2,7 @@
 .container-clases { border:2px solid #ccc; width:100%; height: 300px; overflow-y: scroll; }
 
 </style>
-<div class="col-lg-6 col-lg-offset-2 well">
+<div class="col-lg-6 col-lg-offset-3 well">
     <?= $this->Form->create($clase) ?>
     <fieldset>
         <legend><?= __('Editar clase') ?></legend>

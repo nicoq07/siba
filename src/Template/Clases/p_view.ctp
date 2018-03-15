@@ -1,4 +1,4 @@
-<div class="col-lg-7 col-lg-offset-1 panel">
+<div class="col-lg-7 col-lg-offset-2 panel">
 	&nbsp;
     <h3 class="panel panel-heading" ><?= h($clase->presentacion) ?></h3>
     &nbsp;
