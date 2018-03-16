@@ -1,4 +1,5 @@
-<div class="well col-lg-7 col-lg-offset-1" style="padding: 0;">
+<div class="well col-lg-10 col-lg-offset-1" style="padding: 0;">
+<?= $this->element('menuEnAlumno')?> 
 	   <div  style="margin-top:10px" class="row">
 		     <div class="col-lg-7">
 		     	<span style="font-size:4rem; margin-top:10px"><?= h($alumno->presentacion) ?></span>
@@ -89,9 +90,13 @@
 	        <h4><?= __('Observación') ?></h4>
 	       <div class="separador"><?= $this->Text->autoParagraph(h($alumno->observacion)); ?></div>
 	    </div>
+</div>
 	    
-	    <div class="related col-lg-12 col-md-12">
-	        <h4><?= __('Pagos correspondientes') ?></h4>
+	    <div class="related col-lg-10 col-lg-offset-1 panel-info">
+	    <div class="panel-heading">
+	   	 <h4><?= __('Pagos correspondientes') ?></h4>
+	    </div>
+	        
 	        <?php if (!empty($alumno->pagos_alumnos)): ?>
 	        <div id="no-more-tables">
             <table class="col-lg-12 table-striped table-condensed cf">
@@ -126,8 +131,12 @@
 	        </table>
 	        <?php endif; ?>
 	    </div>
-	    <div class="related col-lg-12 col-md-12">
-	        <h4><?= __('Clases inscriptas' ) ?></h4>
+	   </div>
+	    <div class="related col-lg-10 col-lg-offset-1 panel-danger">
+	        <div class="panel-heading">
+		   	 <h4><?= __('Clases inscriptas' ) ?></h4>
+		    </div>
+		    
 	        <?php if (!empty($alumno->clases)){ ?>
 	         <div id="no-more-tables">
             <table class="col-lg-12 table-striped table-condensed cf">
@@ -154,8 +163,11 @@
 			</div>
 	        <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
 	    </div>
-	     <div class="related col-lg-12 col-md-12">
-	        <h4><?= __('Seguimientos de Clases' ) ?></h4>
+	     <div class="related col-lg-10 col-lg-offset-1 panel-warning">
+	        	<div class="panel-heading">
+			   	 <h4><?= __('Seguimientos de Clases' ) ?></h4>
+			    </div>
+	        
 	        <?php if (!empty($seguimientos)){ ?>
 	        <div id="no-more-tables">
             <table class="col-lg-12 table-striped table-condensed cf">
@@ -183,8 +195,4 @@
 	        </div>
 	       <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
 	    </div>
-	</div>
-</div>
-	<div style="margin-top: 10px;" class="col-lg-2 col-md-2">
-		<?= $this->element('menuEnAlumno')?> 
-	</div>
+	

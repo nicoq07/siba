@@ -1,6 +1,6 @@
-<div class="col-lg-10">
+<div class="col-lg-12 panel">
 
-	<div class = "col-lg-12 container">
+	<div class = "col-lg-12 panel-heading">
     	<h3><?= __('Alumnos') ?></h3>
 	</div>
 	<?php 
@@ -78,6 +78,9 @@
         </tbody>
     </table>
     </div>
-     <?= $this->element('footer') ?>
+    <div class="panel">
+    	<?= $this->element('footer') ?>
+    </div>
+     
 </div>
 

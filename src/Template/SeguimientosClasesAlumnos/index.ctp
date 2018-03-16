@@ -1,5 +1,5 @@
 <?= $this->assign('title', 'Seguimientos');?>
-<div class="col-lg-8 col-lg-offset-1 panel">
+<div class="col-lg-10 col-lg-offset-1 panel">
 <div class="row">
 	<h3><?= __('Seguimientos') ?></h3> 
   	<div class="col-lg-12" style="margin-top: 10px; ">
