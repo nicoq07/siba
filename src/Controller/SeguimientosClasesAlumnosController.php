@@ -37,7 +37,7 @@ class SeguimientosClasesAlumnosController extends AppController
     public function index()
     {
     	
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain(['Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')]]]]);
     	
         $this->paginate = [
         		'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')]]]
@@ -50,7 +50,8 @@ class SeguimientosClasesAlumnosController extends AppController
     }
     public function search()
     {
-    	$where1 = $where2 = $where3 = $where4 = $where5 = $palabra = null;
+    	$where1 = $where2 = $where3 = $where4 = $where5 = $where6 = $palabra = null;
+    	$where3 = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
@@ -104,12 +105,20 @@ class SeguimientosClasesAlumnosController extends AppController
     	}
     	
     	$this->paginate = [
-    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ] , 'Calificaciones'],
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ], 'Calificaciones'],
     			'conditions' => $conditions,
     			'limit' => 20
     	];
     	
-    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain('Horarios');
+    	if (!empty($fecha))
+    	{
+    		$where6 = ['YEAR(ciclolectivo.fecha_inicio)' => $year];
+    	}
+    	else {
+    		$where6 = ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')];
+    	}
+    	
+    	$clases = $this->SeguimientosClasesAlumnos->ClasesAlumnos->Clases->find('list')->find('ordered')->contain(['Horarios'=>['Ciclolectivo' => ['conditions' => $where6] ]]);
     	
     	$seguimientosClasesAlumnos= $this->paginate($this->SeguimientosClasesAlumnos);
     	
@@ -494,7 +503,13 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$this->render('/SeguimientosClasesAlumnos/p_index');
     }
-    
+    public function reset()
+    {
+    	if ($this->request->session()->check('searchCond')) {
+    		$this->request->session()->delete('searchCond');
+    	}
+    	$this->redirect("/SeguimientosClasesAlumnos/index");
+    }
     private function prepararListadoSeguimiento($clase,$alumno,$tipoHoja,$orientacion)
     {
     	$this->viewBuilder()->setOptions([
