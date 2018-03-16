@@ -70,17 +70,17 @@ class SeguimientosClasesAlumnosController extends AppController
     			$year= $this->request->getData()['year']['year'];
     			if ($year && $mes)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("$year-$mes-01"));
+    				$fecha =date('Y-m-d',strtotime("$year-$mes-01"));
     				$where3 = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
     			}
     			elseif ($year)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("$year-01-01"));
+    				$fecha =date('Y-m-d',strtotime("$year-01-01"));
     				$where3 = ["YEAR(fecha) = YEAR('$fecha')"];
     			}
     			elseif ($mes)
     			{
-    				$fecha =date('Y-m-d h:i:s',strtotime("2000-$mes-01"));
+    				$fecha =date('Y-m-d',strtotime("2000-$mes-01"));
     				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
     			}
     			if (!(empty($this->request->getData()['palabra_clave'])))
