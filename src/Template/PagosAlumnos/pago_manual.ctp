@@ -17,10 +17,10 @@ function addConcepto()
  
 </script>
 </head>
-<div class="col-lg-6 col-lg-offset-2 well well-sm">
+<div class="col-lg-6 col-lg-offset-3 panel panel-info">
+ <div class="panel-heading"><?= __('Nuevo pago manual') ?></div>    
     <?= $this->Form->create($pagosAlumno) ?>
-    <fieldset>
-        <legend><?= __('Nuevo pago manual') ?></legend>
+    <div class="panel-body">
         <?php
         echo $this->Form->month('mes',['type' => 'mob', 'empty' => false]);
         
@@ -32,6 +32,7 @@ function addConcepto()
         {  echo $this->Form->hidden('alumno_id', [ 'value' => $alumno->id]); ?>
         	<h3> <?= h("Pago de ". $alumno->presentacion) ?></h3>
        <?php  }?>
+      
         <div class="col-lg-12" id="campos_dinamicos" >
        		<div class="col-lg-8" id="div-concepto" >   <?php  echo $this->Form->control('concepto[]',['label' => 'Concepto']); ?> </div>
        		<div class="col-lg-3" id="div-monto" >   <?php  echo $this->Form->control('monto[]',['label' => 'Monto']); ?> </div>
@@ -39,7 +40,7 @@ function addConcepto()
          </div>
             
         <?= $this->Form->button(__('Generar e Imprimir'),['class' => 'btn-md btn-success']) ?>
-    </fieldset>
     
     <?= $this->Form->end() ?>
+    </div>
 </div>

@@ -1,5 +1,5 @@
 <?php $this->assign('title','Informe de pagos');?>
-<div class="col-lg-5 col-lg-offset-2 panel">
+<div class="col-lg-4 col-lg-offset-4 panel">
 	<?=  $this->Form->create();
 		echo $this->Form->label('mob', ['label' => 'Mes']);
 		echo $this->Form->month('mob', ['empty' => true]);

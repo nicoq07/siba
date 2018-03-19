@@ -1,7 +1,6 @@
 <?= $this->assign('title', 'Pagos de alumnos');?>
-<div class="col-lg-10 well">
-    <h3><?= __('Pagos Alumnos') ?></h3>
-    <div class = "col-lg-10 separador">
+<div class="col-lg-12 panel panel-info">
+    <div class = "col-lg-12 panel-heading">
     <?php 	
     if($this->request->session()->read('search_key') != "")
     {
