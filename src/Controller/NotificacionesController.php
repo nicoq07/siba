@@ -61,6 +61,7 @@ class NotificacionesController extends AppController
      */
     public function add()
     {
+    	
     	$notificacione = $this->Notificaciones->newEntity();
     	if ($this->request->is('post')) {
     		$notificacione = $this->Notificaciones->patchEntity($notificacione, $this->request->getData());
@@ -71,11 +72,13 @@ class NotificacionesController extends AppController
     		{
     			$users = TableRegistry::get('Users');
     			$users = $users->find('all')
-    			->where(['Users.id <>' => $this->Auth->user('id'),'Users.active' => true]);
+    			->where(['Users.id <>' => $this->Auth->user('id'),'Users.active' => true,'Users.profesor_id IS NOT NULL']);
+    			$count = 0;
+    			$iterator = null;
     			foreach ($users as $user)
     			{
     				$query = $this->Notificaciones->query();
-    				$query->insert(['descripcion', 'emisor','receptor','leida','broadcast','created'])
+    				$iterator= $query->insert(['descripcion', 'emisor','receptor','leida','broadcast','created'])
     				->values([
     						'descripcion' => $notificacione['descripcion'],
     						'emisor' => $notificacione['emisor'],
@@ -85,9 +88,16 @@ class NotificacionesController extends AppController
     						'created' => new \DateTime('now')]
     						, ['created' => 'datetime'])
     						->execute();
-    						
+    						$count += $iterator->count();
     			}
-    			$this->Flash->success(__('Mensajes enviados.'));
+    			if ($users->count() == $count)
+    			{
+    				$this->Flash->success(__('Mensajes enviados.'));
+    			}
+    			else
+    			{
+    				$this->Flash->error(__('Error enviado mensajes.'));
+    			}
     			
     			return $this->redirect(['action' => 'index']);
     		}
@@ -98,8 +108,8 @@ class NotificacionesController extends AppController
     			}
     			$this->Flash->error(__('Error al enviar el mensaje'));
     		}
-    		$users = $this->Notificaciones->Users->find('list')
-    		->where(['Users.id <>' => $this->Auth->user('id')])
+    		$users = $this->Notificaciones->Users->setDisplayField('presentacionNotificaciones')->find('list')
+    		->where(['Users.id <>' => $this->Auth->user('id'),'Users.active' => true])
     		;
     		$this->set(compact('notificacione','users'));
     		$this->set('_serialize', ['notificacione']);
@@ -120,8 +130,8 @@ class NotificacionesController extends AppController
     		}
     		$this->Flash->error(__('Error al enviar el mensaje'));
     	}
-    	$users = $this->Notificaciones->Users->find('list')
-    	->where(['Users.id <>' => $this->Auth->user('id')])
+    	$users = $this->Notificaciones->Users->setDisplayField('presentacionNotificaciones')->find('list')
+    	->where(['Users.id <>' => $this->Auth->user('id'),'Users.active' => true])
     	;
     	$this->set(compact('notificacione','users'));
     	$this->render('/Notificaciones/add');

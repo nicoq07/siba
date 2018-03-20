@@ -53,6 +53,13 @@ class User extends Entity
     	return $nomyape;
     }
     
+    public function _getPresentacionNotificaciones()
+    {
+    	$tipo = empty($this->_properties['profesor_id']) ? "Admin" : "Profesor";
+    	$nomyape = $this->_properties['nombre'] . ' ' . $this->_properties['apellido']. ' - ' . $tipo;
+    	return $nomyape;
+    }
+    
     protected function _setPassword($value)
     {
     	if (!empty($value))
