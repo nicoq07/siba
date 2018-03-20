@@ -1,4 +1,4 @@
- <div class="col-lg-4  col-lg-offset-2 index">
+ <div class="col-lg-5  col-lg-offset-3 panel">
     <h3><?= __('Cursos por Profesor') ?></h3>
     <div class = "col-lg-12 separador">
  <?php echo $this->Form->create('',['id' => 'frmIndex', 'type' => 'post']); ?>

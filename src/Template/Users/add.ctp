@@ -1,10 +1,10 @@
 <?= $this->assign('title','Nuevo usuario')?>
- <div class="col-lg-5 col-lg-offset-2 panel">
+ <div class="col-lg-5 col-lg-offset-3 panel panel-info">
+   <div class="panel-heading"><h3><?= __('Nuevo usuario') ?></h3></div>
     <?= $this->Form->create($user) ?>
     <fieldset>
-        <legend><?= __('Nuevo usuario') ?></legend>
-        <?php
-			echo $this->Text->autoParagraph("<b><em> Sí va a crear un usuario para un profesor, los campos nombre y apellido no son necesarios.</em></b>");
+		 <div class="col-lg-12 alert alert-danger alert-dismissable"><?php  echo $this->Text->autoParagraph("<b><em> Sí va a crear un usuario para un profesor, los campos nombre y apellido no son necesarios.</em></b>");?></div>
+		<?php
             echo $this->Form->control('profesor_id', ['options' => $profesores, 'empty' => true]);
             echo $this->Form->control('nombre');
             echo $this->Form->control('apellido');
