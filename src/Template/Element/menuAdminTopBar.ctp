@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
     <ul class="nav navbar-nav font-menu">
 	      <li class="dropdown">
-	             <a href="<?php echo \Cake\Routing\Router::url(array('controller'=>'Users','action'=>'perfil'));?>" class="dropdown-toggle" >Clases del día <span  style="font-size:20px;" class="pull-right hidden-xs showopacity fa fa-home "></span></a>
+	        	 <?php echo $this->Html->link("<span style='font-size:20px;' class='fa fa-home'></span>", ['controller' => 'Users' , 'action' => 'perfil'], ['title' => 'Clases de día','escape' => false]);?>	
 	        </li>
 	        <li class="dropdown">
 	         	          
@@ -100,11 +100,11 @@
 	         <!--  FIN SECCION USERS-->
 	         <li class="dropdown">
 	         <?php empty($not) ? $not = '' : $not ='noti'?>
-        		 <?php echo $this->Html->link("<span id='$not' style='font-size:20px;' class='fa fa-lg fa-bell'></span>", ['controller' => 'Notificaciones' , 'action' => 'index'], ['escape' => false]);?>
+        		 <?php echo $this->Html->link("<span id='$not' style='font-size:20px;' class='fa fa-lg fa-bell'></span>", ['controller' => 'Notificaciones' , 'action' => 'index'], ['title' => 'Notificaciones','escape' => false]);?>
 	         </li>
 	         <li class="dropdown" style="height: 50px">
 	         <?php empty($task) ? $task= '' : $task='campana'?>
-        		 <?php echo $this->Html->link("<span id='$task' style='font-size:20px;' class='fa fa-thumb-tack'></span>", ['controller' => 'GestorTareas' , 'action' => 'index'], ['escape' => false]);?>
+        		 <?php echo $this->Html->link("<span id='$task' style='font-size:20px;' class='fa fa-thumb-tack'></span>", ['controller' => 'GestorTareas' , 'action' => 'index'], ['title' => 'Tareas','escape' => false]);?>
 	         </li>
 	      </ul>
     </div>

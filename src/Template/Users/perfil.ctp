@@ -1,4 +1,4 @@
-
+<?= $this->assign('title','Inicio');?>
 <div class="col-lg-4 col-lg-offset-1 panel panel-info">
 	<h2 class="panel panel-heading"><?= h(__(date('l')))?> </h2>
 	<?php foreach ($horarios as $horario){?>
