@@ -1,14 +1,12 @@
-<div class="container col-lg-12">
 
-<div class="col-lg-5 panel panel-sm">
-<div class="related">
+<div class="col-lg-4 col-lg-offset-1 panel panel-info">
 	<h2 class="panel panel-heading"><?= h(__(date('l')))?> </h2>
 	<?php foreach ($horarios as $horario){?>
 	    <h3><?= h($horario->hora->format('H:i')) ?></h3>
 	    
 	        <h4><?= __('Clases en esta hora') ?></h4>
 	        <?php if (!empty($horario->clases)): ?>
-	        <table class="table">
+	        <table class="table table-striped">
 	            <tr>
 	                <th scope="col"><?= __('Detalle') ?></th>
 	            </tr>
@@ -21,12 +19,10 @@
 	        </table>
 	        <?php endif; 
 		}	?>
-	    </div>
 </div>
-<div class="col-lg-5 col-lg-offset-1 panel panel-sm">
+<div class="col-lg-5 col-lg-offset-1 panel panel-info">
 	<h3 class="panel panel-heading"><?= h("Clases sin alumnos")?> </h3>
-	
-	        <table class="table">
+	        <table class="table table-striped">
 	            <tr>
 	                <th scope="col"><?= __('Disciplina') ?></th>
 	                <th scope="col"><?= __('Dia y hora ') ?></th>
@@ -44,5 +40,4 @@
 	        </table>
 	        
 
-</div>
 </div>

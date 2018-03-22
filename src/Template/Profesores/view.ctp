@@ -1,10 +1,13 @@
-<div class="col-lg-8 col-lg-offset-1 well well-sm">
-   <div  style="margin-top:10px" class="row">
+<div class="col-lg-8 col-lg-offset-2 panel panel-info">
+<div class="col-lg-2 col-lg-offset-10">
+	     <?php  echo $this->Html->link('Editar', ['action' => 'edit', $profesore->id],['class' => 'btn btn-warning']); ?>
+</div>
+   <div  style="margin-top:10px" class="col-lg-12 panel-heading">
 	     <div class="col-lg-5">
-	     <h1 style="margin-top:10px"><?= h($profesore->presentacion) ?></h1>
+	     <h1><?= h($profesore->presentacion) ?></h1>
 	      </div>
 	</div>
-	<div class="separador"></div>
+<div class="separador col-lg-12"></div>
 	
 	<div class="col-lg-2 view-div borde"><?= __('DNI') ?></div>
 	<div class="col-lg-4 borde"><?= $profesore->nro_documento ? h($profesore->nro_documento) : h("-") ?></div>
@@ -70,6 +73,4 @@
         <?php endif; ?>
     </div>
 </div>
-<div class="col-lg-1">
-	     <?php  echo $this->Html->link('Editar', ['action' => 'edit', $profesore->id],['class' => 'btn btn-warning']); ?>
-</div>
+

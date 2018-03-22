@@ -1,5 +1,5 @@
-<div class="col-lg-8 col-lg-offset-1 well well-sm">
-<h3><?= h("Clases sin alumnos: ")?> </h3>
+<div class="col-lg-8 col-lg-offset-2 panel panel-info">
+<div class="panel-heading"><h3><?= h("Clases sin alumnos: ")?> </h3></div>
 	
 	        <table class="table table-inversed">
 	            <tr>
