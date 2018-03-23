@@ -1,12 +1,12 @@
 <nav class="top-bar expanded top-bar-border" data-topbar role="navigation">
     <div class="col-lg-2">
-	    <ul class="">
+	    <ul class="text-center">
 	    	<li class="name">
 	        	<h1><a href=""><?= $this->fetch('title') ?></a></h1>
 	        </li>
 		</ul>
     </div>
-	<div class="col-lg-7 ">
+	<div class="col-lg-8 ">
 	 <div class="container-flex">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
@@ -111,7 +111,7 @@
   </div>
 	</div>
 	<div  class="col-lg-2">
-		<ul class="nav navbar-nav navbar-right">
+		<ul class="nav navbar-nav navbar-left text-center">
 			<li>
 				<a style="color: white; background-color:#01545B;" href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if (!empty($current_user)) : print $current_user['nombre'] ; endif;?> <b class="caret"></b></a>
 	                <ul class="dropdown-menu forAnimate">
