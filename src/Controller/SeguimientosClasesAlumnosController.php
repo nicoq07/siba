@@ -36,27 +36,42 @@ class SeguimientosClasesAlumnosController extends AppController
      */
     public function index()
     {
+    	$this->paginate = [
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios','Profesores'] ], 'Calificaciones'],
+    			'conditions' => ['fecha' => date('Y-m-d') ],
+    			'limit' => 20
+    	];
+    	$mensaje[0]= 'Seguimientos del día de hoy.';
+    	$seguimientosClasesAlumnos= $this->paginate($this->SeguimientosClasesAlumnos);
+    	$this->set(compact('seguimientosClasesAlumnos','mensaje'));
     }
     public function search()
     {
-    	$where1 = $where2 = $where3 = $where4 = $where5 = $where6 = $palabra = null;
-    	$where3 = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
+    	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $where5 = $where6 = $palabra = null;
+    	$whereFecha = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
     	$mensaje = null;
     	if ($this->request->is('post'))
     	{
+    		debug($this->request->getData());die;
     		$mensaje[0] = "Se buscó por: ";
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
+    			if ($this->request->getData()['profesores'])
+    			{
+    				$whereProfesor= '';
+    				$mensaje [5] = " Seguimientos ya cargados \n";
+    			}
+    			
     			if ($this->request->getData()['modificados'])
     			{
-    				$where5= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
+    				$whereYaCargados= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
     				$mensaje [1] = " Seguimientos ya cargados \n";
     			}
     			
     			if (!(empty($this->request->getData()['clases'])))
     			{
     				$clase = $this->request->getData()['clases'];
-    				$where2= ["clases.id = $clase"];
+    				$whereClase= ["clases.id = $clase"];
     				$clasesTable = TableRegistry::get("Clases");
     				$clase = $clasesTable->get($clase);
     				$mensaje [2] = " Clase de ".  $clase->presentacionCorta;
@@ -67,32 +82,32 @@ class SeguimientosClasesAlumnosController extends AppController
     			if ($year && $mes)
     			{
     				$fecha =date('Y-m-d',strtotime("$year-$mes-01"));
-    				$where3 = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
+    				$whereFecha = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
     				$mensaje [3]= " Mes y año : ". date('m-Y',strtotime($fecha));
     			}
     			elseif ($year)
     			{
     				$fecha =date('Y-m-d',strtotime("$year-01-01"));
-    				$where3 = ["YEAR(fecha) = YEAR('$fecha')"];
+    				$whereFecha = ["YEAR(fecha) = YEAR('$fecha')"];
     				$mensaje[3] = " Año : ". date('Y',strtotime($fecha));
     			}
     			elseif ($mes)
     			{
     				$fecha =date('Y-m-d',strtotime("2000-$mes-01"));
-    				$where3 = ["MONTH(fecha) = MONTH('$fecha')"];
+    				$whereFecha = ["MONTH(fecha) = MONTH('$fecha')"];
     				$mensaje[3] = " Mes : ". date('m',strtotime($fecha));
     			}
     			if (!(empty($this->request->getData()['palabra_clave'])))
     			{
     				$palabra = $this->request->getData()['palabra_clave'];
-    				$where1  =  ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
+    				$wherePalabraClave=  ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
 							 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
 	     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
 							OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
     				];
     				$mensaje  [4] = " Alumno : $palabra ";
     			}
-    			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4,$where5]);
+    			$this->request->session()->write('searchCond', [$wherePalabraClave,$whereClase,$whereFecha,$whereProfesor,$whereYaCargados]);
     			$this->request->session()->write('search_key', $palabra);
     		}
     	}
@@ -260,7 +275,7 @@ class SeguimientosClasesAlumnosController extends AppController
     		}  		
     	}
     	
-    	$this->set();
+    	$this->set('seg');
     }
     
     public function listadoPdf($idAlumno,$idClase)
