@@ -3,7 +3,7 @@
   	<div class="col-lg-12">
   		<div class="col-lg-2 col-lg-offset-10">
 			<?php
-				echo $this->Html->link('Borrar filtros',['action'=>'reset'],[ 'class' => 'btn-sm btn-danger']);
+				echo $this->Html->link('Borrar filtros',['action'=>'pReset'],[ 'class' => 'btn-sm btn-danger']);
 	        ?>          
 	      </div>
 	 </div>
