@@ -47,19 +47,22 @@ class SeguimientosClasesAlumnosController extends AppController
     }
     public function search()
     {
-    	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $where5 = $where6 = $palabra = null;
+    	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $whereYaCargados= $where6 = $palabra = null;
     	$whereFecha = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
     	$mensaje = null;
     	if ($this->request->is('post'))
     	{
-    		debug($this->request->getData());die;
-    		$mensaje[0] = "Se buscó por: ";
+//     		debug($this->request->getData());die;
+    		$mensaje = array(0 => 'Se buscó por :');
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
     			if ($this->request->getData()['profesores'])
     			{
-    				$whereProfesor= '';
-    				$mensaje [5] = " Seguimientos ya cargados \n";
+    				$profe_id = $this->request->getData()['profesores'];
+    				$ProfeTable = TableRegistry::get("Profesores");
+    				$profe = $ProfeTable->get($profe_id);
+    				$whereProfesor= "Profesores.id = $profe_id";
+    				$mensaje [0][1] = " Profesor : " .  $profe->presentacion;
     			}
     			
     			if ($this->request->getData()['modificados'])

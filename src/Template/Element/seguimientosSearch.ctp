@@ -64,7 +64,7 @@
  	        	var array = data.split('.');
  	        	var sel = $('#clases');
  	        	sel.empty();
-  	        	sel.append($("<option>").attr('value',null).text('Seleccione horario'));
+  	        	sel.append($("<option>").attr('value','').text('Seleccione horario'));
  	         	$(array).each(function() {
  	        	
  	        		d = this.split('-');
@@ -92,7 +92,7 @@
          	var array = data.split('.');
        		var sel = $('#disciplinas');
        		sel.empty();
-         	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
+         	sel.append($("<option>").attr('value','').text('Seleccione disciplina'));
           	$(array).each(function() {
          	
          		d = this.split('-');
@@ -118,7 +118,7 @@
          	var array = data.split('.');
        		var sel = $('#profesores');
        		sel.empty();
-         	sel.append($("<option>").attr('value',null).text('Seleccione Profesor'));
+         	sel.append($("<option>").attr('value','').text('Seleccione Profesor'));
           	$(array).each(function() {
          	
          		d = this.split('-');
@@ -139,7 +139,6 @@
  }
  function showPage() {
 	   document.getElementById("loader").style.display = "none";
-	   document.getElementById("myDiv").style.display = "block";
 }
  window.onload = function() {
 	 $("#year").prop('selectedIndex',0);
@@ -222,10 +221,10 @@
 	
 	 
 	 <?php echo $this->Form->end(); ?>
-	 <?php if (!empty($mensaje)) { ?>
 	<div class="col-lg-12 alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <?php foreach ($mensaje as $m) { echo $m; echo "<br>"; }?>
+                <?= 
+                $this->Html->nestedList($mensaje);
+                	?>
     </div>
-    <?php } ?>
 </div>
