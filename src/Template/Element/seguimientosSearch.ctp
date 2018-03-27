@@ -223,8 +223,8 @@
 	 <?php echo $this->Form->end(); ?>
 	<div class="col-lg-12 alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <?= 
-                $this->Html->nestedList($mensaje);
+                <?php if ($mensaje) { 
+                 $this->Html->nestedList($mensaje); }
                 	?>
     </div>
 </div>
