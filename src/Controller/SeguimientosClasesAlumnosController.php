@@ -50,7 +50,7 @@ class SeguimientosClasesAlumnosController extends AppController
     {
     	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $whereYaCargados= $where6 = $palabra = null;
     	$whereFecha = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
-    	$mensaje[] = null;
+    	$mensaje  = ['Seguimientos del día del hoy'];
     	if ($this->request->is('post'))
     	{
     		$mensaje = null;
@@ -425,20 +425,35 @@ class SeguimientosClasesAlumnosController extends AppController
     
     public function pSearch()
     {
-    	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $whereYaCargados= null;
+    	$wherePalabraClave= $whereDisciplinas =	$whereClase = $whereFecha = $whereYaCargados 
+    	= $whereFaltanCargar  = $palabra = $mensaje = null;
+    	
+    	$whereProfesor = ['Clases.profesor_id' => $this->Auth->user('profesor_id')];
+    	
     	if ($this->request->is('post'))
     	{
     		if(!empty($this->request->getData()) && $this->request->getData() !== null )
     		{
-    			
     			if(!empty($this->request->getData()) && $this->request->getData() !== null )
     			{
+	    				if ($this->request->getData()['faltantes'])
+	    				{
+	    					$whereYaCargados= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+	    					$mensaje ['Se buscó por']["Seguimientos :"] = ["Faltantes de cargar"];
+	    				}
 	    				if ($this->request->getData()['modificados'])
 	    				{
 	    					$whereYaCargados= 'SeguimientosClasesAlumnos.created <> SeguimientosClasesAlumnos.modified';
 	    					$mensaje ['Se buscó por']["Seguimientos :"] = ["Ya cargados"];
 	    				}
-	    				
+	    				if (!(empty($this->request->getData()['disciplinas'])))
+	    				{
+	    					$disc = $this->request->getData()['disciplinas'];
+	    					$whereDisciplinas= ["Clases.disciplina_id = $disc"];
+	    					$discTable = TableRegistry::get("Disciplinas");
+	    					$disciplina = $discTable->get($disc);
+	    					$mensaje ['Se buscó por']["Disciplina :"]=   [$disciplina->descripcion];
+	    				}
 	    				if (!(empty($this->request->getData()['clases'])))
 	    				{
 	    					$clase = $this->request->getData()['clases'];
@@ -479,7 +494,7 @@ class SeguimientosClasesAlumnosController extends AppController
 	    					$mensaje['Se buscó por']["Alumno :"] = [$palabra] ;
 	    				}
 	    			
-	    			$this->request->session()->write('searchCond', [$wherePalabraClave,$whereFecha,$whereClase,$whereYaCargados]);
+	    				$this->request->session()->write('searchCond', [$wherePalabraClave,$whereFecha,$whereClase,$whereYaCargados,$whereFaltanCargar,$whereProfesor,$whereDisciplinas]);
 	    			$this->request->session()->write('search_key', $palabra);
 	    		}
     		}

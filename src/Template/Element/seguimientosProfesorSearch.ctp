@@ -16,6 +16,12 @@
   		 echo $this->Form->checkbox('modificados', ['label' => false]);
   		 ?>
 	 </div>
+	 <div class="col-lg-2" >
+  		 <?php
+  		 echo $this->Form->label('faltantes','Ver faltantes de carga');
+  		 echo $this->Form->checkbox('faltantes', ['label' => false]);
+  		 ?>
+	 </div>
 	 <div class="col-lg-4" style="top:10px ;text-align:center;">
 		 <div class="col-lg-6 "style="top:10px;" > 
 	  		  <?php
@@ -28,14 +34,14 @@
 	          ?>
           </div> 
 	 </div>  	
-           <div class="col-lg-6" id="div-clases"> 
-        <div id = 'sdisciplina' class= "col-lg-4">
+     <div class="col-lg-4" id="div-clases"> 
+        <div id = 'sdisciplina' class= "col-lg-6">
          	   	<?php  
          	   	echo $this->Form->label('disciplinas',['label' => 'Disciplinas']);
          	   	echo $this->Form->select('disciplinas',['empty' => '-'],['id' => 'disciplinas','name' => 'disciplinas','onchange' => 'getDiaHorario();']);
          	   	?>
          </div>
-         <div id = 'shorario' class= "col-lg-4">
+         <div id = 'shorario' class= "col-lg-6">
           <?php  
           echo $this->Form->input('clases[]',['label' => 'Fecha y hora','option' => '-','empty' => '-','id' => 'clases','name' => 'clases','type' => 'select','onchange'=>'document.getElementById("frmIndex").submit()']);
 	       ?>
