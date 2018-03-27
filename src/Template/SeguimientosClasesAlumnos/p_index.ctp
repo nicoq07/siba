@@ -1,23 +1,7 @@
 <?= $this->assign('title', 'Mis Seguimientos'); ?>
-<div class="index col-lg-9 panel">
-	<h3 class="panel-heading"><?= __('Seguimientos') ?></h3> 
-  	<div class="col-lg-12" style="margin-top: 10px; ">
-  		<?php echo $this->Form->create('pSearch', ['url' => [ 'action' => 'pSearch'], 'id' => 'frmIndex', 'type' => 'post']); ?>
-  	  
-	  <div class="col-lg-4" >
-  		 <?php
-  			 echo $this->Form->control('clases',['empty' => true ,  'onchange'=>'document.getElementById("frmIndex").submit()'])
-          ?>
-         	
-	 </div>
-	<div class ="col-lg-3">
-		 <?php
-            echo $this->Form->label('modificados','Ver sólo cargados');
-            echo $this->Form->checkbox('modificados', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
-          ?>
-		 </div>
-	 <?php echo $this->Form->end(); ?>
-  	 </div>
+<div class="index col-lg-12 panel panel-info">
+	<h3 class="panel-heading"><?= __('Seguimientos') ?></h3>
+	<?php echo $this->element('seguimientosProfesorSearch'); ?> 
     <div id="no-more-tables">
             <table class="col-lg-12 table-striped table-condensed cf">
         		<thead class="cf">
