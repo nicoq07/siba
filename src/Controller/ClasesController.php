@@ -38,10 +38,18 @@ class ClasesController extends AppController
 		->find('orderedIndex')
 		->find('currentYear');
 		
+		$profesores = $this->Clases->Profesores->find('list')
+		->where(['active' => true]) ;
+		$disciplinas = $this->Clases->Disciplinas->find('list')
+		->where(['active' => true]) ;
+		$horarios = $this->Clases->Horarios->find('list')
+		->contain('Ciclolectivo')->find('currentYear')
+		->where(['Horarios.active' => true]) ;
+		
 		$clases = $this->paginate($clases);
 		
-		$this->set(compact('clases'));
-		$this->set('_serialize', ['clases']);
+		
+		$this->set(compact('clases','profesores','disciplinas','horarios'));
 	}
 
     /**

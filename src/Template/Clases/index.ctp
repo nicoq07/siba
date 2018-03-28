@@ -4,6 +4,23 @@
     <div class="col-lg-3 col-lg-offset-9">
     	  <?= $this->Html->link(__('Nueva'), ['action' => 'add'],['class' => 'btn btn-success']) ?>
     </div>
+    <div class='col-lg-12'>
+     &nbsp;
+    </div>
+    <?php echo $this->Form->create('frmBusqueda',['id' => 'frmBusqueda','url' => ['action' => 'index']]);?>
+	    <div class='col-lg-12'>
+	    	<div class='col-lg-4'>
+	    		 <?php echo $this->Form->input('profesores',['type' => 'select', 'empty' => 'Profesor/a','onchange' => 'document.getElementById("frmBusqueda").submit(); ']); ?>
+	    	</div>
+	    	<div class='col-lg-4'>
+	    		 <?php echo $this->Form->input('disciplinas',['type' => 'select','empty' => 'Disciplinas','onchange' => 'document.getElementById("frmBusqueda").submit(); ']); ?>
+	    	</div>
+	    	<div class='col-lg-4'>
+	    		 <?php echo $this->Form->input('horarios',['type' => 'select','empty' => 'Horarios','onchange' => 'document.getElementById("frmBusqueda").submit(); ']); ?>
+	    	</div>
+	    </div>
+   	<?php echo $this->Form->end();?>
+   
     <table class="table table-striped">
         <thead>
             <tr>
@@ -28,5 +45,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+     <?= $this->element('footer') ?>
 </div>
- <?= $this->element('footer') ?>
