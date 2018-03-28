@@ -33,20 +33,50 @@ class ClasesController extends AppController
      */
 	public function index()
 	{
+		$whereProfesores = $whereHorarios = $whereDisciplinas = $condiciones = null;
+		if ($this->request->is('post'))
+		{
+			if ($this->request->getData('profesores') != '')
+			{
+				$profesor_id = $this->request->getData('profesores');
+				$whereProfesores = ['Clases.profesor_id' => $profesor_id];
+				
+			}
+			if ($this->request->getData('disciplinas') != '')
+			{
+				$disciplina_id = $this->request->getData('disciplinas');
+				$whereDisciplinas= ['Clases.disciplina_id' => $disciplina_id];
+			}
+			if ($this->request->getData('horarios') != '')
+			{
+				$horarios_id = $this->request->getData('horarios');
+				$whereHorarios= ['Clases.horario_id' => $horarios_id];
+			}
+			$condiciones = [$whereProfesores,$whereDisciplinas,$whereHorarios];
+			
+		}
+		
 		$clases = $this->Clases->find('all')
 		->contain(['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'])
+		->where($condiciones)
 		->find('orderedIndex')
 		->find('currentYear');
 		
 		$profesores = $this->Clases->Profesores->find('list')
 		->where(['active' => true]) ;
+		$auxClases = $this->Clases->find('all')->contain(['Profesores', 'Horarios' => ['Ciclolectivo'] , 'Disciplinas'])
+		->select(['Disciplinas.id'])
+		->find('currentYear');
 		$disciplinas = $this->Clases->Disciplinas->find('list')
-		->where(['active' => true]) ;
+		->where(['active' => true])->where(['Disciplinas.id IN' => $auxClases]);	
 		$horarios = $this->Clases->Horarios->find('list')
 		->contain('Ciclolectivo')->find('currentYear')
 		->where(['Horarios.active' => true]) ;
 		
-		$clases = $this->paginate($clases);
+		$clases = $this->paginate($clases,
+				[
+						'limit' => 50
+				]);
 		
 		
 		$this->set(compact('clases','profesores','disciplinas','horarios'));
