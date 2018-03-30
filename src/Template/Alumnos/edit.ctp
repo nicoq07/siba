@@ -250,7 +250,8 @@ function buscarDisciplinas()
 				 <ul>
 					   	<?php 	foreach ($alumno->clases as $clase):?>
 					  <?php 	echo  $this->Form->hidden('clases[]',['value' => $clase->id]); ?>
-							  <li><?= h($clase->presentacion) ?> </li>
+							  <li><?= h($clase->presentacion) ?> <?= $this->Html->link(__('Tranferir de Clase'), ['controller' => 'Alumnos', 'action' => 'transferirClase', $alumno->id,$clase->id],  ['class' => 'btn-sm btn-primary']) ?>
+							   </li>
 			         <?php endforeach; ?>
 			      </ul> 
 	         	</div>

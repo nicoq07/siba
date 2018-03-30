@@ -155,7 +155,8 @@
 	                <td class="actions">
 	                    <?= $this->Html->link(__('Ver'), ['controller' => 'Clases', 'action' => 'view', $clases->id],  ['class' => 'btn-sm btn-info']) ?>
 	                    <?= $this->Html->link(__('Editar'), ['controller' => 'Clases', 'action' => 'edit', $clases->id],  ['class' => 'btn-sm btn-warning']) ?>
-	                 <?= $this->Form->postLink(__('Quitar de la clase'),['controller' => 'Clases','action' => 'desactivarClaseAlumno', $alumno->id,$clases->id],['class' => 'btn-sm btn-danger','confirm' => __('Quitar de la clase a {0}?', $alumno->presentacion)]) ?>
+	                 	<?= $this->Html->link(__('Tranferir de Clase'), ['controller' => 'Alumnos', 'action' => 'transferirClase', $alumno->id,$clases->id],  ['class' => 'btn-sm btn-default']) ?>
+	                 	<?= $this->Form->postLink(__('Quitar de la clase'),['controller' => 'Clases','action' => 'desactivarClaseAlumno', $alumno->id,$clases->id],['class' => 'btn-sm btn-danger','confirm' => __('Quitar de la clase a {0}?', $alumno->presentacion)]) ?>
 	                </td>
 	            </tr>
 	            <?php endforeach; ?>
