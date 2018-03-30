@@ -10,7 +10,6 @@
  	var idDisciplina = $( "#disciplinas" ).val();
  	var profesor_id = $( "#profesores" ).val();
  	 $.ajax({
-//  	        url: "getDiaHorario",
         url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDiaHorario'));?>",
 
  	        type: "get",
@@ -19,22 +18,12 @@
  	        	var array = data.split('.');
  	        	var sel = $('#clases');
  	        	sel.empty();
-//  	        	sel.on('change', function (data) {
-//  						mifuncion();
-//  	            })
-//  	            sel.attr('id', 'clases._ids');
- 	           	
   	        	sel.append($("<option>").attr('value',null).text('Seleccione horario'));
  	         	$(array).each(function() {
  	        	
  	        		d = this.split('-');
  	            	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
  	           	})
-//  		         	div = document.createElement('div');
-//  		        	$(div).addClass('input select')
-//  		     	    .html(sel);
- 		        	
-//  		         	$('#shorario').append(div)
  	        },
  	        error: function(){
  				alert("Error");
@@ -49,37 +38,20 @@
  	
  	var profesor_id = $( "#profesores" ).val();
      $.ajax({
-         //url: "getDisciplinas",
         url: "<?php echo \Cake\Routing\Router::url(array('controller'=>'Alumnos','action'=>'getDisciplinas'));?>",
          type: "get",
          data: {profesor_id:profesor_id},
          success: function(data) {
-
-             
-         	//$("#disciplinas").remove();
          	var array = data.split('.');
-         //	var sel = $('<select>');
        		var sel = $('#disciplinas');
        		sel.empty();
-//          	sel.on('change', function (data) {
-//          		getDiaHorario();
-//              })
-//              sel.attr('id', 'disciplinas');
-//              ;
          	sel.append($("<option>").attr('value',null).text('Seleccione disciplina'));
           	$(array).each(function() {
          	
          		d = this.split('-');
              	 sel.append($("<option>").attr('value',d[0]).text(d[1]));
             	})
-            		
-//  	         	div = document.createElement('div');
-//  	        	$(div).addClass('input select')
-//  	     	    .html(sel);
- 	        	
-//  	         	$('#sdisciplina').append(div)
- 	         	
-         },
+         	},
          error: function(){
  			alert("Error buscando las disciplinas");
          },
