@@ -473,6 +473,42 @@ class AlumnosController extends AppController
     	$this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
     }
     
+    public function transferirClase($id = null, $claseId = null)
+    {
+    	$alumno = null;
+    	$clase = null;
+    	if ($this->request->is('post'))
+    	{
+    		$claseAnterior = $this->request->getData('clase_id');
+    		$claseNueva = $this->request->getData('clases')[0];
+    		$alumno_id = $this->request->getData('alumno_id');
+    		
+    		/*
+    		 * Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
+    		 * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
+    		 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
+    		 * Tengo que quitarlo de la clase anterior
+    		 */
+    		debug($this->request->getData());
+    	}
+    	else 
+    	{
+    		if (!empty($id) || !empty($claseId))
+	    	{
+	    		$alumno = $this->Alumnos->get($id);
+	    		$clase = $this->Alumnos->Clases->get($claseId);
+	       	}
+	    	else 
+	    	{
+	    		$this->Flash->error('Parámetro no válido');
+	    		return $this->redirect($this->referer());
+	
+	    	}
+    	}
+    	$profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
+    	$this->set(compact('alumno','profesores','clase'));
+    }
+    
     public function listadoCumple()
     {
     	if ($this->request->is(['post']))
