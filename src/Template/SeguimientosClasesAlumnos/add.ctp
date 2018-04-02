@@ -3,7 +3,7 @@
     <fieldset>
         <legend><?= __('Add Seguimientos Clases Alumno') ?></legend>
         <?php
-            echo $this->Form->control('clase_alumno_id');
+            echo $this->Form->control('clases_alumno_id');
             echo $this->Form->control('observacion');
             echo $this->Form->control('presente');
             echo $this->Form->control('calificacion_id', ['options' => $calificaciones, 'empty' => true]);

@@ -477,18 +477,84 @@ class AlumnosController extends AppController
     {
     	$alumno = null;
     	$clase = null;
+    	
+    	/* Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
+    	 * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
+    	 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
+    	 * Tengo que quitarlo de la clase anterior
+    	 */
     	if ($this->request->is('post'))
     	{
-    		$claseAnterior = $this->request->getData('clase_id');
-    		$claseNueva = $this->request->getData('clases')[0];
-    		$alumno_id = $this->request->getData('alumno_id');
+    		if (! ($this->request->getData('clases')[0]> 0))
+    		{
+    			$this->Flash->error('Seleccione la clase nueva');
+    			return $this->redirect($this->referer());
+    		}
+    		$idClaseAnterior = $this->request->getData('clase_id');
     		
-    		/*
-    		 * Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
-    		 * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
-    		 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
-    		 * Tengo que quitarlo de la clase anterior
-    		 */
+    		$idClaseNueva = $this->request->getData('clases')[0];
+    		
+    		
+    		$alumno_id = $this->request->getData('alumno_id');
+    		$alumno = $this->Alumnos->get($alumno_id);
+    		
+    		
+    		$claseAnterior = $this->Alumnos->Clases->get($idClaseAnterior,['contain' => 'SeguimientosClasesAlumnos']);
+    		$claseNueva = $this->Alumnos->Clases->get($idClaseNueva);
+    		
+    		
+    		$observacionSeguimientosTitulo = 'Transferido de clase : '. $claseAnterior->presentacion . ' a : '. $claseNueva->presentacion;
+    		$observacionSeguimientos = null;
+    		foreach ($claseAnterior->seguimientos_clases_alumnos as $seguimiento)
+    		{
+    			if ($seguimiento->modified != $seguimiento->created)
+    			{
+    				$observacionSeguimientos.=  ' '. $seguimiento->fecha->format('d-m-Y') . ': ' .$seguimiento->observacion .  '. ';
+    			}
+    		}
+    		
+    		$claseAnteriorList = $this->Alumnos->Clases->find()->where(['id' => $claseAnterior->id])->toList();
+    		$this->Alumnos->Clases->unlink($alumno, $claseAnteriorList);
+    		
+    		$claseNuevaList = $this->Alumnos->Clases->find()->where(['id' => $claseNueva->id])->toList();
+    		$this->Alumnos->Clases->link($alumno, $claseNuevaList);
+    		
+    		$resultClaseAlumnoNueva = TableRegistry::get('ClasesAlumnos')->find()
+    		->where(['ClasesAlumnos.clase_id' => $idClaseNueva, 'ClasesAlumnos.alumno_id' => $alumno_id])
+    		;
+    		
+    		$claseAlumnoId= $resultClaseAlumnoNueva->first()->id;
+    		$this->insertarSeguimiento($alumno_id, array($idClaseNueva) );
+    		 
+    		$dataSeg= [
+    				'clase_alumno_id' => $claseAlumnoId,
+    				'observacion' => $observacionSeguimientosTitulo.$observacionSeguimientos,
+    				'presente' => '0',
+    				'calificacion_id' => null,
+    				'fecha' => [
+    						'year' => date('Y'),
+    						'month' => date('m'),
+    						'day' => date('d'),
+    						'hour' => date('h'),
+    						'minute' => date('i')
+    				],
+    				'modified'  => date('Y-m-d H:m:s',strtotime('+1 hour',strtotime(date('Y-m-d H:m:s'))))
+    				
+    		];
+    		
+    		$seguimiento = $this->Alumnos->Clases->SeguimientosClasesAlumnos->newEntity();
+    		$this->Alumnos->Clases->SeguimientosClasesAlumnos->patchEntity($seguimiento,$dataSeg);
+    		if ($this->Alumnos->Clases->SeguimientosClasesAlumnos->save($seguimiento) )
+    		{
+    			$this->Flash->success('Alumno tranferido con éxito');
+    			
+    		}
+    		else
+    		{
+    			$this->Flash->error('Error al tranferir al alumno');
+    			
+    		}
+    		
     		debug($this->request->getData());
     	}
     	else 
@@ -695,7 +761,7 @@ class AlumnosController extends AppController
 			if(!$claseAlumno->existeSeguimiento())
 			{
 				//Creo las fechas de incio y fin para  recorrerlas
-				$fechaInicio = strtotime($alumno->modified->format('Y-m-d'));
+				$fechaInicio = date('Y-m-d');
 				$fechaFin = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
 				
 				//recorro por dia hasta la fecha fin
