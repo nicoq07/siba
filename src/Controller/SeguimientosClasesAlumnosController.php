@@ -174,9 +174,9 @@ class SeguimientosClasesAlumnosController extends AppController
             }
             $this->Flash->error(__('Error, reintente!.'));
         }
-        $ClasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
+        $clasesAlumnos = $this->SeguimientosClasesAlumnos->ClasesAlumnos->find('list', ['limit' => 200]);
         $calificaciones = $this->SeguimientosClasesAlumnos->Calificaciones->find('list', ['limit' => 200]);
-        $this->set(compact('seguimientosClasesAlumno', 'ClasesAlumnos', 'calificaciones'));
+        $this->set(compact('seguimientosClasesAlumno', 'clasesAlumnos', 'calificaciones'));
         $this->set('_serialize', ['seguimientosClasesAlumno']);
     }
     
@@ -273,7 +273,9 @@ class SeguimientosClasesAlumnosController extends AppController
     		{
     			$idClase = $this->request->getData('clases');
     			$idAlumno = $this->request->getData('alumnos');
-    			$this->prepararListadoSeguimiento($clase->disciplina->descripcion, $alumno->presentacion, 'A4', 'portrait');
+				$alumno = TableRegistry::get('Alumnos')->get($idAlumno);
+				$clase= TableRegistry::get('Clases')->get($idClase,['contain' => 'Disciplinas']);
+				
     			return  $this->redirect(['action' => 'listado_pdf',$idAlumno,$idClase,'_ext' => 'pdf']);
     		}  		
     	}
@@ -294,7 +296,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	->matching('ClasesAlumnos.Clases', function ($q) use($idClase){
     		return $q->where(['Clases.id' => $idClase]);
      	})
-    	->where(['SeguimientosClasesAlumnos.fecha <= ' => date('Y-m-d')]) 
+    	->where(['DATE(SeguimientosClasesAlumnos.fecha) <= ' => date('Y-m-d')]) 
      	->order('SeguimientosClasesAlumnos.fecha')
      	;
      	
