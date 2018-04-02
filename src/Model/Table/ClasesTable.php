@@ -63,6 +63,12 @@ class ClasesTable extends Table
             'targetForeignKey' => 'alumno_id',
             'joinTable' => 'clases_alumnos'
         ]);
+        
+        $this->belongsToMany('SeguimientosClasesAlumnos', [
+        		'foreignKey' => 'clase_id',
+        		'targetForeignKey' => 'clase_alumno_id',
+        		'joinTable' => 'clases_alumnos'
+        ]);
     }
 
     /**
