@@ -388,42 +388,20 @@ class AlumnosController extends AppController
     
     public function pIndex()
     {
+    	$clases = TableRegistry::get('Clases')
+    	->find('all')
+    	->select(['Alumnos.id'])
+    	->distinct(['Alumnos.id'])
+    	->matching('Alumnos')
+    	->contain(['Horarios' => ['Ciclolectivo' =>['conditions'=> ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')])
     	
-    	$clasesTable= TableRegistry::get('Clases');
-    	
-    	$clases = $clasesTable->find()
-    	->select('Clases.id')
-    	->contain(['Horarios' => ['Ciclolectivo']])
-    	->where(['YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),'Clases.profesor_id' => $this->Auth->user('profesor_id')])
-    	->toArray();
-    	
-    	$ids = null;
-    	(count($clases) > 0) ? $ids = array() : $ids = -1 ;
-    	foreach ($clases as $c)
-    	{
-    		$ids[] = $c['id'];
-    	}
-    	if (empty($ids))
-    	{
-    		$where = ['Clases.id IN ' => -1];
-    	}
-    	else
-    	{
-    		$where = ['Clases.id IN ' => $ids];
-    	}
-    	
+    	;
     	
     	
     	$alumnos = $this->Alumnos->find('all')
-    	->find('ordered')
-    	->matching('Clases', function ($q) use ($where) {
-    		return  $q->where($where);
-    	})
-    	->distinct(['Alumnos.id'])
-    	
-    	->toArray()
+        ->where(['Alumnos.id IN' => $clases ])
     	;
-    	
     	
     	$this->set(compact('alumnos'));
     }
@@ -474,6 +452,12 @@ class AlumnosController extends AppController
     	$this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
     }
     
+    /*
+     * desc Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
+     * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
+     * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
+     * Tengo que quitarlo de la clase anterior
+     */
     public function transferirClase($id = null, $claseId = null)
     {
     	$alumno = null;
@@ -549,20 +533,17 @@ class AlumnosController extends AppController
     		if ($this->Alumnos->Clases->SeguimientosClasesAlumnos->save($seguimiento) )
     		{
     			$this->Flash->success('Alumno tranferido con éxito');
+    			$this->redirect(['action' => 'view', $alumno_id]);
     			
     		}
     		else
     		{
     			$this->Flash->error('Error al tranferir al alumno');
+    			$this->redirect(['action' => 'view', $alumno_id]);
     			
     		}
     		
-    		/*
-    		 * Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
-    		 * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
-    		 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
-    		 * Tengo que quitarlo de la clase anterior
-    		 */
+    		
     	}
     	else
     	{
