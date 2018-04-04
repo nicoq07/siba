@@ -36,19 +36,19 @@
 	<div class = "factura">
 		<div class="container-titulo">
 			<div class="titulo">
-				<p class="texto-titulo"> I.B.A Lugano</p>
+				<p class="texto-titulo"><?php echo h(NOMBRE_CORTO_EMPRESA);?> </p>
 			</div>
 			
 			<div class="descripcionIba">
-				<p class="texto-descripcionIba"> Instituto Buenos Aires</p>
-				<p class="texto-descripcionIba"> Dir. Profesor Hugo Castro</p>
-				<p class="texto-descripcionIba"> José León Suárez 5246 CP(1439) - Tel: 4638-5062</p>
+				<p class="texto-descripcionIba"> <?php echo h(NOMBRE_LARGO_EMPRESA);?></p>
+				<p class="texto-descripcionIba"> <?php echo h(ENCARGADO_EMPRESA);?></p>
+				<p class="texto-descripcionIba"><?php echo h(DIRECCION_EMPRESA);?></p>
 			</div>
 			
 		</div>
 		
 		<div class="logo" style="margin: auto; text-align:center">
-			<?php  echo $this->Html->image('logoIba.png', ['height' => '200px', 'width' => '200px', 'fullBase' => true]); ?>
+			<?php  echo $this->Html->image(LOGO, ['height' => '200px', 'width' => '200px', 'fullBase' => true]); ?>
 			<p style="padding:0; margin-top:5px; display:block; text-align:center; font-size: 2rem; font-style:bold;">  <?= h($pagoalumno->created->format('d/m/Y')) ?> </p>
 		</div>
 		

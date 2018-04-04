@@ -5,7 +5,7 @@
     	    <div class="col-xs-12">
     	     <?= $this->Flash->render('auth') ?>
         	    <div class="form-wrap">
-                <h1>Ingreso a SIBA </h1>
+                <h1>Ingreso a <?= h(NOMBRE_SISTEMA);?> </h1>
                     <?= $this->Form->create('login-form') ?>
                         <div class="form-group">
                         <?= $this->Form->input('nombre_usuario',['class' => 'form-control', 'placeholder' => 'Nombre de usuario',
