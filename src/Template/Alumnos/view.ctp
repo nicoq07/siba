@@ -160,9 +160,11 @@
 	                </td>
 	            </tr>
 	            <?php endforeach; ?>
+	            
 	        </table>
+	         <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
 			</div>
-	        <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
+	       
 	    </div>
 	     <div class="related col-lg-10 col-lg-offset-1 panel-warning">
 	        	<div class="panel-heading">
@@ -193,7 +195,8 @@
 	            </tr>
 	            <?php endforeach; ?>
 	        </table>
+	        <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
 	        </div>
-	       <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
+	       
 	    </div>
 	

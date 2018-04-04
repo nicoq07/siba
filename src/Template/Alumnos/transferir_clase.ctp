@@ -27,7 +27,7 @@
 			        </div>
 	</div> 
 </div>
-<div class='col-lg-4 col-lg-offset-4'><?php echo $this->Form->submit('Tranferir', ['class' => 'btn-primary btn-lg']);?></div>
+<div class='col-lg-4 col-lg-offset-4'><?php echo $this->Form->button('Tranferir', ['class' => 'btn btn-primary btn-block']);?></div>
 <?php
 echo $this->Form->hidden('alumno_id', ['value' => $alumno->id]);
 echo $this->Form->hidden('clase_id', ['value' => $clase->id]);
