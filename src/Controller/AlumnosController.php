@@ -155,7 +155,7 @@ class AlumnosController extends AppController
     	$seguimientos = $segTable->find()
     	->limit(10)
     	->orderDesc('fecha')
-    	->where(['fecha <='=>  date('Y-m-d h:m',time())])
+    	->where(['DATE(fecha) <='=>  date('Y-m-d')])
     	->matching('ClasesAlumnos', function ($q) use ($ids,$id) {
     		return $q->where(['ClasesAlumnos.clase_id IN' => $ids,'ClasesAlumnos.alumno_id ' => $id]);
     	})
@@ -249,8 +249,10 @@ class AlumnosController extends AppController
     public function edit($id = null)
     {
         $alumno = $this->Alumnos->get($id, [
-            'contain' => ['Clases']
-        ]);
+            'contain' => ['Clases'
+                                => ['Horarios' =>
+                                    ['Ciclolectivo' =>
+                                        ['conditions' => ['YEAR(fecha_inicio)' => date('Y')] ] ] ] ] ] );
         if ($this->request->is(['patch', 'post', 'put'])) {
 
         	$ids = null;
@@ -333,7 +335,6 @@ class AlumnosController extends AppController
             }
             $this->Flash->error(__('The alumno could not be saved. Please, try again.'));
         }
-       $clases = $this->Alumnos->Clases->find('list', ['limit' => 200]);
        $profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
         $this->set(compact('alumno','clases','profesores'));
     }
@@ -477,7 +478,6 @@ class AlumnosController extends AppController
     {
     	$alumno = null;
     	$clase = null;
-    	
     	/* Tengo que agregarlo a la clase nueva,crear los segumientos ,crear un seguimiento para la fecha de hoy (en caso que no exista) ,
     	 * copiar la observación de todos los seguimientos anteriores, junto con la fecha y ponerlo en el seguimiento creado.
     	 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
@@ -505,13 +505,13 @@ class AlumnosController extends AppController
     		$claseNueva = $this->Alumnos->Clases->get($idClaseNueva);
     		
     		
-    		$observacionSeguimientosTitulo = 'Transferido de clase : '. $claseAnterior->presentacion . ' a : '. $claseNueva->presentacion;
-    		$observacionSeguimientos = null;
+    		$observacionSeguimientosTitulo = 'Transferido de clase : '. $claseAnterior->presentacion . ' a : '. $claseNueva->presentacion. '.';
+    		$observacionSeguimientos = 'Observaciones:';
     		foreach ($claseAnterior->seguimientos_clases_alumnos as $seguimiento)
     		{
     			if ($seguimiento->modified != $seguimiento->created)
     			{
-    				$observacionSeguimientos.=  ' '. $seguimiento->fecha->format('d-m-Y') . ': ' .$seguimiento->observacion .  '. ';
+    				$observacionSeguimientos.=  '- '. $seguimiento->fecha->format('d-m-Y') . ': ' .$seguimiento->observacion .  '. ';
     			}
     		}
     		
@@ -563,10 +563,18 @@ class AlumnosController extends AppController
     		 * Agregar en la observación del alumno que hoy, fue cambiado de clase por tal personal y trasferido de tal a tal lado.
     		 * Tengo que quitarlo de la clase anterior
     		 */
-    		debug($this->request->getData());
+    	}
+    	else
+    	{
+    	    if (!empty($id) || !empty($claseId))
+    	    {
+    	        $alumno = $this->Alumnos->get($id);
+    	        $clase = $this->Alumnos->Clases->get($claseId);
+    	    }
+    	}
     	$profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
     	$this->set(compact('alumno','profesores','clase'));
-   	 }
+   	 
     }
     
     public function listadoCumple()
