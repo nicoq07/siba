@@ -179,7 +179,7 @@
 	                <th width="55%" scope="col"><?= __('Observación') ?></th>
 	                <th width="10%" scope="col"><?= __('Presente') ?></th>
 	                 <th width="20%" scope="col"><?= __('Fecha') ?></th>
-	                <th scope="col" class="actions"><?= __('Actions') ?></th>
+	                <th scope="col" width="15%" class="actions"><?= __('Actions') ?></th>
 	            </tr>
 	            </thead>
 	            <?php foreach ($seguimientos as $seguimiento): ?>

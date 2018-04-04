@@ -1,9 +1,9 @@
-<div class="col-lg-10">
-	<div class = "col-lg-5 col-lg-offset-2 panel">
+<div class="col-lg-6 col-lg-offset-3 panel panel-info">
+	<div class = "col-lg-12 panel-heading">
     	<h3><?= __('Alumnos en mis clases') ?></h3>
 	</div>
-	<div class="col-lg-5 col-lg-offset-2 panel" >
-	    <table class= "table table-striped">
+	<div class="col-lg-12 panel-body" >
+	    <table class= "table table-responsive">
 	        <thead>
 	            <tr>
 	                <th  width="70%"><?= h('Nombre') ?></th>

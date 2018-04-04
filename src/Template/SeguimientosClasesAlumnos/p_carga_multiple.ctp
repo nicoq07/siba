@@ -1,5 +1,5 @@
-<div class="col-lg-5  col-lg-offset-2 panel">
-	<div class="col-lg-12 panel-heading panel-info">
+<div class="col-lg-6  col-lg-offset-3 panel panel-info">
+	<div class="col-lg-12 panel-heading ">
 	<h3 style="text-align: center;"><?php echo h(date('d-m-Y',strtotime($fecha))); ?></h3>
 	<h3 style="text-align: center;"><?php echo h($clase->presentacionCorta); ?></h3>
 	</div>
@@ -16,7 +16,7 @@
 	            echo $this->Form->control('calificacion_id', ['label' => 'Calificación', 'options' => $calificaciones, 'empty' => true]);
 	        ?>
 	    </fieldset>
-	    <?= $this->Form->button('Guardar', ['class' => 'btn-lg btn-success']) ?>
+	    <?= $this->Form->button('Guardar', ['class' => 'btn-lg btn-block btn-success']) ?>
 	    <?= $this->Form->end() ?>
 	</div>
 	<?php } ?>

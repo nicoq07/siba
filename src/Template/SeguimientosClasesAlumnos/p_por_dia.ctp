@@ -1,9 +1,8 @@
-<div class="container col-lg-10">
-<div class="col-lg-6 col-lg-offset-2 well">
+<div class="col-lg-6 col-lg-offset-3 panel panel-info">
 <div class="related">
 
 <div class="col-lg-12">
-	<div class="col-lg-6"> 
+	<div class="col-lg-6 panel-heading"> 
 		<h2><?= h(__($dia))?> </h2>
 	</div>
 	
@@ -22,17 +21,12 @@
 					<h4><?php echo h('Todo al día')?></h4>
 				</div>
 		    </div>
-			
-		
-			
 			<?php 
 		}
 		?>
 	
 	</div>
 </div>
-
-	
 	<?php foreach ($horarios as $horario){?>
 	    <h3><?= h($horario->hora->format('H:i')) ?></h3>
 	        <?php if (!empty($horario->clases)): ?>
@@ -48,7 +42,6 @@
 	           					['target' => '_blank'])?>
 	           				
 	           				<?php } ?>
-	           			
 	           			</td>
 	            </tr>
 	            <?php }?>
@@ -56,5 +49,4 @@
 	        <?php endif; 
 		}	?>
 	    </div>
-</div>
 </div>
