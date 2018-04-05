@@ -6,7 +6,7 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 <?= $this->assign('title', 'Bienvenido'); ?>
 <div class="col-lg-6 col-lg-offset-3 panel panel-info">
 	<div class="col-lg-12 panel panel-heading">
-		<h1 style="text-align: center"><?= h("Hola ". $user->nombre."!")?> </h1>
+		<h1 style="text-align: center"><?= h($saludo. $user->nombre."!")?> </h1>
 	</div>
 	&nbsp;
 	<div class="well col-lg-12">
@@ -15,7 +15,7 @@ function parpadearHome(){ $('#campanaHome').css('color', 'red').fadeIn(500).dela
 			echo $this->Html->link(__('Ir a clases del día'), ['action' => 'p_perfil'], ['class' => 'btn-lg btn-success']);
 			}
 			else {
-				echo $this->Html->link(__('Ir a clases del día'), ['action' => 'perfil'], ['class' => 'btn-lg btn-success']);
+				echo $this->Html->link(__('Ir a clases del día'), ['action' => 'perfil'], ['class' => 'btn-lg btn-block btn-success']);
 			}
 			?>
 		</div>
