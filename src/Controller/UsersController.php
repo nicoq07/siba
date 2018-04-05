@@ -219,8 +219,11 @@ class UsersController extends AppController
     	->toArray();
     	;
     	
+    	$this->loadComponent('Day');
     	
-    	$this->set(compact('user','notificaciones','tareas'));
+    	$saludo = $this->Day->momentoDelDia();
+    	
+    	$this->set(compact('user','notificaciones','tareas','saludo'));
     }
     
     
