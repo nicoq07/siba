@@ -99,6 +99,8 @@ class PagosAlumnosTable extends Table
     {
     	return $query
     	->order([
+    			'YEAR(PagosAlumnos.created)' => 'asc',
+    			'PagosAlumnos.mes' => 'asc',
     			'Alumnos.apellido' => 'asc',
     			'Alumnos.nombre' => 'asc'
     	]);

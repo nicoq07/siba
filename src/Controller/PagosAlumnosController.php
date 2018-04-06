@@ -176,9 +176,8 @@ class PagosAlumnosController extends AppController
     public function view($id = null)
     {
         $pagosAlumno = $this->PagosAlumnos->get($id, [
-            'contain' => ['Alumnos', 'Users']
+            'contain' => ['Alumnos', 'Users','PagosConceptos']
         ]);
-
         $this->set('pagosAlumno', $pagosAlumno);
         $this->set('_serialize', ['pagosAlumno']);
     }
@@ -360,11 +359,11 @@ class PagosAlumnosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $pagosAlumno = $this->PagosAlumnos->patchEntity($pagosAlumno, $this->request->getData());
             if ($this->PagosAlumnos->save($pagosAlumno)) {
-                $this->Flash->success(__('The pagos alumno has been saved.'));
+                $this->Flash->success(__('Guarado.'));
 
                 return $this->redirect($this->referer());
             }
-            $this->Flash->error(__('The pagos alumno could not be saved. Please, try again.'));
+            $this->Flash->error(__('Error, reintente.'));
         }
         $alumnos = $this->PagosAlumnos->Alumnos->find('list', ['limit' => 200]);
         $users = $this->PagosAlumnos->Users->find('list', ['limit' => 200]);
@@ -384,9 +383,9 @@ class PagosAlumnosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $pagosAlumno = $this->PagosAlumnos->get($id);
         if ($this->PagosAlumnos->delete($pagosAlumno)) {
-            $this->Flash->success(__('The pagos alumno has been deleted.'));
+            $this->Flash->success(__('Borrado.'));
         } else {
-            $this->Flash->error(__('The pagos alumno could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Error, reintente.'));
         }
 
         return $this->redirect(['action' => 'index']);

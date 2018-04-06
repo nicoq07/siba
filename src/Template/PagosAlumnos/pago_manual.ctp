@@ -17,6 +17,8 @@ function addConcepto()
  
 </script>
 </head>
+<?= $this->assign('title','Pago particular');?>
+
 <div class="col-lg-6 col-lg-offset-3 panel panel-info">
  <div class="panel-heading"><?= __('Nuevo pago manual') ?></div>    
     <?= $this->Form->create($pagosAlumno) ?>

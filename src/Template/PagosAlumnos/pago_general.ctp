@@ -1,3 +1,5 @@
+<?= $this->assign('title','Pago general');?>
+
 <div class="col-lg-6 col-lg-offset-3 panel panel-info">
 	 <div class="panel-heading"><?= __('Nuevo pago general') ?></div>
 	      <div class="panel-body">

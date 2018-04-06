@@ -33,7 +33,7 @@
                 <td><?= $this->Number->format($pagosConcepto->id) ?></td>
                 <td><?= $pagosConcepto->has('pagos_alumno') ? $this->Html->link($pagosConcepto->pagos_alumno->id, ['controller' => 'PagosAlumnos', 'action' => 'view', $pagosConcepto->pagos_alumno->id]) : '' ?></td>
                 <td><?= $this->Number->format($pagosConcepto->cantidad) ?></td>
-                <td><?= $this->Number->format($pagosConcepto->monto) ?></td>
+                <td><?= $this->Number->format($this->Number->currency($pagosConcepto->monto,'EUR',['before' => '$'])) ?></td>
                 <td><?= h($pagosConcepto->detalle) ?></td>
                 <td><?= h($pagosConcepto->created) ?></td>
                 <td><?= h($pagosConcepto->modified) ?></td>

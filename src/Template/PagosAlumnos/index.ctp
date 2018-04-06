@@ -64,7 +64,7 @@
                 <td><?= h($pagosAlumno->created->format('d-m-Y')) ?></td>
                  <td><?= h(__(date('F',strtotime("01-".$pagosAlumno->mes."-2000")))); ?></td>
                 <td><?= $pagosAlumno->fecha_pagado ? h($pagosAlumno->fecha_pagado->format('d-m-Y')) : h("Sin datos")?></td>
-                <td title="Detalles:&#10;<?php foreach ($pagosAlumno->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= $this->Number->format($pagosAlumno->monto) ?></td>
+                <td title="Detalles:&#10;<?php foreach ($pagosAlumno->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; }?>" align="center" ><?= $this->Number->currency($pagosAlumno->monto,'ARS')?></td>
                 <td><?= $pagosAlumno->pagado ? h("Sí") : h("No") ?></td>
                 <td><?= $pagosAlumno->has('user') ? $this->Html->link($pagosAlumno->user->nombre, ['controller' => 'Users', 'action' => 'view', $pagosAlumno->user->id]) : '' ?></td>
                 <td class="actions">
