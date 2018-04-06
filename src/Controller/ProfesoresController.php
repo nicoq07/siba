@@ -196,11 +196,11 @@ class ProfesoresController extends AppController
     public function planillaCursos($id = null)
     {
     	$where = null;
-    	$selected = "Seleccione profesor...";
+    	$selected = ['empty' => "Seleccione profesor..."];
     	if (!empty($id))
     	{
     		$where= ['profesores.id' => $id];
-    		$selected = 1;
+    		$selected = ['selected' => 1];
     	}
     	$profesores = $this->Profesores
     	->find('list')

@@ -5,7 +5,7 @@
  	
  	 	<div class="col-lg-6 " > 
 		 <?php
-            echo $this->Form->control('profesor_id', ['options' => $profesores, 'empty' => $selected]);
+            echo $this->Form->control('profesor_id', ['options' => $profesores,  $selected]);
             ?>
 	</div>
  	<div class="col-lg-6 " > 
