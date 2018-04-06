@@ -44,7 +44,7 @@
       </div>	
 	<?php echo $this->Form->end(); ?>
 	</div>
-    <table >
+    <table class ="table table-bordered" >
         <thead>
             <tr>
                 <th width="20%" scope="col"><?= $this->Paginator->sort('alumno_id') ?></th>
