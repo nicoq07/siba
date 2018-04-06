@@ -23,6 +23,11 @@ define('ENCARGADO_EMPRESA','Dir. Profesor Hugo Castro');
 define('DIRECCION_EMPRESA','José León Suárez 5246 CP(1439) - Tel: 4638-5062');
 
 
-
+//Modulos
+define('FULL',TRUE);
+define('ALUMNOS_PAGOS',FALSE);
+define('CLASES',FALSE);
+define('NOTIFICACIONES',FALSE);
+define('TAREAS',FALSE);
 
 ?>
