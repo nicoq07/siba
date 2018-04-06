@@ -238,27 +238,6 @@ Plugin::load('Cake/Localized');
 Plugin::loadAll();
 
 
-//CONSTANTES DE ROLES
-define('ADMINISTRADOR', 1);
-define('PROFESOR', 2);
-// define('CLIENTE', 3);
-// define('BLOQUEADO', 4);
-//FIN CONSTANTES DE ROLES
 
-define('DS_WINDOWS_IMG', '/');
 
-define('URGENTE', 1);
-define('NORMAL', 2);
-define('BAJA', 3);
-
-//Parametros
-define('ENVIAR_MAIL_AUTOMATICAMENTE', 'envio_mail_automatico');
-
-//Datos del lugar
-define('LOGO','logo.png');
-define('NOMBRE_SISTEMA','SIBA');
-define('NOMBRE_CORTO_EMPRESA','I.B.A Lugano');
-define('NOMBRE_LARGO_EMPRESA','Instituto Buenos Aires');
-define('ENCARGADO_EMPRESA','Dir. Profesor Hugo Castro');
-define('DIRECCION_EMPRESA','José León Suárez 5246 CP(1439) - Tel: 4638-5062');
-
+require_once 'constantes.php';
