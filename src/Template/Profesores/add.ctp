@@ -85,7 +85,7 @@
 	         </div>
 	         <div class="col-lg-12"> 
 	         <?php
-	         echo $this->Form->control('observacion',['label' => 'Obesrvación']);
+	         echo $this->Form->control('observacion',['label' => 'Observación']);
 			 ?>
 	         </div>  
 	         <div class="col-lg-12"> 
