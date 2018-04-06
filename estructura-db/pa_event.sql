@@ -5,7 +5,7 @@ SET GLOBAL event_scheduler="ON" ;
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_alumnos_por_clase`()
 BEGIN
- update clases ,(SELECT c.id as id_clase , COUNT(ca.alumno_id) as cantidad_alumnos FROM clases_alumnos as ca, clases as c where c.id = ca.clase_id GROUP BY c.id) res set clases.alumno_count = res.cantidad_alumnos where clases.id = res.id_clase ;
+ update clases ,(SELECT c.id as id_clase , COUNT(ca.alumno_id) as cantidad_alumnos FROM clases_alumnos as ca RIGHT JOIN clases as c ON c.id = ca.clase_id GROUP BY c.id) as res set clases.alumno_count = res.cantidad_alumnos where clases.id = res.id_clase ;
  END$$
 DELIMITER ;
 
