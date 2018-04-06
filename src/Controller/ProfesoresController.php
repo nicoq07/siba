@@ -18,7 +18,7 @@ class ProfesoresController extends AppController
 	{
 		if(isset($user['rol_id']) &&  $user['rol_id'] === PROFESOR)
 		{
-			if(in_array($this->request->action, ['pView']))
+			if(in_array($this->request->action, ['pView','planillaCursos','planillaCursosPdf']))
 			{
 				return true;
 			}
@@ -193,11 +193,18 @@ class ProfesoresController extends AppController
     	
     }
     
-    public function planillaCursos()
+    public function planillaCursos($id = null)
     {
+    	$where = null;
+    	$selected = "Seleccione profesor...";
+    	if (!empty($id))
+    	{
+    		$where= ['profesores.id' => $id];
+    		$selected = 1;
+    	}
     	$profesores = $this->Profesores
     	->find('list')
-    	->where(['profesores.active ' => true])
+    	->where(['profesores.active ' => true,$where])
     	->matching('Clases.Horarios.Ciclolectivo', function ($q) {
     		return $q->where(['YEAR(fecha_inicio)' => date('Y')]);
     	});
@@ -216,7 +223,7 @@ class ProfesoresController extends AppController
     			
     		}
     		
-    		$this->set(compact('profesores'));
+    		$this->set(compact('profesores','selected'));
     }
     
     public function planillaCursosPdf($id, $mes)

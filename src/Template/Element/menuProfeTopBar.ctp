@@ -29,6 +29,7 @@
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Ver'), ['controller' =>'Alumnos', 'action' => 'pIndex']) ?></li>
 	          	 <li><?= $this->Html->link(h('Exámenes'), ['controller' =>'examenes', 'action' => 'addProfesor'],['target' => '_blank' ]) ?></li>
+	         <li><?= $this->Html->link(h('Planillas'), ['controller' =>'profesores', 'action' => 'planilla_cursos', $current_user['profesor_id']]) ?></li>
 	            
 	          </ul>
 	        </li>
