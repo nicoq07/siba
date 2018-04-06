@@ -167,9 +167,19 @@ class ClasesController extends AppController
     		
     		if($clase->isDirty('horario_id'))
     		{
-    			$cambioDia = true;
+    			$horarioDiaAnterior = $horarioDiaNuevo = null;
+    			$horarioDiaAnterior= TableRegistry::get('Horarios')->get($clase->getOriginal('horario_id'))->get('nombre_dia');
+    			$horarioDiaNuevo= TableRegistry::get('Horarios')->get($clase->horario_id)->get('nombre_dia');
+    			if ($horarioDiaAnterior === $horarioDiaNuevo)
+    			{
+    				$cambioDia = false;
+    			}
+    			else 
+    			{
+    				$cambioDia = true;
+    			}
+    			
     		}
-    		
     		$clase->set('alumno_count',count($clase->alumnos));
     		if ($this->Clases->save($clase))
     		{
