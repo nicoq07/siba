@@ -258,14 +258,20 @@ class UsersController extends AppController
     	
     	$horarios = TableRegistry::get('Horarios')->find('all')
     	->contain('Ciclolectivo')
-    	->matching('Clases')
+    	->matching('Clases', function ($q)
+    			{
+    			return $q->where(['Clases.alumno_count >' => 0 ]);
+    	})
     	->where(['nombre_dia' => date('l'), 'Clases.profesor_id' => $id,'YEAR(ciclolectivo.fecha_inicio)' => date('Y')])
     	->orderAsc("hora")
     	;
-    	$user = $this->Users->get($this->Auth->user('id'), [
-    			'contain' => ['Roles']
-    	]);
-    	$this->set(compact('user','horarios'));
+    	$mensaje = '';
+    	if ($horarios->count() == 0)
+    	{
+    		$mensaje= 'No tenés alumnos en tus clases para hoy.';
+    		
+    	}
+    	$this->set(compact('horarios','mensaje'));
     }
     
     

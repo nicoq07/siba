@@ -20,7 +20,7 @@
 
 
 <div class="col-lg-4 col-lg-offset-4 panel panel-info">
-<div class="panel-heading"><h3>Selecione fondo</h3></div>
+<div class="panel-heading"><h3>Seleccione fondo</h3></div>
 <?php echo $this->Form->create();?>
 <?php  foreach ($fondos as $nombre => $fondo){?>
 	
