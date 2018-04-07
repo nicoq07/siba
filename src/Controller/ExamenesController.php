@@ -36,7 +36,26 @@ class ExamenesController extends AppController
         $this->set(compact('examenes','clases'));
         $this->set('_serialize', ['examenes']);
     }
-
+    public function pIndex()
+    {
+    	$this->autoRender = false;
+    	$this->paginate = [
+    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]]],
+    			'conditions' => ['Clases.profesor_id' => $this->Auth->user('profesor_id')]
+    			
+    	];
+    	
+    	$examenes = $this->paginate($this->Examenes);
+    	$clases = $this->Examenes->ClasesAlumnos->Clases->find('list')->find('ordered')->contain(
+    			['Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')]]]]
+    			)
+    			->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')]);
+    	
+    	$this->set(compact('examenes','clases'));
+    	$this->set('_serialize', ['examenes']);
+    	$this->render('/Examenes/index');
+    	
+    }
     /**
      * View method
      *
@@ -82,8 +101,8 @@ class ExamenesController extends AppController
         		->toArray()
         		;
        $calificaciones =  array_combine(array_values($calificaciones), 	array_values($calificaciones));
-        	
-        $this->set(compact('examene', 'clasesAlumnos','calificaciones'));
+       $index = 'pIndex';
+        $this->set(compact('examene', 'clasesAlumnos','calificaciones','index'));
         $this->set('_serialize', ['examene']);
     }
 
@@ -112,8 +131,8 @@ class ExamenesController extends AppController
     	->toArray()
     	;
     	$calificaciones =  array_combine(array_values($calificaciones),array_values($calificaciones));
-    	
-    	$this->set(compact('examene', 'clasesAlumnos','calificaciones'));
+    	$index = 'pIndex';
+    	$this->set(compact('examene', 'clasesAlumnos','calificaciones','index'));
 		$this->render('/Examenes/add');
     }
     /**
@@ -192,6 +211,8 @@ class ExamenesController extends AppController
     	]);
     	
     }
+    
+    
     public function search()
     {
     	$where1 = $where2 = $where3 = $where4 = $palabra = null;
@@ -206,8 +227,6 @@ class ExamenesController extends AppController
     				$where2= ["clases.id = $clase"];
     			}
     			
-    			$mes= $this->request->getData()['mob']['month'];
-    			$year= $this->request->getData()['year']['year'];
     			if (!(empty($this->request->getData()['palabra_clave'])))
     			{
     				$palabra = $this->request->getData()['palabra_clave'];
@@ -234,7 +253,8 @@ class ExamenesController extends AppController
     			'limit' => 20
     	];
     	$examenes = $this->paginate($this->Examenes);
-    	$clases = $this->Examenes->ClasesAlumnos->Clases->find('list');
+    	$clases = $this->Examenes->ClasesAlumnos->Clases->find('list')
+    	->contain(['Horarios.Ciclolectivo' => ['conditions' => ['YEAR(fecha_inicio)' => date('Y')] ]]);
     	
     	$this->set(compact('examenes','clases'));
     	$this->render('/Examenes/index');
