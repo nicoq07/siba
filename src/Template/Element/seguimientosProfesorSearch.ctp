@@ -22,23 +22,17 @@
   		 echo $this->Form->checkbox('faltantes', ['label' => false]);
   		 ?>
 	 </div>
-	 <div class="col-lg-4" style="top:10px ;text-align:center;">
-		 <div class="col-lg-6 "style="top:10px;" > 
-	  		  <?php
-	  		  echo $this->Form->month('mob',['empty' => 'Mes','name' => 'mob','id' => 'mob']);
-	          ?>
-          </div> 	
-          <div class="col-lg-6" style="top:10px;" > 
+	 <div class="col-lg-2" style="top:10px ;text-align:center;">
+          <div class="col-lg-12" style="top:10px;" > 
 	  		  <?php
 	  		  echo $this->Form->year('year',['empty' => 'Año','id' => 'year','name' => 'year','maxYear' => date('Y'),'onchange' => 'buscarDisciplinas();']);
 	          ?>
           </div> 
 	 </div>  	
-     <div class="col-lg-4" id="div-clases"> 
+     <div class="col-lg-6" id="div-clases"> 
         <div id = 'sdisciplina' class= "col-lg-6">
          	   	<?php  
-         	   	echo $this->Form->label('disciplinas',['label' => 'Disciplinas']);
-         	   	echo $this->Form->select('disciplinas',['empty' => '-'],['id' => 'disciplinas','name' => 'disciplinas','onchange' => 'getDiaHorario();']);
+         	   	echo $this->Form->input('disciplinas',['label' => 'Disciplinas','id' => 'disciplinas','type' => 'select','name' => 'disciplinas','onchange' => 'getDiaHorario();']);
          	   	?>
          </div>
          <div id = 'shorario' class= "col-lg-6">
@@ -63,11 +57,11 @@
   	  <div class="col-lg-6 "> 
 		 <?php
 			echo $this->Form->label('Búsqueda :');
-            echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Alumno o Profesor ', 'onchange'=>'document.getElementById("frmIndex").submit()']);
+            echo $this->Form->control('palabra_clave', ['label' => false,'placeholder' => 'Alumno', 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 	 </div>
   	 <div class="col-lg-2" style="top:18px;">
-          <?= $this->Form->button('Buscar',['class' => 'btn btn-success'])  ?>
+          <?= $this->Form->button('Buscar',['class' => 'btn btn-success btn-block'])  ?>
      </div>
 	
 	 

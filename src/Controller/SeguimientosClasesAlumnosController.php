@@ -49,7 +49,7 @@ class SeguimientosClasesAlumnosController extends AppController
     public function search()
     {
     	$wherePalabraClave= $whereClase = $whereFecha = $whereProfesor = $whereYaCargados= $where6 = $palabra = null;
-    	$whereFecha = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
+    	//$whereFecha = ["YEAR(fecha) = YEAR('".date('Y-m-d')."')"];
     	$mensaje  = ['Seguimientos del día del hoy'];
     	if ($this->request->is('post'))
     	{
@@ -100,6 +100,11 @@ class SeguimientosClasesAlumnosController extends AppController
     				$fecha =date('Y-m-d',strtotime("2000-$mes-01"));
     				$whereFecha = ["MONTH(fecha) = MONTH('$fecha')"];
     				$mensaje['Se buscó por']["Mes:"]=  [date('m',strtotime($fecha))];
+    			}
+    			else {
+    				$fecha =date('Y-m-d');
+    				$whereFecha = ["YEAR(fecha) = YEAR('$fecha')"];
+    				$mensaje['Se buscó por']["Año :"]=  [date('Y',strtotime($fecha))];
     			}
     			if (!(empty($this->request->getData()['palabra_clave'])))
     			{
@@ -320,11 +325,10 @@ class SeguimientosClasesAlumnosController extends AppController
     {
     	$this->paginate = [
     			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
-    					'SeguimientosClasesAlumnos.fecha <= ' => date('Y-m-d'),'clases.profesor_id' => $this->Auth->user('profesor_id'),
+    					'DATE(SeguimientosClasesAlumnos.fecha) <= ' => date('Y-m-d'),'clases.profesor_id' => $this->Auth->user('profesor_id'),
     							'YEAR(Ciclolectivo.fecha_inicio)' => date('Y')],
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo'],'Profesores'] ] , 'Calificaciones'],
-    			'order' => ['Horarios.hora','Horarios.num_dia'],
-    			'limit' => 30
+    			'finder' => 'Ordered',
     	];
     	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
     	$mensaje['Se buscó: '][0]= 'Seguimientos que me faltan cargar hasta hoy.';
@@ -428,7 +432,7 @@ class SeguimientosClasesAlumnosController extends AppController
     public function pSearch()
     {
     	$wherePalabraClave= $whereDisciplinas =	$whereClase = $whereFecha = $whereYaCargados 
-    	= $whereFaltanCargar  = $palabra = $mensaje = null;
+    	= $whereFaltanCargar  = $palabra = $mensaje = $whereHastaHoy =null;
     	
     	$whereProfesor = ['Clases.profesor_id' => $this->Auth->user('profesor_id')];
     	
@@ -440,7 +444,7 @@ class SeguimientosClasesAlumnosController extends AppController
     			{
 	    				if ($this->request->getData()['faltantes'])
 	    				{
-	    					$whereYaCargados= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
+	    					$whereFaltanCargar= 'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified';
 	    					$mensaje ['Se buscó por']["Seguimientos :"] = ["Faltantes de cargar"];
 	    				}
 	    				if ($this->request->getData()['modificados'])
@@ -465,25 +469,19 @@ class SeguimientosClasesAlumnosController extends AppController
 	    					$mensaje ['Se buscó por']["Clase de :"]=   [$clase->presentacionCorta];
 	    				}
 	    				
-	    				$mes= $this->request->getData()['mob']['month'];
 	    				$year= $this->request->getData()['year']['year'];
-	    				if ($year && $mes)
-	    				{
-	    					$fecha =date('Y-m-d',strtotime("$year-$mes-01"));
-	    					$whereFecha = ["EXTRACT(YEAR_MONTH FROM fecha) = EXTRACT(YEAR_MONTH FROM '$fecha')"];
-	    					$mensaje ['Se buscó por']["Mes y año :"]= [date('m-Y',strtotime($fecha))];
-	    				}
-	    				elseif ($year)
+	    				if ($year)
 	    				{
 	    					$fecha =date('Y-m-d',strtotime("$year-01-01"));
 	    					$whereFecha = ["YEAR(fecha) = YEAR('$fecha')"];
+	    					$hoy =date('Y-m-d');
+	    					$whereHastaHoy = ["DATE(fecha) <=  '$hoy'"];
 	    					$mensaje['Se buscó por']["Año :"]=  [date('Y',strtotime($fecha))];
 	    				}
-	    				elseif ($mes)
-	    				{
-	    					$fecha =date('Y-m-d',strtotime("2000-$mes-01"));
-	    					$whereFecha = ["MONTH(fecha) = MONTH('$fecha')"];
-	    					$mensaje['Se buscó por']["Mes:"]=  [date('m',strtotime($fecha))];
+	    				else {
+	    					$fecha =date('Y-m-d');
+	    					$whereFecha = ["YEAR(fecha) = YEAR('$fecha')"];
+	    					$mensaje['Se buscó por']["Año :"]=  [date('Y',strtotime($fecha))];
 	    				}
 	    				if (!(empty($this->request->getData()['palabra_clave'])))
 	    				{
@@ -491,12 +489,12 @@ class SeguimientosClasesAlumnosController extends AppController
 	    					$wherePalabraClave=  ["(alumnos.nombre LIKE '%".addslashes($palabra)."%' OR alumnos.apellido LIKE '%".addslashes($palabra)."%' OR
 								 alumnos.nro_documento LIKE '%".addslashes($palabra)."%' OR  CONCAT_WS(' ',alumnos.nombre ,alumnos.apellido) LIKE '".addslashes($palabra)."'
 		     				OR  CONCAT_WS(' ',alumnos.apellido ,alumnos.nombre) LIKE '".addslashes($palabra)."'
-								OR profesores.nombre LIKE '%".addslashes($palabra)."%'  OR profesores.apellido LIKE '%".addslashes($palabra)."%')"
+								)"
 	    					];
 	    					$mensaje['Se buscó por']["Alumno :"] = [$palabra] ;
 	    				}
 	    			
-	    				$this->request->session()->write('searchCond', [$wherePalabraClave,$whereFecha,$whereClase,$whereYaCargados,$whereFaltanCargar,$whereProfesor,$whereDisciplinas]);
+	    			$this->request->session()->write('searchCond', [$whereHastaHoy,$wherePalabraClave,$whereFecha,$whereClase,$whereYaCargados,$whereFaltanCargar,$whereProfesor,$whereDisciplinas]);
 	    			$this->request->session()->write('search_key', $palabra);
 	    		}
     		}

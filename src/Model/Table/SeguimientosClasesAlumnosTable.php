@@ -95,6 +95,7 @@ class SeguimientosClasesAlumnosTable extends Table
     {
     	return $query
     	->order([
+    			'SeguimientosClasesAlumnos.fecha' => 'asc',
     			'Horarios.num_dia' => 'asc',
     			'Horarios.hora' => 'asc',
     			
