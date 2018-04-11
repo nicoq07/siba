@@ -124,7 +124,7 @@
    						<?php echo h("Monto que adeuda")?>
    					</th>
    				</tr>
-   				<?php foreach ($alumnosDeudoresDelMes as $pa) {?>
+   				<?php foreach ($alumnosDeudores as $pa) {?>
    				<tr>
    					<td  class="td-numeros">
    						<?php echo h($pa->alumno)?>

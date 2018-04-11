@@ -473,14 +473,15 @@ class PagosAlumnosController extends AppController
     			'montoTotal' => $qcantPagosNoPagados->func()->sum('PagosAlumnos.monto')])->first()
     			;
     	
-    	$alumnosDeudoresDelMes = $this->PagosAlumnos->find()
-    	->select(['alumno' => 'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre) ', 'montoadeudado' => "PagosAlumnos.monto" ])
+    	$alumnosDeudores= $this->PagosAlumnos->find()
+    	->select(['alumno' => 'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre) ', 'montoadeudado' => "SUM(PagosAlumnos.monto)" ])
     	->matching('Alumnos')
     	->where(["YEAR(PagosAlumnos.created)" => $year, 'PagosAlumnos.pagado' => false])
+    	->group(['alumno'])
     	->orderAsc('Alumnos.apellido');
     	
     	$this->prepararPDFInforme($year,'A4','portrait');
-    	$this->set(compact('year','alumnosDeudoresDelMes','cantPagosNoPagados','cantPagosPagados','cantPagosGenerados'));
+    	$this->set(compact('year','alumnosDeudores','cantPagosNoPagados','cantPagosPagados','cantPagosGenerados'));
     }
     
     
