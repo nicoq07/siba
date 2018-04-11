@@ -24,10 +24,7 @@
 		</div>
 		<div class= "fila-troquel-ultima">
 			<p class="texto-troquel-nomyape">Total: </p>
-			<p class="texto-troquel-nomyape"> <?php echo $this->Number->format($pagoalumno->monto,[
-                                  'before' => '$',
-                                  'locale' => 'es_Ar'
-                                  ])?> </p>
+			<p class="texto-troquel-nomyape"> <?php echo $this->Number->currency($pagoalumno->monto,'ARS')?> </p>
 		</div>
 	
 	</div>
