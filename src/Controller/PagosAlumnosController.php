@@ -418,13 +418,6 @@ class PagosAlumnosController extends AppController
     	
     	$mes = null;
     	$year=null;
-//     	debug($pagosAlDiez->all());
-//     	debug($pagosDelOnceAFin->all());
-//     	debug($cantPagosGenerados->all());
-//     	debug($cantPagosPagados->all());
-//     	debug($cantPagosNoPagados->all());
-//     	debug($alumnosDeudoresDelMes->all());
-    	
     	if ($this->request->is(['post']))
     	{
     		$mes = $this->request->getData('mob')['month'];
@@ -436,6 +429,60 @@ class PagosAlumnosController extends AppController
     	}
     	
     }
+    
+    public function informePagosAnual()
+    {
+    	
+    	$year=null;
+    	if ($this->request->is(['post']))
+    	{
+    		$year = $this->request->getData('year')['year'];
+    		if ($year)
+    		{
+    			return $this->redirect(['action' => 'informe_pagos_anual_pdf', $year,'_ext' => 'pdf']);
+    		}
+    	}
+    	
+    }
+    public function informePagosAnualPdf($year)
+    {
+    	$cantPagosGenerados= null;
+    	$cantPagosPagados= null;
+    	$cantPagosNoPagados = null;
+    	$alumnosDeudores = null;
+    	
+    	
+    	$qcantPagosGenerados   = $this->PagosAlumnos->find()
+    	//->select(["sum(PagosAlumnos.monto) as 'MontoTotal'"])
+    	->where(["YEAR(PagosAlumnos.created)" => $year]);
+    	$cantPagosGenerados = $qcantPagosGenerados->select(['pagosgenerados' => $qcantPagosGenerados->func()->count('PagosAlumnos.id'),
+    			'montototal' => $qcantPagosGenerados->func()->sum('PagosAlumnos.monto')])->first()
+    			;
+    	
+    	$qcantPagosPagados   = $this->PagosAlumnos->find()
+    	//->select(["count(*) as 'cantidadDePagosPagados'"," sum(pa.monto) as 'cantidadDePagosPagados'"])
+    	->where(["YEAR(PagosAlumnos.created)" => $year,"PagosAlumnos.pagado" => true]);
+    	$cantPagosPagados= $qcantPagosPagados->select(['cantidadDePagosPagados' => $qcantPagosPagados->func()->count('PagosAlumnos.id'),
+    			'montoTotal' => $qcantPagosPagados->func()->sum('PagosAlumnos.monto')])->first()
+    			;
+    	
+    	$qcantPagosNoPagados   = $this->PagosAlumnos->find()
+    	//->select(["count(*) as cantidadDePagosPagados"," sum(pa.monto) as 'cantidadDePagosPagados'"])
+    	->where(["YEAR(PagosAlumnos.created)" => $year,"PagosAlumnos.pagado" => false]);
+    	$cantPagosNoPagados= $qcantPagosNoPagados->select(['noPagados' => $qcantPagosNoPagados->func()->count('PagosAlumnos.id'),
+    			'montoTotal' => $qcantPagosNoPagados->func()->sum('PagosAlumnos.monto')])->first()
+    			;
+    	
+    	$alumnosDeudoresDelMes = $this->PagosAlumnos->find()
+    	->select(['alumno' => 'CONCAT_WS(" ",Alumnos.apellido,Alumnos.nombre) ', 'montoadeudado' => "PagosAlumnos.monto" ])
+    	->matching('Alumnos')
+    	->where(["YEAR(PagosAlumnos.created)" => $year, 'PagosAlumnos.pagado' => false])
+    	->orderAsc('Alumnos.apellido');
+    	
+    	$this->prepararPDFInforme($year,'A4','portrait');
+    	$this->set(compact('year','alumnosDeudoresDelMes','cantPagosNoPagados','cantPagosPagados','cantPagosGenerados'));
+    }
+    
     
     public function informePagosPdf($mes,$year)
     {
@@ -488,7 +535,9 @@ class PagosAlumnosController extends AppController
     	->orderAsc('Alumnos.apellido');
     	
     	
-    	$nombreMes = __(date('F'),strtotime('2017-'.$mes.'-01'));
+    	$date = new \DateTime('2017-'.$mes.'-01');
+    	$nombreMes = __($date->format('F'));
+    	
     	$this->prepararPDFInforme($mes,'A4','portrait');
     	$this->set(compact('year','nombreMes','alumnosDeudoresDelMes','cantPagosNoPagados','cantPagosPagados','cantPagosGenerados','pagosDelOnceAFin','pagosAlDiez'));
     }

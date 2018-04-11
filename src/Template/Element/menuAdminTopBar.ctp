@@ -72,8 +72,8 @@
 	          <ul class="dropdown-menu forAnimate" role="menu">
 	            <li><?= $this->Html->link(h('Nuevo'), ['controller' =>'PagosAlumnos', 'action' => 'add']) ?></li>
 	            <li><?= $this->Html->link(h('Ver Pagos'), ['controller' =>'PagosAlumnos', 'action' => 'index']) ?></li>
-	            <li><?= $this->Html->link(h('Informe'), ['controller' =>'PagosAlumnos', 'action' => 'informePagos'],['target' => '_blank' ]) ?></li>
-	           
+	            <li><?= $this->Html->link(h('Informe mensual'), ['controller' =>'PagosAlumnos', 'action' => 'informePagos'],['target' => '_blank' ]) ?></li>
+	            <li><?= $this->Html->link(h('Informe anual'), ['controller' =>'PagosAlumnos', 'action' => 'informePagosAnual'],['target' => '_blank' ]) ?></li>
 	          </ul>
 	        </li>
 	           <!--  FIN SECCION PAGOS-->
