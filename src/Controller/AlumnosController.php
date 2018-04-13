@@ -744,7 +744,7 @@ class AlumnosController extends AppController
 			if(!$claseAlumno->existeSeguimiento())
 			{
 				//Creo las fechas de incio y fin para  recorrerlas
-				$fechaInicio = date('Y-m-d');
+			    $fechaInicio = strtotime(date('Y-m-d'));
 				$fechaFin = strtotime($claseAlumno->clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
 				
 				//recorro por dia hasta la fecha fin
