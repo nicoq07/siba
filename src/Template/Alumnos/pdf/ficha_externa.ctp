@@ -1,10 +1,10 @@
 <div class="general">
 	<div class="header-ficha-externa">
 		<div>
-	    	 <div class="div-logo-externa"> <?php  echo $this->Html->image('logoIba.png', ['height' => "150px" , 'width' => "150px",'fullBase' => true]); ?></div>
+	    	 <div class="div-logo-externa"> <?php  echo $this->Html->image(LOGO, ['height' => "100px" , 'width' => "100px",'fullBase' => true]); ?></div>
 			<div class="div-logo-externa"><span class="texto-titulo"> <?= h("Instituto Buenos Aires") ?></span> </div>
 			<div class="div-logo-externa"><span style="margin:0; width:100% ;font-size: 2rem; font-size-adjust: none; "> <?= h("Escuela de Música") ?></span> </div>
-			<div class="div-logo-externa"><span style="margin:0; width:100% ;font-size: 2rem; font-size-adjust: none; "> <?= h("Profesor Hugo Castro") ?></span> </div>
+			<div class="div-logo-externa"><span style="margin:0; width:100% ;font-size: 2rem; font-size-adjust: none; "> <?= h(ENCARGADO_EMPRESA) ?></span> </div>
 		</div>
 			
 	    	<div class="div-alumno-externa"><p style="margin:0; width:100% ;font-size: 2.5rem; font-size-adjust: none; " > <?= h("Alumno: ". $alumno->presentacion) ?></p> </div>
@@ -33,18 +33,19 @@
         <?php endif; ?>
     </div>
     <div class="div-footer">
-	    <div style="border: 1px dotted; float:left; text-align:center;  font-size:2rem; font-style: bold; width: 34.2cm" class="separador" ><span> <?=  h("José León Suárez 5246 CP(1439) - Tel: 4638-5062")?></span> 
-	    </div>
+	    <div style="border: 1px dotted; float:left; text-align:center;  font-size:2rem; font-style: bold; width: 34.2cm" class="separador" ><span> <?=  h(DIRECCION_EMPRESA)?></span></div>
+		<div style="border: 1px dotted; float:left; text-align:center;  font-size:2rem; font-style: bold; width: 34.2cm" class="separador" ><span> <?=  h('WhatsApp: '. CELULAR_EMPRESA)?></span></div>
+		 
 		 <div style="border: 1px dotted;float:left; text-align:center;  font-size:1.5rem; font-style: bold; width: 10cm" class="separador"  >
 		 			<span>
-						 <?=  h("www.ibalugano.com.ar")?>
+						 <?=  h(WEB_EMPRESA)?>
 	    			</span>
 		 </div>
 		<div style="border: 1px dotted;float:left; text-align:center;  font-size:1.5rem; font-style: bold; width: 14.2cm" class="separador"  >
-		 			<span > <?=  h("www.facebook.com/ibalugano")?></span>
+		 			<span > <?=  h(FACEBOOK_EMPRESA)?></span>
 		 </div>
 		  <div style="border: 1px dotted;float:left; text-align:center;  font-size:1.5rem; font-style: bold; width: 10cm" class="separador"  >
-		 			 	<span ><?=  h("ibalugano@gmail.com")?></span>
+		 			 	<span ><?=  h(CORREO_EMPRESA)?></span>
 		 </div>	
     </div>
 </div>

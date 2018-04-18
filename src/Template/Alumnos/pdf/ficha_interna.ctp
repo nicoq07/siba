@@ -1,19 +1,19 @@
 <div>
 	<table class="tabla-header-ficha-interna">
 		<tr>
-			<td height = "200px" width="300px"><div>
-	    	 	<?php  echo $this->Html->image(LOGO, ['class' => 'pull-left' , 'height' => "200" , 'width' => "200",'fullBase' => true]); ?>
+			<td height = "150px" width="150px"><div>
+	    	 	<?php  echo $this->Html->image(LOGO, ['class' => 'pull-left' , 'height' => "150px" , 'width' => "150px",'fullBase' => true]); ?>
 	    		</div>
 	    	</td>
 	    	<td class="td-interna-title"><span class="title"> <?= h($alumno->apellido) ?> <?php echo "</br> </br>" ?> <?= h($alumno->nombre) ?> </span> </td>
-			<td height="200px" width="300px"><div>
+			<td height="150px" width="150px"><div>
 	    	 	<?php
 $ds  = DS;
 			if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
 			{
 				$ds = DS_WINDOWS_IMG;
 			}
-			echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['class' => 'pull-right', 'height' => "100%" , 'width' => "300",'fullBase' => true]); ?>
+			echo $this->Html->image('alumnos'.$ds.$alumno->referencia_foto, ['class' => 'pull-right', 'height' => "100%" , 'width' => "150px",'fullBase' => true]); ?>
 	    		</div>
 	    	</td>
 		</tr>
@@ -50,9 +50,20 @@ $ds  = DS;
 			<td class="view-div   td-interna-general" colspan="1"><?= h("Arancel") ?></td><td class="td-interna-general" colspan="5"><?=$alumno->monto_arancel?  h($alumno->monto_arancel) : "-" ?></td>
 		</tr>
 		<tr>
-			<td class="view-div   td-interna-general" colspan="2"><?= h("Observaciones") ?></td>
-			<td class=" "  colspan="4"><p style="font-size: 1.5rem"><?= h($alumno->observacion); ?></p></td>
-			
+			<td colspan="1">
+    			<span class="view-div   td-interna-general" ><?= __('Clases: ' ) ?></span>
+			</td>
+			<td colspan="5">
+                <?php if (!empty($alumno->clases)): ?>
+                    <table class="table table-striped">
+                        <?php foreach ($alumno->clases as $clases): ?>
+                        <tr>
+                            <td style="text-align:center;  font-size:1.5rem; font-style: bold; "><?= h($clases->presentacion) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>	
+            	<?php endif; ?>
+            </td>
 		</tr>
 	</table>
 </div>	
