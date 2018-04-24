@@ -478,73 +478,85 @@ class AlumnosController extends AppController
     		
     		$idClaseNueva = $this->request->getData('clases')[0];
     		
-    		
+    		/* Me traigo los ids de clases nuevas , viejas y del alumno */
     		$claseAnterior = $this->request->getData('clase_id');
     		$claseNueva = $this->request->getData('clases')[0];
     		$alumno_id = $this->request->getData('alumno_id');
     		$alumno = $this->Alumnos->get($alumno_id);
     		
+    		/* Me traigo la clase anterior*/
+    		$claseAnterior = $this->Alumnos->Clases->get($idClaseAnterior);
     		
-    		$claseAnterior = $this->Alumnos->Clases->get($idClaseAnterior,['contain' => 'SeguimientosClasesAlumnos']);
+    		/* La clase nueva */
     		$claseNueva = $this->Alumnos->Clases->get($idClaseNueva);
     		
+    		/* objeto clase anterior */
+    		$claseAnteriorList = $this->Alumnos->Clases->find()->where(['id' => $claseAnterior->id])->toList();
     		
-    		$observacionSeguimientosTitulo = 'Transferido de clase : '. $claseAnterior->presentacion . ' a : '. $claseNueva->presentacion. '.';
-    		$observacionSeguimientos = 'Observaciones:';
-    		foreach ($claseAnterior->seguimientos_clases_alumnos as $seguimiento)
-    		{
-    			if ($seguimiento->modified != $seguimiento->created)
-    			{
-    				$observacionSeguimientos.=  '- '. $seguimiento->fecha->format('d-m-Y') . ': ' .$seguimiento->observacion .  '. ';
-    			}
+            /* CA anterior */
+    		$clase_alumno_id_anterior = TableRegistry::get('ClasesAlumnos')->find()->select(['id'])
+    		->where(['ClasesAlumnos.clase_id' => $claseAnterior->id, 'ClasesAlumnos.alumno_id' => $alumno_id])
+    		->all()->toList()[0]->id;
+    		
+    		/* tabla Seguimientos */
+    		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+    		
+    		/* Borro los seguimientos posteriores a hoy de la CA anterior */
+    		$ids = null;
+    		$ids = $Seguimientos->find()
+    		->select(['SeguimientosClasesAlumnos.id'])
+    		->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d'),
+    		    'SeguimientosClasesAlumnos.clase_alumno_id' => $clase_alumno_id_anterior]);
+    		
+    		$checkBorrado = $Seguimientos->deleteAll(['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
+    		
+    		if (!$checkBorrado) { 
+    		    $this->Flash->error("Seguimientos posteriores no borrados");
     		}
     		
-    		$claseAnteriorList = $this->Alumnos->Clases->find()->where(['id' => $claseAnterior->id])->toList();
-    		$this->Alumnos->Clases->unlink($alumno, $claseAnteriorList);
-    		
+    		/* Creo la CA nueva*/
     		$claseNuevaList = $this->Alumnos->Clases->find()->where(['id' => $claseNueva->id])->toList();
-    		$this->Alumnos->Clases->link($alumno, $claseNuevaList);
+    		$checkClaseNueva = $this->Alumnos->Clases->link($alumno, $claseNuevaList);
     		
-    		$resultClaseAlumnoNueva = TableRegistry::get('ClasesAlumnos')->find()
-    		->where(['ClasesAlumnos.clase_id' => $idClaseNueva, 'ClasesAlumnos.alumno_id' => $alumno_id])
-    		;
+    		/* obtengo CA Nueva */
+    		$clase_alumno_id_nueva = TableRegistry::get('ClasesAlumnos')->find()->select(['id'])
+    		->where(['ClasesAlumnos.clase_id' => $claseNueva->id, 'ClasesAlumnos.alumno_id' => $alumno_id])
+    		->all()->toList()[0]->id;
     		
-    		$claseAlumnoId= $resultClaseAlumnoNueva->first()->id;
-    		$this->insertarSeguimiento($alumno_id, array($idClaseNueva) );
+    		/* Actualizo los seguimientos anterior a hoy de la CA anterior */
+    		$ids = null;
+    		$ids = $Seguimientos->find()
+    		->select(['id'])
+    		->where(['DATE(SeguimientosClasesAlumnos.fecha) <= ' => date('Y-m-d'),
+    		    'SeguimientosClasesAlumnos.clase_alumno_id' => $clase_alumno_id_anterior]);
     		
-    		$dataSeg= [
-    				'clase_alumno_id' => $claseAlumnoId,
-    				'observacion' => $observacionSeguimientosTitulo.$observacionSeguimientos,
-    				'presente' => '0',
-    				'calificacion_id' => null,
-    				'fecha' => [
-    						'year' => date('Y'),
-    						'month' => date('m'),
-    						'day' => date('d'),
-    						'hour' => date('h'),
-    						'minute' => date('i')
-    				],
-    				'modified'  => date('Y-m-d H:m:s',strtotime('+1 hour',strtotime(date('Y-m-d H:m:s'))))
-    				
-    		];
+    		$checkActualizacion = $Seguimientos
+    		->updateAll(['clase_alumno_id' => $clase_alumno_id_nueva], ['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
     		
-    		$seguimiento = $this->Alumnos->Clases->SeguimientosClasesAlumnos->newEntity();
-    		$this->Alumnos->Clases->SeguimientosClasesAlumnos->patchEntity($seguimiento,$dataSeg);
-    		if ($this->Alumnos->Clases->SeguimientosClasesAlumnos->save($seguimiento) )
+    		if (!$checkActualizacion)
     		{
-    			$this->Flash->success('Alumno tranferido con éxito');
+    		    $this->Flash->error("Seguimientos anteriores no actualizados");
+    		}
+    		
+    		$checkNuevosSeguimientos= $this->insertarSeguimiento($alumno_id, [0 => $claseNueva->id], true);
+    		
+    		$checkUnlinkClaseVieja = $this->Alumnos->Clases->unlink($alumno, $claseAnteriorList);
+    		
+    		if ($checkActualizacion && $checkBorrado && $checkClaseNueva && $checkNuevosSeguimientos && $checkUnlinkClaseVieja )
+    		{
+    			$this->Flash->success('Alumno/a tranferido con éxito');
     			$this->redirect(['action' => 'view', $alumno_id]);
     			
     		}
     		else
     		{
-    			$this->Flash->error('Error al tranferir al alumno');
+    			$this->Flash->error('Error al tranferir al alumno/a');
     			$this->redirect(['action' => 'view', $alumno_id]);
     			
     		}
     		
     		
-    	}
+    	 }
     	else
     	{
     	    if (!empty($id) || !empty($claseId))
@@ -556,6 +568,7 @@ class AlumnosController extends AppController
     	$profesores = TableRegistry::get('Profesores')->find('list')->where(['active' => true]);
     	$this->set(compact('alumno','profesores','clase'));
    	 
+    
     }
     
     public function listadoCumple()
@@ -719,7 +732,7 @@ class AlumnosController extends AppController
     	]);
     }
 
-	private function insertarSeguimiento($idAlumno, $idsClases)
+    private function insertarSeguimiento($idAlumno, $idsClases, $esTranferencia = false)
 	{
 		$alumno = $this->Alumnos->get($idAlumno);
 		
@@ -735,7 +748,7 @@ class AlumnosController extends AppController
 		//Recorro los ids de clases que voy a necesitar para crear los seguimientos
 		foreach ($idsClases as  $pos => $idClase)
 		{
-			
+		    
 			//Busco en la base el ID de ClasesAlumnos con id Id de Clase y el ID de Alumno
 			$idClaseAlumno = $ClasesAlumno->find('all')
 			->where(['ClasesAlumnos.alumno_id' => $idAlumno, 'ClasesAlumnos.clase_id' => $idClase]);
@@ -748,7 +761,7 @@ class AlumnosController extends AppController
 			//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
 			$claseAlumno = $ClasesAlumno->get($idClaseAlumno->first()->id,['contain' => ['Clases' => ['Horarios' => 'Ciclolectivo'] ] ]);
 			
-			if(!$claseAlumno->existeSeguimiento())
+			if(!$claseAlumno->existeSeguimiento() || $esTranferencia)
 			{
 				//Creo las fechas de incio y fin para  recorrerlas
 			    $fechaInicio = strtotime(date('Y-m-d'));
@@ -764,6 +777,7 @@ class AlumnosController extends AppController
 					if($dia == $days[$claseAlumno->clase->horario->nombre_dia])
 					{
 						//     				echo $clase->horario->nombre_dia. " ". date ("Y-m-d", $i)."<br>";
+					  
 						$seguimiento = $Seguimientos->newEntity(
 								[
 										'clase_alumno_id' => $claseAlumno->id,
