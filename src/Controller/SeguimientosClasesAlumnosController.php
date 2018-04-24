@@ -518,7 +518,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	
     	
-    	$this->set(compact('seguimientosClasesAlumnos','clases','mensaje'));
+    	$this->set(compact('seguimientosClasesAlumnos','mensaje'));
     	
     	$this->render('/SeguimientosClasesAlumnos/p_index');
     }
