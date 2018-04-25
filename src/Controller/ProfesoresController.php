@@ -233,7 +233,7 @@ class ProfesoresController extends AppController
     	$idProfesor = $profesor->id;
     	
     	$qClases = "select test.* from 
-(select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia, a.id as alumno_id,
+        (select ca.id  as clasealumno_id,  CONCAT_WS(' ',a.apellido ,a.nombre) as alumno, h.nombre_dia as nom_dia, a.id as alumno_id,
     	h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci
     	from  horarios as h, seguimientos_clases_alumnos as s, profesores as p, alumnos as a, clases as c, clases_alumnos as ca
     	, disciplinas as d , ciclolectivo as ciclo
@@ -247,7 +247,8 @@ class ProfesoresController extends AppController
     	ca.id = s.clase_alumno_id AND
     	ciclo.id = h.ciclolectivo_id AND
     	MONTH(s.fecha) = $mes AND
-    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())	
+    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())	AND
+        s.fue_transferida = 0
         UNION
         select '', '-SIN ALUMNOS-', h.nombre_dia as nom_dia,'', h.hora as hora , c.id clase_id, h.num_dia as dia , d.descripcion as disci 
         from horarios as h, profesores as p, clases as c , disciplinas as d , ciclolectivo as ciclo
@@ -257,7 +258,7 @@ class ProfesoresController extends AppController
         AND p.id = $idProfesor 
         AND c.profesor_id = p.id
         AND ciclo.id = h.ciclolectivo_id  
-        AND YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())) as test
+        AND YEAR(ciclo.fecha_inicio) = YEAR(CURDATE()) ) as test
        GROUP by test.clasealumno_id, test.nom_dia , test.hora
         ORDER BY test.dia, test.hora, test.alumno";
     	
@@ -276,7 +277,8 @@ class ProfesoresController extends AppController
     	ca.id = s.clase_alumno_id AND
     	ciclo.id = h.ciclolectivo_id AND
     	MONTH(s.fecha) = $mes AND
-    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE())
+    	YEAR(ciclo.fecha_inicio) = YEAR(CURDATE()) AND
+        s.fue_transferida = 0
     	ORDER BY  alumno_id, fecha";
     	
     	

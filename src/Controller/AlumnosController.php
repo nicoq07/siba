@@ -531,7 +531,7 @@ class AlumnosController extends AppController
     		    'SeguimientosClasesAlumnos.clase_alumno_id' => $clase_alumno_id_anterior]);
     		
     		$checkActualizacion = $Seguimientos
-    		->updateAll(['clase_alumno_id' => $clase_alumno_id_nueva], ['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
+    		->updateAll(['clase_alumno_id' => $clase_alumno_id_nueva, 'fue_transferida' => true], ['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
     		
     		if (!$checkActualizacion)
     		{
