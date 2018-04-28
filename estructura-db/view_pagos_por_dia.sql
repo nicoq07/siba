@@ -1,0 +1,1 @@
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_pagos_por_dia`  AS  select sum(`pa`.`monto`) AS `monto`,`pa`.`fecha_pagado` AS `fecha`,`u`.`nombre` AS `recibido` from (`pagos_alumnos` `pa` join `users` `u`) where ((`pa`.`pagado` = 1) and (`pa`.`user_id` = `u`.`id`)) group by cast(`pa`.`fecha_pagado` as date),`recibido` ;
