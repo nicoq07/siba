@@ -25,3 +25,19 @@ $(window).on('load', function(){
 	
 	});
 
+//ocultar y mostrar divs
+
+function mostrarOcultar(id,boton) {
+	var boton = $(boton);
+	
+	var div = $('#'+id);
+    if (div.css("display") === "none") {
+    	div.css("display","block");
+    	boton.text('-');
+    } else {
+    	div.css("display","none");
+    	
+    	boton.text('+');
+
+    }
+}
