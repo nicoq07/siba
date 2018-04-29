@@ -3,6 +3,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\Number;
 
 /**
  * Users Controller
@@ -242,11 +243,21 @@ class UsersController extends AppController
     	->where(['nombre_dia' =>  date('l'),'YEAR(ciclolectivo.fecha_inicio)' => date('Y') ])
     	->orderAsc("hora");
     	
-    	
+    	$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';
+    	$resultPagos = $connection->execute($qPagos);
+    	$montos=array();
+    	$fechas=array();
+    	foreach ($resultPagos as $pago)
+    	{
+    	    array_push($montos,floatval($pago['monto']));
+    	    array_push($fechas,date('d-m-y',strtotime($pago['fecha'])));
+    	}
+    	$montos = json_encode(array_reverse($montos));
+    	$fechas = json_encode(array_reverse($fechas));
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
-    	$this->set(compact('user','horarios','clasesD'));
+    	$this->set(compact('user','horarios','clasesD','montos','fechas'));
     	
     	
     }
