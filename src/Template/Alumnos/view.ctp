@@ -91,112 +91,186 @@
 	       <div class="separador"><?= $this->Text->autoParagraph(h($alumno->observacion)); ?></div>
 	    </div>
 </div>
-	    
-	    <div class="related col-lg-10 col-lg-offset-1 panel-info">
-	    <div class="panel-heading">
-	   	 <h4><?= __('Pagos correspondientes') ?></h4>
+<!--  PAGOS         ------------------------------------------------------------------------------------------------------	     -->
+	    <div class="col-lg-10 col-lg-offset-1 panel-info">
+	    <div class="panel-heading row">
+	    	<div class="col-lg-2 col-lg-offset-9">
+	    		 <button class='btn btn-sm btn-default'  onclick='mostrarOcultar("pagosDiv",this);'><?php echo h('Ver'); ?></button>
+	    	</div>
+	    	<div class="col-lg-12">		   	
+	    		<div class="panel-title"><h4><?= __('Pagos correspondientes') ?></h4></div>
+	    	</div>
+	    	
 	    </div>
-	        
 	        <?php if (!empty($alumno->pagos_alumnos)): ?>
-	        <div id="no-more-tables">
-            <table class="col-lg-12 table-striped table-condensed cf">
-        		<thead class="cf">
-        			<tr>
-		                <th width = "10%" scope="col"><?= __('Código') ?></th>
-		                <th scope="col"><?= __('Fecha generado') ?></th>
-		                <th scope="col"><?= __('Mes') ?></th>
-		                <th scope="col"><?= __('Monto') ?></th>
-		                <th scope="col"><?= __('Recibió el pago:') ?></th>
-		                <th width = "18%" scope="col"><?= __('Fecha pagado') ?></th>
-		                <th scope="col"><?= __('Pagado') ?></th>
-		                <th  width = "20%" scope="col" class="actions"><?= __('Acciones') ?></th>
-		              </tr>
-	            </thead>
-	            <?php foreach ($alumno->pagos_alumnos as $pagosAlumnos): ?>
-	            <tr>
-	                <td data-title="Código"><?= h($pagosAlumnos->id) ?></td>
-	                <td data-title="Fecha generado"><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
-	                <td data-title="Mes"><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
-	                <td data-title="Pago" title="Detalles:&#10;<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
-	                <td data-title="Recibido"><?= $pagosAlumnos->user ? h($pagosAlumnos->user->nombre): h("-") ?></td>
-	                <td data-title="Feche pagado"><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
-	                <td data-title="Pagado"><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
-	                <td class="actions">
-	                    <?= $this->Html->link(__('Ver'), ['controller' => 'PagosAlumnos', 'action' => 'view', $pagosAlumnos->id],  ['class' => 'btn-sm btn-info']) ?>
-	                    <?= $this->Html->link(__('Editar'), ['controller' => 'PagosAlumnos', 'action' => 'edit', $pagosAlumnos->id],  ['class' => 'btn-sm btn-warning']) ?>
-	              		<?= $pagosAlumnos->pagado ? h("")  : $this->Form->postLink(__('Pagar'), ['controller' => 'PagosAlumnos', 'action' => 'pagar', $pagosAlumnos->id], ['class' => 'btn-sm btn-success','confirm' => __('Marcar como pago?', $pagosAlumnos->id)])?>
-	                </td>
-	            </tr>
-	            <?php endforeach; ?>
-	        </table>
-	        <?php endif; ?>
-	    </div>
+	        <div class="col-lg-12" style="display:none;"  id="pagosDiv">
+    	        <div  id="no-more-tables" >
+                    <table class="col-lg-12 table-striped table-condensed cf">
+                		<thead class="cf">
+                			<tr>
+        		                <th width = "10%" scope="col"><?= __('Código') ?></th>
+        		                <th scope="col"><?= __('Fecha generado') ?></th>
+        		                <th scope="col"><?= __('Mes') ?></th>
+        		                <th scope="col"><?= __('Monto') ?></th>
+        		                <th scope="col"><?= __('Recibió el pago:') ?></th>
+        		                <th width = "18%" scope="col"><?= __('Fecha pagado') ?></th>
+        		                <th scope="col"><?= __('Pagado') ?></th>
+        		                <th  width = "20%" scope="col" class="actions"><?= __('Acciones') ?></th>
+        		              </tr>
+        	            </thead>
+        	            <?php foreach ($alumno->pagos_alumnos as $pagosAlumnos): ?>
+        	            <tr>
+        	                <td data-title="Código"><?= h($pagosAlumnos->id) ?></td>
+        	                <td data-title="Fecha generado"><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
+        	                <td data-title="Mes"><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
+        	                <td data-title="Pago" title="Detalles:&#10;<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
+        	                <td data-title="Recibido"><?= $pagosAlumnos->user ? h($pagosAlumnos->user->nombre): h("-") ?></td>
+        	                <td data-title="Feche pagado"><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
+        	                <td data-title="Pagado"><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
+        	                <td class="actions">
+        	                    <?= $this->Html->link(__('Ver'), ['controller' => 'PagosAlumnos', 'action' => 'view', $pagosAlumnos->id],  ['class' => 'btn-sm btn-info']) ?>
+        	                    <?= $this->Html->link(__('Editar'), ['controller' => 'PagosAlumnos', 'action' => 'edit', $pagosAlumnos->id],  ['class' => 'btn-sm btn-warning']) ?>
+        	              		<?= $pagosAlumnos->pagado ? h("")  : $this->Form->postLink(__('Pagar'), ['controller' => 'PagosAlumnos', 'action' => 'pagar', $pagosAlumnos->id], ['class' => 'btn-sm btn-success','confirm' => __('Marcar como pago?', $pagosAlumnos->id)])?>
+        	                </td>
+        	            </tr>
+        	            <?php endforeach; ?>
+        	        </table>
+    	        
+    	    	</div>
+    	   </div>
+    	   <?php endif; ?>
 	   </div>
+	   
+	   
+<!--  CLASES AÑO ACTUAL         ------------------------------------------------------------------------------------------------------	     -->
+
 	    <div class="related col-lg-10 col-lg-offset-1 panel-danger">
-	        <div class="panel-heading">
-		   	 <h4><?= __('Clases inscriptas' ) ?></h4>
+	        <div class="panel-heading row">
+    	        <div class="col-lg-2 col-lg-offset-9">
+    	    		 <button class='btn btn-sm btn-default'  onclick='mostrarOcultar("clases",this);'><?php echo h('Ver'); ?></button>
+    	    	</div>
+    	    	<div class="col-lg-12">		   	
+    	    		<div class="panel-title"><h4><?= __('Clases inscriptas este año' ) ?></h4></div>
+    	    	</div>
 		    </div>
 		    
-	        <?php if (!empty($alumno->clases)){ ?>
-	         <div id="no-more-tables">
-            <table class="col-lg-12 table-striped table-condensed cf">
-        		<thead class="cf">
-	            <tr>
-	                <th width="60%" scope="col"><?= __('Detalle') ?></th>
-	                <th scope="col"><?= __('Activa') ?></th>
-	                <th width="30%" scope="col" class="actions"><?= __('Actions') ?></th>
-	            </tr>
-	            </thead>
-	            <?php foreach ($alumno->clases as $clases): ?>
-	            <tr>
-	               
-	                <td data-title="Clase"><?= h($clases->presentacion) ?></td>
-	                <td data-title="Activa"><?= $clases->active ? h("Sí") : h("No") ?></td>
-	                <td class="actions">
-	                    <?= $this->Html->link(__('Ver'), ['controller' => 'Clases', 'action' => 'view', $clases->id],  ['class' => 'btn-sm btn-info']) ?>
-	                    <?= $this->Html->link(__('Editar'), ['controller' => 'Clases', 'action' => 'edit', $clases->id],  ['class' => 'btn-sm btn-warning']) ?>
-	                 	<?= $this->Html->link(__('Tranferir de Clase'), ['controller' => 'Alumnos', 'action' => 'transferirClase', $alumno->id,$clases->id],  ['class' => 'btn-sm btn-default']) ?>
-	                 	<?= $this->Form->postLink(__('Quitar de la clase'),['controller' => 'Clases','action' => 'desactivarClaseAlumno', $alumno->id,$clases->id],['class' => 'btn-sm btn-danger','confirm' => __('Quitar de la clase a {0}?', $alumno->presentacion)]) ?>
-	                </td>
-	            </tr>
-	            <?php endforeach; ?>
-	            
-	        </table>
-	         <?php  }  else {  echo "<strong> ". h("No tiene clases activas") ."</strong> "; }?>
+	        <div class="col-lg-12" id="clases" style="display:none;" >
+    	         <div id="no-more-tables">
+    	         <?php if (!empty($alumno->clases)){ ?>
+                    <table class="col-lg-10 table-striped table-condensed cf">
+                		<thead class="cf">
+        	            <tr>
+        	                <th width="60%" scope="col"><?= __('Detalle') ?></th>
+        	                <th scope="col"><?= __('Activa') ?></th>
+        	                <th width="30%" scope="col" class="actions"><?= __('Actions') ?></th>
+        	            </tr>
+        	            </thead>
+        	            <?php foreach ($alumno->clases as $clases): ?>
+        	            <tr>
+        	               
+        	                <td data-title="Clase"><?= h($clases->presentacion) ?></td>
+        	                <td data-title="Activa"><?= $clases->active ? h("Sí") : h("No") ?></td>
+        	                <td class="actions">
+        	                    <?= $this->Html->link(__('Ver'), ['controller' => 'Clases', 'action' => 'view', $clases->id],  ['class' => 'btn-sm btn-info']) ?>
+        	                    <?= $this->Html->link(__('Editar'), ['controller' => 'Clases', 'action' => 'edit', $clases->id],  ['class' => 'btn-sm btn-warning']) ?>
+        	                 	<?= $this->Html->link(__('Tranferir de Clase'), ['controller' => 'Alumnos', 'action' => 'transferirClase', $alumno->id,$clases->id],  ['class' => 'btn-sm btn-default']) ?>
+        	                 	<?= $this->Form->postLink(__('Quitar de la clase'),['controller' => 'Clases','action' => 'desactivarClaseAlumno', $alumno->id,$clases->id],['class' => 'btn-sm btn-danger','confirm' => __('Quitar de la clase a {0}?', $alumno->presentacion)]) ?>
+        	                </td>
+        	            </tr>
+        	            <?php endforeach; ?>
+        	            
+        	        </table>
+        	         <?php  }  else {  echo "<div class='col-lg-12 alert alert-danger'> <strong> ". h("No tiene clases activas") ."</strong> </div> "; }?>
+    			</div>
 			</div>
 	       
 	    </div>
-	     <div class="related col-lg-10 col-lg-offset-1 panel-warning">
-	        	<div class="panel-heading">
-			   	 <h4><?= __('Seguimientos de Clases' ) ?></h4>
-			    </div>
-	        
-	        <?php if (!empty($seguimientos)){ ?>
-	        <div id="no-more-tables">
-            <table class="col-lg-12 table-striped table-condensed cf">
-        		<thead class="cf">
-	            <tr>
-	                <th width="55%" scope="col"><?= __('Observación') ?></th>
-	                <th width="10%" scope="col"><?= __('Presente') ?></th>
-	                 <th width="20%" scope="col"><?= __('Fecha') ?></th>
-	                <th scope="col" width="15%" class="actions"><?= __('Actions') ?></th>
-	            </tr>
-	            </thead>
-	            <?php foreach ($seguimientos as $seguimiento): ?>
-	            <tr>
-	               
-	                <td data-title="Observación"><?= h($seguimiento->observacion) ?></td>
-	                <td data-title="Presente"><?= $seguimiento->presente ? h("Sí") : h("No") ?></td>
-	                <td data-title="Fecha"><?= __($seguimiento->fecha->format('l')) .' '. $seguimiento->fecha->format('d-m-Y') ?></td>
-	                <td class="actions">
-	                    <?= $this->Html->link(__('Ver'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'view', $seguimiento->id],  ['class' => 'btn-sm btn-info']) ?>
-	                    <?= $this->Html->link(__('Editar'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'edit', $seguimiento->id],  ['class' => 'btn-sm btn-warning']) ?>
-	                </td>
-	            </tr>
-	            <?php endforeach; ?>
-	        </table>
-	        <?php  }  else { echo "<strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> "; }?>
-	        </div>
+	    
+<!-- 	    CLASES AÑOS ANTERIORES ------------------------------------------------------------------------ -->
+<div class="related col-lg-10 col-lg-offset-1 panel-default">
+	        <div class="panel-heading row">
+    	        <div class="col-lg-2 col-lg-offset-9">
+    	    		 <button class='btn btn-sm btn-default'  onclick='mostrarOcultar("clasesAnteriores",this);'><?php echo h('Ver'); ?></button>
+    	    	</div>
+    	    	<div class="col-lg-12">		   	
+    	    		<div class="panel-title"><h4><?= __('Clases de años anteriores' ) ?></h4></div>
+    	    	</div>
+		    </div>
+	       
+	        <div class="col-lg-12" id="clasesAnteriores" style="display:none;" >
+    	         <div id="no-more-tables">
+    	          <?php if (!empty($aluAnteriores->clases) ){ ?>
+                    <table class="col-lg-10 table-striped table-condensed cf">
+                		<thead class="cf">
+        	            <tr>
+        	                <th width="60%" scope="col"><?= __('Detalle') ?></th>
+        	                <th width="30%" scope="col" class="actions"><?= __('Actions') ?></th>
+        	            </tr>
+        	            </thead>
+        	            <?php foreach ($aluAnteriores->clases as $clase): ?>
+        	            	 <?php if ($clase->horario->ciclolectivo->fecha_inicio->format('Y') != date('Y') ){ ?>
+                	            <tr>
+                	                <td data-title="Clase"><?= h($clase->presentacion) ?></td>
+                	                <td class="actions">
+                	                    <?= $this->Html->link(__('Ver'), ['controller' => 'Clases', 'action' => 'view', $clase->id],  ['class' => 'btn-sm btn-info']) ?>
+                	                </td>
+                	            </tr>
+                	           <?php } else {  echo "<strong> ". h("No tiene clases anteriores") ."</strong> "; }?>
+        	             <?php endforeach; ?>
+        	        </table>
+        	         <?php  }  else {  echo " <div class='col-lg-12 alert alert-danger'> <strong> ". h("No tiene clases anteriores") ."</strong> </div> "; }?>
+    			</div>
+			</div>
 	       
 	    </div>
+	    
+	    
+<!-- 	SEGUIMIENTOS DE ESTE AÑO ---------------------------------------------------------------------------------     -->
+
+
+
+
+	     <div class="related col-lg-10 col-lg-offset-1 panel-warning">
+			    <div class="panel-heading row">
+	    	<div class="col-lg-2 col-lg-offset-9">
+	    		 <button class='btn btn-sm btn-default'  onclick='mostrarOcultar("pagosSeg",this);'><?php echo h('Ver'); ?></button>
+	    	</div>
+	    	<div class="col-lg-12">		   	
+	    		<div class="panel-title"> <h4><?= __('Seguimientos de Clases' ) ?></h4></div>
+	    	</div>
+	    	
+	    </div>
+	        
+	       
+	        <div class="col-lg-12" style="display:none;"  id="pagosSeg">
+    	        <div id="no-more-tables">
+    	         <?php if (!empty($seguimientos)){ ?>
+                <table class="col-lg-12 table-striped table-condensed cf">
+            		<thead class="cf">
+    	            <tr>
+    	                <th width="55%" scope="col"><?= __('Observación') ?></th>
+    	                <th width="10%" scope="col"><?= __('Presente') ?></th>
+    	                 <th width="20%" scope="col"><?= __('Fecha') ?></th>
+    	                <th scope="col" width="15%" class="actions"><?= __('Actions') ?></th>
+    	            </tr>
+    	            </thead>
+    	            <?php foreach ($seguimientos as $seguimiento): ?>
+    	            <tr>
+    	               
+    	                <td data-title="Observación"><?= h($seguimiento->observacion) ?></td>
+    	                <td data-title="Presente"><?= $seguimiento->presente ? h("Sí") : h("No") ?></td>
+    	                <td data-title="Fecha"><?= __($seguimiento->fecha->format('l')) .' '. $seguimiento->fecha->format('d-m-Y') ?></td>
+    	                <td class="actions">
+    	                    <?= $this->Html->link(__('Ver'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'view', $seguimiento->id],  ['class' => 'btn-sm btn-info']) ?>
+    	                    <?= $this->Html->link(__('Editar'), ['controller' => 'SeguimientosClasesAlumnos', 'action' => 'edit', $seguimiento->id],  ['class' => 'btn-sm btn-warning']) ?>
+    	                </td>
+    	            </tr>
+    	            <?php endforeach; ?>
+    	        </table>
+    	        <?php  }  else { echo "<div class='col-lg-12 alert alert-danger'> <strong> ". h("El alumno no ha asistido a ninguna clase todavía") ."</strong> </div>"; }?>
+    	        </div>
+    	      </div>
+	       
+	    </div>
+	<div class="col-lg-12"> &nbsp;</div>
 	

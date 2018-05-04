@@ -163,10 +163,9 @@ class AlumnosController extends AppController
     	
     	
     	$alumno = $this->Alumnos->get($id, [
-    			'contain' => ['PagosAlumnos' => ['Users'] ,'Clases' => [ 'conditions' => $where]  ]  ]);
-    	
-    	$this->set(['alumno','clases','seguimientos'],[$alumno,$clases,$seguimientos]);
-    	$this->set('_serialize', ['alumno']);
+    			'contain' => ['PagosAlumnos' => ['Users'] ,'Clases' => ['Disciplinas','Horarios' => 'Ciclolectivo' ,'conditions' => $where]  ]  ]);
+    	$aluAnteriores  = $this->Alumnos->get($id, ['contain' => ['Clases' => ['Disciplinas','Horarios' => 'Ciclolectivo']  ]  ]);
+    	$this->set(['alumno','clases','seguimientos','aluAnteriores'],[$alumno,$clases,$seguimientos,$aluAnteriores]);
     }
 
     /**
