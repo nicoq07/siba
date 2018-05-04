@@ -411,6 +411,27 @@ class PagosAlumnosController extends AppController
     	return $this->redirect($this->referer());
     	
     }
+    public function desafectarPago($id = null)
+    {
+        $pagosAlumno = $this->PagosAlumnos->get($id, []);
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
+            $pagosAlumno->pagado = false;
+            $pagosAlumno->fecha_pagado = null;
+            $pagosAlumno->user_id = null;
+            if ($this->PagosAlumnos->save($pagosAlumno))
+            {
+                $this->Flash->success(__('Se volvío para atrás el pago.'));
+            }
+            else
+            {
+                $this->Flash->error(__('Error, reintente.'));
+            }
+            
+        }
+        return $this->redirect($this->referer());
+        
+    }
     
     
     public function informePagos()
