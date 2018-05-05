@@ -199,6 +199,7 @@
 	       
 	        <div class="col-lg-12" id="clasesAnteriores" style="display:none;" >
     	         <div id="no-more-tables">
+				 <?= debug($aluAnteriores); ?>
     	          <?php if (!empty($aluAnteriores->clases) ){ ?>
                     <table class="col-lg-10 table-striped table-condensed cf">
                 		<thead class="cf">
