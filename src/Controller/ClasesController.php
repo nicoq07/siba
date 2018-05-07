@@ -68,9 +68,11 @@ class ClasesController extends AppController
 		->select(['Disciplinas.id'])
 		->find('currentYear');
 		$disciplinas = $this->Clases->Disciplinas->find('list')
-		->where(['active' => true])->where(['Disciplinas.id IN' => $auxClases]);	
+		->where(['active' => true])->where(['Disciplinas.id IN' => $auxClases])
+		->order('descripcion')
+		;
 		$horarios = $this->Clases->Horarios->find('list')
-		->contain('Ciclolectivo')->find('currentYear')
+		->contain('Ciclolectivo')->find('currentYear')->find('ordered')
 		->where(['Horarios.active' => true]) ;
 		
 		$clases = $this->paginate($clases,
