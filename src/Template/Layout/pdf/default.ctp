@@ -28,7 +28,7 @@ $description = 'Iba Escuela ' .date("Y");
 
     <?= $this->Html->css(['bootstrap.min', 'base.css', 'font-awesome.min', 'login' ,'menulateral' , 'varios','stylepdf'], ['fullBase' => true]) ?>
     <?= $this->Html->css('cake.css', ['fullBase' => true]) ?>
-    <?= $this->Html->script(['jquery-3.1.1.min','bootstrap' ], ['fullBase' => true]) ?>
+    <?= $this->Html->script(['jquery-3.1.1.min','bootstrap','Chart' ], ['fullBase' => true]) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
