@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\Number;
 
 /**
  * PagosConcepto Entity
@@ -35,7 +36,7 @@ class PagosConcepto extends Entity
     
     public function _getDetalles()
     {
-    	$detalles = $this->_properties['detalle'] . ' ' . $this->_properties['monto'];
+    	$detalles = $this->_properties['detalle'] . ' ' . Number::currency($this->_properties['monto'],'ARS');
     	return $detalles;
     }
 }

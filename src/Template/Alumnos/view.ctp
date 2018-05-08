@@ -123,7 +123,7 @@
         	                <td data-title="Código"><?= h($pagosAlumnos->id) ?></td>
         	                <td data-title="Fecha generado"><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
         	                <td data-title="Mes"><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
-        	                <td data-title="Pago" title="Detalles:&#10;<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles . "&#10;"; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($pagosAlumnos->monto) : h("")   ?></td>
+        	                <td data-title="Pago" data-toggle="tooltip" data-placement="left" title="Detalles:<?php if (!empty($pagosAlumnos->pagos_conceptos)) { foreach ($pagosAlumnos->pagos_conceptos as $pc) { echo "-". $pc->detalles ; } } else { echo " - "; }?>" align="center" ><?= $pagosAlumnos->monto ? h($this->Number->currency($pagosAlumnos->monto,'ARS')) : h("")   ?></td>
         	                <td data-title="Recibido"><?= $pagosAlumnos->user ? h($pagosAlumnos->user->nombre): h("-") ?></td>
         	                <td data-title="Feche pagado"><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
         	                <td data-title="Pagado"><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
@@ -274,4 +274,8 @@
 	       
 	    </div>
 	<div class="col-lg-12"> &nbsp;</div>
-	
+<script>
+	$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
