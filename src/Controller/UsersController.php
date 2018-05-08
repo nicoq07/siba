@@ -231,19 +231,24 @@ class UsersController extends AppController
     
     public function perfil()
     {
-    	$whereClases = null;
-    	
-    	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 order by dia, hora";
-    	$qClases .= $whereClases;
-    	$connection = ConnectionManager::get('default');
+       	$qClases = "SELECT * FROM view_clases as v WHERE v.cantAlu = 0 order by dia, hora";
+       	$connection = ConnectionManager::get('default');
     	$clasesD = $connection->execute($qClases);
     	
     	$horarios = TableRegistry::get('Horarios')->find('all')
     	->contain(['Clases','Ciclolectivo'])
     	->where(['nombre_dia' =>  date('l'),'YEAR(ciclolectivo.fecha_inicio)' => date('Y') ])
     	->orderAsc("hora");
-    	
-    	$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';
+		
+		
+
+		$pagos = TableRegistry::get('PagosAlumnos')->find()
+		->contain(['PagosConceptos','Users'])
+		->where(['YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.pagado' => true ])
+		->orderDesc('PagosAlumnos.created')
+		;
+
+		$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';
     	$resultPagos = $connection->execute($qPagos);
     	$montos=array();
     	$fechas=array();
@@ -257,7 +262,7 @@ class UsersController extends AppController
     	$user = $this->Users->get($this->Auth->user('id'), [
     			'contain' => ['Roles']
     	]);
-    	$this->set(compact('user','horarios','clasesD','montos','fechas'));
+    	$this->set(compact('user','horarios','clasesD','montos','fechas','pagos'));
     	
     	
     }
