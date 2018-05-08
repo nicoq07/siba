@@ -54,7 +54,7 @@ class Profesore extends Entity
     public function workingDays($mes)
     {
     	$id = $this->_properties['id'];
-    	$query = "SELECT DISTINCT DATE_FORMAT(s.fecha, '%d') as fecha, c.id as id, h.nombre_dia
+    	$query = "SELECT DISTINCT DATE_FORMAT(s.fecha, '%d') as fecha,  h.nombre_dia
 				FROM
 				seguimientos_clases_alumnos as s,
 				horarios as h,
@@ -73,7 +73,7 @@ class Profesore extends Entity
 				order by(s.fecha)
 				";
     	
-//     	echo $query;
+	
     	$connection = ConnectionManager::get('default');
     	$dias = $connection->execute($query);
     	$r = array();
