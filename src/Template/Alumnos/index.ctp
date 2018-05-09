@@ -1,9 +1,11 @@
-<div class="col-lg-12 panel">
-
+<div class="col-lg-12 panel panel-info">
 	<div class = "col-lg-12 panel-heading">
     	<h3><?= __('Alumnos') ?></h3>
 	</div>
-	<?php 
+    <?php 
+    $esActivo = $this->request->session()->read('esActive');
+    $esAdoc = $this->request->session()->read('esAdolecencia');
+    $esFuturo = $this->request->session()->read('esFuturo');
 	if($this->request->session()->read('search_key') != "")
 	{
 		$search_key = $this->request->session()->read('search_key');
@@ -18,20 +20,20 @@
 		<div class ="col-lg-3">
 		 <?php
             echo $this->Form->label('Activos');
-            echo $this->Form->checkbox('activos', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
+            echo $this->Form->checkbox('activos', ['label' => false,'checked' => "$esActivo" ,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
 		<div class ="col-lg-3">
 		  <?php
             echo $this->Form->label('Adolescencia');
-            echo $this->Form->checkbox('adolecencia', ['label' => false,'onchange'=>'document.getElementById("frmIndex").submit()']);
+            echo $this->Form->checkbox('adolecencia', ['label' => false,'checked' => "$esAdoc" ,'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
         </div>
 		
 		<div class ="col-lg-3">
 		 <?php
             echo $this->Form->label('Futuros');
-            echo $this->Form->checkbox('futuro', ['label' => false, 'onchange'=>'document.getElementById("frmIndex").submit()']);
+            echo $this->Form->checkbox('futuro', ['label' => false,'checked' => "$esFuturo" , 'onchange'=>'document.getElementById("frmIndex").submit()']);
           ?>
 		 </div>
 		<div class ="col-lg-3">

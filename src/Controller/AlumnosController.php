@@ -78,13 +78,20 @@ class AlumnosController extends AppController
     			
     			$esActive = $this->request->getData()['activos'];
     			$where1= ['alumnos.active' => $esActive];
-    			
+				
+				$esActive == true ? $this->request->session()->write('esActive', 'checked') : $this->request->session()->write('esActive', '');
+					
     			$esAdolecencia =$this->request->getData()['adolecencia'];
     			$where2= ['alumnos.programa_adolecencia' => $esAdolecencia];
-    			
+				
+				$esAdolecencia == true ? $this->request->session()->write('esAdolecencia', 'checked') : $this->request->session()->write('esAdolecencia', '');
+
     			$esFuturo = $this->request->getData()['futuro'];
     			$where3= ['alumnos.futuro_alumno' => $esFuturo];
-    			
+				
+				$esFuturo == true ? $this->request->session()->write('esFuturo', 'checked') : $this->request->session()->write('esFuturo', '');
+
+
     			if (!(empty($this->request->getData()['palabra_clave'])))
     			{
     				$palabra = $this->request->getData()['palabra_clave'];
@@ -94,7 +101,8 @@ class AlumnosController extends AppController
     				];
     			}
     			$this->request->session()->write('searchCond', [$where1,$where2,$where3,$where4]);
-    			$this->request->session()->write('search_key', $palabra);
+				$this->request->session()->write('search_key', $palabra);
+				
     		}
     	}
     	
