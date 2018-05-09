@@ -160,16 +160,33 @@ class ClasesController extends AppController
      */
     public function edit($id = null)
     {
-    	$cambioDia = false;
+		$horarioDiaAnterior = $horarioDiaNuevo = $cambioDia = false;
     	$clase = $this->Clases->get($id, [
     			'contain' => ['Alumnos']
     	]);
     	if ($this->request->is(['patch', 'post', 'put'])) {
+
     		$clase = $this->Clases->patchEntity($clase, $this->request->getData());
+			
+    		$clasesAlumnos = TableRegistry::get('ClasesAlumnos');
+    		$ids = $clasesAlumnos->find('all')
+    		->select('ClasesAlumnos.id')
+    		->distinct(['ClasesAlumnos.id'])
+    		->where(
+    		      [
+    		          'clase_id' => $clase->id
+    		      ]
+    		    );
     		
+    		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+			$idss = $Seguimientos->find()
+			
+			->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d'), "SeguimientosClasesAlumnos.clase_alumno_id IN" => $ids]);
+			
+			die;
     		if($clase->isDirty('horario_id'))
     		{
-    			$horarioDiaAnterior = $horarioDiaNuevo = null;
+    			
     			$horarioDiaAnterior= TableRegistry::get('Horarios')->get($clase->getOriginal('horario_id'))->get('nombre_dia');
     			$horarioDiaNuevo= TableRegistry::get('Horarios')->get($clase->horario_id)->get('nombre_dia');
     			if ($horarioDiaAnterior === $horarioDiaNuevo)
@@ -181,35 +198,46 @@ class ClasesController extends AppController
     				$cambioDia = true;
     			}
     			
-    		}
+			}
+			
     		$clase->set('alumno_count',count($clase->alumnos));
     		if ($this->Clases->save($clase))
     		{
-    			$r = 0;
+				$r = 0;
+				/**	
+				 * Acá ver si cambio de día, borrar los seguimientos posteriores
+				 * actualizar el horario en la clase
+				 * crear los seguimientos nuevos segun el horario nuevo de la clase
+				 * 
+				 */
+				
+				 //aca ya tengo la clase con el horario nuevo.
     			if ($cambioDia)
     			{
+    			    $Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+					$ids = $Seguimientos->find()
+					->innerJoin('ClasesAlumnos',['ClasesAlumnos.clase_id' => $clase->id])
+					->select(['SeguimientosClasesAlumnos.id'])
+					->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d')]);
+
+					$checkBorrado = $Seguimientos->deleteAll(['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
+
     				$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
     				
     				$clasesAlumnos = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])
     				->where(['ClasesAlumnos.clase_id' => $clase->id])->toArray();
-    				$ids = array();
+					$ids = array();
+					
     				foreach ($clasesAlumnos as $ca)
     				{
     					array_push($ids, $ca->id);
     				}
     				
-    				$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
+    				
     				$r = $Seguimientos->deleteAll(['clase_alumno_id IN' => $ids]);
     				
     			}
-    			if (!empty($this->request->getData("alumnos")['_ids']))
-    			{
-    				if (!$this->insertarSeguimiento($clase->id, $this->request->getData("alumnos")['_ids']))
-    				{
-    					$this->Flash->error(__('Problema creando los seguimientos.'));
-    				}
-    				
-    			}
+    			
     			$this->Flash->success(__("Clase guardada. Se actualizaron $r seguimientos"));
     			
     			return $this->redirect(['action' => 'index']);
@@ -219,8 +247,7 @@ class ClasesController extends AppController
     	$profesores = $this->Clases->Profesores->find('list')->find('ordered')->where(['Profesores.active' => true]);
     	$horarios = $this->Clases->Horarios->find('list')->contain('Ciclolectivo')->find('ordered')->find('currentYear');
     	$disciplinas = $this->Clases->Disciplinas->find('list', ['limit' => 200])->find('ordered');
-    	$alumnos = $this->Clases->Alumnos->find('list')->find('ordered')->where(['Alumnos.active' => true]);
-    	$this->set(compact('clase', 'profesores', 'horarios', 'disciplinas', 'alumnos'));
+    	$this->set(compact('clase', 'profesores', 'horarios', 'disciplinas'));
     	$this->set('_serialize', ['clase']);
     }
 

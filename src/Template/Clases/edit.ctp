@@ -11,16 +11,7 @@
             echo $this->Form->control('horario_id', ['options' => $horarios]);
             echo $this->Form->control('disciplina_id', ['options' => $disciplinas]);
             echo $this->Form->control('active',['label' => 'Activa']);
-            //echo $this->Form->control('alumnos._ids', ['options' => $alumnos]);
-            ?>  <div class="container-clases">
-            
-            <?php
-            echo $this->Form->select('alumnos._ids', $alumnos, [
-            		'multiple' => 'checkbox'
-            		
-	         ]);?>
-	         </div> 
-    
+        ?>   
         <?= $this->Form->button(__('Guardar'),['class' => 'btn-lg btn-success']) ?>
     </fieldset>
     
