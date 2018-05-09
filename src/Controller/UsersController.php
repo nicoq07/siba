@@ -244,10 +244,8 @@ class UsersController extends AppController
 
 		$pagos = TableRegistry::get('PagosAlumnos')->find()
 		->contain(['PagosConceptos','Users','Alumnos'])
-		->where(['YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.pagado' => true ])
-		->orderDesc('PagosAlumnos.created')
-		->limit(20)
-		;
+		->where(['DATE(PagosAlumnos.created)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
+		->orderDesc('PagosAlumnos.fecha_pagado');
 
 		$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';
     	$resultPagos = $connection->execute($qPagos);
@@ -268,49 +266,6 @@ class UsersController extends AppController
     	$this->set(compact('user','horarios','clasesD','montos','fechas','pagos'));
     	
     	
-    }
-	public function graficoPdf()
-    {
-    	$connection = ConnectionManager::get('default');
-		$pagos = TableRegistry::get('PagosAlumnos')->find()
-		->contain(['PagosConceptos','Users'])
-		->where(['YEAR(PagosAlumnos.created)' => date('Y'), 'PagosAlumnos.pagado' => true ])
-		->orderDesc('PagosAlumnos.created')
-		;
-
-		$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';
-    	$resultPagos = $connection->execute($qPagos);
-    	$montos=array();
-    	$fechas=array();
-    	foreach ($resultPagos as $pago)
-    	{
-    	    array_push($montos,floatval($pago['monto']));
-    	    array_push($fechas,date('d-m-y',strtotime($pago['fecha'])));
-    	}
-    	$montos = json_encode(array_reverse($montos));
-    	$fechas = json_encode(array_reverse($fechas));
-    	$user = $this->Users->get($this->Auth->user('id'), [
-    			'contain' => ['Roles']
-		]);
-
-
-    	$this->prepararListado("A4", "portrait");
-
-    	$this->set(compact('montos','fechas','pagos'));
-    }
-	private function prepararListado($tipoHoja,$orientacion)
-    {
-    	$this->viewBuilder()->setOptions([
-    			'pdfConfig' => [
-    					'margin-bottom' => 0,
-    					'margin-right' => 0,
-    					'margin-left' => 0,
-    					'margin-top' => 0,
-    					'pageSize' => $tipoHoja,
-    					'orientation' => $orientacion,
-    					'filename' => "Pagos.pdf"
-    			]
-    	]);
     }
     public  function pPerfil()
     {

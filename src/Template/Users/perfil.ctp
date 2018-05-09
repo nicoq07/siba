@@ -49,43 +49,35 @@
 </div>
 <div class="col-lg-8 col-lg-offset-2 panel panel-info">
 	<div class="col-lg-2 col-lg-offset-9"><button class='btn btn-sm btn-default'  onclick='mostrarOcultar("PD",this);'><?php echo h('Ver'); ?></button> </div>
+	<div class="col-lg-4 col-lg-offset-7"><?= $this->Html->link('Imprimir',['controller' =>'PagosAlumnos', 'action' => 'pagosDelDiaPdf', '_ext'=> 'pdf'],['class'=> 'btn btn-sm btn-success','target' => '_blank'])?> </div>
 	<h3 class="panel panel-heading"><?= h("Pagos por día")?> </h3>
 	<div id="PD"  style='display: none;'class='col-lg-12 panel-body'>
-    	    <canvas id="line-chart" width="800" height="450"></canvas>
-		<div class="col-lg-12 ">
-		<div class="col-lg-12">&nbsp;</div>
-			<div class="col-lg-6 col-lg-offset-3"><button class='btn btn-sm btn-primary btn-block'  onclick='mostrarOcultar("masDatos",this);'><?php echo h('Desplegar listado de últimos 20 pagos'); ?></button> </div>
-			<div id="masDatos"  style='display: none;'class='col-lg-12 panel-body'>
-			<div  id="no-more-tables" >
-                    <table class="col-lg-12 table-striped table-condensed table-bordered cf">
+	<div  id="no-more-tables" >
+                    <table class="col-lg-12 table-striped table-condensed cf">
                 		<thead class="cf" style="background-color:#8ab9b5">
                 			<tr >
-        		                <td width = "20%" scope="col"><?= __('Alumno') ?></td>
-        		                <td width = "20%" scope="col"><?= __('Fecha generado') ?></td>
-        		                <td width = "10%" scope="col"><?= __('Mes') ?></td>
-        		                <td width = "20%" scope="col"><?= __('Monto') ?></td>
-        		                <td width = "10%" scope="col"><?= __('Recibió el pago:') ?></td>
+        		                <td width = "30%" scope="col"><?= __('Alumno') ?></td>
         		                <td width = "15%" scope="col"><?= __('Fecha pagado') ?></td>
-        		                <td width = "5%" scope="col"><?= __('Pagado') ?></td>
+        		                <td width = "15%" scope="col"><?= __('Mes') ?></td>
+        		                <td width = "20%" scope="col"><?= __('Monto') ?></td>
+        		                <td width = "20%" scope="col"><?= __('Recibió el pago:') ?></td>
         		              </tr>
         	            </thead>
         	            <?php foreach ($pagos as $pagosAlumnos): ?>
         	            <tr style="background-color:#9fc5c2" >
-        	                <td data-title="Código"><?= h($pagosAlumnos->alumno->presentacion) ?></td>
-        	                <td data-title="Fecha generado"><?= h($pagosAlumnos->created->format('d/m/Y')) ?></td>
+        	                <td data-title="Alumno"><?= h($pagosAlumnos->alumno->presentacion) ?></td>
+        	                <td data-title="Feche pagado"><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
         	                <td data-title="Mes"><?= __(date('F', strtotime(date('Y')."-".$pagosAlumnos->mes."-01"))) ?></td>
         	                <td data-title="Pago"  align="center" ><?= $pagosAlumnos->monto ? h($this->Number->currency($pagosAlumnos->monto,'ARS')) : h("")   ?></td>
         	                <td data-title="Recibido"><?= $pagosAlumnos->user ? h($pagosAlumnos->user->nombre): h("-") ?></td>
-        	                <td data-title="Feche pagado"><?= $pagosAlumnos->fecha_pagado ? h($pagosAlumnos->fecha_pagado->format('d/m/Y')) : h("Sin datos") ?></td>
-        	                <td data-title="Pagado"><?= $pagosAlumnos->pagado ? h("Sí") : h("No") ?></td>
         	                
         	            </tr>
 						<tr>
-							<td colspan="7">
+							<td colspan=5>
 								<table class="table cf">
 									<?php foreach ($pagosAlumnos->pagos_conceptos as $pagosCoceptos): ?>
-									<tr class="success">
-										<td  width = "100%" ><strong>DETALLE: </strong><?= h($pagosCoceptos->detalles) ?></td>
+									<tr  class="success">
+										<td    width = "100%" ><strong>DETALLE: </strong><?= h($pagosCoceptos->detalles) ?></td>
 									</tr>
 									<?php endforeach; ?>
 								</table>
@@ -96,7 +88,6 @@
     	        
     	    	</div>
 			</div>
-		</div>
 	 </div>
 	 
 </div>
