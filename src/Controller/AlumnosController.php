@@ -590,12 +590,13 @@ class AlumnosController extends AppController
     		
     		$activos = $this->request->getData('activos');
     		$mes = $this->request->getData('mob')['month'];
+    		$vista = $this->request->getData('campos');
     		if ($mes)
     		{
     			//$this->listadoCumpleExcel($mes, $activos);
 //     			require_once APP.'Excel'.DS.'Excel.php';
 //     			\FuncionesExcel::exportarCabecera();
-    			return $this->redirect(['action' => 'listado_cumple_alumnos', $mes,$activos]);
+    			return $this->redirect(['action' => 'listado_cumple_alumnos', $mes,$activos,$vista]);
     		}
     	}
     	$alumno = $this->Alumnos->newEntity();
@@ -635,7 +636,7 @@ class AlumnosController extends AppController
     		
     }
     
-    public function listadoCumpleAlumnos($mes,$activos)
+    public function listadoCumpleAlumnos($mes,$activos,$vista)
     {
      	$where = null;
     	if($activos)
@@ -649,7 +650,7 @@ class AlumnosController extends AppController
      			'MONTH(fecha_nacimiento)' => "$mes"
     	])
      	->select(['nombre','apellido','fecha_nacimiento','email','email_madre','email_padre'])
-     	->orderAsc('DAY(fecha_nacimiento)')
+     	->order(['DAY(fecha_nacimiento)','Alumnos.apellido'])
      	;
     	if(empty($alumnos))
     	     	{
@@ -658,8 +659,7 @@ class AlumnosController extends AppController
     	}
     	
       	$month =  __(date('F',strtotime("01-$mes-2000")));
-      	
-      	$this->set(['alumnos','month'],[$alumnos,$month]);
+      	$this->set(['alumnos','month','vista'],[$alumnos,$month,$vista]);
 
 
     }
