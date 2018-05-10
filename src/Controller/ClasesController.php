@@ -33,6 +33,7 @@ class ClasesController extends AppController
      */
 	public function index()
 	{
+	   	   
 		$whereProfesores = $whereHorarios = $whereDisciplinas = $condiciones = null;
 		if ($this->request->is('post'))
 		{
@@ -168,22 +169,6 @@ class ClasesController extends AppController
 
     		$clase = $this->Clases->patchEntity($clase, $this->request->getData());
 			
-    		$clasesAlumnos = TableRegistry::get('ClasesAlumnos');
-    		$ids = $clasesAlumnos->find('all')
-    		->select('ClasesAlumnos.id')
-    		->distinct(['ClasesAlumnos.id'])
-    		->where(
-    		      [
-    		          'clase_id' => $clase->id
-    		      ]
-    		    );
-    		
-    		$Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
-			$idss = $Seguimientos->find()
-			
-			->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d'), "SeguimientosClasesAlumnos.clase_alumno_id IN" => $ids]);
-			
-			die;
     		if($clase->isDirty('horario_id'))
     		{
     			
@@ -208,37 +193,48 @@ class ClasesController extends AppController
 				 * Acá ver si cambio de día, borrar los seguimientos posteriores
 				 * actualizar el horario en la clase
 				 * crear los seguimientos nuevos segun el horario nuevo de la clase
-				 * 
 				 */
-				
 				 //aca ya tengo la clase con el horario nuevo.
     			if ($cambioDia)
     			{
+    			    $clasesAlumnos = TableRegistry::get('ClasesAlumnos');
+    			    $idClasesAlumnos = $clasesAlumnos->find('all')
+    			    ->select('ClasesAlumnos.id')
+    			    ->distinct(['ClasesAlumnos.id'])
+    			    ->where(['clase_id' => $clase->id]);
+    			    
+    			    $idAlumnos =  $clasesAlumnos->find('all')
+    			    ->select('ClasesAlumnos.alumno_id')
+    			    ->distinct(['ClasesAlumnos.alumno_id'])
+    			    ->where(['clase_id' => $clase->id]);
+    			    
     			    $Seguimientos = TableRegistry::get('SeguimientosClasesAlumnos');
-					$ids = $Seguimientos->find()
-					->innerJoin('ClasesAlumnos',['ClasesAlumnos.clase_id' => $clase->id])
-					->select(['SeguimientosClasesAlumnos.id'])
-					->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d')]);
-
-					$checkBorrado = $Seguimientos->deleteAll(['SeguimientosClasesAlumnos.id IN' => $ids->extract('id')->toList()]);
-
-    				$ClasesAlumno = TableRegistry::get('ClasesAlumnos');
-    				
-    				$clasesAlumnos = $ClasesAlumno->find('all')->select(['ClasesAlumnos.id'])
-    				->where(['ClasesAlumnos.clase_id' => $clase->id])->toArray();
-					$ids = array();
-					
-    				foreach ($clasesAlumnos as $ca)
-    				{
-    					array_push($ids, $ca->id);
-    				}
-    				
-    				
-    				$r = $Seguimientos->deleteAll(['clase_alumno_id IN' => $ids]);
-    				
+    			    $idSeguimientos = $Seguimientos->find('all')
+    			    ->select('SeguimientosClasesAlumnos.id')
+    			    ->distinct(['SeguimientosClasesAlumnos.id'])
+    			    ->where(["DATE(SeguimientosClasesAlumnos.fecha) > " => date('Y-m-d'), "SeguimientosClasesAlumnos.clase_alumno_id IN" => $idClasesAlumnos]);
+    			    
+    			   
+    			    if($idSeguimientos->count() > 0)
+    			    {
+    			       
+        			    $r= $checkBorrado = $Seguimientos->deleteAll(['SeguimientosClasesAlumnos.id IN' => $idSeguimientos->extract('id')->toList()]);
+    
+        			    if (!$checkBorrado) {
+        			        $this->Flash->error("Seguimientos posteriores no borrados");
+        			    }
+    			    }
+    			    
+    			  
+    			   $checkActSeg = $this->insertarSeguimiento($clase->id, $idAlumnos->extract('alumno_id')->toList(),true);
+    			   if ($checkActSeg)
+    			   {
+    			       $this->Flash->success(__("Se actualizaron $r seguimientos"));
+    			   }
+    				    				
     			}
     			
-    			$this->Flash->success(__("Clase guardada. Se actualizaron $r seguimientos"));
+    			$this->Flash->success(__("Clase guardada."));
     			
     			return $this->redirect(['action' => 'index']);
     		}
@@ -293,7 +289,7 @@ class ClasesController extends AppController
     	
     }
     
-    private function insertarSeguimiento($idClase,$idsAlumnos)
+    private function insertarSeguimiento($idClase,$idsAlumnos, $esEdicion = false)
     {
     	
     	
@@ -322,13 +318,23 @@ class ClasesController extends AppController
     		
     		//Me traigo el obj de claseAlumno con todas las propiedasdes y asociaciones
     		//$alumno = $AlumnosTable->get($idAlumno);
-    		if(!$claseAlumno->existeSeguimiento($idAlumno))
+    		if(!$claseAlumno->existeSeguimiento($idAlumno) || $esEdicion)
     		{
     			
     			$alu = $AlumnosTable->get($idAlumno);
     			
     			//Creo las fechas de incio y fin para  recorrerlas
-    			$fechaInicio = strtotime($clase->modified->format('Y-m-d'));
+    			$fechaInicio = null;
+    			if ($clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d') >= date('Y-m-d'))
+    			{
+    			    $fechaInicio = strtotime($clase->horario->ciclolectivo->fecha_inicio->format('Y-m-d'));
+    			}
+    			else
+    			{
+    			    $fechaInicio = strtotime(date('Y-m-d'));
+    			}
+    			
+    			
     			$fechaFin = strtotime($clase->horario->ciclolectivo->fecha_fin->format('Y-m-d'));
     			
     			//recorro por dia hasta la fecha fin
