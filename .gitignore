@@ -18,3 +18,8 @@ wkhtmltopdf
 
 .idea/siba.iml
 .vscode/settings.json
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+.project
+.settings/.jsdtscope
+.settings/org.eclipse.wst.jsdt.ui.superType.container
+.project
