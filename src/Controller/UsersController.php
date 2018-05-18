@@ -244,7 +244,7 @@ class UsersController extends AppController
 
 		$pagos = TableRegistry::get('PagosAlumnos')->find()
 		->contain(['PagosConceptos','Users','Alumnos'])
-		->where(['DATE(PagosAlumnos.created)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
+		->where(['DATE(PagosAlumnos.fecha_pagado)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
 		->orderDesc('PagosAlumnos.fecha_pagado');
 
 		$qPagos = 'Select SUM(monto) as monto, fecha FROM view_pagos_por_dia as vp  GROUP BY DATE(fecha) ORDER BY fecha DESC LIMIT 10;';

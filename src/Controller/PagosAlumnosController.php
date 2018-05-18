@@ -509,11 +509,11 @@ class PagosAlumnosController extends AppController
     {
 		$pagos = TableRegistry::get('PagosAlumnos')->find()
 		->contain(['PagosConceptos','Users','Alumnos'])
-		->where(['DATE(PagosAlumnos.created)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
+		->where(['DATE(PagosAlumnos.fecha_pagado)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
 		->orderDesc('PagosAlumnos.fecha_pagado');
 		
 		$sumaDelDia = TableRegistry::get('PagosAlumnos')->find()
-		->where(['DATE(PagosAlumnos.created)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
+		->where(['DATE(PagosAlumnos.fecha_pagado)' => date('Y-m-d'), 'PagosAlumnos.pagado' => true ])
 		;
 		$suma = $sumaDelDia
 		->select(['cant' => $sumaDelDia->func()->count('PagosAlumnos.id'),
