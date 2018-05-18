@@ -674,7 +674,7 @@ class AlumnosController extends AppController
                     ]
                 ]
             ]]);
-		$this->prepararPDF($alumno,"interna","A6","landscape");
+		$this->prepararPDF($alumno,"interna","A4","landscape");
     	$this->set(compact('alumno'));
     	
     }
@@ -690,7 +690,7 @@ class AlumnosController extends AppController
     				]
     			]
     	]);
-    	$this->prepararPDF($alumno,"externa","A6","landscape");
+    	$this->prepararPDF($alumno,"externa","A4","landscape");
     	
     	$this->set(compact('alumno'));
     	
