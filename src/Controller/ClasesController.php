@@ -107,11 +107,14 @@ class ClasesController extends AppController
     public function pView($id = null)
     {
     	$clase = $this->Clases->get($id, [
-    			'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos']
+    	    'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos' ]
     	]);
     	$clasesAlumnosTable = TableRegistry::get('ClasesAlumnos');
     	$clasesAlumnos = $clasesAlumnosTable->find('all')
+    	->contain(['SeguimientosClasesAlumnos' => ['conditions' => ['DATE(SeguimientosClasesAlumnos.fecha)' => date('Y-m-d')]]])
     	->where(['ClasesAlumnos.clase_id' => $clase->id, 'ClasesAlumnos.active' => true]);
+    	
+    	
     	$this->set(['clase','clasesAlumnos'], [$clase,$clasesAlumnos]);
     	$this->set('_serialize', ['clase']);
     }
