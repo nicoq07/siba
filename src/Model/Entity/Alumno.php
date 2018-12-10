@@ -90,10 +90,10 @@ class Alumno extends Entity
     {
     	$this->set('active', false);
     	$this->set('fecha_baja', new \DateTime());
-    	$cantClases = TableRegistry::get('ClasesAlumnos')->find('list')->where(['ClasesAlumnos.alumno_id' => $this->id])
+    	$cantClases = TableRegistry::get('ClasesAlumnos')->find('list')->where(['alumno_id' => $this->id])
     	->count();
-    	$cantBorradas= TableRegistry::get('ClasesAlumnos')->deleteAll(['ClasesAlumnos.alumno_id' => $this->id]);
-    	if ($cantClases === $cantBorradas)
+        $cantDesactivadas= TableRegistry::get('ClasesAlumnos')->updateAll(['active' => false],['alumno_id' => $this->id]);
+    	if ($cantClases === $cantDesactivadas)
     	{
     		return true;
     	}

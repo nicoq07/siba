@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Http\Response;
 use Cake\Mailer\Email;
+use App\Model\Entity\Alumno;
 
 /**
  * Alumnos Controller
@@ -385,7 +386,7 @@ class AlumnosController extends AppController
     	{
     		if($this->Alumnos->save($alumno))
     		{
-    			$this->Flash->success(__('Alumno dado de baja. Clases y seguimientos borrados'));
+    			$this->Flash->success(__('Alumno dado de baja. Clases y seguimientos desactivados'));
     		}
     		
     	}
@@ -405,8 +406,8 @@ class AlumnosController extends AppController
     	->select(['Alumnos.id'])
     	->distinct(['Alumnos.id'])
     	->matching('Alumnos')
-    	->contain(['Horarios' => ['Ciclolectivo' =>['conditions'=> ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
-    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id')])
+    	->contain(['ClasesAlumnos' ,'Horarios' => ['Ciclolectivo' =>['conditions'=> ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
+    	->where(['Clases.profesor_id' => $this->Auth->user('profesor_id'),['ClasesAlumnos.active' => true]])
     	
     	;
     	
@@ -667,13 +668,16 @@ class AlumnosController extends AppController
     public function fichaInterna($id)
     {
         $alumno = $this->Alumnos->get($id,[
-            'contain' => ['Clases' =>
+			'contain' => ['ClasesAlumnos' => ['conditions' => ['active' => true] ]]
+			,'Clases' =>
                 ['Horarios' =>
                     [
                         'Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]
-                    ]
-                ]
-            ]]);
+					],
+				],
+				
+			]) ;
+			
 		$this->prepararPDF($alumno,"interna","A4","landscape");
     	$this->set(compact('alumno'));
     	
@@ -682,13 +686,13 @@ class AlumnosController extends AppController
     public function fichaExterna($id)
     {
     	$alumno = $this->Alumnos->get($id, [
-    			'contain' => ['Clases' =>
-    				['Horarios' =>
-    					[
-    						'Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]		
-    					]
-    				]
-    			]
+			'contain' => ['ClasesAlumnos' => ['conditions' => ['active' => true] ]]
+			,'Clases' =>
+    			['Horarios' =>
+    				[
+    					'Ciclolectivo' => ['conditions' => ['YEAR(ciclolectivo.fecha_inicio)' => date('Y')] ]		
+					],
+    			],
     	]);
     	$this->prepararPDF($alumno,"externa","A4","landscape");
     	
