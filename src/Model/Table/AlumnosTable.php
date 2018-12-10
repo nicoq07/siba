@@ -46,9 +46,7 @@ class AlumnosTable extends Table
         		'dependent' => true,
         		'cascadeCallbacks' => true,
         ]);
-//         $this->hasMany('ClasesAlumnos', [
-//         		'foreignKey' => 'alumno_id'
-//         ]);
+        $this->hasMany('ClasesAlumnos');
         $this->belongsToMany('Clases', [
             'foreignKey' => 'alumno_id',
             'targetForeignKey' => 'clase_id',
