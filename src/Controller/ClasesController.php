@@ -98,10 +98,8 @@ class ClasesController extends AppController
         		'contain' => ['Profesores', 'Horarios', 'Disciplinas', 'Alumnos']
         ]);
 		
-        $clasesAlumnosTable = TableRegistry::get('ClasesAlumnos');
-        $clasesAlumnos = $clasesAlumnosTable->find('all')
-        ->where(['ClasesAlumnos.clase_id' => $id , 'ClasesAlumnos.active' => true]);
-        $this->set(['clase','clasesAlumnos'], [$clase,$clasesAlumnos]);
+        
+        $this->set(['clase'], [$clase,]);
     }
     
     public function pView($id = null)
