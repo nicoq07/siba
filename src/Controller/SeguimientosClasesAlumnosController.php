@@ -324,10 +324,10 @@ class SeguimientosClasesAlumnosController extends AppController
     public function pIndex()
     {
     	$this->paginate = [
-    			'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
+				'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo'],'Profesores'] ] , 'Calificaciones'],
+				'conditions' => ['SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
     					'DATE(SeguimientosClasesAlumnos.fecha) <= ' => date('Y-m-d'),'clases.profesor_id' => $this->Auth->user('profesor_id'),
-    							'YEAR(Ciclolectivo.fecha_inicio)' => date('Y')],
-    			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo'],'Profesores'] ] , 'Calificaciones'],
+    							'YEAR(Ciclolectivo.fecha_inicio)' => date('Y'), 'ClasesAlumnos.active' => true],
     			'finder' => 'Ordered',
     	];
     	$seguimientosClasesAlumnos = $this->paginate($this->SeguimientosClasesAlumnos);
@@ -347,12 +347,10 @@ class SeguimientosClasesAlumnosController extends AppController
     	    	->where(['Clases.profesor_id' => $idProfesor,
     	    			'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
     	    			'DATE(SeguimientosClasesAlumnos.fecha) <=' => date('Y-m-d'),
-    	    			'YEAR(Ciclolectivo.fecha_inicio)' => date('Y')
+						'YEAR(Ciclolectivo.fecha_inicio)' => date('Y'),
+						'ClasesAlumnos.active' => true
     	    	])
     	->distinct('fecha');
-    	
-    	
-    	
     	
     	if ($rFechas->count() > 0)
     	{
@@ -380,16 +378,20 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$clasesHorarios = TableRegistry::get('Clases')->find('all')
     	->select(['Horarios.id'])
-    	->contain(['Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
-    	->where(['Clases.profesor_id' => $idProfesor, 'Horarios.nombre_dia' =>$dia]);
-    	
+    	->contain(['ClasesAlumnos' => ['conditions' => ['ClasesAlumnos.active' => true]] , 'Horarios' => ['Ciclolectivo' => ['conditions' => ['YEAR(Ciclolectivo.fecha_inicio)' => date('Y')]]]])
+		->where(['Clases.profesor_id' => $idProfesor, 'Horarios.nombre_dia' =>$dia]);
+
     	$horarios = TableRegistry::get('Horarios')->find('all')
-    	
-    	->contain(['Clases' => ['conditions' => ['Clases.profesor_id' => $idProfesor]]])
+		->contain(['Clases' => 
+					['conditions' => 
+							['Clases.profesor_id' => $idProfesor]]
+				])
+				->contain(['Clases' => ['ClasesAlumnos' => ['conditions' => ['ClasesAlumnos.active' => true]] ]])
     	->where(['Horarios.id IN' => $clasesHorarios])
     	->orderAsc("hora");
     	
-    	
+	
+
     	$fecha =  bin2hex ($fecha);
     	$this->set(compact('horarios','fechas','dia','fecha'));
     }
@@ -399,9 +401,10 @@ class SeguimientosClasesAlumnosController extends AppController
     	$fecha = hex2bin($fecha);
     	
     	$seguimientosClasesAlumnos = $this->SeguimientosClasesAlumnos->find('all')
-    	->contain(['ClasesAlumnos' => ['Alumnos','Clases']])
+		->contain(['ClasesAlumnos' => ['Alumnos','Clases']])
     	->where(['Clases.id' => $idClase, 'DATE(fecha)' => date('Y-m-d',strtotime($fecha)),
-    			'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified'
+				'SeguimientosClasesAlumnos.created = SeguimientosClasesAlumnos.modified',
+				'ClasesAlumnos.active' => true
     	])
     	->toArray();
     	
@@ -510,7 +513,7 @@ class SeguimientosClasesAlumnosController extends AppController
     	
     	$this->paginate = [
     			'contain' => ['ClasesAlumnos' => ['Alumnos','Clases' => ['Disciplinas','Horarios' => ['Ciclolectivo'],'Profesores'] ] , 'Calificaciones'],
-    			'conditions' => [$conditions],
+    			'conditions' => [$conditions,'ClasesAlumnos.active' => true],
     			'finder' => 'ordered',
     			
     	];
